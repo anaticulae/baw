@@ -1,0 +1,14 @@
+# Folder
+**__pycache__**
+**build**
+**generated**
+.eggs/**
+.vscode/**
+dist
+virtual/**
+
+# Files
+*.swp
+*.pyc
+*.egg-info
+*.cache
