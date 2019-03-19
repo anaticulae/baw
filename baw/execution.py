@@ -20,14 +20,13 @@ from subprocess import PIPE
 from subprocess import run
 from sys import stdout
 
-from . import print_error
+from . import logging
+from . import logging_error
 from . import THIS
 from .utils import BAW_EXT
 from .utils import get_setup
 from .utils import GIT_EXT
 from .virtual import run_virtual
-
-print = partial(print, file=stdout, flush=True)
 
 
 def root(cwd: str):
@@ -58,7 +57,7 @@ def root(cwd: str):
 
 def clean(root: str, virtual: bool = False):
     check_root(root)
-    print('Start cleaning')
+    logging('Start cleaning')
     patterns = ['build', 'html', 'doctrees', 'virtual', '__pycache__']
     # if not virtual:
     #     patterns.append('virtual')
@@ -68,7 +67,7 @@ def clean(root: str, virtual: bool = False):
         todo = glob(root + '/**/' + pattern, recursive=True)
         todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
-            print('Remove %s' % item)
+            logging('Remove %s' % item)
             try:
                 rmtree(item)
             except OSError as error:
@@ -79,10 +78,10 @@ def clean(root: str, virtual: bool = False):
 def test(root: str, virtual: bool = False):
     check_root(root)
 
-    print('Running tests')
+    logging('Running tests')
     test_dir = join(root, 'tests')
     if not exists(test_dir):
-        print_error('No testdirectory %s available' % test_dir)
+        logging_error('No testdirectory %s available' % test_dir)
         exit(1)
 
     cmd = 'pytest --continue-on-collection-errors -vvv %s' % test_dir
@@ -103,9 +102,9 @@ def run_target(root: str, command: str, cwd: str = '', virtual: bool = False):
             cwd=cwd,
             universal_newlines=True)
     if completed.stdout:
-        print(completed.stdout)
+        logging(completed.stdout)
     if completed.returncode and completed.stderr:
-        print_error(completed.stderr)
+        logging_error(completed.stderr)
 
     return completed
 
@@ -132,7 +131,7 @@ def doc(root: str, virtual: bool = False):
         return completed.returncode
 
     # Create html result
-    print('Running make html')
+    logging('Running make html')
 
     build_options = [
         '-v ',
@@ -154,14 +153,14 @@ def doc(root: str, virtual: bool = False):
 def release(root: str, virtual: bool = False):
     ret = test(root, virtual=virtual)
     if ret:
-        print_error('\nTests failed, could not release.\n')
+        logging_error('\nTests failed, could not release.\n')
         return ret
 
-    print("Update version tag")
+    logging("Update version tag")
 
-    print("Update Changelog")
+    logging("Update Changelog")
 
-    print("Packing project")
+    logging("Packing project")
 
     return 0
 
@@ -177,7 +176,7 @@ def head_tag(root: str, virtual: bool):
 def publish(root: str, virtual: bool = False):
     tag = head_tag(root, virtual)
     if not tag:
-        print_error('Could not find release-git-tag. Aborting publishing.')
+        logging_error('Could not find release-git-tag. Aborting publishing.')
         return 1
 
     ret = release(root, virtual=virtual)
@@ -194,7 +193,7 @@ def publish(root: str, virtual: bool = False):
 
 def sync(root: str, virtual: bool = False):
     check_root(root)
-    print('Sync dependencies')
+    logging('Sync dependencies')
 
     requirements_dev = 'requirements-dev.txt'
     resources = ['requirements.txt', requirements_dev]
@@ -210,23 +209,23 @@ def sync(root: str, virtual: bool = False):
         pip_index = environ['HELPY_INT_DIRECT']
         extra_url = environ['HELPY_EXT_DIRECT']
     except KeyError as error:
-        print_error('Global var %s does not exist' % error)
+        logging_error('Global var %s does not exist' % error)
         exit(1)
 
     pip_source = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
     for item in resources:
 
         cmd = 'python -mpip install %s -U -r %s' % (pip_source, item)
-        print(cmd)
+        logging(cmd)
         if virtual:
             completed = run_virtual(root, cmd, cwd=root)
         else:
             completed = run(cmd.split(), cwd=root)
 
         if completed.stdout:
-            print(completed.stdout)
+            logging(completed.stdout)
         if completed.returncode and completed.stderr:
-            print_error(completed.stderr)
+            logging_error(completed.stderr)
         ret += completed.returncode
     return ret
 
