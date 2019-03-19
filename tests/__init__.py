@@ -18,7 +18,7 @@ DATA = join(THIS, 'data')
 # makedirs(TEMP, exist_ok=True)
 
 BAW_FOLDER = join(THIS,)
-FAST = 'long' not in environ.keys()
+FAST = 'LONGRUN' not in environ.keys()
 FAST_REASON = 'Takes to mutch time'
 
 skip_longrunning = pytest.mark.skipif(

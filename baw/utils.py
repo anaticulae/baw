@@ -35,7 +35,7 @@ def handle_error(*exceptions, code=1):
         exit(code)
 
 
-def run(command, cwd):
+def run(command, cwd, env=None):
     """Run external process and return an CompleatedProcess
 
     Args:
@@ -49,12 +49,13 @@ def run(command, cwd):
 
     process = run_sub(
         command,
-        stdout=PIPE,
-        stderr=PIPE,
         cwd=cwd,
         encoding='utf-8',
-        universal_newlines=True,
+        env=env,
         shell=True,  # required for chaning commands
+        stderr=PIPE,
+        stdout=PIPE,
+        universal_newlines=True,
     )
     return process
 

@@ -6,7 +6,8 @@
 ###############################################################################
 """ Run every function which is used by `baw`"""
 
-from functools import partial
+from contextlib import contextmanager
+from contextlib import suppress
 from glob import glob
 from os import environ
 from os.path import abspath
@@ -71,11 +72,39 @@ def clean(root: str, virtual: bool = False):
             try:
                 rmtree(item)
             except OSError as error:
-                print(error, file=stdout)
-    print()  # Newline
+                logging(error, file=stdout)
+    logging()  # Newline
 
 
-def test(root: str, virtual: bool = False):
+@contextmanager
+def git_stash(root: str, virtual: bool):
+    """Save uncommited/not versonied content to improve testability
+
+    Args:
+        root(str): root of execution
+        virtual(bool): run in virtual environment"""
+    cmd = 'git stash --include-untracked'
+    completed = run_target(root, cmd, virtual=virtual)
+    with suppress(Exception):
+        yield
+
+    cmd = 'git stash pop'
+    completed = run_target(root, cmd, virtual=virtual)
+
+
+def test(root: str,
+         *,
+         longrun: bool = False,
+         stash: bool = False,
+         virtual: bool = False):
+    """Running test-step in root/tests
+
+    Args:
+        stash(bool): Stash all changes to test commited-change in repository
+        virtual(bool): run command in virtual environment
+    Returns:
+        returncode(int): 0 if successful else > 0
+    """
     check_root(root)
 
     logging('Running tests')
@@ -84,23 +113,43 @@ def test(root: str, virtual: bool = False):
         logging_error('No testdirectory %s available' % test_dir)
         exit(1)
 
+    env = dict(environ.items())
+    if longrun:
+        # FAST = 'LONGRUN' not in environ.keys()
+        env['LONGRUN'] = 'True'
     cmd = 'pytest --continue-on-collection-errors -vvv %s' % test_dir
-    completed = run_target(root, cmd, virtual=True)
+    if stash:
+        with git_stash(root, virtual):
+            completed = run_target(root, cmd, env=env, virtual=True)
+    else:
+        completed = run_target(root, cmd, env=env, virtual=True)
     return completed.returncode
 
 
-def run_target(root: str, command: str, cwd: str = '', virtual: bool = False):
+def run_target(root: str,
+               command: str,
+               cwd: str = '',
+               env=None,
+               virtual: bool = False):
     if not cwd:
         cwd = root
     if virtual:
-        completed = run_virtual(root, command, cwd=root, verbose=False)
+        completed = run_virtual(
+            root,
+            command,
+            cwd=root,
+            env=env,
+            verbose=False,
+        )
     else:
         completed = run(
             command.split(),
-            stdout=PIPE,
-            stderr=PIPE,
             cwd=cwd,
-            universal_newlines=True)
+            env=env,
+            stderr=PIPE,
+            stdout=PIPE,
+            universal_newlines=True,
+        )
     if completed.stdout:
         logging(completed.stdout)
     if completed.returncode and completed.stderr:
@@ -151,7 +200,7 @@ def doc(root: str, virtual: bool = False):
 
 
 def release(root: str, virtual: bool = False):
-    ret = test(root, virtual=virtual)
+    ret = test(root, virtual=virtual, stash=True, longrun=True)
     if ret:
         logging_error('\nTests failed, could not release.\n')
         return ret
@@ -166,7 +215,6 @@ def release(root: str, virtual: bool = False):
 
 
 def head_tag(root: str, virtual: bool):
-    # command = 'git tag --points-at 7c4bd36557a010349ce784ddd466c16721d231f'
     command = 'git tag --points-at HEAD'
 
     completed = run_target(root, command, root, virtual=virtual)

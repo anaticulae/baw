@@ -76,7 +76,7 @@ def install_requirements(requirements: str, path: str):
     return run_virtual(install_requirements, path)
 
 
-def run_virtual(root, command, cwd, verbose=False):
+def run_virtual(root, command, cwd, env=None, *, verbose=False):
     """Run command with virtual environment
 
     Errors are printed to stdout.
@@ -99,5 +99,5 @@ def run_virtual(root, command, cwd, verbose=False):
         '&&',
         command,
     ]
-    process = run(activate_and_execute, cwd)
+    process = run(activate_and_execute, cwd, env=env)
     return process

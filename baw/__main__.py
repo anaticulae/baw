@@ -46,7 +46,11 @@ def main():
         ret += sync(root, virtual=virtual)
 
     if args['test']:
-        ret += test(root, virtual=virtual)
+        ret += test(
+            root,
+            longrun='longrun' in args['test'],
+            stash='stash' in args['test'],
+            virtual=virtual)
 
     if args['doc']:
         ret += doc(root, virtual=virtual)

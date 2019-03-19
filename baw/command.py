@@ -18,7 +18,11 @@ release = Command('-r', '--release', '', None)
 report = Command('-re', '--report', 'Write module status in html report', None)
 run = Command('-ru', '--run', 'Run application', None)
 sync = Command('-s', '--sync', 'Sync dependencies', None)
-test = Command('-t', '--test', 'Run tests and coverage', None)
+test = Command('-t', '--test', 'Run tests and coverage', {
+    'nargs': '?',
+    'action': 'append',
+    'choices': ['stash', 'longrun'],
+})
 venv = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
 version = ('-v', '--version', 'Show version of this program', None)
 
@@ -28,6 +32,7 @@ def create_parser():
 
     todo = (all, build, clean, doc, docker, init, publish, release, report, run,
             sync, test, venv, version)
+
     for shortcut, longcut, msg, args in todo:
         shortcuts = (shortcut, longcut)
         add = parser.add_argument
