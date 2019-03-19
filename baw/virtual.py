@@ -8,6 +8,8 @@ from sys import stderr
 
 from .utils import run
 
+VIRTUAL_FOLDER = 'virtual'
+
 
 def destroy(path: str):
     """Remove virtual path recursive if path exists, do nothing."""
@@ -31,16 +33,16 @@ def create(root: str, clean: bool = False):
     Returns:
         true if creating was succesfull, else False
     """
-    virutal_path = join(root, 'virtual')
-    if clean and exists(virutal_path):
-        destroy(virutal_path)
+    virtual = join(root, VIRTUAL_FOLDER)
+    if clean and exists(virtual):
+        destroy(virtual)
 
-    if not exists(virutal_path):
-        print('Creating virtual environment %s\n' % virutal_path, flush=True)
-        makedirs(virutal_path)
+    if not exists(virtual):
+        print('Creating virtual environment %s\n' % virtual, flush=True)
+        makedirs(virtual)
 
-    if exists(virutal_path) and list(scandir(virutal_path)):
-        print('Using virtual environment %s\n' % virutal_path)
+    if exists(virtual) and list(scandir(virtual)):
+        print('Using virtual environment %s\n' % virtual)
         return 0
 
     venv_command = [
@@ -50,9 +52,11 @@ def create(root: str, clean: bool = False):
         '.',
         '--copies',  # , '--system-site-packages'
     ]
+
     if clean:
         venv_command.append('--clear')
-    process = run(venv_command, virutal_path)
+
+    process = run(venv_command, virtual)
     if process.returncode == 0:
         return 0
 

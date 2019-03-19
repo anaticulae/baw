@@ -28,6 +28,7 @@ from .utils import BAW_EXT
 from .utils import get_setup
 from .utils import GIT_EXT
 from .virtual import run_virtual
+from .virtual import VIRTUAL_FOLDER
 
 
 def root(cwd: str):
@@ -59,9 +60,7 @@ def root(cwd: str):
 def clean(root: str, virtual: bool = False):
     check_root(root)
     logging('Start cleaning')
-    patterns = ['build', 'html', 'doctrees', 'virtual', '__pycache__']
-    # if not virtual:
-    #     patterns.append('virtual')
+    patterns = ['build', 'html', 'doctrees', VIRTUAL_FOLDER, '__pycache__']
 
     # problems while deleting recursive
     for pattern in patterns:
@@ -120,9 +119,9 @@ def test(root: str,
     cmd = 'pytest --continue-on-collection-errors -vvv %s' % test_dir
     if stash:
         with git_stash(root, virtual):
-            completed = run_target(root, cmd, env=env, virtual=True)
+            completed = run_target(root, cmd, env=env, virtual=virtual)
     else:
-        completed = run_target(root, cmd, env=env, virtual=True)
+        completed = run_target(root, cmd, env=env, virtual=virtual)
     return completed.returncode
 
 

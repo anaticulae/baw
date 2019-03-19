@@ -13,7 +13,7 @@ ROOT = abspath(join(THIS, '..'))
 print = partial(print, file=stdout, flush=True)
 
 
-def logging(msg: str):
+def logging(msg: str = '\n'):
     print(msg)
 
 
