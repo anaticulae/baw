@@ -45,3 +45,16 @@ def tempfile():
     if exists(path):
         return tempfile()
     return path
+
+
+def run(command: str, cwd: str):
+    from subprocess import run as run_process
+    completed = run_process(
+        command,
+        cwd=cwd,
+        shell=True,
+    )
+    msg = '%s\n%s' % (completed.stderr, completed.stdout)
+    assert completed.returncode == 0, msg
+
+    return completed

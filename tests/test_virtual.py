@@ -1,24 +1,77 @@
+from os import environ
 from os.path import exists
 from os.path import join
-from subprocess import run
+from subprocess import PIPE
+from textwrap import dedent
 
 import pytest
 
+from baw.virtual import VIRTUAL_FOLDER
 from tests import PROJECT
+from tests import run
 from tests import skip_longrunning
 
 
 @skip_longrunning
-def test_creating_venv(tmpdir):
+def test_creating_virtual_environment(example):
+    """Creating virtual environment"""
     completed = run(
-        'baw --init xkcd "Longtime project"',
-        cwd=tmpdir,
-        shell=True,
+        'baw --virtual',
+        cwd=example,
     )
     assert completed.returncode == 0, completed.stderr
 
+    virtual = join(example, VIRTUAL_FOLDER)
+    msg = 'Virtual folder does not exists: %s' % virtual
+    assert exists(virtual), msg
+
+
+def test_creating_project(tmpdir):
+    """Creating project without virtual environment"""
+    completed = run(
+        'baw --init xkcd "Longtime project"',
+        cwd=tmpdir,
+    )
+    assert completed.returncode == 0, completed.stderr
     assert exists(join(tmpdir, '.git'))
 
 
-if __name__ == "__main__":
-    test_creating_venv()
+@pytest.fixture
+def example(tmpdir):
+    """Creating example project due console"""
+    project_name = 'xkcd'
+    completed = run(
+        'baw --init %s "Longtime project"' % project_name,
+        cwd=tmpdir,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert exists(join(tmpdir, '.git'))
+
+    return tmpdir
+
+
+@pytest.fixture
+def project_with_test(example):
+    """Create project with one test case"""
+
+    test_me = dedent("""\
+        def test_me():
+            # Empty passing test
+            pass
+    """)
+
+    write = join(example, 'tests', 'my_test.py')
+    with open(write, mode='w', encoding='utf8') as fp:
+        fp.write(test_me)
+    assert exists(write)
+
+    return example
+
+
+def test_running_test_in_virtual_environment(project_with_test):
+    """Running test-example in virtual environment"""
+    extra_url = environ['HELPY_EXT_DIRECT']
+    pip_source = '--index-url  %s' % (extra_url)
+    pytest_install = 'python -mpip install pytest %s' % pip_source
+    cmd = pytest_install + ' && baw --test'  #python -mpytest tests -v'
+    completed = run(cmd, project_with_test)
