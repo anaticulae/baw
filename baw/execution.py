@@ -21,14 +21,14 @@ from subprocess import PIPE
 from subprocess import run
 from sys import stdout
 
-from . import logging
-from . import logging_error
 from . import THIS
+from .runtime import run_target
+from .runtime import VIRTUAL_FOLDER
 from .utils import BAW_EXT
 from .utils import get_setup
 from .utils import GIT_EXT
-from .virtual import run_virtual
-from .virtual import VIRTUAL_FOLDER
+from .utils import logging
+from .utils import logging_error
 
 
 def root(cwd: str):
@@ -125,38 +125,6 @@ def test(root: str,
     return completed.returncode
 
 
-def run_target(root: str,
-               command: str,
-               cwd: str = '',
-               env=None,
-               virtual: bool = False):
-    if not cwd:
-        cwd = root
-    if virtual:
-        completed = run_virtual(
-            root,
-            command,
-            cwd=root,
-            env=env,
-            verbose=False,
-        )
-    else:
-        completed = run(
-            command.split(),
-            cwd=cwd,
-            env=env,
-            stderr=PIPE,
-            stdout=PIPE,
-            universal_newlines=True,
-        )
-    if completed.stdout:
-        logging(completed.stdout)
-    if completed.returncode and completed.stderr:
-        logging_error(completed.stderr)
-
-    return completed
-
-
 def doc(root: str, virtual: bool = False):
     """Run Sphinx doc generation
 
@@ -170,10 +138,6 @@ def doc(root: str, virtual: bool = False):
     # Create files out of source
     command = 'sphinx-apidoc -d 10 -M -f -e -o %s %s' % (doc_build, root)
     completed = run_target(root, command, virtual=virtual)
-    # if virtual:
-    #     result = run_virtual(root, command, cwd=root, verbose=False)
-    # else:
-    #     result = run(command.split(), cwd=root)
 
     if completed.returncode:
         return completed.returncode
@@ -250,8 +214,6 @@ def sync(root: str, virtual: bool = False):
     if not exists(join(root, requirements_dev)):
         resources.append(abspath(join(THIS, '..', requirements_dev)))
 
-    ret = 0
-
     try:
         pip_index = environ['HELPY_INT_DIRECT']
         extra_url = environ['HELPY_EXT_DIRECT']
@@ -260,14 +222,13 @@ def sync(root: str, virtual: bool = False):
         exit(1)
 
     pip_source = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
-    for item in resources:
 
+    ret = 0
+    for item in resources:
         cmd = 'python -mpip install %s -U -r %s' % (pip_source, item)
         logging(cmd)
-        if virtual:
-            completed = run_virtual(root, cmd, cwd=root)
-        else:
-            completed = run(cmd.split(), cwd=root)
+
+        completed = run_target(root, cmd, cwd=root, virtual=virtual)
 
         if completed.stdout:
             logging(completed.stdout)

@@ -6,7 +6,7 @@ from textwrap import dedent
 
 import pytest
 
-from baw.virtual import VIRTUAL_FOLDER
+from baw.runtime import VIRTUAL_FOLDER
 from tests import PROJECT
 from tests import run
 from tests import skip_longrunning

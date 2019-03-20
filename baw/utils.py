@@ -7,10 +7,12 @@
 
 from configparser import ConfigParser
 from contextlib import contextmanager
+from functools import partial
 from os import environ
+from os.path import join
 from subprocess import PIPE
-from subprocess import run as run_sub
 from sys import stderr
+from sys import stdout
 
 BAW_EXT = '.baw'
 GIT_EXT = '.git'
@@ -35,29 +37,16 @@ def handle_error(*exceptions, code=1):
         exit(code)
 
 
-def run(command, cwd, env=None):
-    """Run external process and return an CompleatedProcess
+print = partial(print, file=stdout, flush=True)
 
-    Args:
-        command(str/iterable): command to execute
-        cwd(str): working directory where the command is executed
-    Returns:
-        CompletedProcess with execution result
-    """
-    if not isinstance(command, str):
-        command = ' '.join(command)
 
-    process = run_sub(
-        command,
-        cwd=cwd,
-        encoding='utf-8',
-        env=env,
-        shell=True,  # required for chaning commands
-        stderr=PIPE,
-        stdout=PIPE,
-        universal_newlines=True,
-    )
-    return process
+def logging(msg: str = '\n'):
+    print(msg)
+
+
+def logging_error(msg: str):
+    """Print error-message to stderr and add [ERROR]-tag"""
+    print('\n[ERROR] %s\n' % msg, file=stderr)
 
 
 def flush():

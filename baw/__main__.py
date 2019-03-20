@@ -14,9 +14,9 @@ from .execution import release
 from .execution import root as project_root
 from .execution import sync
 from .execution import test
+from .runtime import create as create_virtual
 from .utils import flush
 from .utils import handle_error
-from .virtual import create as create_virtual
 
 
 def main():
