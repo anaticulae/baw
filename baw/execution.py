@@ -94,11 +94,14 @@ def git_stash(root: str, virtual: bool):
 def test(root: str,
          *,
          longrun: bool = False,
+         pdb: bool = False,
          stash: bool = False,
          virtual: bool = False):
     """Running test-step in root/tests
 
     Args:
+        longrun(bool): Runnig all tests
+        pdf(bool): Run debugger on error
         stash(bool): Stash all changes to test commited-change in repository
         virtual(bool): run command in virtual environment
     Returns:
@@ -114,9 +117,12 @@ def test(root: str,
 
     env = dict(environ.items())
     if longrun:
-        # FAST = 'LONGRUN' not in environ.keys()
-        env['LONGRUN'] = 'True'
-    cmd = 'pytest --continue-on-collection-errors -vvv %s' % test_dir
+        env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
+
+    debugger = '--pdb ' if pdb else ''
+    continue_ = '--continue-on-collection-errors '
+    cmd = 'pytest %s %s -vvv %s' % (debugger, continue_, test_dir)
+
     if stash:
         with git_stash(root, virtual):
             completed = run_target(root, cmd, env=env, virtual=virtual)

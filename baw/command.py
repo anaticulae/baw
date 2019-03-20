@@ -21,7 +21,7 @@ sync = Command('-s', '--sync', 'Sync dependencies', None)
 test = Command('-t', '--test', 'Run tests and coverage', {
     'nargs': '?',
     'action': 'append',
-    'choices': ['stash', 'longrun'],
+    'choices': ['pdb', 'stash', 'longrun'],
 })
 venv = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
 version = ('-v', '--version', 'Show version of this program', None)
