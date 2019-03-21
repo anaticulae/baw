@@ -16,13 +16,16 @@ PROJECT = abspath(join(THIS, '..'))
 DATA = join(THIS, 'data')
 # TEMP = join(PROJECT, 'build', 'temp')  # object not found
 # makedirs(TEMP, exist_ok=True)
+REQUIREMENTS = join(PROJECT, 'requirements-dev.txt')
 
 BAW_FOLDER = join(THIS,)
 FAST = 'LONGRUN' not in environ.keys()
 FAST_REASON = 'Takes to mutch time'
 
-skip_longrunning = pytest.mark.skipif(
-    FAST, reason="not implemented within werkzeug")
+skip_missing_packages = pytest.mark.skip(
+    reason="Required package(s) not available")
+
+skip_longrunning = pytest.mark.skipif(FAST, reason="Test require long time")
 
 
 def tempname():

@@ -8,8 +8,10 @@ import pytest
 
 from baw.runtime import VIRTUAL_FOLDER
 from tests import PROJECT
+from tests import REQUIREMENTS
 from tests import run
 from tests import skip_longrunning
+from tests import skip_missing_packages
 
 
 @skip_longrunning
@@ -64,14 +66,17 @@ def project_with_test(example):
     with open(write, mode='w', encoding='utf8') as fp:
         fp.write(test_me)
     assert exists(write)
-
     return example
 
 
+@skip_missing_packages
 def test_running_test_in_virtual_environment(project_with_test):
     """Running test-example in virtual environment"""
     extra_url = environ['HELPY_EXT_DIRECT']
-    pip_source = '--index-url  %s' % (extra_url)
-    pytest_install = 'python -mpip install pytest %s' % pip_source
+    source = '--index-url  %s' % (extra_url)
+    pytest_install = 'python -mpip install -r %s %s' % (REQUIREMENTS, source)
+
     cmd = pytest_install + ' && baw --test'  #python -mpytest tests -v'
     completed = run(cmd, project_with_test)
+
+    assert completed.returncode == 0
