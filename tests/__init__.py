@@ -5,6 +5,7 @@ from os.path import dirname
 from os.path import exists
 from os.path import join
 from random import randrange
+from subprocess import run as _run
 
 import pytest
 
@@ -14,17 +15,13 @@ MAX_TEST_RANDOM = 10**MAX_NUMBER
 THIS = dirname(__file__)
 PROJECT = abspath(join(THIS, '..'))
 DATA = join(THIS, 'data')
-# TEMP = join(PROJECT, 'build', 'temp')  # object not found
-# makedirs(TEMP, exist_ok=True)
 REQUIREMENTS = join(PROJECT, 'requirements-dev.txt')
 
-BAW_FOLDER = join(THIS,)
 FAST = 'LONGRUN' not in environ.keys()
 FAST_REASON = 'Takes to mutch time'
 
 skip_missing_packages = pytest.mark.skip(
     reason="Required package(s) not available")
-
 skip_longrunning = pytest.mark.skipif(FAST, reason="Test require long time")
 
 
@@ -43,6 +40,10 @@ def tempfile():
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
+    # TODO: Investigate for better approch due pytest
+    TEMP = join(PROJECT, 'temp')
+    makedirs(TEMP, exist_ok=True)
+
     name = 'temp%s' % tempname()
     path = join(TEMP, name)
     if exists(path):
@@ -51,11 +52,12 @@ def tempfile():
 
 
 def run(command: str, cwd: str):
-    from subprocess import run as run_process
-    completed = run_process(
+    """Run external process"""
+    completed = _run(
         command,
         cwd=cwd,
         shell=True,
+        universal_newlines=True,
     )
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode == 0, msg
