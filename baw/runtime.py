@@ -11,6 +11,7 @@ from os import scandir
 from os.path import exists
 from os.path import join
 from shutil import rmtree
+from subprocess import CompletedProcess
 from subprocess import PIPE
 from subprocess import run
 from sys import platform
@@ -20,6 +21,8 @@ from .utils import logging
 from .utils import logging_error
 
 VIRTUAL_FOLDER = 'virtual'
+
+NO_EXECUTABLE = 127
 
 
 def destroy(path: str):
@@ -66,10 +69,11 @@ def create(root: str, clean: bool = False):
 
     if clean:
         venv_command.append('--clear')
-
-    process = _run(venv_command, root)
+    process = _run(command=venv_command, cwd=virtual)
     if process.returncode == 0:
         return 0
+
+    logging_error('While creating virutal environment')
 
     print(process.stdout, flush=True)
     print(process.stderr, file=stderr)
@@ -100,13 +104,25 @@ def run_target(root: str,
         cwd = root
 
     if virtual:
-        completed = _run_virtual(root, command, cwd=root, env=env)
+        try:
+            completed = _run_virtual(root, command, cwd=root, env=env)
+        except RuntimeError as error:
+            logging_error(error)
+            return CompletedProcess(command, NO_EXECUTABLE)
     else:
         completed = _run_local(command, cwd=cwd, env=env)
 
+    if completed.returncode:
+        logging_error('Running `%(command)s` in `%(cwd)s` with:\n\n%(env)s' % {
+            'command': command,
+            'cwd': cwd,
+            'env': env
+        })
+
     if completed.stdout:
         logging(completed.stdout)
-    if completed.returncode and completed.stderr:
+
+    if completed.stderr:
         logging_error(completed.stderr)
 
     return completed
@@ -145,6 +161,11 @@ def _run_virtual(root, command, cwd, env=None):
     if platform == 'win32':
         activation_path = join(virtual, 'Scripts', 'activate.bat')
 
+    if not exists(activation_path):
+        msg = ('Path `%s` does not exists. Regenerate the virtual env' %
+               activation_path)
+        raise RuntimeError(msg)
+
     activate_and_execute = [
         activation_path,
         '&&',
@@ -164,7 +185,7 @@ def _run(command: str, cwd: str, env=None):
         commandline is not feasible :) anymore. TODO: Investigate why.
     """
     if not env:
-        env = environ.items()
+        env = dict(environ.items())
 
     process = run(
         command,
