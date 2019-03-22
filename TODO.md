@@ -1,9 +1,12 @@
 # TODO
 
-## 0.0.3
+## 0.0.4
 
 [ ] Use more templates for generating repositories
-[ ] Release&Runtime-Command
+
+## 0.0.3
+
+[x] Release&Runtime-Command
 
 ## 0.0.2
 
