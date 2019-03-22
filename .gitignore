@@ -6,6 +6,7 @@
 .vscode/**
 dist
 virtual/**
+**.pytest_cache**
 
 # Files
 *.swp

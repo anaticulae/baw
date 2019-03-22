@@ -9,6 +9,7 @@
       "**/.baws": true,
       "**/.cache": true,
       "**/.git": true,
+      "**/.pytest_cache": true,
       "**/.vscode": true
     }
   }
