@@ -1,0 +1,42 @@
+from os.path import join
+
+import pytest
+
+from baw.config import PROJECT_PATH
+from tests import assert_run
+from tests import assert_run_fail
+from tests import example
+from tests import file_append
+
+RUN = """
+[run]
+command = ls
+"""
+
+
+@pytest.fixture
+def project_with_command(example):
+    """Create testproject which contains --run-command `ls`"""
+    config = join(example, PROJECT_PATH)
+    file_append(config, RUN)
+
+    return example
+
+
+def test_run_commands_with_ls(project_with_command):
+    """Running --run with ls"""
+    tmpdir = project_with_command
+
+    with assert_run('baw --run', cwd=tmpdir) as completed:
+        pass  # all checks done
+
+
+project_without_command = example
+
+
+def test_run_without_commands_in_project(project_without_command):
+    """Running --run without any registered command in project"""
+    tmpdir = project_without_command
+
+    with assert_run_fail('baw --run', cwd=tmpdir) as completed:
+        pass  # all checks done
