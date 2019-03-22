@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from os import environ
 from os import makedirs
 from os.path import abspath
@@ -59,7 +60,38 @@ def run(command: str, cwd: str):
         shell=True,
         universal_newlines=True,
     )
+    return completed
+
+
+def file_append(path: str, content: str):
+    assert exists(path)
+
+    with open(path, mode='a') as fp:
+        fp.write(content)
+
+
+@contextmanager
+def assert_run(command: str, cwd: str):
+    completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode == 0, msg
+    yield completed
 
-    return completed
+
+@contextmanager
+def assert_run_fail(command: str, cwd: str):
+    completed = run(command, cwd)
+    msg = '%s\n%s' % (completed.stderr, completed.stdout)
+    assert completed.returncode, msg
+    yield completed
+
+
+@pytest.fixture
+def example(tmpdir):
+    """Creating example project due console"""
+    project_name = 'xkcd'
+    cmd = 'baw --init %s "Longtime project"' % project_name
+    with assert_run(cmd, cwd=tmpdir) as completed:
+        assert exists(join(tmpdir, '.git'))
+
+    return tmpdir

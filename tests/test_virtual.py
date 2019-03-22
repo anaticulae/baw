@@ -7,6 +7,7 @@ from textwrap import dedent
 import pytest
 
 from baw.runtime import VIRTUAL_FOLDER
+from tests import example
 from tests import PROJECT
 from tests import REQUIREMENTS
 from tests import run
@@ -36,20 +37,6 @@ def test_creating_project(tmpdir):
     )
     assert completed.returncode == 0, completed.stderr
     assert exists(join(tmpdir, '.git'))
-
-
-@pytest.fixture
-def example(tmpdir):
-    """Creating example project due console"""
-    project_name = 'xkcd'
-    completed = run(
-        'baw --init %s "Longtime project"' % project_name,
-        cwd=tmpdir,
-    )
-    assert completed.returncode == 0, completed.stderr
-    assert exists(join(tmpdir, '.git'))
-
-    return tmpdir
 
 
 @pytest.fixture
