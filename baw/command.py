@@ -12,7 +12,7 @@ init = Command('-i', '--init', 'Create .baw project', {
     'metavar': ('shortcut', 'name')
 })
 # run tests, increment version, commit, git tag
-publish = Command('-p', '--publish', '', None)
+publish = Command('-p', '--publish', 'Push release to repository', None)
 docker = Command('-do', '--docker', 'Run commands in docker environment', None)
 release = Command('-r', '--release',
                   'Test and tag current commit as new release', None)

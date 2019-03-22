@@ -17,11 +17,10 @@ from os.path import join
 from os.path import split
 from os.path import splitdrive
 from shutil import rmtree
-from subprocess import PIPE
-from subprocess import run
 from sys import stdout
 
 from . import THIS
+from .config import commands
 from .runtime import run_target
 from .runtime import VIRTUAL_FOLDER
 from .utils import BAW_EXT
@@ -244,6 +243,35 @@ def sync(root: str, virtual: bool = False):
             logging(completed.stdout)
         if completed.returncode and completed.stderr:
             logging_error(completed.stderr)
+        ret += completed.returncode
+    return ret
+
+
+def run(root: str, virtual=False):
+    """Check project-environment for custom run sequences, execute them from
+    first to end.
+
+    Args:
+        root(str): project root where .baw and git are located
+        virtual(bool): run in virtual environment
+    Returns:
+        0 if all sequences run succesfull else not 0
+    """
+    check_root(root)
+    logging('Run')
+
+    cmds = commands(root)
+    if not cmds:
+        logging_error('No commands available')
+        return 1
+
+    env = {} if virtual else dict(environ.items())
+    ret = 0
+    for command, executable in cmds.items():
+        logging('\n' + command.upper().center(80, '*') + '\n')
+        completed = run_target(root, executable, env=env, virtual=virtual)
+        logging('\n' + command.upper().center(80, '='))
+
         ret += completed.returncode
     return ret
 

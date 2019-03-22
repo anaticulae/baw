@@ -19,6 +19,27 @@ def project_name(path: str):
     return (cfg['project']['short'], cfg['project']['name'])
 
 
+def commands(root: str):
+    """Determine commands to run out of project config
+
+    Args:
+        root(str): project root
+    Returns:
+        dict{name, command}: dict with commands to execute
+    """
+    assert exists(root)
+
+    path = join(root, PROJECT_PATH)
+    assert exists(path)
+
+    cfg = config(path)
+    try:
+        # TODO: DIRTY, goto standard lib
+        return {item: cfg['run'][item] for item in cfg['run']}
+    except KeyError:
+        return []
+
+
 def create_config(root: str, shortcut: str, name: str):
     """Create project-config in .baw folder
 

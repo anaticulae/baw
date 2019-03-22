@@ -12,6 +12,7 @@ from .execution import doc
 from .execution import publish
 from .execution import release
 from .execution import root as project_root
+from .execution import run
 from .execution import sync
 from .execution import test
 from .runtime import create as create_virtual
@@ -61,6 +62,9 @@ def main():
 
     if args['publish']:
         ret += publish(root, virtual=virtual)
+
+    if args['run']:
+        ret += run(root, virtual=virtual)
 
     time_diff = time() - start
     print('Runtime: %.2f secs' % time_diff)
