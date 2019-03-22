@@ -51,5 +51,4 @@ def parse():
     need_help = not any(args.values())
     if need_help:
         parser.print_help()
-        exit(1)
     return args

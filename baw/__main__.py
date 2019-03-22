@@ -22,6 +22,8 @@ from .utils import handle_error
 def main():
     start = time()
     args = parse()
+    if not any(args):
+        exit(0)
 
     if args['version']:
         print(__version__)
@@ -51,7 +53,6 @@ def main():
             longrun='longrun' in args['test'],
             stash='stash' in args['test'],
             virtual=virtual)
-
     if args['doc']:
         ret += doc(root, virtual=virtual)
 
