@@ -9,7 +9,7 @@ clean = Command('-c', '--clean', 'Delete build-, temp- and cache-folder', None)
 doc = Command('-d', '--doc', 'Generate documentation with Sphinx', None)
 init = Command('-i', '--init', 'Create .baw project', {
     'nargs': 2,
-    'metavar': ('shorcut', 'name')
+    'metavar': ('shortcut', 'name')
 })
 # run tests, increment version, commit, git tag
 publish = Command('-p', '--publish', '', None)
