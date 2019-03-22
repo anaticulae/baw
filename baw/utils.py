@@ -40,7 +40,7 @@ def handle_error(*exceptions, code=1):
 print = partial(print, file=stdout, flush=True)
 
 
-def logging(msg: str = '\n'):
+def logging(msg: str = ''):
     print(msg)
 
 
