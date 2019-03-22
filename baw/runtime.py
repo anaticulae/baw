@@ -50,6 +50,7 @@ def create(root: str, clean: bool = False):
     virtual = join(root, VIRTUAL_FOLDER)
     if clean and exists(virtual):
         destroy(virtual)
+    venv_command = ' '.join(venv_command)
 
     if not exists(virtual):
         print('Creating virtual environment %s\n' % virtual, flush=True)
@@ -77,6 +78,7 @@ def create(root: str, clean: bool = False):
 
     print(process.stdout, flush=True)
     print(process.stderr, file=stderr)
+
     return 1
 
 
