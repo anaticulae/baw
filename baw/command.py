@@ -14,7 +14,8 @@ init = Command('-i', '--init', 'Create .baw project', {
 # run tests, increment version, commit, git tag
 publish = Command('-p', '--publish', '', None)
 docker = Command('-do', '--docker', 'Run commands in docker environment', None)
-release = Command('-r', '--release', '', None)
+release = Command('-r', '--release',
+                  'Test and tag current commit as new release', None)
 report = Command('-re', '--report', 'Write module status in html report', None)
 run = Command('-ru', '--run', 'Run application', None)
 sync = Command('-s', '--sync', 'Sync dependencies', None)

@@ -175,6 +175,10 @@ def release(root: str, virtual: bool = False):
         return ret
 
     logging("Update version tag")
+    completed = run_target(root, 'semantic-release version')
+    if completed.returncode:
+        logging_error('while running semantic-release')
+        return completed.returncode
 
     logging("Update Changelog")
 
