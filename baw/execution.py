@@ -77,14 +77,21 @@ def clean(root: str, virtual: bool = False):
 
     # problems while deleting recursive
     for pattern in patterns:
-        todo = glob(root + '/**/' + pattern, recursive=True)
+        try:
+            todo = glob(root + '/**/' + pattern, recursive=True)
+        except NotADirectoryError:
+            todo = glob(root + '**' + pattern, recursive=True)
+
         todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
             logging('Remove %s' % item)
             try:
-                rmtree(item)
+                if isfile(item):
+                    remove(item)
+                else:
+                    rmtree(item)
             except OSError as error:
-                logging(error, file=stdout)
+                logging_error(error)
     logging()  # Newline
 
 
