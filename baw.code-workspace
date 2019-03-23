@@ -8,9 +8,10 @@
     "files.exclude": {
       "**/.baws": true,
       "**/.cache": true,
+      "**/.coverage": true,
       "**/.git": true,
       "**/.pytest_cache": true,
-      "**/.vscode": true
-    }
+      "**/.vscode": true,
+    },
   }
 }
