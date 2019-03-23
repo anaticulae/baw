@@ -70,6 +70,12 @@ def file_append(path: str, content: str):
         fp.write(content)
 
 
+def file_create(path: str, content: str = ''):
+    assert not exists(path)
+    with open(path, mode='w') as fp:
+        fp.write(content)
+
+
 @contextmanager
 def assert_run(command: str, cwd: str):
     completed = run(command, cwd)
