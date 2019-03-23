@@ -50,7 +50,6 @@ def create(root: str, clean: bool = False):
     virtual = join(root, VIRTUAL_FOLDER)
     if clean and exists(virtual):
         destroy(virtual)
-    venv_command = ' '.join(venv_command)
 
     if not exists(virtual):
         print('Creating virtual environment %s\n' % virtual, flush=True)
@@ -67,9 +66,9 @@ def create(root: str, clean: bool = False):
         '.',
         '--copies',  # , '--system-site-packages'
     ]
-
     if clean:
         venv_command.append('--clear')
+    venv_command = ' '.join(venv_command)
     process = _run(command=venv_command, cwd=virtual)
     if process.returncode == 0:
         return 0
