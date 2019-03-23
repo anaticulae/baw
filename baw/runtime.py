@@ -140,7 +140,6 @@ def _run_local(command, cwd, env=None):
     """
     if not isinstance(command, str):
         command = ' '.join(command)
-
     process = _run(command, cwd, env)
 
     return process
@@ -192,6 +191,8 @@ def _run(command: str, cwd: str, env=None):
         command,
         cwd=cwd,
         encoding='utf-8',
+        stderr=PIPE,  # required for saving stdout/stderr in completed process
+        stdout=PIPE,
         env=env,
         shell=True,
         universal_newlines=True,
