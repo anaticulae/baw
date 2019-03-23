@@ -8,8 +8,10 @@
 
 from contextlib import contextmanager
 from contextlib import suppress
+from functools import partial
 from glob import glob
 from os import environ
+from os import remove
 from os.path import abspath
 from os.path import exists
 from os.path import isfile
@@ -19,8 +21,12 @@ from os.path import splitdrive
 from shutil import rmtree
 from sys import stdout
 
+from . import ROOT
 from . import THIS
+from . import TMP
 from .config import commands
+from .config import minimal_coverage
+from .config import shortcut
 from .runtime import run_target
 from .runtime import VIRTUAL_FOLDER
 from .utils import BAW_EXT
@@ -59,7 +65,15 @@ def root(cwd: str):
 def clean(root: str, virtual: bool = False):
     check_root(root)
     logging('Start cleaning')
-    patterns = ['build', 'html', 'doctrees', VIRTUAL_FOLDER, '__pycache__']
+    patterns = [
+        '.coverage',
+        '__pycache__',
+        'build',
+        'doctrees',
+        'html',
+        'tmp',
+        VIRTUAL_FOLDER,
+    ]
 
     # problems while deleting recursive
     for pattern in patterns:
@@ -92,6 +106,7 @@ def git_stash(root: str, virtual: bool):
 
 def test(root: str,
          *,
+         coverage: bool = False,
          longrun: bool = False,
          pdb: bool = False,
          stash: bool = False,
@@ -119,15 +134,65 @@ def test(root: str,
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
 
     debugger = '--pdb ' if pdb else ''
-    continue_ = '--continue-on-collection-errors '
-    cmd = 'pytest %s %s -vvv %s' % (debugger, continue_, test_dir)
+    cov = cov_args(root, pdb=debugger) if coverage else ''
+    log_file = join(TMP(), 'tests.log')
 
+    # using ROOT to get location from baw-tool
+    test_config = join(ROOT, 'templates', 'pytest.ini')
+    assert exists(test_config)
+
+    cmd = ('pytest -c %s %s %s --log-file="%s" %s') % (
+        test_config,
+        debugger,
+        cov,
+        log_file,
+        test_dir,
+    )
+
+    target = partial(
+        run_target, root, cmd, cwd=test_dir, env=env, virtual=virtual)
     if stash:
         with git_stash(root, virtual):
-            completed = run_target(root, cmd, env=env, virtual=virtual)
+            completed = target()
     else:
-        completed = run_target(root, cmd, env=env, virtual=virtual)
+        completed = target()
     return completed.returncode
+
+
+def cov_args(root: str, *, pdb: bool):
+    """Determine args for running tests based on project-root
+
+    Args:
+        root(str): project root
+        pdb(bool): using debugger on running tests
+
+    Returns:
+        args for coverage command
+    """
+
+    short = shortcut(root)
+    source = join(root, short)
+    tests = join(root, 'tests')
+    output = join(TMP(), 'report')
+    cov_config = join(ROOT, 'templates', '.coveragerc')
+    assert exists(cov_config)
+
+    #   --no-cov  Disable coverage report completely (useful for
+    #             debuggers) default: False
+    no_cov = '--no-cov ' if pdb else ''
+    if no_cov:
+        logging('Disable coverage report')
+
+    min_cov = minimal_coverage(root)
+    cov = ('--cov-config="%s" --cov="%s" --cov-report=html:%s --cov-branch'
+           ' %s --cov-fail-under=%d') % (
+               cov_config,
+               source,
+               output,
+               no_cov,
+               min_cov,
+           )
+    return cov
 
 
 def doc(root: str, virtual: bool = False):

@@ -19,6 +19,38 @@ def project_name(path: str):
     return (cfg['project']['short'], cfg['project']['name'])
 
 
+def shortcut(root: str):
+    """Read short project name out of project configuration
+
+    Args:
+        path(str): path to project root
+
+    Returns:
+        shortname of the project"""
+    assert exists(root)
+    cfg = join(root, PROJECT_PATH)
+    short, _ = project_name(cfg)
+    return short
+
+
+def minimal_coverage(root: str):
+    """Read percentage of required test coverage
+
+    Args:
+        path(str): path to project root
+
+    Returns:
+        percentage of required test coverage"""
+    assert exists(root)
+    cfg = config(join(root, PROJECT_PATH))
+
+    try:
+        min_coverage = int(cfg['tests']['minimal_coverage'])
+    except KeyError:
+        min_coverage = 20
+    return min_coverage
+
+
 def commands(root: str):
     """Determine commands to run out of project config
 

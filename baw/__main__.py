@@ -51,6 +51,7 @@ def main():
     if args['test']:
         ret += test(
             root,
+            coverage='coverage' in args['test'],
             longrun='longrun' in args['test'],
             stash='stash' in args['test'],
             virtual=virtual)

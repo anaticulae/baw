@@ -19,11 +19,12 @@ release = Command('-r', '--release',
 report = Command('-re', '--report', 'Write module status in html report', None)
 run = Command('-ru', '--run', 'Run application', None)
 sync = Command('-s', '--sync', 'Sync dependencies', None)
-test = Command('-t', '--test', 'Run tests and coverage', {
-    'nargs': '?',
-    'action': 'append',
-    'choices': ['pdb', 'stash', 'longrun'],
-})
+test = Command(
+    '-t', '--test', 'Run tests and coverage', {
+        'nargs': '?',
+        'action': 'append',
+        'choices': ['coverage', 'pdb', 'stash', 'longrun'],
+    })
 venv = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
 version = ('-v', '--version', 'Show version of this program', None)
 

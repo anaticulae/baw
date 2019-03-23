@@ -1,4 +1,5 @@
 # Folder
+**.pytest_cache**
 **__pycache__**
 **build**
 **generated**
@@ -6,10 +7,10 @@
 .vscode/**
 dist
 virtual/**
-**.pytest_cache**
 
 # Files
-*.swp
-*.pyc
-*.egg-info
 *.cache
+*.egg-info
+*.pyc
+*.swp
+.coverage
