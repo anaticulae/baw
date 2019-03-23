@@ -18,17 +18,19 @@ from .execution import test
 from .runtime import create as create_virtual
 from .utils import flush
 from .utils import handle_error
+from .utils import SUCCESS
 
 
 def main():
     start = time()
     args = parse()
+
     if not any(args):
-        exit(0)
+        exit(SUCCESS)
 
     if args['version']:
         print(__version__)
-        exit(0)
+        exit(SUCCESS)
 
     if args['init']:
         with handle_error(ValueError):

@@ -37,6 +37,5 @@ project_without_command = example
 def test_run_without_commands_in_project(project_without_command):
     """Running --run without any registered command in project"""
     tmpdir = project_without_command
-
     with assert_run_fail('baw --run', cwd=tmpdir) as completed:
         pass  # all checks done

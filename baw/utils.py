@@ -17,6 +17,7 @@ from sys import stdout
 BAW_EXT = '.baw'
 GIT_EXT = '.git'
 
+SUCCESS = 0
 
 @contextmanager
 def handle_error(*exceptions, code=1):
