@@ -1,8 +1,17 @@
 # TODO
 
+## Planning
+
+* Add all command
+* Add code complexity analysis
+* Fix tests for virtual environment
+* Fix documenting with sphinx
+* Support autochangelog
+* Support docker
+
 ## 0.0.4
 
-[ ] Use more templates for generating repositories
+[x] Use more templates for generating repositories
 
 ## 0.0.3
 
