@@ -1,1 +1,3 @@
 include MANIFEST.in README.md CHANGELOG.md LICENSE.md setup.py setup.cfg
+include templates/.coveragerc
+include templates/pytest.ini
