@@ -6,7 +6,7 @@ from os.path import join
 from sys import stderr
 from sys import stdout
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 THIS = dirname(__file__)
 ROOT = abspath(join(THIS, '..'))
