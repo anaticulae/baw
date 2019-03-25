@@ -52,13 +52,16 @@ def root(cwd: str):
         raise ValueError('Current work directory does not exists %s' % cwd)
 
     cwd = abspath(cwd)  # ensure to work with absolut path
-    is_file = isfile(cwd)
-    if is_file:
+    if isfile(cwd):
         cwd = split(cwd)[0]  # remove filename out of path
 
-    while not exists(join(cwd, GIT_EXT)) and not exists(join(cwd, BAW_EXT)):
+    while True:
+        if exists(join(cwd, GIT_EXT)):
+            return cwd
+        if exists(join(cwd, BAW_EXT)):
+            return cwd
         cwd = abspath(join(cwd, '..'))
-        if splitdrive(cwd)[1] == '\\':
+        if splitdrive(cwd)[1] == '\\':  #TODO: Windows only?
             msg = 'Could not determine project root. Current: %s' % cwd
             raise ValueError(msg)
     return cwd
@@ -324,6 +327,9 @@ def sync(root: str, virtual: bool = False):
     return ret
 
 
+SEPARATOR_WIDTH = 80
+
+
 def run(root: str, virtual=False):
     """Check project-environment for custom run sequences, execute them from
     first to end.
@@ -345,9 +351,9 @@ def run(root: str, virtual=False):
     env = {} if virtual else dict(environ.items())
     ret = 0
     for command, executable in cmds.items():
-        logging('\n' + command.upper().center(80, '*') + '\n')
+        logging('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
         completed = run_target(root, executable, env=env, virtual=virtual)
-        logging('\n' + command.upper().center(80, '='))
+        logging('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
 
         ret += completed.returncode
     return ret

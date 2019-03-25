@@ -26,9 +26,7 @@ def project_with_command(example):
 def test_run_commands_with_ls(project_with_command):
     """Running --run with ls."""
     tmpdir = project_with_command
-
-    with assert_run('baw --run', cwd=tmpdir) as completed:
-        pass  # all checks done
+    assert_run('baw --run', cwd=tmpdir)
 
 
 project_without_command = example
@@ -37,5 +35,4 @@ project_without_command = example
 def test_run_without_commands_in_project(project_without_command):
     """Running --run without any registered command in project."""
     tmpdir = project_without_command
-    with assert_run_fail('baw --run', cwd=tmpdir) as completed:
-        pass  # all checks done
+    assert_run_fail('baw --run', cwd=tmpdir)
