@@ -17,7 +17,7 @@ from tests import skip_missing_packages
 
 @skip_longrunning
 def test_creating_virtual_environment(example):
-    """Creating virtual environment"""
+    """Creating virtual environment."""
     completed = run(
         'baw --virtual',
         cwd=example,

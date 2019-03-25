@@ -1,3 +1,4 @@
+"""Test clean command."""
 from os import listdir
 from os import makedirs
 from os.path import exists
@@ -10,13 +11,14 @@ from tests import run
 
 
 def test_clean_files_and_dirs(tmpdir):
-    """Create some files and folder and clean them afterwards
+    """Create some files and folder and clean them afterwards.
 
     1. Create project
     2. Create some folder
     3. Create .coverage-files
     4. Run clean
-    5. Check result"""
+    5. Check result
+    """
     assert not len(listdir(tmpdir))  # clean directory
 
     for item in ['.git', 'build', 'tmp']:

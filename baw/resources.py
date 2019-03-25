@@ -1,3 +1,4 @@
+"""Base for generating project. Templates have to be here."""
 from .utils import BAW_EXT
 
 FOLDERS = [

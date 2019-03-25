@@ -1,3 +1,11 @@
+###############################################################################
+#                                Kiwi Project                                 #
+#                                    2019                                     #
+#                          Helmut Konrad Fahrendholz                          #
+#                             kiwi@derspanier.de                              #
+###############################################################################
+"""Define structure of command line interface."""
+
 from argparse import ArgumentParser
 from collections import namedtuple
 
@@ -29,8 +37,8 @@ venv = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
 version = ('-v', '--version', 'Show version of this program', None)
 
 
-def create_parser():
-    parser = ArgumentParser(prog='baw',)
+def create_parser():  # noqa: Z21
+    """Create parser out of defined dictonary with command-line-definiton.
 
     todo = (all, build, clean, doc, docker, init, publish, release, report, run,
             sync, test, venv, version)
@@ -47,6 +55,7 @@ def create_parser():
 
 
 def parse():
+    """Parse arguments from sys-args and return the result as dictonary."""
     parser = create_parser()
     args = vars(parser.parse_args())
     need_help = not any(args.values())

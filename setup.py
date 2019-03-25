@@ -5,6 +5,7 @@
 #                          Helmut Konrad Fahrendholz                          #
 #                             kiwi@derspanier.de                              #
 ###############################################################################
+"""Install script for baw."""
 
 import io
 from collections import OrderedDict

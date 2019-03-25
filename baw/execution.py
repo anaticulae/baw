@@ -4,7 +4,7 @@
 #                          Helmut Konrad Fahrendholz                          #
 #                             kiwi@derspanier.de                              #
 ###############################################################################
-""" Run every function which is used by `baw`"""
+"""Run every function which is used by `baw`."""
 
 from contextlib import contextmanager
 from contextlib import suppress
@@ -38,6 +38,8 @@ from .utils import logging_error
 
 def root(cwd: str):
     """Determine root path of project.
+
+    Iterate to the top directory while searching for GIT or BAW folder.
 
     Args:
         cwd(str): location where `baw` is executed
@@ -101,12 +103,15 @@ def git_stash(root: str, virtual: bool):
 
     Args:
         root(str): root of execution
-        virtual(bool): run in virtual environment"""
+        virtual(bool): run in virtual environment
+
+    """
     cmd = 'git stash --include-untracked'
     completed = run_target(root, cmd, virtual=virtual)
     with suppress(Exception):
         yield
 
+    # unstash to recreate dirty environment
     cmd = 'git stash pop'
     completed = run_target(root, cmd, virtual=virtual)
 

@@ -1,3 +1,4 @@
+"""Handle access to project configuration which is stored in .baw-folder"""
 from configparser import ConfigParser
 from os.path import exists
 from os.path import join
