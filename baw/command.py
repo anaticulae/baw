@@ -11,19 +11,23 @@ from collections import namedtuple
 
 Command = namedtuple('Command', 'shortcut longcut message args')
 
-all = Command('-a', '--all', 'Clean and run all exepect of publishing', None)
+all_ = Command('-a', '--all', 'Clean and run all exepect of publishing', None)
 build = Command('-b', '--build', 'Run build tasks', None)
 clean = Command('-c', '--clean', 'Delete build-, temp- and cache-folder', None)
 doc = Command('-d', '--doc', 'Generate documentation with Sphinx', None)
 init = Command('-i', '--init', 'Create .baw project', {
     'nargs': 2,
-    'metavar': ('shortcut', 'name')
+    'metavar': ('shortcut', 'name'),
 })
-# run tests, increment version, commit, git tag
-publish = Command('-p', '--publish', 'Push release to repository', None)
+# run tests, increment version, commit, git tag and push to package index
+push = Command('-p', '--publish', 'Push release to repository', None)
 docker = Command('-do', '--docker', 'Run commands in docker environment', None)
-release = Command('-r', '--release',
-                  'Test and tag current commit as new release', None)
+release = Command(
+    '-r',
+    '--release',
+    'Test and tag current commit as new release',
+    None,
+)
 report = Command('-re', '--report', 'Write module status in html report', None)
 run = Command('-ru', '--run', 'Run application', None)
 sync = Command('-s', '--sync', 'Sync dependencies', None)
@@ -40,8 +44,25 @@ version = ('-v', '--version', 'Show version of this program', None)
 def create_parser():  # noqa: Z21
     """Create parser out of defined dictonary with command-line-definiton.
 
-    todo = (all, build, clean, doc, docker, init, publish, release, report, run,
-            sync, test, venv, version)
+    Returns created argparser
+    """
+    parser = ArgumentParser(prog='baw')
+    todo = (
+        all_,
+        build,
+        clean,
+        doc,
+        docker,
+        init,
+        push,
+        release,
+        report,
+        run,
+        sync,
+        test,
+        venv,
+        version,
+    )
 
     for shortcut, longcut, msg, args in todo:
         shortcuts = (shortcut, longcut)
