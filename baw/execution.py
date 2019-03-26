@@ -23,17 +23,18 @@ from sys import stdout
 
 from . import ROOT
 from . import THIS
-from . import TMP
 from .config import commands
 from .config import minimal_coverage
 from .config import shortcut
 from .runtime import run_target
 from .runtime import VIRTUAL_FOLDER
 from .utils import BAW_EXT
+from .utils import check_root
 from .utils import get_setup
 from .utils import GIT_EXT
 from .utils import logging
 from .utils import logging_error
+from .utils import tmp
 
 
 def root(cwd: str):
@@ -357,8 +358,3 @@ def run(root: str, virtual=False):
 
         ret += completed.returncode
     return ret
-
-
-def check_root(root: str):
-    if not exists(root):
-        raise ValueError('Project root does not exists' % root)

@@ -9,6 +9,8 @@ from configparser import ConfigParser
 from contextlib import contextmanager
 from functools import partial
 from os import environ
+from os import makedirs
+from os.path import exists
 from os.path import join
 from subprocess import PIPE
 from sys import stderr
@@ -52,6 +54,7 @@ def logging_error(msg: str):
 
 
 def flush():
+    """Flush stdout"""
     print('', end='', flush=True)
 
 
@@ -64,3 +67,22 @@ def get_setup():
     except KeyError as error:
         print_error('Missing global var %s' % error)
         exit(1)
+
+
+def tmp(root):
+    """Return path to temporary folder. If not exists, create folder
+
+    Args:
+        root(str): project root
+    Returns:
+        path to temporary folder
+    """
+    assert root
+    tmp = join(root, 'tmp')
+    makedirs(tmp, exist_ok=True)
+    return tmp
+
+
+def check_root(root: str):
+    if not exists(root):
+        raise ValueError('Project root does not exists' % root)
