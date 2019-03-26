@@ -128,7 +128,7 @@ def doc(root: str, virtual: bool = False):
 
     Exception:
         raises SystemExit if some error occurs"""
-    doc = join(root, 'doc')
+    doc = join(root, 'docs')
     doc_build = join(doc, 'build')
     # Create files out of source
     command = 'sphinx-apidoc -d 10 -M -f -e -o %s %s' % (doc_build, root)
