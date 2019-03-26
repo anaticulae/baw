@@ -6,7 +6,7 @@
   ],
   "settings": {
     "files.exclude": {
-      "**/.baws": true,
+      "**/tmp": true,
       "**/.cache": true,
       "**/.coverage": true,
       "**/.git": true,
