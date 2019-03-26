@@ -41,7 +41,7 @@ def init(root: str, shortcut: str, name: str):
         return
     git_init = run(['git', 'init'])
 
-    if git_init.returncode == 127:
+    if git_init.returncode == NO_EXECUTABLE:
         raise ChildProcessError('Git is not installed')
     if git_init.returncode:
         raise ChildProcessError('Could not run git init')

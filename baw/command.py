@@ -11,34 +11,34 @@ from collections import namedtuple
 
 Command = namedtuple('Command', 'shortcut longcut message args')
 
-all_ = Command('-a', '--all', 'Clean and run all exepect of publishing', None)
-build = Command('-b', '--build', 'Run build tasks', None)
-clean = Command('-c', '--clean', 'Delete build-, temp- and cache-folder', None)
-doc = Command('-d', '--doc', 'Generate documentation with Sphinx', None)
-init = Command('-i', '--init', 'Create .baw project', {
+ALL = Command('-a', '--all', 'Clean and run all exepect of publishing', None)
+BUILD = Command('-b', '--build', 'Run build tasks', None)
+CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder', None)
+DOC = Command('-d', '--doc', 'Generate documentation with Sphinx', None)
+INIT = Command('-i', '--init', 'Create .baw project', {
     'nargs': 2,
     'metavar': ('shortcut', 'name'),
 })
 # run tests, increment version, commit, git tag and push to package index
-push = Command('-p', '--publish', 'Push release to repository', None)
-docker = Command('-do', '--docker', 'Run commands in docker environment', None)
-release = Command(
+PUSH = Command('-p', '--publish', 'Push release to repository', None)
+DOCKER = Command('-do', '--docker', 'Run commands in docker environment', None)
+RELEASE = Command(
     '-r',
     '--release',
     'Test and tag current commit as new release',
     None,
 )
-report = Command('-re', '--report', 'Write module status in html report', None)
-run = Command('-ru', '--run', 'Run application', None)
-sync = Command('-s', '--sync', 'Sync dependencies', None)
-test = Command(
+REPORT = Command('-re', '--report', 'Write module status in html report', None)
+RUN = Command('-ru', '--run', 'Run application', None)
+SYNC = Command('-s', '--sync', 'Sync dependencies', None)
+TEST = Command(
     '-t', '--test', 'Run tests and coverage', {
         'nargs': '?',
         'action': 'append',
         'choices': ['coverage', 'pdb', 'stash', 'longrun'],
     })
-venv = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
-version = ('-v', '--version', 'Show version of this program', None)
+VENV = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
+VERSION = ('-v', '--version', 'Show version of this program', None)
 
 
 def create_parser():  # noqa: Z21
@@ -48,20 +48,20 @@ def create_parser():  # noqa: Z21
     """
     parser = ArgumentParser(prog='baw')
     todo = (
-        all_,
-        build,
-        clean,
-        doc,
-        docker,
-        init,
-        push,
-        release,
-        report,
-        run,
-        sync,
-        test,
-        venv,
-        version,
+        ALL,
+        BUILD,
+        CLEAN,
+        DOC,
+        DOCKER,
+        INIT,
+        PUSH,
+        RELEASE,
+        REPORT,
+        RUN,
+        SYNC,
+        TEST,
+        VENV,
+        VERSION,
     )
 
     for shortcut, longcut, msg, args in todo:
