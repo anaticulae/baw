@@ -1,5 +1,9 @@
 """Base for generating project. Templates have to be here."""
-from .utils import BAW_EXT
+from os.path import exists
+from os.path import join
+
+from baw import ROOT
+from baw.utils import BAW_EXT
 
 FOLDERS = [
     BAW_EXT,

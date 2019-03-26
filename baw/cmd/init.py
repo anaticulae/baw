@@ -9,10 +9,11 @@ from os.path import exists
 from os.path import join
 from subprocess import run
 
-from ..config import create_config
-from ..resources import FILES
-from ..resources import FOLDERS
-from ..utils import GIT_EXT
+from baw.config import create_config
+from baw.resources import FILES
+from baw.resources import FOLDERS
+from baw.runtime import NO_EXECUTABLE
+from baw.utils import GIT_EXT
 
 
 def init(root: str, shortcut: str, name: str):

@@ -4,21 +4,21 @@ from os import getcwd
 from os.path import dirname
 from time import time
 
-from . import __version__
-from .cmd.init import init as project_init
-from .command import parse
-from .execution import clean as project_clean
-from .execution import doc
-from .execution import publish
-from .execution import release
-from .execution import root as project_root
-from .execution import run
-from .execution import sync
-from .execution import test
-from .runtime import create as create_virtual
-from .utils import flush
-from .utils import handle_error
-from .utils import SUCCESS
+from baw import __version__
+from baw.cmd import init as project_init
+from baw.cmd import test
+from baw.command import parse
+from baw.execution import clean as project_clean
+from baw.execution import doc
+from baw.execution import publish
+from baw.execution import release
+from baw.execution import root as project_root
+from baw.execution import run
+from baw.execution import sync
+from baw.runtime import create as create_virtual
+from baw.utils import flush
+from baw.utils import handle_error
+from baw.utils import SUCCESS
 
 
 def main():

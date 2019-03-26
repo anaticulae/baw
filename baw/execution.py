@@ -21,20 +21,20 @@ from os.path import splitdrive
 from shutil import rmtree
 from sys import stdout
 
-from . import ROOT
-from . import THIS
-from .config import commands
-from .config import minimal_coverage
-from .config import shortcut
-from .runtime import run_target
-from .runtime import VIRTUAL_FOLDER
-from .utils import BAW_EXT
-from .utils import check_root
-from .utils import get_setup
-from .utils import GIT_EXT
-from .utils import logging
-from .utils import logging_error
-from .utils import tmp
+from baw import ROOT
+from baw import THIS
+from baw.config import commands
+from baw.config import minimal_coverage
+from baw.config import shortcut
+from baw.runtime import run_target
+from baw.runtime import VIRTUAL_FOLDER
+from baw.utils import BAW_EXT
+from baw.utils import check_root
+from baw.utils import get_setup
+from baw.utils import GIT_EXT
+from baw.utils import logging
+from baw.utils import logging_error
+from baw.utils import tmp
 
 
 def root(cwd: str):

@@ -17,8 +17,8 @@ from subprocess import run
 from sys import platform
 from sys import stderr
 
-from .utils import logging
-from .utils import logging_error
+from baw.utils import logging
+from baw.utils import logging_error
 
 VIRTUAL_FOLDER = 'virtual'
 
