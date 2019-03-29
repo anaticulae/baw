@@ -166,10 +166,10 @@ SETUP = file_read(join(TEMPLATES, 'setup.cfg'))
 FILES = [
     ('.code-workspace', CODE_WORKSPACE),
     ('.gitignore', GITIGNORE),
-    ('.requirements', REQUIREMENTS),
     ('BUGS.md', BUGS),
     ('CHANGELOG.md', CHANGELOG),
     ('LICENCE.md', LICENCE),
     ('README.md', README),
+    ('requirements.txt', REQUIREMENTS),
     ('TODO.md', TODO),
 ]
