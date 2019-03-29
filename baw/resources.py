@@ -16,7 +16,7 @@ FOLDERS = [
 TEMPLATES = join(ROOT, 'templates')
 assert exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
 
-WORKSPACE_TEMPLATE = join(TEMPLATES, '.code-workspace')
+WORKSPACE_TEMPLATE = join(TEMPLATES, '..code-workspace')
 assert exists(WORKSPACE_TEMPLATE), 'No template %s' % WORKSPACE_TEMPLATE
 
 GIT_IGNORE_TEMPLATE = join(TEMPLATES, '.gitignore')
