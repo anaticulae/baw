@@ -63,19 +63,6 @@ def run(command: str, cwd: str):
     return completed
 
 
-def file_append(path: str, content: str):
-    assert exists(path)
-
-    with open(path, mode='a') as fp:
-        fp.write(content)
-
-
-def file_create(path: str, content: str = ''):
-    assert not exists(path)
-    with open(path, mode='w') as fp:
-        fp.write(content)
-
-
 @contextmanager
 def assert_run(command: str, cwd: str):
     completed = run(command, cwd)

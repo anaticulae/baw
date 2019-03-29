@@ -47,9 +47,8 @@ def create_folder(root: str):
         if exists(create):
             continue
         makedirs(create)
-        print('Create folder %s' % item)
+        logging('Create folder %s' % item)
 
-    create_config(root, shortcut, name)
 
 def create_files(root: str):
     for item, content in FILES:
@@ -60,9 +59,6 @@ def create_files(root: str):
         if exists(create):
             skip('%s %s' % (operation_type, item))
             continue
-        print('Create file %s' % item)
-        with open(create, encoding='utf8', mode='a', newline='\n') as fp:
-            fp.write(content)
 
         logging('%s %s' % (operation_type, item))
         file_create(create, content=replaced)

@@ -4,10 +4,10 @@ from os.path import join
 import pytest
 
 from baw.config import PROJECT_PATH
+from baw.utils import file_append
 from tests import assert_run
 from tests import assert_run_fail
 from tests import example
-from tests import file_append
 
 RUN = """
 [run]

@@ -10,7 +10,9 @@ from contextlib import contextmanager
 from functools import partial
 from os import environ
 from os import makedirs
+from os import remove
 from os.path import exists
+from os.path import isfile
 from os.path import join
 from subprocess import PIPE
 from sys import stderr
@@ -20,6 +22,8 @@ BAW_EXT = '.baw'
 GIT_EXT = '.git'
 
 SUCCESS = 0
+
+NEWLINE = '\n'
 
 
 @contextmanager
@@ -86,3 +90,27 @@ def tmp(root):
 def check_root(root: str):
     if not exists(root):
         raise ValueError('Project root does not exists' % root)
+
+
+def file_append(path: str, content: str):
+    assert exists(path)
+    with open(path, mode='a', newline=NEWLINE) as fp:
+        fp.write(content)
+
+
+def file_create(path: str, content: str = ''):
+    assert not exists(path)
+    with open(path, mode='w', newline=NEWLINE) as fp:
+        fp.write(content)
+
+
+def file_read(path: str):
+    assert exists(path), path
+    with open(path, mode='r', newline=NEWLINE) as fp:
+        return fp.read()
+
+
+def file_remove(path: str):
+    assert exists(path), path
+    assert isfile(path), path
+    remove(path)
