@@ -68,7 +68,6 @@ def test(root: str,
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
     log_file = join(tmp(root), 'tests.log')
-
     # using ROOT to get location from baw-tool
     test_config = join(ROOT, 'templates', 'pytest.ini')
     assert exists(test_config)
@@ -87,9 +86,10 @@ def test(root: str,
         root,
         cmd,
         cwd=test_dir,
+        debugging=pdb,
         env=env,
-        virtual=virtual,
         skip_error=skip_error,
+        virtual=virtual,
     )
     stash = False
 

@@ -116,9 +116,11 @@ def run_target(
         command: str,
         cwd: str = None,
         env=None,
-        virtual: bool = False,
+        *,
+        debugging: bool = False,
         skip_error: set = None,
         verbose: bool = False,
+        virtual: bool = False,
 ):
     if not cwd:
         cwd = root
@@ -127,12 +129,23 @@ def run_target(
 
     if virtual:
         try:
-            completed = _run_virtual(root, command, cwd=root, env=env)
+            completed = _run_virtual(
+                root,
+                command,
+                cwd=root,
+                debugging=debugging,
+                env=env,
+            )
         except RuntimeError as error:
             logging_error(error)
             return CompletedProcess(command, NO_EXECUTABLE)
     else:
-        completed = _run_local(command, cwd=cwd, env=env)
+        completed = _run_local(
+            command,
+            cwd=cwd,
+            debugging=debugging,
+            env=env,
+        )
 
     reporting = verbose and completed.returncode not in skip_error
     if completed.returncode and reporting:
@@ -151,7 +164,7 @@ def run_target(
     return completed
 
 
-def _run_local(command, cwd, env=None):
+def _run_local(command, cwd, env=None, debugging: bool = False):
     """Run external process and return an CompleatedProcess
 
     Args:
@@ -162,7 +175,7 @@ def _run_local(command, cwd, env=None):
     """
     if not isinstance(command, str):
         command = ' '.join(command)
-    process = _run(command, cwd, env)
+    process = _run(command, cwd, env, debugging=debugging)
 
     return process
 
@@ -183,7 +196,7 @@ def deactivation_path(root: str):
     return path
 
 
-def _run_virtual(root, command, cwd, env=None):
+def _run_virtual(root, command, cwd, env=None, debugging: bool = False):
     """Run command with virtual environment
 
     Args:
@@ -205,11 +218,11 @@ def _run_virtual(root, command, cwd, env=None):
 
     execute = '%s && %s && %s' % (activation, command, deactivation)
 
-    process = _run(execute, cwd, env)
+    process = _run(execute, cwd, env, debugging=debugging)
     return process
 
 
-def _run(command: str, cwd: str, env=None):
+def _run(command: str, cwd: str, env=None, debugging: bool = False):
     """
 
     Hint:
@@ -219,14 +232,16 @@ def _run(command: str, cwd: str, env=None):
     if not env:
         env = dict(environ.items())
 
+    # Capturering stdout and stderr reuqires PIPE in completed process.
+    # Debugging with pdb due console require no PIPE.
     process = run(
         command,
         cwd=cwd,
         encoding='utf-8',
-        stderr=PIPE,  # required for saving stdout/stderr in completed process
-        stdout=PIPE,
         env=env,
         shell=True,
+        stderr=None if debugging else PIPE,
+        stdout=None if debugging else PIPE,
         universal_newlines=True,
     )
     return process

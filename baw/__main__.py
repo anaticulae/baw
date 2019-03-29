@@ -60,6 +60,7 @@ def main():
             root,
             coverage='coverage' in args['test'],
             longrun='longrun' in args['test'],
+            pdb='pdb' in args['test'],
             stash='stash' in args['test'],
             virtual=virtual)
     if args['doc']:
