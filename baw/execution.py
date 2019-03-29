@@ -82,6 +82,7 @@ def clean(root: str, virtual: bool = False):
     ]
 
     # problems while deleting recursive
+    ret = 0
     for pattern in patterns:
         try:
             todo = glob(root + '/**/' + pattern, recursive=True)
@@ -97,7 +98,10 @@ def clean(root: str, virtual: bool = False):
                 else:
                     rmtree(item)
             except OSError as error:
+                ret += 1
                 logging_error(error)
+    if ret:
+        exit(1)
     logging()  # Newline
 
 
