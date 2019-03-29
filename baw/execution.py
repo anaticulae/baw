@@ -101,25 +101,6 @@ def clean(root: str, virtual: bool = False):
     logging()  # Newline
 
 
-@contextmanager
-def git_stash(root: str, virtual: bool):
-    """Save uncommited/not versonied content to improve testability
-
-    Args:
-        root(str): root of execution
-        virtual(bool): run in virtual environment
-
-    """
-    cmd = 'git stash --include-untracked'
-    completed = run_target(root, cmd, virtual=virtual)
-    with suppress(Exception):
-        yield
-
-    # unstash to recreate dirty environment
-    cmd = 'git stash pop'
-    completed = run_target(root, cmd, virtual=virtual)
-
-
 def doc(root: str, virtual: bool = False):
     """Run Sphinx doc generation
 

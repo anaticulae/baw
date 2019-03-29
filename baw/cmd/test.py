@@ -23,6 +23,7 @@ from baw import THIS
 from baw.config import commands
 from baw.config import minimal_coverage
 from baw.config import shortcut
+from baw.runtime import git_stash
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
