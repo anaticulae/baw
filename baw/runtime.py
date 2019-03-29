@@ -5,6 +5,8 @@
 #                             kiwi@derspanier.de                              #
 ###############################################################################
 
+from contextlib import contextmanager
+from contextlib import suppress
 from os import environ
 from os import makedirs
 from os import scandir
@@ -17,6 +19,9 @@ from subprocess import run
 from sys import platform
 from sys import stderr
 
+from baw.utils import file_create
+from baw.utils import file_read
+from baw.utils import file_remove
 from baw.utils import logging
 from baw.utils import logging_error
 
@@ -71,6 +76,7 @@ def create(root: str, clean: bool = False):
     venv_command = ' '.join(venv_command)
     process = _run(command=venv_command, cwd=virtual)
     if process.returncode == 0:
+        __fix_environment(root)
         return 0
 
     logging_error('While creating virutal environment')
@@ -79,6 +85,15 @@ def create(root: str, clean: bool = False):
     logging_error(process.stderr)
 
     return 1
+
+
+def __fix_environment(root: str):
+    path = activation_path(root)
+    content = file_read(path)
+    content = content.split(':END')[0]  # remove content after :END
+
+    file_remove(path)
+    file_create(path, content=content)
 
 
 def install_requirements(requirements: str, path: str):
@@ -152,6 +167,22 @@ def _run_local(command, cwd, env=None):
     return process
 
 
+def activation_path(root: str):
+    virtual = join(root, VIRTUAL_FOLDER)
+    path = join(virtual, 'Scripts', 'activate')
+    if platform == 'win32':
+        path = join(virtual, 'Scripts', 'activate.bat')
+    return path
+
+
+def deactivation_path(root: str):
+    virtual = join(root, VIRTUAL_FOLDER)
+    path = join(virtual, 'Scripts', 'deactivate')
+    if platform == 'win32':
+        path = join(virtual, 'Scripts', 'deactivate.bat')
+    return path
+
+
 def _run_virtual(root, command, cwd, env=None):
     """Run command with virtual environment
 
@@ -164,23 +195,17 @@ def _run_virtual(root, command, cwd, env=None):
         CompletedProcess
     """
     virtual = join(root, VIRTUAL_FOLDER)
-    activation_path = ('source', join(virtual, 'Scripts', 'activate'))
-    if platform == 'win32':
-        activation_path = join(virtual, 'Scripts', 'activate.bat')
 
-    if not exists(activation_path):
-        msg = ('Path `%s` does not exists. Regenerate the virtual env' %
-               activation_path)
+    activation = activation_path(root)
+    deactivation = deactivation_path(root)
+    if not exists(activation):
+        msg = ('Path `%s` does not exists.\n'
+               'Regenerate the virtual env') % activation
         raise RuntimeError(msg)
 
-    activate_and_execute = [
-        activation_path,
-        '&&',
-        command,
-    ]
-    activate_and_execute = ' '.join(activate_and_execute)
+    execute = '%s && %s && %s' % (activation, command, deactivation)
 
-    process = _run(activate_and_execute, cwd, env)
+    process = _run(execute, cwd, env)
     return process
 
 
