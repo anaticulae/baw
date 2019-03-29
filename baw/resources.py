@@ -1,9 +1,11 @@
 """Base for generating project. Templates have to be here."""
+from collections import namedtuple
 from os.path import exists
 from os.path import join
 
 from baw import ROOT
 from baw.utils import BAW_EXT
+from baw.utils import file_read
 
 FOLDERS = [
     BAW_EXT,
@@ -11,21 +13,42 @@ FOLDERS = [
     'docs',
 ]
 
-README = """%(title)s
-====================
+TEMPLATES = join(ROOT, 'templates')
+assert exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
 
+WORKSPACE_TEMPLATE = join(TEMPLATES, '.code-workspace')
+assert exists(WORKSPACE_TEMPLATE), 'No template %s' % WORKSPACE_TEMPLATE
+
+GIT_IGNORE_TEMPLATE = join(TEMPLATES, '.gitignore')
+assert exists(GIT_IGNORE_TEMPLATE), 'No gitignore %s' % GIT_IGNORE_TEMPLATE
+
+README = """# $_SHORT_$ - $_NAME_$
 """
 
-CHANGELOG = """Changelog
-====================
+CHANGELOG = """# Changelog
 
 Every noteable change is logged here.
 """
 
-LICENCE = """Licence
-====================
+LICENCE = """# Licence
+"""
 
-Alles meins :)
+TODO = """# TODO
+"""
+
+BUGS = """# BUGS
+"""
+
+REQUIREMENTS = ""
+
+INIT = """from os.path import abspath
+from os.path import dirname
+from os.path import join
+
+__version__ = '0.0.0'
+
+THIS = dirname(__file__)
+ROOT = abspath(join(THIS, '..'))
 """
 
 CONF = """
@@ -134,8 +157,20 @@ napoleon_use_rtype = True
 napoleon_use_keyword = True
 
 """
+
+CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
+GITIGNORE = file_read(join(TEMPLATES, '.gitignore'))
+SETUP = file_read(join(TEMPLATES, 'setup.cfg'))
+
+# None copies files
 FILES = [
-    ('README.md', README),
+    ('.code-workspace', CODE_WORKSPACE),
+    ('.gitignore', GITIGNORE),
+    ('.requirements', REQUIREMENTS),
+    ('BUGS.md', BUGS),
     ('CHANGELOG.md', CHANGELOG),
     ('LICENCE.md', LICENCE),
+    ('README.md', README),
+    ('TODO.md', TODO),
+    ('setup.cfg', SETUP),
 ]

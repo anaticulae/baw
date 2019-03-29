@@ -7,6 +7,7 @@ from time import time
 from baw import __version__
 from baw.cmd import init as project_init
 from baw.cmd import test
+from baw.cmd.init import git_add
 from baw.command import parse
 from baw.execution import clean as project_clean
 from baw.execution import doc
