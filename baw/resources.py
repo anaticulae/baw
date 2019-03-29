@@ -172,5 +172,4 @@ FILES = [
     ('LICENCE.md', LICENCE),
     ('README.md', README),
     ('TODO.md', TODO),
-    ('setup.cfg', SETUP),
 ]
