@@ -28,9 +28,9 @@ NO_EXECUTABLE = 127
 def destroy(path: str):
     """Remove virtual path recursive if path exists, do nothing."""
     if not exists(path):
-        print('Nothing to clean, path does not exists %s' % path)
+        logging('Nothing to clean, path does not exists %s' % path)
         return True
-    print('Removing virtual environment %s' % path)
+    logging('Removing virtual environment %s' % path)
     rmtree(path)
     return True
 
@@ -52,11 +52,11 @@ def create(root: str, clean: bool = False):
         destroy(virtual)
 
     if not exists(virtual):
-        print('Creating virtual environment %s\n' % virtual, flush=True)
+        logging('Creating virtual environment %s\n' % virtual)
         makedirs(virtual)
 
     if exists(virtual) and list(scandir(virtual)):
-        print('Using virtual environment %s\n' % virtual)
+        logging('Using virtual environment %s\n' % virtual)
         return 0
 
     venv_command = [
@@ -75,8 +75,8 @@ def create(root: str, clean: bool = False):
 
     logging_error('While creating virutal environment')
 
-    print(process.stdout, flush=True)
-    print(process.stderr, file=stderr)
+    logging(process.stdout)
+    logging_error(process.stderr)
 
     return 1
 
