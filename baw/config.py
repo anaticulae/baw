@@ -3,6 +3,8 @@ from configparser import ConfigParser
 from os.path import exists
 from os.path import join
 
+from baw.utils import NEWLINE
+
 PROJECT_PATH = '.baw/project.config'
 
 
@@ -84,5 +86,5 @@ def create_config(root: str, shortcut: str, name: str):
     cfg = ConfigParser()
     cfg['project'] = {'short': shortcut, 'name': name}
     output = join(root, PROJECT_PATH)
-    with open(output, mode='w', encoding='utf8') as fp:
+    with open(output, mode='w', encoding='utf8', newline=NEWLINE) as fp:
         cfg.write(fp)
