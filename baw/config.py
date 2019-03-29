@@ -36,6 +36,13 @@ def shortcut(root: str):
     return short
 
 
+def name(root: str):
+    assert exists(root)
+    cfg = join(root, PROJECT_PATH)
+    _, name = project_name(cfg)
+    return name
+
+
 def minimal_coverage(root: str):
     """Read percentage of required test coverage
 

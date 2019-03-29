@@ -5,13 +5,14 @@
 #                             kiwi@derspanier.de                              #
 ###############################################################################
 """Run every function which is used by `baw`."""
-
+import tempfile
 from contextlib import contextmanager
 from contextlib import suppress
 from functools import partial
 from glob import glob
 from os import environ
 from os import remove
+from os import unlink
 from os.path import abspath
 from os.path import exists
 from os.path import isfile
@@ -23,13 +24,16 @@ from sys import stdout
 
 from baw import ROOT
 from baw import THIS
+from baw.cmd import test
 from baw.config import commands
 from baw.config import minimal_coverage
 from baw.config import shortcut
+from baw.resources import SETUP
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
 from baw.utils import check_root
+from baw.utils import file_read
 from baw.utils import get_setup
 from baw.utils import GIT_EXT
 from baw.utils import logging
@@ -149,7 +153,10 @@ def release(root: str, virtual: bool = False):
         return ret
 
     logging("Update version tag")
-    completed = run_target(root, 'semantic-release version')
+    with temp_semantic_config(root) as config:
+        cmd = 'semantic-release version --config="%s"' % config
+        completed = run_target(root, cmd)
+
     if completed.returncode:
         logging_error('while running semantic-release')
         return completed.returncode
@@ -159,6 +166,22 @@ def release(root: str, virtual: bool = False):
     logging("Packing project")
 
     return 0
+
+
+@contextmanager
+def temp_semantic_config(root: str):
+    short = shortcut(root)
+    replaced = SETUP.replace('$_SHORT_$', short)
+    if replaced == SETUP:
+        logging_error('while replacing template')
+        exit(1)
+    with tempfile.TemporaryFile(mode='w', delete=False) as fp:
+        fp.write(replaced)
+        fp.seek(0)
+    yield fp.name
+
+    # remove file
+    unlink(fp.name)
 
 
 def head_tag(root: str, virtual: bool):
