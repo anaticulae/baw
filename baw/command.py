@@ -8,37 +8,45 @@
 
 from argparse import ArgumentParser
 from collections import namedtuple
+from dataclasses import dataclass
 
-Command = namedtuple('Command', 'shortcut longcut message args')
 
-ALL = Command('-a', '--all', 'Clean and run all exepect of publishing', None)
-BUILD = Command('-b', '--build', 'Run build tasks', None)
-CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder', None)
-DOC = Command('-d', '--doc', 'Generate documentation with Sphinx', None)
+@dataclass
+class Command:
+    shortcut: str
+    longcut: str
+    message: str
+    args: dict = None
+
+    def __iter__(self):
+        for item in [self.shortcut, self.longcut, self.message, self.args]:
+            yield item
+
+
+ALL = Command('-a', '--all', 'Clean and run all exepect of publishing')
+BUILD = Command('-b', '--build', 'Run build tasks')
+CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
+DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
 INIT = Command('-i', '--init', 'Create .baw project', {
     'nargs': 2,
     'metavar': ('shortcut', 'name'),
 })
 # run tests, increment version, commit, git tag and push to package index
-PUSH = Command('-p', '--publish', 'Push release to repository', None)
-DOCKER = Command('-do', '--docker', 'Run commands in docker environment', None)
-RELEASE = Command(
-    '-r',
-    '--release',
-    'Test and tag current commit as new release',
-    None,
-)
-REPORT = Command('-re', '--report', 'Write module status in html report', None)
-RUN = Command('-ru', '--run', 'Run application', None)
-SYNC = Command('-s', '--sync', 'Sync dependencies', None)
+DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
+PUSH = Command('-p', '--publish', 'Push release to repository')
+RELEASE = Command('-r', '--release', 'Test and tag commit as new release')
+REPORT = Command('-re', '--report', 'Write module status in html report')
+RUN = Command('-ru', '--run', 'Run application')
+SYNC = Command('-s', '--sync', 'Sync dependencies')
 TEST = Command(
     '-t', '--test', 'Run tests and coverage', {
         'nargs': '?',
         'action': 'append',
         'choices': ['coverage', 'pdb', 'stash', 'longrun'],
     })
-VENV = Command('-vi', '--virtual', 'Run commands in virtual environment', None)
-VERSION = ('-v', '--version', 'Show version of this program', None)
+VENV = Command('-vi', '--virtual', 'Run commands in virtual environment')
+VERBOSE = Command('-ver', '--verbose', 'Extend verbosity of logging')
+VERSION = Command('-v', '--version', 'Show version of this program')
 
 
 def create_parser():  # noqa: Z21
@@ -61,9 +69,9 @@ def create_parser():  # noqa: Z21
         SYNC,
         TEST,
         VENV,
+        VERBOSE,
         VERSION,
     )
-
     for shortcut, longcut, msg, args in todo:
         shortcuts = (shortcut, longcut)
         add = parser.add_argument

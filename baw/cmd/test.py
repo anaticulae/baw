@@ -1,3 +1,9 @@
+###############################################################################
+#                                Kiwi Project                                 #
+#                                    2019                                     #
+#                          Helmut Konrad Fahrendholz                          #
+#                             kiwi@derspanier.de                              #
+###############################################################################
 from contextlib import contextmanager
 from contextlib import suppress
 from functools import partial
@@ -11,7 +17,6 @@ from os.path import join
 from os.path import split
 from os.path import splitdrive
 from shutil import rmtree
-from sys import stdout
 
 from baw import ROOT
 from baw import THIS
@@ -28,6 +33,7 @@ from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import tmp
 
+NO_TEST_TO_RUN = 5  # pytest returncode when runnining without tests
 
 def test(root: str,
          *,
@@ -74,14 +80,29 @@ def test(root: str,
         test_dir,
     )
 
+    skip_error = {NO_TEST_TO_RUN} # no pytest available = no problem
     target = partial(
-        run_target, root, cmd, cwd=test_dir, env=env, virtual=virtual)
+        run_target,
+        root,
+        cmd,
+        cwd=test_dir,
+        env=env,
+        virtual=virtual,
+        skip_error=skip_error,
+    )
+    stash = False
+
     if stash:
         with git_stash(root, virtual):
             completed = target()
     else:
         completed = target()
-    return completed.returncode
+    returncode = completed.returncode
+
+    if returncode == NO_TEST_TO_RUN:
+        return 0
+
+    return returncode
 
 
 def cov_args(root: str, *, pdb: bool):

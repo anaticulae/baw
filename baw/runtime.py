@@ -96,13 +96,19 @@ def install_requirements(requirements: str, path: str):
     return run_target(path, install_requirements, virtual=True)
 
 
-def run_target(root: str,
-               command: str,
-               cwd: str = None,
-               env=None,
-               virtual: bool = False):
+def run_target(
+        root: str,
+        command: str,
+        cwd: str = None,
+        env=None,
+        virtual: bool = False,
+        skip_error: set = None,
+        verbose: bool = False,
+):
     if not cwd:
         cwd = root
+    if not skip_error:
+        skip_error = {}
 
     if virtual:
         try:
@@ -113,7 +119,8 @@ def run_target(root: str,
     else:
         completed = _run_local(command, cwd=cwd, env=env)
 
-    if completed.returncode:
+    reporting = verbose and completed.returncode not in skip_error
+    if completed.returncode and reporting:
         logging_error('Running `%(command)s` in `%(cwd)s` with:\n\n%(env)s' % {
             'command': command,
             'cwd': cwd,
