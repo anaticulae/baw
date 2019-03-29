@@ -33,14 +33,18 @@ def main():
         print(__version__)
         exit(SUCCESS)
 
+    virtual = args['virtual']
+
     if args['init']:
-        with handle_error(ValueError):
-            project_init(getcwd(), *args['init'])
+        root = getcwd()
+        with handle_error(ValueError):  #  TODO: Why?
+            project_init(root, *args['init'])
+            git_add(root, '*')
+            release(root, virtual=virtual)
 
     with handle_error(ValueError):
         root = project_root(getcwd())
 
-    virtual = args['virtual']
     if args['clean']:
         project_clean(root, virtual=virtual)
 
