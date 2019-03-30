@@ -25,8 +25,7 @@ from baw.utils import SUCCESS
 def main():
     start = time()
     args = parse()
-
-    if not any(args):
+    if not any(args.values()):
         exit(SUCCESS)
 
     if args['version']:
