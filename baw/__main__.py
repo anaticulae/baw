@@ -57,7 +57,7 @@ def main():
     if args['test']:
         ret += test(
             root,
-            coverage='coverage' in args['test'],
+            coverage='cov' in args['test'],
             longrun='longrun' in args['test'],
             pdb='pdb' in args['test'],
             stash='stash' in args['test'],
