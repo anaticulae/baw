@@ -36,6 +36,7 @@ from baw.utils import tmp
 
 NO_TEST_TO_RUN = 5  # pytest returncode when runnining without tests
 
+
 def test(root: str,
          *,
          coverage: bool = False,

@@ -25,11 +25,11 @@ from baw.utils import logging
 
 
 def init(root: str, shortcut: str, name: str):
+    git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)
     add_init(root, shortcut)
     create_files(root)
-    git_init(root)
     # install pre-commits
 
 
