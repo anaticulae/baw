@@ -77,6 +77,7 @@ def clean(root: str, virtual: bool = False):
     logging('Start cleaning')
     patterns = [
         '.coverage',
+        '.pytest_cache',
         '__pycache__',
         'build',
         'doctrees',
