@@ -35,6 +35,6 @@ Every noteable change is logged here.
 
 ### Features
 
-- Basic control: clean, doc, publish, release, sync, test, virtual
-- Automated tests
-- Installable
+* Basic control: clean, doc, publish, release, sync, test, virtual
+* Automated tests
+* Installable
