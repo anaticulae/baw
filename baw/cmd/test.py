@@ -18,6 +18,8 @@ from os.path import split
 from os.path import splitdrive
 from shutil import rmtree
 
+from _pytest.main import EXIT_NOTESTSCOLLECTED
+
 from baw import ROOT
 from baw import THIS
 from baw.config import commands
@@ -34,7 +36,8 @@ from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import tmp
 
-NO_TEST_TO_RUN = 5  # pytest returncode when runnining without tests
+# pytest returncode when runnining without tests
+NO_TEST_TO_RUN = EXIT_NOTESTSCOLLECTED
 
 
 def test(root: str,
