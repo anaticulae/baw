@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v0.4.0
+
+### Feature
+
+* sync common gitexclude via --sync, remove common (5eba7a3dac90)
+
+### Fix
+
+* print only when verbose or errors occurs (cfe6477024c1)
+* do not stash .virtual-folder (257028ec4c9b)
+
 ## v0.3.1
 
 ### Fix
