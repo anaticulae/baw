@@ -32,9 +32,6 @@ def init(root: str, shortcut: str, name: str):
     add_init(root, shortcut)
     create_files(root)
 
-    sync_files(root)
-    # install pre-commits
-
 
 def add_init(root: str, shortcut: str):
     logging('add __init__.py')

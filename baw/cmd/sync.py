@@ -59,7 +59,13 @@ def sync_dependencies(
         cmd = 'python -mpip install %s -U -r %s' % (pip_source, item)
         logging(cmd)
 
-        completed = run_target(root, cmd, cwd=root, virtual=virtual)
+        completed = run_target(
+            root,
+            cmd,
+            cwd=root,
+            verbose=verbose,
+            virtual=virtual,
+        )
 
         if completed.stdout:
             for item in completed.stdout.splitlines():

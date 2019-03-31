@@ -33,6 +33,7 @@ def main():
         print(__version__)
         exit(SUCCESS)
 
+    verbose = args['verbose']
     virtual = args['virtual']
 
     if args['init']:
@@ -54,7 +55,7 @@ def main():
         ret += create_virtual(root)
 
     if args['sync']:
-        ret += sync(root, virtual=virtual)
+        ret += sync(root, virtual=virtual, verbose=verbose)
 
     if args['test']:
         ret += test(

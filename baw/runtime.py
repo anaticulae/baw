@@ -119,7 +119,7 @@ def run_target(
         *,
         debugging: bool = False,
         skip_error: set = None,
-        verbose: bool = False,
+        verbose: bool = True,
         virtual: bool = False,
 ):
     if not cwd:
@@ -155,7 +155,7 @@ def run_target(
             'env': env
         })
 
-    if completed.stdout:
+    if completed.stdout and verbose:
         logging(completed.stdout)
 
     if completed.stderr:
