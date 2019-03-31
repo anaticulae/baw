@@ -1,30 +1,32 @@
 #!/usr/bin/env python
-###############################################################################
-#                                Kiwi Project                                 #
-#                                    2019                                     #
-#                          Helmut Konrad Fahrendholz                          #
-#                             kiwi@derspanier.de                              #
-###############################################################################
-"""Install script for baw."""
+#==============================================================================
+# C O P Y R I G H T
+#------------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+#==============================================================================
+""" Run this setup script to install baw on your local maschine or virtual
+environment.
+"""
 
-import io
-from collections import OrderedDict
+from os.path import dirname
+from os.path import join
 from re import search
 
 from setuptools import setup
 
-with io.open('README.md', 'rt', encoding='utf8') as fp:
+THIS = dirname(__file__)
+with open(join(THIS, 'README.md'), 'rt', encoding='utf8') as fp:
     readme = fp.read()
 
-with io.open('baw/__init__.py', 'rt', encoding='utf8') as fp:
+with open(join(THIS, 'baw/__init__.py'), 'rt', encoding='utf8') as fp:
     version = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
 setup(
     name='baw',
     version=version,
-    project_urls=OrderedDict((
-        # ('Documentation', 'http://flask.pocoo.org/docs/'),
-    )),
     license='BSD',
     author='Helmut Konrad Fahrendholz',
     author_email='kiwi@derspanier.de',
