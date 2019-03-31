@@ -84,7 +84,7 @@ def test(root: str,
         test_dir,
     )
 
-    skip_error = {NO_TEST_TO_RUN} # no pytest available = no problem
+    skip_error = {NO_TEST_TO_RUN}  # no pytest available = no problem
     target = partial(
         run_target,
         root,

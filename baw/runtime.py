@@ -103,7 +103,7 @@ def install_requirements(requirements: str, path: str):
         requirement(str): path to requirements-file which is conform to pip -r
         path(str): location of virtual environment
     Returns:
-        True if creating was successfull, else False and print stderr
+        True if creating was successful, else False and print stderr
     """
 
     install_requirements = 'python -mpip install -r %s' % requirements
