@@ -27,7 +27,7 @@ source_suffix = ['.rst']
 master_doc = 'index'
 
 # General information about the project.
-project = '%_NAME_$'
+project = '$_NAME_$'
 copyright = '2019, kiwi project'
 author = 'Helmut Konrad Fahrendholz'
 
