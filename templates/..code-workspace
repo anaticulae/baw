@@ -13,7 +13,9 @@
       "**/.pytest_cache": true,
       "**/.vscode": true,
       "**/build": true,
-      "**/tmp": true
+      "**/doctrees": true,
+      "**/html": true,
+      "**/tmp": true,
     },
     "python.unitTest.pyTestEnabled": true
   }
