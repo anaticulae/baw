@@ -2,6 +2,33 @@
 
 Every noteable change is logged here.
 
+## v0.3.0
+
+### Feature
+
+* add required templates for creating new repo (a1c025fc5bd9)
+* replace file if content changed (11840a74b236)
+* show the 10 slowest tests (7c11ee79faa5)
+* clean removes .pytest_cache-folder (4f89c1043542)
+* init project on empty folder (f40683cf4ec3)
+* use projectname in workspace-template (3555250321f6)
+
+### Fix
+
+* ignore non-utf8-chars from invoked subprocess (09c946f7e727)
+* ensure that parent folder of template where generated (a3de72f489d2)
+* activate non running test (b4680558e21a)
+* use test=cov instead of test=coverage to reduce effort (6ec025335755)
+* no input return successful and print help (59d217d62afb)
+* rename template to requirements.txt (bd3f21d3fa15)
+* pass --test=pdb to invoke debugger after failure (293785f19c8b)
+* do not generate setup.cfg on init (b88112943045)
+* enable open workspace (77c66af79411)
+
+### Documentation
+
+* format documentation to fit into sphinx release (aee6c1062fa5)
+
 ## v0.2.0
 
 ### Feature
