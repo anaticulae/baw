@@ -1,10 +1,10 @@
-# Black an White - baw
+# Black and White
 
 ## Semantic Release
 
 Format of commit message:
 
-```[txt]
+```
 <tag>(scope): subject
 
 body

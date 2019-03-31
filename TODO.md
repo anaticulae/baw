@@ -1,4 +1,4 @@
-# TODO
+# Todo
 
 ## Planning
 
