@@ -1,4 +1,14 @@
-yapf==0.26.0
-pytest
-python-semantic-release
+pytest-cov==2.5.1
+pytest==4.3.1
+python-semantic-release==4.1.1
 wemake-python-styleguide==0.8.0
+yapf==0.26.0
+
+# documentation
+added-value==0.14.2
+m2r==0.2.1
+recommonmark==0.5.0
+sphinx==1.8.5
+sphinx_autodoc_typehints==1.6.0
+sphinxcontrib-mermaid==0.3.1
+tomlkit==0.5.3
