@@ -7,6 +7,7 @@ from baw import __version__
 from baw import ROOT
 from baw.config import name
 from baw.config import shortcut
+from baw.project import version
 from baw.utils import BAW_EXT
 from baw.utils import file_read
 from baw.utils import GIT_REPO_EXCLUDE
@@ -134,9 +135,10 @@ def template_replace(root: str, template: str):
     """
     short = shortcut(root)
     name_ = name(root)
+    version_tag = version(root)
 
     template = template.replace('$_SHORT_$', short)
     template = template.replace('$_NAME_$', name_)
-    template = template.replace('$_VERSION_$', __version__)
+    template = template.replace('$_VERSION_$', version_tag)
 
     return template

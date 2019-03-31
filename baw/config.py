@@ -3,6 +3,7 @@ from configparser import ConfigParser
 from os.path import exists
 from os.path import join
 
+from baw.utils import file_read
 from baw.utils import NEWLINE
 
 PROJECT_PATH = '.baw/project.config'
