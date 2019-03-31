@@ -4,10 +4,13 @@
 
 * Add all command
 * Add code complexity analysis
-* Fix tests for virtual environment
-* Fix documenting with sphinx
-* Support autochangelog
 * Support docker
+
+## 0.3.0
+
+[x] Fix tests for virtual environment
+[x] Fix documentation with sphinx
+[x] Support autochangelog
 
 ## 0.0.4
 
