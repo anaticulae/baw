@@ -6,6 +6,8 @@ from time import time
 
 from baw import __version__
 from baw.cmd import init as project_init
+from baw.cmd import sync
+from baw.cmd import sync_files
 from baw.cmd import test
 from baw.cmd.init import git_add
 from baw.command import parse
@@ -15,7 +17,6 @@ from baw.execution import publish
 from baw.execution import release
 from baw.execution import root as project_root
 from baw.execution import run
-from baw.execution import sync
 from baw.runtime import create as create_virtual
 from baw.utils import flush
 from baw.utils import handle_error
@@ -38,6 +39,7 @@ def main():
         root = getcwd()
         with handle_error(ValueError):  #  TODO: Why?
             project_init(root, *args['init'])
+            sync_files(root)
             git_add(root, '*')
             release(root, virtual=virtual)
 

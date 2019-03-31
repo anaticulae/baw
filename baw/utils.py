@@ -20,6 +20,8 @@ from sys import stdout
 
 BAW_EXT = '.baw'
 GIT_EXT = '.git'
+GIT_REPO_EXCLUDE = '.git/info/exclude'
+TMP = '.tmp'
 
 SUCCESS = 0
 
@@ -48,8 +50,8 @@ def handle_error(*exceptions, code=1):
 print = partial(print, file=stdout, flush=True)
 
 
-def logging(msg: str = ''):
-    print(msg)
+def logging(msg: str = '', end=NEWLINE):
+    print(msg, end=end)
 
 
 def logging_error(msg: str):
@@ -82,7 +84,7 @@ def tmp(root):
         path to temporary folder
     """
     assert root
-    tmp = join(root, 'tmp')
+    tmp = join(root, TMP)
     makedirs(tmp, exist_ok=True)
     return tmp
 

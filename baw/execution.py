@@ -174,42 +174,6 @@ def publish(root: str, virtual: bool = False):
     return completed.returncode
 
 
-def sync(root: str, virtual: bool = False):
-    check_root(root)
-    logging('Sync dependencies')
-
-    requirements_dev = 'requirements-dev.txt'
-    resources = ['requirements.txt', requirements_dev]
-    resources = [join(root, item) for item in resources]
-    resources = [item for item in resources if exists(item)]
-
-    if not exists(join(root, requirements_dev)):
-        resources.append(abspath(join(THIS, '..', requirements_dev)))
-
-    try:
-        pip_index = environ['HELPY_INT_DIRECT']
-        extra_url = environ['HELPY_EXT_DIRECT']
-    except KeyError as error:
-        logging_error('Global var %s does not exist' % error)
-        exit(1)
-
-    pip_source = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
-
-    ret = 0
-    for item in resources:
-        cmd = 'python -mpip install %s -U -r %s' % (pip_source, item)
-        logging(cmd)
-
-        completed = run_target(root, cmd, cwd=root, virtual=virtual)
-
-        if completed.stdout:
-            logging(completed.stdout)
-        if completed.returncode and completed.stderr:
-            logging_error(completed.stderr)
-        ret += completed.returncode
-    return ret
-
-
 SEPARATOR_WIDTH = 80
 
 

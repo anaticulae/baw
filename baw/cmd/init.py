@@ -31,6 +31,8 @@ def init(root: str, shortcut: str, name: str):
     create_config(root, shortcut, name)
     add_init(root, shortcut)
     create_files(root)
+
+    sync_files(root)
     # install pre-commits
 
 

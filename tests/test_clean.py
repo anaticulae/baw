@@ -21,7 +21,7 @@ def test_clean_files_and_dirs(tmpdir):
     """
     assert not len(listdir(tmpdir))  # clean directory
 
-    for item in ['.git', 'build', 'tmp']:
+    for item in ['.git', 'build', TMP]:
         makedirs(join(tmpdir, item))
 
     assert len(listdir(tmpdir)), 3
