@@ -29,12 +29,15 @@ from baw.cmd import test
 from baw.config import commands
 from baw.config import minimal_coverage
 from baw.config import shortcut
+from baw.resources import GIT_REPO_EXCLUDE
+from baw.resources import GITIGNORE
 from baw.resources import SETUP
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
 from baw.utils import check_root
 from baw.utils import file_read
+from baw.utils import file_replace
 from baw.utils import get_setup
 from baw.utils import GIT_EXT
 from baw.utils import logging
@@ -83,7 +86,7 @@ def clean(root: str, virtual: bool = False):
         'build',
         'doctrees',
         'html',
-        'tmp',
+        '.tmp',
         VIRTUAL_FOLDER,
     ]
 

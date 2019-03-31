@@ -9,6 +9,7 @@ from baw.config import name
 from baw.config import shortcut
 from baw.utils import BAW_EXT
 from baw.utils import file_read
+from baw.utils import GIT_REPO_EXCLUDE
 
 FOLDERS = [
     BAW_EXT,
@@ -100,8 +101,8 @@ DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
 
 # None copies files
 FILES = [
-    ('.code-workspace', CODE_WORKSPACE),
-    ('.gitignore', GITIGNORE),
+    ('..code-workspace', CODE_WORKSPACE),
+    (GIT_REPO_EXCLUDE, GITIGNORE),
     ('BUGS.md', BUGS),
     ('CHANGELOG.md', CHANGELOG),
     ('LICENCE.md', LICENCE),

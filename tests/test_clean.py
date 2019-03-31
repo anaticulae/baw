@@ -7,6 +7,7 @@ from os.path import join
 import pytest
 
 from baw.utils import file_create
+from baw.utils import TMP
 from tests import run
 
 

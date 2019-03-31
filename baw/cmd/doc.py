@@ -41,7 +41,7 @@ def doc(root: str, virtual: bool = False):
 
     docs = join(root, 'docs')
     html = join(docs, 'html')
-    tmp = join(docs, 'tmp')
+    tmp = join(docs, '.tmp')
     sources = root  # include test and package
     ignore = [
         'templates',

@@ -21,4 +21,4 @@ tmp
 docs/conf.py
 docs/doctrees/**
 docs/html/**
-docs/tmp/**
+docs/.tmp/**

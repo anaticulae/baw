@@ -4,10 +4,11 @@
 **build**
 **generated**
 .eggs/**
+.tmp
+.virtual
 .vscode/**
 dist
 tmp
-virtual/**
 
 # Files
 *.cache
@@ -16,3 +17,9 @@ virtual/**
 *.pyc
 *.swp
 .coverage
+
+# Documentation
+docs/conf.py
+docs/doctrees/**
+docs/html/**
+docs/.tmp/**
