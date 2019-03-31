@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v0.4.2
+
+### Fix
+
+* synchronize from baw-project not from local project (bf7257d87888)
+* correct path to .tmp (54bf5f086972)
+
 ## v0.4.1
 
 ### Fix
