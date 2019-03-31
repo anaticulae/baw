@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.4.1
+
+### Fix
+
+* use version of current project not of baw-tool (765e4830325b)
+
 ## v0.4.0
 
 ### Feature
