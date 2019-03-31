@@ -11,6 +11,7 @@ from os import environ
 from os.path import exists
 from os.path import join
 
+from baw import ROOT
 from baw.resources import GITIGNORE
 from baw.runtime import run_target
 from baw.utils import check_root
@@ -39,11 +40,12 @@ def sync_dependencies(
 
     requirements_dev = 'requirements-dev.txt'
     resources = ['requirements.txt', requirements_dev]
+    # make path absolute in project
     resources = [join(root, item) for item in resources]
     resources = [item for item in resources if exists(item)]
 
     if not exists(join(root, requirements_dev)):
-        resources.append(abspath(join(THIS, '..', requirements_dev)))
+        resources.append(join(ROOT, requirements_dev))
 
     try:
         pip_index = environ['HELPY_INT_DIRECT']
