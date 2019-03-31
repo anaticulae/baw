@@ -5,5 +5,6 @@
 #                             kiwi@derspanier.de                              #
 ###############################################################################
 
+from baw.cmd.doc import doc
 from baw.cmd.init import init
 from baw.cmd.test import test

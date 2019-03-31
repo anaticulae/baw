@@ -3,7 +3,10 @@ from collections import namedtuple
 from os.path import exists
 from os.path import join
 
+from baw import __version__
 from baw import ROOT
+from baw.config import name
+from baw.config import shortcut
 from baw.utils import BAW_EXT
 from baw.utils import file_read
 
@@ -173,3 +176,24 @@ FILES = [
     ('requirements.txt', REQUIREMENTS),
     ('TODO.md', TODO),
 ]
+
+
+def template_replace(root: str, template: str):
+    """Replace $vars in template
+
+    Args:
+        root(str): project root
+        template(str): which contains the $_VARS_$
+    Returns:
+        content of template with replaced vars
+    Hint:
+        Vars are defined as $_VARNAME_$.
+    """
+    short = shortcut(root)
+    name_ = name(root)
+
+    template = template.replace('$_SHORT_$', short)
+    template = template.replace('$_NAME_$', name_)
+    template = template.replace('$_VERSION_$', __version__)
+
+    return template

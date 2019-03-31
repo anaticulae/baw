@@ -5,6 +5,7 @@
 #                             kiwi@derspanier.de                              #
 ###############################################################################
 from os import makedirs
+from os.path import dirname
 from os.path import exists
 from os.path import join
 from shutil import copy
@@ -12,11 +13,11 @@ from subprocess import run
 
 from baw import ROOT
 from baw.config import create_config
-from baw.config import name as project_name
 from baw.config import shortcut
 from baw.resources import FILES
 from baw.resources import FOLDERS
 from baw.resources import INIT
+from baw.resources import template_replace
 from baw.resources import TEMPLATES
 from baw.runtime import NO_EXECUTABLE
 from baw.utils import file_create
@@ -34,7 +35,7 @@ def init(root: str, shortcut: str, name: str):
 
 
 def add_init(root: str, shortcut: str):
-    logging('Add __init__.py')
+    logging('add __init__.py')
     init_dir = join(root, shortcut)
     makedirs(init_dir, exist_ok=True)
     file_create(join(init_dir, '__init__.py'), "__version__ = '0.0.0'\n")
@@ -53,7 +54,7 @@ def create_folder(root: str):
 def create_files(root: str):
     for item, content in FILES:
         create = join(root, item)
-        replaced = replace_template(root, content)
+        replaced = template_replace(root, content)
 
         operation_type = 'template' if content != replaced else 'copy'
         if exists(create):
@@ -64,26 +65,6 @@ def create_files(root: str):
         file_create(create, content=replaced)
 
 
-def replace_template(root: str, template: str):
-    """Replace $vars in template
-
-    Args:
-        root(str): project root
-        template(str): which contains the $_VARS_$
-    Returns:
-        content of template with replaced vars
-    Hint:
-        Vars are defined as $_VARNAME_$.
-    """
-    short = shortcut(root)
-    name = project_name(root)
-
-    template = template.replace('$_SHORT_$', short)
-    template = template.replace('$_NAME_$', name)
-
-    return template
-
-
 def create_python(root: str):
     short = shortcut(root)
 
@@ -91,7 +72,6 @@ def create_python(root: str):
     makedirs(python_project, exist_ok=True)
 
     file_create(join(python_project, '__init__.py'), INIT)
-    # file_create(join(python_project, '__init__.py'), INIT)
 
 
 def evaluate_git_error(process):

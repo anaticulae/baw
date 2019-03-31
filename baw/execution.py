@@ -24,6 +24,7 @@ from sys import stdout
 
 from baw import ROOT
 from baw import THIS
+from baw.cmd import doc
 from baw.cmd import test
 from baw.config import commands
 from baw.config import minimal_coverage
@@ -108,43 +109,6 @@ def clean(root: str, virtual: bool = False):
     if ret:
         exit(1)
     logging()  # Newline
-
-
-def doc(root: str, virtual: bool = False):
-    """Run Sphinx doc generation
-
-    The result is locatated in `doc/build` as html-report. The stderr and
-    stdout are printed to console
-
-    Exception:
-        raises SystemExit if some error occurs"""
-    doc = join(root, 'docs')
-    doc_build = join(doc, 'build')
-    # Create files out of source
-    command = 'sphinx-apidoc -d 10 -M -f -e -o %s %s' % (doc_build, root)
-    completed = run_target(root, command, virtual=virtual)
-
-    if completed.returncode:
-        return completed.returncode
-
-    # Create html result
-    logging('Running make html')
-
-    build_options = [
-        '-v ',
-        # '-n',  # warn about all missing references
-        # '-W',  # turn warning into error
-        '-b coverage',
-        '-j 8'
-    ]
-    build_options = ' '.join(build_options)
-
-    command = 'sphinx-build -M html %s %s %s'
-    command = command % (doc, doc, build_options)
-
-    result = run_target(root, command, virtual=virtual)
-
-    return result.returncode
 
 
 def release(root: str, virtual: bool = False):
