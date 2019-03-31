@@ -41,6 +41,10 @@ TODO = """# TODO
 """
 
 BUGS = """# BUGS
+
+## Open
+
+## Closed
 """
 
 BUGS_RST = """.. mdinclude:: ../../BUGS.md
