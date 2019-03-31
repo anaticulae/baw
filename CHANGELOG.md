@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.3.1
+
+### Fix
+
+* wrong template parameter on doc-index (b65b68f16f3f)
+
 ## v0.3.0
 
 ### Feature
