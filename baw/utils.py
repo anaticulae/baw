@@ -114,3 +114,16 @@ def file_remove(path: str):
     assert exists(path), path
     assert isfile(path), path
     remove(path)
+
+
+def file_replace(path: str, content: str):
+    """Replace file content"""
+    if not exists(path):
+        file_create(path, content)
+        return
+    current_content = file_read(path)
+    if current_content == content:
+        return
+
+    with open(path, mode='w', newline=NEWLINE) as fp:
+        fp.write(content)
