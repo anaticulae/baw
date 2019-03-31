@@ -16,6 +16,7 @@
       "**/doctrees": true,
       "**/html": true,
       "**/tmp": true,
+      ".virtual": true,
     },
     "python.unitTest.pyTestEnabled": true
   }

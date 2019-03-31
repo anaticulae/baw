@@ -7,7 +7,7 @@
 .vscode/**
 dist
 tmp
-virtual/**
+.virtual
 
 # Files
 *.cache

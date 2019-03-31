@@ -25,7 +25,7 @@ from baw.utils import file_remove
 from baw.utils import logging
 from baw.utils import logging_error
 
-VIRTUAL_FOLDER = 'virtual'
+VIRTUAL_FOLDER = '.virtual'
 
 NO_EXECUTABLE = 127
 
