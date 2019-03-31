@@ -242,6 +242,7 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
         shell=True,
         stderr=None if debugging else PIPE,
         stdout=None if debugging else PIPE,
+        errors='xmlcharrefreplace',
         universal_newlines=True,
     )
     return process
