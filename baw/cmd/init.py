@@ -62,6 +62,8 @@ def create_files(root: str):
             continue
 
         logging('%s %s' % (operation_type, item))
+        parent = dirname(create)
+        makedirs(parent, exist_ok=True)
         file_create(create, content=replaced)
 
 
