@@ -26,6 +26,7 @@ from baw.utils import file_read
 from baw.utils import file_remove
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import print_runtime
 
 VIRTUAL_FOLDER = '.virtual'
 
@@ -38,7 +39,15 @@ def destroy(path: str):
         logging('Nothing to clean, path does not exists %s' % path)
         return True
     logging('Removing virtual environment %s' % path)
-    rmtree(path)
+    try:
+        rmtree(path)
+    except PermissionError as error:
+        # This error occurs, if an ide e.g. vscode uses the virtual environment
+        # so removing .virtual folder is not possible.
+        msg = 'Could not remove %s. Path is locked by an other application.'
+        logging_error(error)
+        logging_error(msg % path)
+        return False
     return True
 
 
