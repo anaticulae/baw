@@ -20,7 +20,8 @@ from baw.utils import ROOT
 from baw.utils import tmp
 
 # pytest returncode when runnining without tests
-NO_TEST_TO_RUN = EXIT_NOTESTSCOLLECTED
+# from _pytest.main import EXIT_NOTESTSCOLLECTED
+NO_TEST_TO_RUN = 5
 
 
 def test(root: str,
