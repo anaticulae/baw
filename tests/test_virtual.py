@@ -24,6 +24,7 @@ from tests import skip_longrunning
 from tests import skip_missing_packages
 
 
+@skip_cmd
 @skip_longrunning
 def test_creating_virtual_environment(example):
     """Creating virtual environment."""
@@ -38,6 +39,7 @@ def test_creating_virtual_environment(example):
     assert exists(virtual), msg
 
 
+@skip_cmd
 def test_creating_project(tmpdir):
     """Creating project without virtual environment"""
     completed = run(

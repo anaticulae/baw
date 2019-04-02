@@ -11,9 +11,10 @@ from os.path import exists
 from os.path import join
 
 from tests import assert_run
+from tests import skip_cmd
 from tests import skip_longrunning
 
-
+@skip_cmd
 def test_init_project_in_empty_folder(tmpdir):
     """Run --init in empty folder
 
@@ -25,6 +26,7 @@ def test_init_project_in_empty_folder(tmpdir):
         assert exists(join(tmpdir, 'docs/pages/todo.rst'))
 
 
+@skip_cmd
 @skip_longrunning
 def test_doc_command(tmpdir):
     """Run --doc command to generate documentation."""
