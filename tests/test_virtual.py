@@ -18,10 +18,12 @@ import pytest
 from baw.runtime import VIRTUAL_FOLDER
 from tests import example
 from tests import PROJECT
+from baw.utils import package_address
+from tests import example  # required for fixture
 from tests import REQUIREMENTS
 from tests import run
 from tests import skip_longrunning
-from tests import skip_missing_packages
+from tests import skip_cmd
 
 
 @skip_cmd
@@ -67,10 +69,11 @@ def project_with_test(example):
     return example
 
 
-@skip_missing_packages
+@skip_cmd
 def test_running_test_in_virtual_environment(project_with_test):
     """Running test-example in virtual environment"""
-    extra_url = environ['HELPY_EXT_DIRECT']
+
+     _, extra_url = package_address()
     source = '--index-url  %s' % (extra_url)
     pytest_install = 'python -mpip install -r %s %s' % (REQUIREMENTS, source)
 
