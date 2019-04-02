@@ -20,6 +20,7 @@ from subprocess import PIPE
 from subprocess import run
 from sys import platform
 from sys import stderr
+from time import time
 
 from baw.utils import file_create
 from baw.utils import file_read
@@ -183,6 +184,9 @@ def run_target(
 
     if completed.stderr:
         logging_error(completed.stderr)
+
+    if verbose:
+        print_runtime(start)
 
     return completed
 
