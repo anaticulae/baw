@@ -42,7 +42,13 @@ TEST = Command(
     '-t', '--test', 'Run tests and coverage', {
         'nargs': '?',
         'action': 'append',
-        'choices': ['cov', 'pdb', 'stash', 'longrun'],
+        'choices': [
+            'cov',
+            'fast',
+            'long',
+            'pdb',
+            'stash',
+        ],
     })
 VENV = Command('-vi', '--virtual', 'Run commands in virtual environment')
 VERBOSE = Command('-ver', '--verbose', 'Extend verbosity of logging')

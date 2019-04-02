@@ -21,16 +21,19 @@ from baw.utils import tmp
 
 # pytest returncode when runnining without tests
 # from _pytest.main import EXIT_NOTESTSCOLLECTED
-NO_TEST_TO_RUN = 5
 
 
-def test(root: str,
-         *,
-         coverage: bool = False,
-         longrun: bool = False,
-         pdb: bool = False,
-         stash: bool = False,
-         virtual: bool = False):
+def test(
+        root: str,
+        *,
+        coverage: bool = False,
+        fast: bool = False,
+        longrun: bool = False,
+        pdb: bool = False,
+        stash: bool = False,
+        verbose: bool = False,
+        virtual: bool = False,
+):
     """Running test-step in root/tests
 
     Args:
@@ -52,6 +55,8 @@ def test(root: str,
     env = dict(environ.items())
     if longrun:
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
+    if fast:
+        env['FAST'] = 'True'  # Skip all tests wich are long or medium
 
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
@@ -76,6 +81,7 @@ def test(root: str,
         cwd=test_dir,
         debugging=pdb,
         env=env,
+        verbose=verbose,
         skip_error=skip_error,
         virtual=virtual,
     )

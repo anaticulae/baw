@@ -16,14 +16,24 @@ MAX_TEST_RANDOM = 10**MAX_NUMBER
 THIS = dirname(__file__)
 PROJECT = abspath(join(THIS, '..'))
 DATA = join(THIS, 'data')
+
+PACKAGE_ADDRESS, INTERNAL_PACKAGE_PORT, EXTERNAL_PACKAGE_PORT = get_setup()
+
 REQUIREMENTS = join(PROJECT, 'requirements-dev.txt')
 
-FAST = 'LONGRUN' not in environ.keys()
-FAST_REASON = 'Takes to mutch time'
+LONGRUN = 'LONGRUN' in environ.keys()
+NO_LONGRUN_REASON = 'Takes to mutch time'
+
+FAST = 'FAST' in environ.keys()
+
+NO_BAW = FAST
+NO_BAW_RESON = 'Installing baw takes long time'
 
 skip_missing_packages = pytest.mark.skip(
     reason="Required package(s) not available")
-skip_longrunning = pytest.mark.skipif(FAST, reason="Test require long time")
+skip_longrun = pytest.mark.skipif(
+    not LONGRUN or FAST, reason="Test require long time")
+skip_cmd = pytest.mark.skipif(NO_BAW, reason="Decrease response time")
 
 
 def tempname():
