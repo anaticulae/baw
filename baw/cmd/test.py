@@ -21,6 +21,7 @@ from baw.utils import tmp
 
 # pytest returncode when runnining without tests
 # from _pytest.main import EXIT_NOTESTSCOLLECTED
+NO_TEST_TO_RUN = 5
 
 
 def test(
@@ -94,6 +95,8 @@ def test(
         completed = target()
     returncode = completed.returncode
 
+    # Print output of test run
+    logging(completed.stdout)
     if returncode == NO_TEST_TO_RUN:
         return 0
 
