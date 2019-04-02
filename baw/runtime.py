@@ -162,7 +162,7 @@ def run_target(
             )
         except RuntimeError as error:
             message = str(error)
-            process = CompleatedProcess(
+            process = CompletedProcess(
                 command,
                 NO_EXECUTABLE,
                 stdout=message,
@@ -196,8 +196,8 @@ def run_target(
             })
         logging('Env: %s' % environ)
 
-     if completed.stderr:
-         logging_error(completed.stderr)
+    if completed.stderr:
+        logging_error(completed.stderr)
 
     if verbose:
         print_runtime(start)

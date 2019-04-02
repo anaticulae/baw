@@ -9,25 +9,22 @@
 """Test to create a virtual environment and running tests in virtual
 environment afterwards.
  """
-from os import environ
 from os.path import exists
 from os.path import join
 from textwrap import dedent
 
 import pytest
 from baw.runtime import VIRTUAL_FOLDER
-from tests import example
-from tests import PROJECT
 from baw.utils import package_address
 from tests import example  # required for fixture
 from tests import REQUIREMENTS
 from tests import run
-from tests import skip_longrunning
 from tests import skip_cmd
+from tests import skip_longrun
 
 
 @skip_cmd
-@skip_longrunning
+@skip_longrun
 def test_creating_virtual_environment(example):
     """Creating virtual environment."""
     completed = run(
@@ -70,14 +67,11 @@ def project_with_test(example):
 
 
 @skip_cmd
+@skip_longrun
 def test_running_test_in_virtual_environment(project_with_test):
     """Running test-example in virtual environment"""
-
-     _, extra_url = package_address()
-    source = '--index-url  %s' % (extra_url)
-    pytest_install = 'python -mpip install -r %s %s' % (REQUIREMENTS, source)
-
-    cmd = pytest_install + ' && baw --test'  #python -mpytest tests -v'
+    # install requirements first and run test later
+    cmd = 'baw --sync' + ' && baw --test'  #python -mpytest tests -v'
     completed = run(cmd, project_with_test)
 
-    assert completed.returncode == 0
+    assert completed.returncode == 0, completed.stderr
