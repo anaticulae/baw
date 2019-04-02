@@ -22,9 +22,6 @@ from os.path import splitdrive
 from shutil import rmtree
 from sys import stdout
 
-from baw import ROOT
-from baw import THIS
-from baw.cmd import doc
 from baw.cmd import test
 from baw.config import commands
 from baw.config import minimal_coverage

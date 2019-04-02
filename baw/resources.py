@@ -3,14 +3,13 @@ from collections import namedtuple
 from os.path import exists
 from os.path import join
 
-from baw import __version__
-from baw import ROOT
 from baw.config import name
 from baw.config import shortcut
 from baw.project import version
 from baw.utils import BAW_EXT
 from baw.utils import file_read
 from baw.utils import GIT_REPO_EXCLUDE
+from baw.utils import ROOT
 
 FOLDERS = [
     BAW_EXT,
@@ -88,14 +87,9 @@ Indices and tables
 
 REQUIREMENTS = ""
 
-INIT = """from os.path import abspath
-from os.path import dirname
-from os.path import join
+INIT = """__version__ = '0.0.0'
 
-__version__ = '0.0.0'
-
-THIS = dirname(__file__)
-ROOT = abspath(join(THIS, '..'))
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 """
 
 CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)

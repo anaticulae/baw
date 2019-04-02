@@ -13,12 +13,18 @@ from functools import partial
 from os import environ
 from os import makedirs
 from os import remove
+from os.path import abspath
+from os.path import dirname
 from os.path import exists
 from os.path import isfile
 from os.path import join
 from subprocess import PIPE
 from sys import stderr
 from sys import stdout
+from textwrap import wrap
+from time import time
+
+ROOT = abspath(join(dirname(__file__), '..'))  #  Path to installed baw-tool
 
 BAW_EXT = '.baw'
 GIT_EXT = '.git'

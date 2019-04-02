@@ -11,7 +11,6 @@ from os.path import join
 from shutil import copy
 from subprocess import run
 
-from baw import ROOT
 from baw.config import create_config
 from baw.config import shortcut
 from baw.resources import FILES
@@ -23,6 +22,7 @@ from baw.runtime import NO_EXECUTABLE
 from baw.utils import file_create
 from baw.utils import GIT_EXT
 from baw.utils import logging
+from baw.utils import ROOT
 
 
 def init(root: str, shortcut: str, name: str):

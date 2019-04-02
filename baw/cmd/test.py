@@ -18,11 +18,6 @@ from os.path import split
 from os.path import splitdrive
 from shutil import rmtree
 
-from _pytest.main import EXIT_NOTESTSCOLLECTED
-
-from baw import ROOT
-from baw import THIS
-from baw.config import commands
 from baw.config import minimal_coverage
 from baw.config import shortcut
 from baw.runtime import git_stash
@@ -34,6 +29,7 @@ from baw.utils import get_setup
 from baw.utils import GIT_EXT
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import ROOT
 from baw.utils import tmp
 
 # pytest returncode when runnining without tests

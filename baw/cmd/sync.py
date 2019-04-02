@@ -11,13 +11,16 @@ from os import environ
 from os.path import exists
 from os.path import join
 
-from baw import ROOT
 from baw.resources import GITIGNORE
 from baw.runtime import run_target
 from baw.utils import check_root
 from baw.utils import file_replace
 from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import logging
+from baw.utils import logging_error
+from baw.utils import NEWLINE
+from baw.utils import package_address
+from baw.utils import ROOT
 
 
 def sync(root: str, virtual: bool = False, verbose: bool = False):
