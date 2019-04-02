@@ -113,7 +113,6 @@ def cov_args(root: str, *, pdb: bool):
 
     short = shortcut(root)
     source = join(root, short)
-    tests = join(root, 'tests')
     output = join(tmp(root), 'report')
     cov_config = join(ROOT, 'templates', '.coveragerc')
     assert exists(cov_config)
