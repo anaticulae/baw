@@ -15,9 +15,10 @@ from baw.resources import template_replace
 from baw.runtime import run_target
 from baw.utils import file_replace
 from baw.utils import logging
+from baw.utils import TMP
 
 
-def update_template(root: str, virtual: bool = False):
+def update_template(root: str):
     path = join(root, 'docs/conf.py')
     replaced = template_replace(root, DOC_CONF)
 
@@ -37,11 +38,10 @@ def doc(root: str, virtual: bool = False):
         0 if generation was sucessful
         1 if some errors occurs
      """
-    update_template(root, virtual=virtual)
+    update_template(root)
 
     docs = join(root, 'docs')
-    html = join(docs, 'html')
-    tmp = join(docs, '.tmp')
+    tmp = join(docs, TMP)
     sources = root  # include test and package
     ignore = [
         'templates',
