@@ -6,9 +6,11 @@ from os.path import dirname
 from os.path import exists
 from os.path import join
 from random import randrange
+from subprocess import PIPE
 from subprocess import run as _run
 
 import pytest
+from baw.utils import get_setup
 
 MAX_NUMBER = 20
 MAX_TEST_RANDOM = 10**MAX_NUMBER
@@ -68,6 +70,8 @@ def run(command: str, cwd: str):
         command,
         cwd=cwd,
         shell=True,
+        stdout=PIPE,
+        stderr=PIPE,
         universal_newlines=True,
     )
     return completed
