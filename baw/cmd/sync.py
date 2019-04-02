@@ -80,9 +80,9 @@ def sync_dependencies(
             for message in completed.stdout.splitlines():
                 if should_skip(message, verbose=verbose):
                     continue
-                logging(to_install)
+                logging(message)
             logging()
-        if verbose and completed.returncode and completed.stderr:
+        if completed.returncode and completed.stderr:
             logging_error(completed.stderr)
         ret += completed.returncode
     return ret
