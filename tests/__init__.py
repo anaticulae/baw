@@ -96,9 +96,10 @@ def assert_run_fail(command: str, cwd: str):
 @pytest.fixture
 def example(tmpdir):
     """Creating example project due console"""
+    assert not NO_BAW, 'test require baw-package, but this is not wanted'
     project_name = 'xkcd'
     cmd = 'baw --init %s "Longtime project"' % project_name
-    with assert_run(cmd, cwd=tmpdir) as completed:
+    with assert_run(cmd, cwd=tmpdir):
         assert exists(join(tmpdir, '.git'))
 
     return tmpdir

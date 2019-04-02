@@ -10,7 +10,14 @@ from baw.utils import file_create
 from baw.utils import TMP
 from tests import run
 
+from tests import skip_cmd
+from tests import skip_longrun
 
+
+def file_count(path: str):
+    return len(listdir(path))
+
+@skip_cmd
 def test_clean_files_and_dirs(tmpdir):
     """Create some files and folder and clean them afterwards.
 
@@ -20,16 +27,15 @@ def test_clean_files_and_dirs(tmpdir):
     4. Run clean
     5. Check result
     """
-    assert not len(listdir(tmpdir))  # clean directory
+    assert file_count(tmpdir) == 0  # clean directory
 
     for item in ['.git', 'build', TMP]:
         makedirs(join(tmpdir, item))
-
-    assert len(listdir(tmpdir)), 3
+    assert file_count(tmpdir) == 3
 
     for item in ['.coverage', 'do_not_clean.txt']:
         file_create(join(tmpdir, item))
-    assert len(listdir(tmpdir)), 5
+    assert file_count(tmpdir) == 5
 
     nested_file = join(tmpdir, 'build', '.coverage')
     file_create(nested_file)
