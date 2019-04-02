@@ -43,15 +43,8 @@ def init(root: str, shortcut: str, name: str):
     git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)
-    add_init(root, shortcut)
+    create_python(root, shortcut)
     create_files(root)
-
-
-def add_init(root: str, shortcut: str):
-    logging('add __init__.py')
-    init_dir = join(root, shortcut)
-    makedirs(init_dir, exist_ok=True)
-    file_create(join(init_dir, '__init__.py'), "__version__ = '0.0.0'\n")
 
 
 def create_folder(root: str):
@@ -89,8 +82,8 @@ def create_files(root: str):
         file_create(create, content=replaced)
 
 
-def create_python(root: str):
-    short = shortcut(root)
+def create_python(root: str, shortcut: str):
+    """Create __init__.py with containing __version__-tag
 
     Args:
         root(str): project root of generated project
@@ -134,3 +127,19 @@ def skip(msg: str):
     Args:
         msg(str): message to skip"""
     logging('Skip: %s' % msg)
+
+
+def evaluate_git_error(process: CompletedProcess):
+    """Raise exception depending on returncode of completed process
+
+    Args:
+        process(CompletedProcess): process to analyze returncode for raising
+                                   depended exception.
+    Raises:
+        ChildProcessError when git is not installed
+                               problems while initializing git repository
+    """
+    if process.returncode == NO_EXECUTABLE:
+        raise ChildProcessError('Git is not installed')
+    if process.returncode:
+        raise ChildProcessError('Could not run git init')
