@@ -8,7 +8,9 @@
 #==============================================================================
 
 from os import getcwd
+from sys import exc_info
 from time import time
+from traceback import format_exc
 
 from baw.cmd import doc
 from baw.cmd import init as project_init
@@ -25,15 +27,17 @@ from baw.execution import run
 from baw.runtime import create as create_virtual
 from baw.utils import FAILURE
 from baw.utils import flush
+from baw.utils import forward_slash
 from baw.utils import handle_error
 from baw.utils import logging
+from baw.utils import logging_error
 from baw.utils import print_runtime
 from baw.utils import SUCCESS
 
 __version__ = '0.4.2'
 
 
-def main():
+def run_main():
     start = time()
     args = parse()
     if not any(args.values()):
@@ -98,5 +102,14 @@ def main():
     return ret
 
 
-if __name__ == "__main__":
-    exit(main())
+def main():
+    """Entry point of script"""
+    try:
+        exit(run_main())
+    except KeyboardInterrupt:
+        print('\nOperation cancelled by user')
+    except Exception as error:
+        logging_error(error)
+        stack_trace = format_exc()
+        logging(forward_slash(stack_trace))
+    exit(1)

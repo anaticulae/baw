@@ -49,20 +49,34 @@ def handle_error(*exceptions, code=1):
     try:
         yield
     except exceptions as error:
-        print('[ERROR] %s' % error, file=stderr)
+        logging_error(error)
         exit(code)
 
 
-print = partial(print, file=stdout, flush=True)
+def logging(msg: str = '', end: str = NEWLINE):
+    """Write message to logger
 
-
-def logging(msg: str = '', end=NEWLINE):
-    print(msg, end=end)
+    Args:
+        msg(str): message to log
+        end(str): lineending
+    Hint:
+        Logging with default arguments will log a newline
+    """
+    # msg = NEWLINE.join(wrap(msg, 120))
+    msg = forward_slash(msg)
+    print(msg, end=end, file=stdout, flush=True)
 
 
 def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
-    print('\n[ERROR] %s\n' % msg, file=stderr)
+    # use forward slashs
+    msg = forward_slash(msg)
+    print('[ERROR] %s' % msg, file=stderr)
+
+
+def forward_slash(content: str):
+    content = str(content).replace(r'\\', '/').replace('\\', '/')
+    return content
 
 
 def flush():
@@ -100,9 +114,9 @@ def tmp(root):
         path to temporary folder
     """
     assert root
-    tmp = join(root, TMP)
-    makedirs(tmp, exist_ok=True)
-    return tmp
+    path = join(root, TMP)
+    makedirs(path, exist_ok=True)
+    return path
 
 
 def check_root(root: str):
@@ -153,3 +167,27 @@ def file_replace(path: str, content: str):
 
     with open(path, mode='w', newline=NEWLINE) as fp:
         fp.write(content)
+
+
+def print_runtime(before: int):
+    """Determine runtime due the diff of current time and provided time
+    `before`. Log this timediff.
+
+    Args:
+        before(int): time recorded some time before - use time.time()
+    """
+    time_diff = time() - before
+    logging('Runtime: %.2f secs' % time_diff)
+
+
+@contextmanager
+def profile():
+    """Print runtime to logger to monitore performance"""
+    start = time()
+    try:
+        yield
+    except Exception:
+        print_runtime(start)
+        raise
+    else:
+        print_runtime(start)
