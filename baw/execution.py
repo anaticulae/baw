@@ -64,8 +64,6 @@ def root(cwd: str):
     return cwd
 
 
-
-
 def clean(root: str):
     check_root(root)
     logging('Start cleaning')
@@ -126,22 +124,32 @@ def clean_virtual(root: str):
     logging('Finished')
 
 
-def release(root: str, virtual: bool = False):
-    ret = test(root, virtual=virtual, stash=True, longrun=True)
+def release(
+        root: str,
+        *,
+        verbose: bool = False,
+        virtual: bool = False,
+):
+    ret = test(
+        root,
+        longrun=True,
+        stash=True,
+        verbose=verbose,
+        virtual=virtual,
+    )
     if ret:
         logging_error('\nTests failed, could not release.\n')
         return ret
 
     logging("Update version tag")
+    logging("Update Changelog")
     with temp_semantic_config(root) as config:
         cmd = 'semantic-release version --config="%s"' % config
-        completed = run_target(root, cmd)
+        completed = run_target(root, cmd, verbose=verbose)
 
     if completed.returncode:
         logging_error('while running semantic-release')
         return completed.returncode
-
-    logging("Update Changelog")
 
     logging("Packing project")
 

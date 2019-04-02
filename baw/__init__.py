@@ -68,11 +68,10 @@ def run_main():
             project_init(root, *args['init'])
             sync_files(root)
             git_add(root, '*')
-            release(root, virtual=virtual)
+            release(root, verbose=verbose, virtual=virtual)
 
     with handle_error(ValueError, code=FAILURE):
         root = project_root(getcwd())
-
 
     if clean:
         project_clean(root)
