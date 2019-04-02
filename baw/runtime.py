@@ -161,8 +161,14 @@ def run_target(
                 env=env,
             )
         except RuntimeError as error:
-            logging_error(error)
-            return CompletedProcess(command, NO_EXECUTABLE)
+            message = str(error)
+            process = CompleatedProcess(
+                command,
+                NO_EXECUTABLE,
+                stdout=message,
+                stderr=message,
+            )
+            return process
     else:
         completed = _run_local(
             command,
@@ -170,20 +176,28 @@ def run_target(
             debugging=debugging,
             env=env,
         )
-
-    reporting = verbose and completed.returncode not in skip_error
-    if completed.returncode and reporting:
-        logging_error('Running `%(command)s` in `%(cwd)s` with:\n\n%(env)s' % {
+    returncode = completed.returncode
+    reporting = returncode and (returncode not in skip_error)
+    if reporting:
+        logging_error('Running `%(command)s` in `%(cwd)s`' % {
             'command': command,
             'cwd': cwd,
-            'env': env
         })
 
     if completed.stdout and verbose:
         logging(completed.stdout)
 
-    if completed.stderr:
-        logging_error(completed.stderr)
+    if verbose:
+        if not reporting:
+            # Inform, not writing to stderr
+            logging('Running `%(command)s` in `%(cwd)s`\n' % {
+                'command': command,
+                'cwd': cwd,
+            })
+        logging('Env: %s' % environ)
+
+     if completed.stderr:
+         logging_error(completed.stderr)
 
     if verbose:
         print_runtime(start)
@@ -245,7 +259,7 @@ def _run_virtual(root, command, cwd, env=None, debugging: bool = False):
 
     execute = '%s && %s && %s' % (activation, command, deactivation)
 
-    process = _run(execute, cwd, env, debugging=debugging)
+    process = _run(execute, cwd, env=env, debugging=debugging)
     return process
 
 
@@ -256,7 +270,7 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
         Do not use stdout/stderr=PIPE, after this, running pdb with
         commandline is not feasible :) anymore. TODO: Investigate why.
     """
-    if not env:
+    if env is None: # None: Empty dict is allowed.
         env = dict(environ.items())
 
     # Capturering stdout and stderr reuqires PIPE in completed process.
