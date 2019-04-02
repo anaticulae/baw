@@ -8,8 +8,6 @@
 #==============================================================================
 from os.path import join
 
-from baw.config import name as project_name
-from baw.config import shortcut
 from baw.resources import DOC_CONF
 from baw.resources import template_replace
 from baw.runtime import run_target

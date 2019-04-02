@@ -12,11 +12,9 @@ environment afterwards.
 from os import environ
 from os.path import exists
 from os.path import join
-from subprocess import PIPE
 from textwrap import dedent
 
 import pytest
-
 from baw.runtime import VIRTUAL_FOLDER
 from tests import example
 from tests import PROJECT

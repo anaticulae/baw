@@ -4,29 +4,16 @@
 #                          Helmut Konrad Fahrendholz                          #
 #                             kiwi@derspanier.de                              #
 ###############################################################################
-from contextlib import contextmanager
-from contextlib import suppress
 from functools import partial
-from glob import glob
 from os import environ
-from os import remove
-from os.path import abspath
 from os.path import exists
-from os.path import isfile
 from os.path import join
-from os.path import split
-from os.path import splitdrive
-from shutil import rmtree
 
 from baw.config import minimal_coverage
 from baw.config import shortcut
 from baw.runtime import git_stash
 from baw.runtime import run_target
-from baw.runtime import VIRTUAL_FOLDER
-from baw.utils import BAW_EXT
 from baw.utils import check_root
-from baw.utils import get_setup
-from baw.utils import GIT_EXT
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import ROOT

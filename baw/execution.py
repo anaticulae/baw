@@ -7,8 +7,6 @@
 """Run every function which is used by `baw`."""
 import tempfile
 from contextlib import contextmanager
-from contextlib import suppress
-from functools import partial
 from glob import glob
 from os import environ
 from os import remove
@@ -20,26 +18,19 @@ from os.path import join
 from os.path import split
 from os.path import splitdrive
 from shutil import rmtree
-from sys import stdout
 
 from baw.cmd import test
 from baw.config import commands
-from baw.config import minimal_coverage
 from baw.config import shortcut
-from baw.resources import GIT_REPO_EXCLUDE
-from baw.resources import GITIGNORE
 from baw.resources import SETUP
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
 from baw.utils import check_root
-from baw.utils import file_read
-from baw.utils import file_replace
 from baw.utils import get_setup
 from baw.utils import GIT_EXT
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import tmp
 
 
 def root(cwd: str):

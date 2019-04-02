@@ -1,5 +1,4 @@
 """Base for generating project. Templates have to be here."""
-from collections import namedtuple
 from os.path import exists
 from os.path import join
 

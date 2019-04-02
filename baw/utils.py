@@ -7,9 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from configparser import ConfigParser
 from contextlib import contextmanager
-from functools import partial
 from os import environ
 from os import makedirs
 from os import remove
@@ -18,7 +16,6 @@ from os.path import dirname
 from os.path import exists
 from os.path import isfile
 from os.path import join
-from subprocess import PIPE
 from sys import stderr
 from sys import stdout
 from textwrap import wrap
