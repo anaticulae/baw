@@ -55,6 +55,9 @@ def run_main():
     clean_venv = args['clean_venv']
 
     root = getcwd()
+    if clean_venv:
+        clean_virtual(root)
+
     if virtual:
         failure = create_virtual(root, clean=clean)
         if failure:
@@ -70,8 +73,6 @@ def run_main():
     with handle_error(ValueError, code=FAILURE):
         root = project_root(getcwd())
 
-    if clean_venv:
-        clean_virtual(root)
 
     if clean:
         project_clean(root)
