@@ -33,6 +33,13 @@ from baw.utils import ROOT
 
 
 def init(root: str, shortcut: str, name: str):
+    """Init project due generatig file and folder
+
+    Args:
+        root(str): root of generated project
+        shortcut(str): short name of project
+        name(str): long name of generated project, used in documentation
+    """
     git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)
@@ -48,7 +55,11 @@ def add_init(root: str, shortcut: str):
 
 
 def create_folder(root: str):
-    # create .baw, README etc
+    """Copy folder-structure into created project
+
+    Args:
+        root(str): project root of generated project
+    """
     for item in FOLDERS:
         create = join(root, item)
         if exists(create):
@@ -58,6 +69,11 @@ def create_folder(root: str):
 
 
 def create_files(root: str):
+    """Copy file to generated template. Before copying, replce template vars
+
+    Args:
+        root(str): generated project location
+    """
     for item, content in FILES:
         create = join(root, item)
         replaced = template_replace(root, content)
@@ -76,21 +92,22 @@ def create_files(root: str):
 def create_python(root: str):
     short = shortcut(root)
 
-    python_project = join(root, short)
+    Args:
+        root(str): project root of generated project
+        shortcut(str): short name of generated project. Init file is located
+                       in root/shortcut/__init__.py
+    """
+    python_project = join(root, shortcut)
     makedirs(python_project, exist_ok=True)
 
     file_create(join(python_project, '__init__.py'), INIT)
 
 
-def evaluate_git_error(process):
-    if process.returncode == NO_EXECUTABLE:
-        raise ChildProcessError('Git is not installed')
-    if process.returncode:
-        raise ChildProcessError('Could not run git init')
-
-
 def git_init(root: str):
-    # git init
+    """Init git-repository if not exists, If .git exists, return
+
+    Args:
+        root(str): generated project"""
     git_dir = join(root, GIT_EXT)
     if exists(git_dir):
         skip('git init')
@@ -101,10 +118,19 @@ def git_init(root: str):
 
 
 def git_add(root: str, pattern: str):
+    """Stage items matching on given pattern
+
+    Args:
+        root(str): root of generated project
+        pattern(str): pattern in linux-style"""
     logging('git add')
     add = run(['git', 'add', pattern])
     evaluate_git_error(add)
 
 
 def skip(msg: str):
+    """Logging skipped event
+
+    Args:
+        msg(str): message to skip"""
     logging('Skip: %s' % msg)

@@ -124,7 +124,15 @@ def file_remove(path: str):
 
 
 def file_replace(path: str, content: str):
-    """Replace file content"""
+    """Replace file content
+
+    1. If not exit, create file
+    2. If exists,   compare content, if changed than replace
+                                     if not, do nothing
+    Args:
+        path(str): path to file
+        content(str): content to write
+    """
     if not exists(path):
         file_create(path, content)
         return

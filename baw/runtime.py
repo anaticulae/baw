@@ -124,6 +124,20 @@ def run_target(
         verbose: bool = True,
         virtual: bool = False,
 ):
+    """Run target
+
+    Args:
+        root(str): project root of generated project
+        command(str): command to run
+        cwd(str): location where command is executed, if nothing is provided,
+                  root is used.
+        env(dict): environment variable, if nothing is passed, the global env
+                   vars ared used
+
+    Returns:
+        CompletedProcess - os process which was runned
+    """
+    start = time()
     if not cwd:
         cwd = root
     if not skip_error:
