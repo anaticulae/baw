@@ -10,10 +10,13 @@
 from os import environ
 from os.path import exists
 from os.path import join
+from urllib.request import URLError
+from urllib.request import urlopen
 
 from baw.resources import GITIGNORE
 from baw.runtime import run_target
 from baw.utils import check_root
+from baw.utils import FAILURE
 from baw.utils import file_replace
 from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import logging
@@ -40,51 +43,79 @@ def sync_dependencies(
 ):
     check_root(root)
     logging('sync dependencies')
-
+    logging()
     requirements_dev = 'requirements-dev.txt'
     resources = ['requirements.txt', requirements_dev]
     # make path absolute in project
-    resources = [join(root, item) for item in resources]
-    resources = [item for item in resources if exists(item)]
+    resources = [join(root, to_install) for to_install in resources]
+    resources = [to_install for to_install in resources if exists(to_install)]
 
     if not exists(join(root, requirements_dev)):
         resources.append(join(ROOT, requirements_dev))
 
-    try:
-        pip_index = environ['HELPY_INT_DIRECT']
-        extra_url = environ['HELPY_EXT_DIRECT']
-    except KeyError as error:
-        logging_error('Global var %s does not exist' % error)
-        exit(1)
+    pip_index, extra_url = package_address()
 
-    pip_source = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
+    if not connected(pip_index, extra_url):
+        return FAILURE
 
+    pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
+    config = '--retries 2'
     ret = 0
-    for item in resources:
-        cmd = 'python -mpip install %s -U -r %s' % (pip_source, item)
+    for to_install in resources:
+        cmd = 'python -mpip install %s -U %s -r %s' % (pip, config, to_install)
         logging(cmd)
 
         completed = run_target(
             root,
             cmd,
             cwd=root,
-            verbose=verbose,
+            verbose=False,
             virtual=virtual,
         )
-
+        if 'NewConnectionError' in completed.stdout:
+            logging_error('Could not reach server: %s' % pip)
+            ret += 1
+            break
         if completed.stdout:
-            for item in completed.stdout.splitlines():
-                if not verbose and 'Requirement already' in item:
-                    logging('.', end='')
+            for message in completed.stdout.splitlines():
+                if should_skip(message, verbose=verbose):
                     continue
-                logging(item)
+                logging(to_install)
             logging()
-            # logging(completed.stdout)
-        if completed.returncode and completed.stderr:
-            pass
-            # logging_error(completed.stderr)
+        if verbose and completed.returncode and completed.stderr:
+            logging_error(completed.stderr)
         ret += completed.returncode
     return ret
+
+
+def connected(internal, external):
+    """Test connect to internal and external server. Send a simple http-request
+    and check the resonse
+
+    Args:
+        internal(str): adress of internal pip server
+        external(str): adress of external pip server
+    Returns:
+        True if boths connection are green, if not False
+    Hint:
+        Log the failure of a connection process also
+    """
+    result = True
+    for item in [internal, external]:
+        try:
+            with urlopen(item) as response:
+                response.read()
+        except URLError:
+            result = False
+            logging_error('Could not reach %s' % item)
+    return result
+
+
+def should_skip(msg: str, verbose: bool = False):
+    if not verbose and 'Requirement already' in msg:
+        logging('.', end='')
+        return True
+    return False
 
 
 def sync_files(root: str):

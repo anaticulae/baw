@@ -29,6 +29,7 @@ GIT_REPO_EXCLUDE = '.git/info/exclude'
 TMP = '.tmp'
 
 SUCCESS = 0
+FAILURE = 1
 
 NEWLINE = '\n'
 
@@ -71,12 +72,22 @@ def flush():
 
 def get_setup():
     try:
+        adress = environ['HELPY_URL']
         internal = int(environ['HELPY_INT_PORT'])
         external = int(environ['HELPY_EXT_PORT'])
-        adress = environ['HELPY_URL']
         return (adress, internal, external)
     except KeyError as error:
-        print_error('Missing global var %s' % error)
+        logging_error('Missing global var %s' % error)
+        exit(1)
+
+
+def package_address():
+    try:
+        internal = environ['HELPY_INT_DIRECT']
+        external = environ['HELPY_EXT_DIRECT']
+        return (internal, external)
+    except KeyError as error:
+        logging_error('Missing global var %s' % error)
         exit(1)
 
 
