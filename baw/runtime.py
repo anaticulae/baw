@@ -64,8 +64,6 @@ def create(root: str, clean: bool = False):
         true if creating was succesfull, else False
     """
     virtual = join(root, VIRTUAL_FOLDER)
-    if clean and exists(virtual):
-        destroy(virtual)
 
     if not exists(virtual):
         logging('Creating virtual environment %s\n' % virtual)

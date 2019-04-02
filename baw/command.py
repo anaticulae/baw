@@ -26,6 +26,7 @@ class Command:
 ALL = Command('-a', '--all', 'Clean and run all exepect of publishing')
 BUILD = Command('-b', '--build', 'Run build tasks')
 CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
+CLEAN_VENV = Command('-cv', '--clean_venv', 'Clean virtual environment')
 DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
 INIT = Command('-i', '--init', 'Create .baw project', {
     'nargs': 2,
@@ -65,6 +66,7 @@ def create_parser():  # noqa: Z21
         ALL,
         BUILD,
         CLEAN,
+        CLEAN_VENV,
         DOC,
         DOCKER,
         INIT,

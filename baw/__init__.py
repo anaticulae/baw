@@ -20,6 +20,7 @@ from baw.cmd import test
 from baw.cmd.init import git_add
 from baw.command import parse
 from baw.execution import clean as project_clean
+from baw.execution import clean_virtual
 from baw.execution import publish
 from baw.execution import release
 from baw.execution import root as project_root
@@ -51,6 +52,7 @@ def run_main():
     virtual = args['virtual']
     init = args['init']
     clean = args['clean']
+    clean_venv = args['clean_venv']
 
     root = getcwd()
     if virtual:
@@ -68,8 +70,11 @@ def run_main():
     with handle_error(ValueError, code=FAILURE):
         root = project_root(getcwd())
 
+    if clean_venv:
+        clean_virtual(root)
+
     if clean:
-        project_clean(root, virtual=virtual)
+        project_clean(root)
 
     ret = 0
     if args['sync']:

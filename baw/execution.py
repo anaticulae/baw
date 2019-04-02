@@ -64,7 +64,9 @@ def root(cwd: str):
     return cwd
 
 
-def clean(root: str, virtual: bool = False):
+
+
+def clean(root: str):
     check_root(root)
     logging('Start cleaning')
     patterns = [
@@ -75,7 +77,6 @@ def clean(root: str, virtual: bool = False):
         'doctrees',
         'html',
         '.tmp',
-        VIRTUAL_FOLDER,
     ]
 
     # problems while deleting recursive
@@ -98,8 +99,31 @@ def clean(root: str, virtual: bool = False):
                 ret += 1
                 logging_error(error)
     if ret:
-        exit(1)
+        exit(ret)
     logging()  # Newline
+
+
+def clean_virtual(root: str):
+    """Clean virtual environment of given project
+
+    Args:
+        root(str): generated project
+    Hint:
+        Try to remove .virtual folder
+    Raises:
+        SystemExit if cleaning not work
+    """
+    virtual_path = join(root, VIRTUAL_FOLDER)
+    if not exists(virtual_path):
+        logging('Virtual environment does not exist %s' % virtual_path)
+        return
+    logging('Try to clean virtual environment %s' % virtual_path)
+    try:
+        rmtree(virtual_path)
+    except OSError as error:
+        logging_error(error)
+        exit(1)
+    logging('Finished')
 
 
 def release(root: str, virtual: bool = False):
