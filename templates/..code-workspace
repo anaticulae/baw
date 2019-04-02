@@ -16,6 +16,7 @@
       "**/build": true,
       "**/doctrees": true,
       "**/html": true,
+      "**/log": true,
       "**/tmp": true,
     },
     "python.unitTest.pyTestEnabled": true
