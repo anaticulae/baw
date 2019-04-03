@@ -12,6 +12,7 @@
       "**/.git": true,
       "**/.pytest_cache": true,
       "**/.tmp": true,
+      "**/.virtual": true,
       "**/.vscode": true,
       "**/build": true,
       "**/doctrees": true,

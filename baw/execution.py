@@ -22,7 +22,7 @@ from shutil import rmtree
 from baw.cmd import test
 from baw.config import commands
 from baw.config import shortcut
-from baw.resources import SETUP
+from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
@@ -159,8 +159,8 @@ def release(
 @contextmanager
 def temp_semantic_config(root: str):
     short = shortcut(root)
-    replaced = SETUP.replace('$_SHORT_$', short)
-    if replaced == SETUP:
+    replaced = SETUP_CFG.replace('$_SHORT_$', short)
+    if replaced == SETUP_CFG:
         logging_error('while replacing template')
         exit(1)
     with tempfile.TemporaryFile(mode='w', delete=False) as fp:

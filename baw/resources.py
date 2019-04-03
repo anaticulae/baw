@@ -105,7 +105,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
 GITIGNORE = file_read(join(TEMPLATES, '.gitignore'))
-SETUP = file_read(join(TEMPLATES, 'setup.cfg'))
+
+SETUP_PY = file_read(join(TEMPLATES, 'setup.py'))
+SETUP_CFG = file_read(join(TEMPLATES, 'setup.cfg'))
 
 DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
 
@@ -124,6 +126,7 @@ FILES = [
     ('docs/pages/readme.rst', README_RST),
     ('docs/pages/todo.rst', TODO_RST),
     ('requirements.txt', REQUIREMENTS),
+    ('setup.py', SETUP_PY),
 ]
 
 
