@@ -86,7 +86,6 @@ def test(
         skip_error=skip_error,
         virtual=virtual,
     )
-    stash = False
 
     if stash:
         with git_stash(root, virtual):
