@@ -127,13 +127,14 @@ def clean_virtual(root: str):
 def release(
         root: str,
         *,
+        stash: bool = False,
         verbose: bool = False,
         virtual: bool = False,
 ):
     ret = test(
         root,
         longrun=True,
-        stash=True,
+        stash=stash,
         verbose=verbose,
         virtual=virtual,
     )
