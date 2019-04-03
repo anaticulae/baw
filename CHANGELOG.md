@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v0.5.1
+
+### Feature
+
+* add optional type to --release (c1f5b1427870)
+* deliver setup.py in init step (83ee8702d20b)
+* inform user about error while stashing. (dded5b6a92f0)
+
+### Fix
+
+* do not stash while --init. There is nothing to stash (ab291d78e6d8)
+* remove overriding of --stash flag (f0e3046da235)
+* add missing import, remove longname from README template (fdeed29acac5)
+* change default behavior from verbose to non verbose (6be17b9fd2fb)
+
 ## v0.5.0
 
 ### Feature
