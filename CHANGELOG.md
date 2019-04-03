@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.5.2
+
+### Fix
+
+* auto-flag. Semantic release about version-change (a926d77a6eed)
+
 ## v0.5.1
 
 ### Feature
