@@ -19,7 +19,6 @@ from subprocess import CompletedProcess
 from subprocess import PIPE
 from subprocess import run
 from sys import platform
-from sys import stderr
 from time import time
 
 from baw.utils import file_create
@@ -248,8 +247,6 @@ def _run_virtual(root, command, cwd, env=None, debugging: bool = False):
     Returns:
         CompletedProcess
     """
-    virtual = join(root, VIRTUAL_FOLDER)
-
     activation = activation_path(root)
     deactivation = deactivation_path(root)
     if not exists(activation):
@@ -270,7 +267,7 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
         Do not use stdout/stderr=PIPE, after this, running pdb with
         commandline is not feasible :) anymore. TODO: Investigate why.
     """
-    if env is None: # None: Empty dict is allowed.
+    if env is None:  # None: Empty dict is allowed.
         env = dict(environ.items())
 
     # Capturering stdout and stderr reuqires PIPE in completed process.
