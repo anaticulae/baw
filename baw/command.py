@@ -38,13 +38,13 @@ PUSH = Command('-p', '--publish', 'Push release to repository')
 RELEASE = Command(
     '-r', '--release', 'Test and tag commit as new release', {
         'nargs': '?',
-        'const': '',
-        'default': '',
+        'const': 'auto',
         'choices': [
             'major',
             'minor',
             'patch',
             'noop',
+            'auto',
         ],
     })
 REPORT = Command('-re', '--report', 'Write module status in html report')

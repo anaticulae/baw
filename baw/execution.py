@@ -130,7 +130,7 @@ def release(
         stash: bool = False,
         verbose: bool = False,
         virtual: bool = False,
-        release_type: str = '',
+        release_type: str = 'auto',
 ):
     """Running release. Running test, commit and tag.
 
@@ -143,6 +143,7 @@ def release(
                            minor 0.x.0
                            patch 0.0.x
                            noop  0.0.0 do nothing
+                           auto  let semantic release decide
     Return:
         0 if success else > 0
     """
@@ -160,7 +161,7 @@ def release(
     logging("Update version tag")
     with temp_semantic_config(root) as config:
         # only release with type if user select one
-        release_type = '--%s' % release_type if release_type else ''
+        release_type = '' if release_type == 'auto' else '--%s' % release_type
         cmd = 'semantic-release version %s --config="%s"'
         cmd = cmd % (release_type, config)
         completed = run_target(root, cmd, verbose=verbose)
@@ -196,7 +197,7 @@ def temp_semantic_config(root: str):
 def head_tag(root: str, virtual: bool):
     command = 'git tag --points-at HEAD'
 
-    completed = run_target(root, command, root, virtual=virtual)
+    completed = run_target(root, command, root, verbose=False, virtual=virtual)
     return completed.stdout.strip()
 
 
