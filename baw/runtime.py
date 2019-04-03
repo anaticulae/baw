@@ -295,11 +295,22 @@ def git_stash(root: str, virtual: bool):
         virtual(bool): run in virtual environment
 
     """
+    # TODO: Ivestigate here
     cmd = 'git stash --include-untracked'
     completed = run_target(root, cmd, virtual=virtual)
-    with suppress(Exception):
-        yield
 
+    error = None
+    try:
+        yield  # let user do there job
+    except Exception as error:
+        pass
     # unstash to recreate dirty environment
     cmd = 'git stash pop'
     completed = run_target(root, cmd, virtual=virtual)
+    if completed.returncode:
+        logging_error(completed.stderr)
+
+    if error:
+        raise error
+
+    return completed.returncode
