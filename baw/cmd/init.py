@@ -19,17 +19,14 @@ from subprocess import CompletedProcess
 from subprocess import run
 
 from baw.config import create_config
-from baw.config import shortcut
 from baw.resources import FILES
 from baw.resources import FOLDERS
 from baw.resources import INIT
 from baw.resources import template_replace
-from baw.resources import TEMPLATES
 from baw.runtime import NO_EXECUTABLE
 from baw.utils import file_create
 from baw.utils import GIT_EXT
 from baw.utils import logging
-from baw.utils import ROOT
 
 
 def init(root: str, shortcut: str, name: str):
@@ -106,8 +103,8 @@ def git_init(root: str):
         skip('git init')
         return
     logging('git init')
-    git_init = run(['git', 'init'])
-    evaluate_git_error(git_init)
+    command = run(['git', 'init'])
+    evaluate_git_error(command)
 
 
 def git_add(root: str, pattern: str):
