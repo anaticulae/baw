@@ -130,7 +130,22 @@ def release(
         stash: bool = False,
         verbose: bool = False,
         virtual: bool = False,
+        release_type: str = '',
 ):
+    """Running release. Running test, commit and tag.
+
+    Args:
+        root(str): generated project
+        stash(bool): git stash to test on a clean git directory
+        verbose(bool): log additional output
+        virtual(bool): run in virtual environment
+        release_type(str): major x.0.0
+                           minor 0.x.0
+                           patch 0.0.x
+                           noop  0.0.0 do nothing
+    Return:
+        0 if success else > 0
+    """
     ret = test(
         root,
         longrun=True,
@@ -143,10 +158,15 @@ def release(
         return ret
 
     logging("Update version tag")
-    logging("Update Changelog")
     with temp_semantic_config(root) as config:
-        cmd = 'semantic-release version --config="%s"' % config
+        # only release with type if user select one
+        release_type = '--%s' % release_type if release_type else ''
+        cmd = 'semantic-release version %s --config="%s"'
+        cmd = cmd % (release_type, config)
         completed = run_target(root, cmd, verbose=verbose)
+        logging(completed.stdout)
+
+    logging("Update Changelog")
 
     if completed.returncode:
         logging_error('while running semantic-release')

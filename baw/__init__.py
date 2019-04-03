@@ -101,7 +101,8 @@ def run_main():
         ret += doc(root, virtual=virtual)
 
     if args['release']:
-        ret += release(root, virtual=virtual)
+        release_type = args['release']
+        ret += release(root, virtual=virtual, release_type=release_type)
 
     if args['publish']:
         ret += publish(root, virtual=virtual)
