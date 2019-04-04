@@ -20,6 +20,11 @@
       "**/log": true,
       "**/tmp": true,
     },
-    "python.unitTest.pyTestEnabled": true
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.pyTestEnabled": true,
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.pyTestArgs": [
+      "tests"
+    ],
   }
 }
