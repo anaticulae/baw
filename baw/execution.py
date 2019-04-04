@@ -136,6 +136,11 @@ def clean_virtual(root: str):
     logging('Finished')
 
 
+# semantic release returns this message if no new release is provided, cause
+# of the absent of new features/bugfixes.
+NO_RELEASE_MESSAGE = 'No release will be made.'
+
+
 def release(
         root: str,
         *,
@@ -178,6 +183,9 @@ def release(
         cmd = cmd % (release_type, config)
         completed = run_target(root, cmd, verbose=verbose)
         logging(completed.stdout)
+        if NO_RELEASE_MESSAGE in completed.stdout:
+            logging_error('Abort release')
+            return FAILURE
 
     logging("Update Changelog")
 
@@ -213,6 +221,12 @@ def head_tag(root: str, virtual: bool):
     return completed.stdout.strip()
 
 
+# TODO: Use twine for uploading packages
+SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
+                        'use twine to upload instead '
+                        '(https://pypi.org/p/twine/)')
+
+
 def publish(root: str, virtual: bool = False):
     tag = head_tag(root, virtual)
     if not tag:
@@ -226,8 +240,16 @@ def publish(root: str, virtual: bool = False):
     adress, internal, _ = get_setup()
     url = '%s:%d' % (adress, internal)
     command = 'python setup.py sdist upload -r %s' % url
-    completed = run_target(root, command, root, virtual=virtual)
-
+    completed = run_target(
+        root,
+        command,
+        root,
+        verbose=False,
+        skip_error_message=[SDIST_UPLOAD_WARNING],
+        virtual=virtual,
+    )
+    if completed.returncode == SUCCESS:
+        logging('Release completed')
     return completed.returncode
 
 
@@ -250,10 +272,10 @@ def run(root: str, virtual=False):
     cmds = commands(root)
     if not cmds:
         logging_error('No commands available')
-        return 1
+        return FAILURE
 
     env = {} if virtual else dict(environ.items())
-    ret = 0
+    ret = SUCCESS
     for command, executable in cmds.items():
         logging('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
         completed = run_target(root, executable, env=env, virtual=virtual)

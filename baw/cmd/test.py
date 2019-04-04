@@ -90,7 +90,7 @@ def test(
         test_dir,
     )
 
-    skip_error = {NO_TEST_TO_RUN}  # no pytest available = no problem
+    skip_error_code = {NO_TEST_TO_RUN}  # no pytest available = no problem
     target = partial(
         run_target,
         root,
@@ -99,7 +99,7 @@ def test(
         debugging=pdb,
         env=env,
         verbose=verbose,
-        skip_error=skip_error,
+        skip_error_code=skip_error_code,
         virtual=virtual,
     )
 

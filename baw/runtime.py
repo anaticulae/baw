@@ -127,7 +127,8 @@ def run_target(
         env=None,
         *,
         debugging: bool = False,
-        skip_error: set = None,
+        skip_error_code: set = None,
+        skip_error_message: list = None,
         verbose: bool = True,
         virtual: bool = False,
 ):
@@ -147,8 +148,12 @@ def run_target(
     start = time()
     if not cwd:
         cwd = root
-    if not skip_error:
-        skip_error = {}
+
+    if not skip_error_code:
+        skip_error_code = {}
+
+    if not skip_error_message:
+        skip_error_message = []
 
     if virtual:
         try:
@@ -176,7 +181,7 @@ def run_target(
             env=env,
         )
     returncode = completed.returncode
-    reporting = returncode and (returncode not in skip_error)
+    reporting = returncode and (returncode not in skip_error_code)
     if reporting:
         logging_error('Running `%(command)s` in `%(cwd)s`' % {
             'command': command,
@@ -195,9 +200,12 @@ def run_target(
             })
         logging('Env: %s' % environ)
 
-    if completed.stderr:
-        logging_error(completed.stderr)
+    error_message = completed.stderr
+    for remove_skip in skip_error_message:
+        error_message = error_message.replace(remove_skip, '')
 
+    if error_message.strip():
+        logging_error(error_message)
     if verbose:
         print_runtime(start)
 
