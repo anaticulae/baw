@@ -1,9 +1,11 @@
-###############################################################################
-#                                Kiwi Project                                 #
-#                                    2019                                     #
-#                          Helmut Konrad Fahrendholz                          #
-#                             kiwi@derspanier.de                              #
-###############################################################################
+#==============================================================================
+# C O P Y R I G H T
+#------------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+#==============================================================================
 """Run every function which is used by `baw`."""
 import tempfile
 from contextlib import contextmanager
@@ -29,10 +31,12 @@ from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
 from baw.utils import check_root
+from baw.utils import FAILURE
 from baw.utils import get_setup
 from baw.utils import GIT_EXT
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import SUCCESS
 
 
 def root(cwd: str):
@@ -128,7 +132,7 @@ def clean_virtual(root: str):
         rmtree(virtual_path)
     except OSError as error:
         logging_error(error)
-        exit(1)
+        exit(FAILURE)
     logging('Finished')
 
 
@@ -192,7 +196,7 @@ def temp_semantic_config(root: str):
     replaced = SETUP_CFG.replace('$_SHORT_$', short)
     if replaced == SETUP_CFG:
         logging_error('while replacing template')
-        exit(1)
+        exit(FAILURE)
     with tempfile.TemporaryFile(mode='w', delete=False) as fp:
         fp.write(replaced)
         fp.seek(0)
@@ -213,7 +217,7 @@ def publish(root: str, virtual: bool = False):
     tag = head_tag(root, virtual)
     if not tag:
         logging_error('Could not find release-git-tag. Aborting publishing.')
-        return 1
+        return FAILURE
 
     ret = release(root, virtual=virtual)
     if ret:
