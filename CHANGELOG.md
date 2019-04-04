@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.5.3
+
+### Feature
+
+* add meta url to package-template (5a7556ae0fa9)
+* running test in root, use custom test-tempdir (b97ec8dda0fc)
+
+### Fix
+
+* remove read-only flag to enable removing test tmp data. (73b064c891d7)
+* ensure that tests run in virtual environment (0c903ad19c6f)
+
 ## v0.5.2
 
 ### Fix

@@ -35,7 +35,7 @@ from baw.utils import logging_error
 from baw.utils import print_runtime
 from baw.utils import SUCCESS
 
-__version__ = '0.5.2'
+__version__ = '0.5.3'
 
 
 def run_main():
