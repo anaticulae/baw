@@ -39,7 +39,7 @@ from baw.utils import logging_error
 from baw.utils import SUCCESS
 
 
-def root(cwd: str):
+def find_root(cwd: str):
     """Determine root path of project.
 
     Iterate to the top directory while searching for GIT or BAW folder.
