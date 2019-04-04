@@ -44,7 +44,7 @@ def test_creating_virtual_environment(example):
 def test_running_test_in_virtual_environment(project_with_test):
     """Running test-example in virtual environment"""
     # install requirements first and run test later
-    cmd = 'baw --sync' + ' && baw --test'  #python -mpytest tests -v'
+    cmd = 'baw --virtual --sync' + ' && baw --test'  #python -mpytest tests -v'
     completed = run(cmd, project_with_test)
 
     assert completed.returncode == 0, completed.stderr
