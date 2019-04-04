@@ -1,9 +1,11 @@
-###############################################################################
-#                                Kiwi Project                                 #
-#                                    2019                                     #
-#                          Helmut Konrad Fahrendholz                          #
-#                             kiwi@derspanier.de                              #
-###############################################################################
+#==============================================================================
+# C O P Y R I G H T
+#------------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+#==============================================================================
 from functools import partial
 from os import environ
 from os.path import exists
@@ -14,8 +16,10 @@ from baw.config import shortcut
 from baw.runtime import git_stash
 from baw.runtime import run_target
 from baw.utils import check_root
+from baw.utils import FAILURE
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import remove_tree
 from baw.utils import ROOT
 from baw.utils import tmp
 
@@ -54,7 +58,7 @@ def test(
     test_dir = join(root, 'tests')
     if not exists(test_dir):
         logging_error('No testdirectory %s available' % test_dir)
-        exit(1)
+        exit(FAILURE)
 
     env = dict(environ.items())
     if longrun:

@@ -8,6 +8,7 @@
 #==============================================================================
 
 from contextlib import contextmanager
+from os import chmod
 from os import environ
 from os import makedirs
 from os import remove
@@ -16,6 +17,8 @@ from os.path import dirname
 from os.path import exists
 from os.path import isfile
 from os.path import join
+from shutil import rmtree
+from stat import S_IWRITE
 from sys import stderr
 from sys import stdout
 from textwrap import wrap
@@ -191,3 +194,18 @@ def profile():
         raise
     else:
         print_runtime(start)
+
+
+def remove_tree(path: str):
+    assert exists(path)
+    try:
+
+        def remove_readonly(func, path, _):
+            "Clear the readonly bit and reattempt the removal"
+            chmod(path, S_IWRITE)
+            func(path)
+
+        rmtree(path, onerror=remove_readonly)
+    except PermissionError:
+        logging_error('Could not remove %s' % path)
+        exit(FAILURE)

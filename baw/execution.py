@@ -8,6 +8,7 @@
 import tempfile
 from contextlib import contextmanager
 from glob import glob
+from os import chmod
 from os import environ
 from os import remove
 from os import unlink
@@ -18,6 +19,7 @@ from os.path import join
 from os.path import split
 from os.path import splitdrive
 from shutil import rmtree
+from stat import S_IWRITE
 
 from baw.cmd import test
 from baw.config import commands
@@ -64,6 +66,12 @@ def root(cwd: str):
     return cwd
 
 
+def remove_readonly(func, path, _):
+    "Clear the readonly bit and reattempt the removal"
+    chmod(path, S_IWRITE)
+    func(path)
+
+
 def clean(root: str):
     check_root(root)
     logging('Start cleaning')
@@ -92,7 +100,7 @@ def clean(root: str):
                 if isfile(item):
                     remove(item)
                 else:
-                    rmtree(item)
+                    rmtree(item, onerror=remove_readonly)
             except OSError as error:
                 ret += 1
                 logging_error(error)
