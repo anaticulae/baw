@@ -61,15 +61,24 @@ def test(
 
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
-    log_file = join(tmp(root), 'tests.log')
+    tmp_path = tmp(root)
+    tmp_test_path = join(tmp_path, 'test')
+
+    if exists(tmp_test_path):
+        remove_tree(tmp_test_path)
+
+    log_file = join(tmp_path, 'tests.log')
     # using ROOT to get location from baw-tool
     test_config = join(ROOT, 'templates', 'pytest.ini')
-    assert exists(test_config)
+    assert exists(test_config), 'No testconfig available %s' % test_config
 
-    cmd = ('pytest -c %s %s %s --log-file="%s" %s') % (
+    # python -m to include sys path of cwd
+    # --basetemp define temp directory where the tests run
+    cmd = ('python -m pytest -c %s %s %s --basetemp=%s --log-file="%s" %s') % (
         test_config,
         debugger,
         cov,
+        tmp_test_path,
         log_file,
         test_dir,
     )
@@ -79,7 +88,7 @@ def test(
         run_target,
         root,
         cmd,
-        cwd=test_dir,
+        cwd=root,  # to include project code(namespace) into syspath
         debugging=pdb,
         env=env,
         verbose=verbose,
