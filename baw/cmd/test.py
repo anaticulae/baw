@@ -37,6 +37,8 @@ def test(
 ):
     """Running test-step in root/tests
 
+    Hint:
+        The tests run in `root` to include namespace of project code.
     Args:
         longrun(bool): Runnig all tests
         pdf(bool): Run debugger on error
@@ -44,6 +46,7 @@ def test(
         virtual(bool): run command in virtual environment
     Returns:
         returncode(int): 0 if successful else > 0
+
     """
     check_root(root)
 

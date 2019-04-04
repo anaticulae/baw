@@ -21,6 +21,7 @@ from tests import REQUIREMENTS
 from tests import run
 from tests import skip_cmd
 from tests import skip_longrun
+from tests.test_test import project_with_test
 
 
 @skip_cmd
@@ -36,34 +37,6 @@ def test_creating_virtual_environment(example):
     virtual = join(example, VIRTUAL_FOLDER)
     msg = 'Virtual folder does not exists: %s' % virtual
     assert exists(virtual), msg
-
-
-@skip_cmd
-def test_creating_project(tmpdir):
-    """Creating project without virtual environment"""
-    completed = run(
-        'baw --init xkcd "Longtime project"',
-        cwd=tmpdir,
-    )
-    assert completed.returncode == 0, completed.stderr
-    assert exists(join(tmpdir, '.git'))
-
-
-@pytest.fixture
-def project_with_test(example):
-    """Create project with one test case"""
-
-    test_me = dedent("""\
-        def test_me():
-            # Empty passing test
-            pass
-    """)
-
-    write = join(example, 'tests', 'my_test.py')
-    with open(write, mode='w', encoding='utf8') as fp:
-        fp.write(test_me)
-    assert exists(write)
-    return example
 
 
 @skip_cmd
