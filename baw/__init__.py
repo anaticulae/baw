@@ -124,4 +124,4 @@ def main():
         logging_error(error)
         stack_trace = format_exc()
         logging(forward_slash(stack_trace))
-    exit(1)
+    exit(FAILURE)

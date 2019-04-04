@@ -23,21 +23,22 @@ with open(join(ROOT, '$_SHORT_$/__init__.py'), 'rt', encoding='utf8') as fp:
 
 if __name__ == "__main__":
     setup(
-        name='$_SHORT_$',
-        version=VERSION,
         author='Helmut Konrad Fahrendholz',
         author_email='kiwi@derspanier.de',
         description='$_NAME_$',
+        include_package_data=True,
+        install_requires=[],
         long_description=README,
+        name='$_SHORT_$',
+        platforms='any',
+        setup_requires=[],
+        tests_require=[],
+        url='http://dev.package.checkitweg.de/$_SHORT_$',
+        version=VERSION,
+        zip_safe=False,  # create 'zip'-file if True. Don't do it!
         packages=[
             '$_SHORT_$',
         ],
-        include_package_data=True,
-        zip_safe=False,  # create 'zip'-file if True. Don't do it!
-        platforms='any',
-        install_requires=[],
-        setup_requires=[],
-        tests_require=[],
         classifiers=[
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
