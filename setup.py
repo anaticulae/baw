@@ -19,17 +19,19 @@ from os.path import join
 from os.path import split
 from re import search
 
-from baw.utils import ROOT
 from setuptools import setup
 
-THIS = dirname(__file__)
-with open(join(THIS, 'README.md'), 'rt', encoding='utf8') as fp:
-    README = fp.read()
+from baw.utils import file_read
+from baw.utils import ROOT
 
-with open(join(THIS, 'baw/__init__.py'), 'rt', encoding='utf8') as fp:
-    VERSION = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
+THIS = dirname(__file__)
+README = file_read(join(THIS, 'README.md'))
+
+VERSION_FILE = file_read(join(THIS, 'baw/__init__.py'))
+VERSION = search(r'__version__ = \'(.*?)\'', VERSION_FILE).group(1)
 
 TEMPLATES = join(THIS, 'templates')
+
 
 def data_files():
     collector = defaultdict(list)
@@ -45,11 +47,8 @@ def data_files():
                 current = current.lstrip('/')
                 base, _ = split(current)
                 collector[base].append(current)
-                # result.append(current)
-        # data_files.append((root_copy, result))
-    result = []
-    for prefix, current in collector.items():
-        result.append((prefix, current))
+
+    result = [(prefix, current) for prefix, current in collector.items()]
 
     result.append(('.', [
         'CHANGELOG.md',
@@ -59,29 +58,23 @@ def data_files():
     return result
 
 
-print(data_files())
-
 if __name__ == "__main__":
     setup(
-        name='baw',
-        version=VERSION,
-        license='BSD',
         author='Helmut Konrad Fahrendholz',
         author_email='kiwi@derspanier.de',
-        description='A simple console-application to manage project complexity',
-        long_description=README,
-        packages=[
-            'baw',
-            'baw.cmd',
-            'baw.project',
-        ],
         data_files=data_files(),
+        description='A simple console-application to manage project complexity',
         include_package_data=True,
-        zip_safe=False,  # create 'zip'-file if True. Don't do it!
-        platforms='any',
         install_requires=[],
+        license='BSD',
+        long_description=README,
+        name='baw',
+        platforms='any',
         setup_requires=[],
         tests_require=[],
+        url='https://dev.baw.checkitweg.de',
+        version=VERSION,
+        zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
@@ -90,7 +83,9 @@ if __name__ == "__main__":
         entry_points={
             'console_scripts': ['baw = baw:main'],
         },
+        packages=[
+            'baw',
+            'baw.cmd',
+            'baw.project',
+        ],
     )
-
-    # packages=find_packages(exclude=['tests', 'scrips']),
-    # package_dir={'': '.'},
