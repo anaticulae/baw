@@ -163,7 +163,7 @@ def publish(root: str, virtual: bool = False):
     )
 
     if completed.returncode == SUCCESS:
-        logging('Release completed')
+        logging('Publish completed')
     return completed.returncode
 
 
