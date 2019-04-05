@@ -2,6 +2,7 @@
 
 ## Planning
 
+* Generate vscode-workspace from template on every startup
 * Add all command
 * Add code complexity analysis
 * Support docker
