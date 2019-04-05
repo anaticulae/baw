@@ -28,7 +28,7 @@ from baw.utils import tmp
 NO_TEST_TO_RUN = 5
 
 
-def test(
+def run_test(
         root: str,
         *,
         coverage: bool = False,

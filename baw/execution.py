@@ -7,13 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 """Run every function which is used by `baw`."""
-import tempfile
-from contextlib import contextmanager
 from glob import glob
 from os import chmod
 from os import environ
 from os import remove
-from os import unlink
 from os.path import abspath
 from os.path import exists
 from os.path import isfile
@@ -23,10 +20,8 @@ from os.path import splitdrive
 from shutil import rmtree
 from stat import S_IWRITE
 
-from baw.cmd import test
+from baw.cmd import release
 from baw.config import commands
-from baw.config import shortcut
-from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
@@ -136,84 +131,6 @@ def clean_virtual(root: str):
     logging('Finished')
 
 
-# semantic release returns this message if no new release is provided, cause
-# of the absent of new features/bugfixes.
-NO_RELEASE_MESSAGE = 'No release will be made.'
-
-
-def release(
-        root: str,
-        *,
-        stash: bool = False,
-        verbose: bool = False,
-        virtual: bool = False,
-        release_type: str = 'auto',
-):
-    """Running release. Running test, commit and tag.
-
-    Args:
-        root(str): generated project
-        stash(bool): git stash to test on a clean git directory
-        verbose(bool): log additional output
-        virtual(bool): run in virtual environment
-        release_type(str): major x.0.0
-                           minor 0.x.0
-                           patch 0.0.x
-                           noop  0.0.0 do nothing
-                           auto  let semantic release decide
-    Return:
-        0 if success else > 0
-    """
-    ret = test(
-        root,
-        longrun=True,
-        stash=stash,
-        verbose=verbose,
-        virtual=virtual,
-    )
-    if ret:
-        logging_error('\nTests failed, could not release.\n')
-        return ret
-
-    logging("Update version tag")
-    with temp_semantic_config(root) as config:
-        # only release with type if user select one
-        release_type = '' if release_type == 'auto' else '--%s' % release_type
-        cmd = 'semantic-release version %s --config="%s"'
-        cmd = cmd % (release_type, config)
-        completed = run_target(root, cmd, verbose=verbose)
-        logging(completed.stdout)
-        if NO_RELEASE_MESSAGE in completed.stdout:
-            logging_error('Abort release')
-            return FAILURE
-
-    logging("Update Changelog")
-
-    if completed.returncode:
-        logging_error('while running semantic-release')
-        return completed.returncode
-
-    logging("Packing project")
-
-    return 0
-
-
-@contextmanager
-def temp_semantic_config(root: str):
-    short = shortcut(root)
-    replaced = SETUP_CFG.replace('$_SHORT_$', short)
-    if replaced == SETUP_CFG:
-        logging_error('while replacing template')
-        exit(FAILURE)
-    with tempfile.TemporaryFile(mode='w', delete=False) as fp:
-        fp.write(replaced)
-        fp.seek(0)
-    yield fp.name
-
-    # remove file
-    unlink(fp.name)
-
-
 def head_tag(root: str, virtual: bool):
     command = 'git tag --points-at HEAD'
 
@@ -233,10 +150,6 @@ def publish(root: str, virtual: bool = False):
         logging_error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
 
-    ret = release(root, virtual=virtual)
-    if ret:
-        exit(ret)
-
     adress, internal, _ = get_setup()
     url = '%s:%d' % (adress, internal)
     command = 'python setup.py sdist upload -r %s' % url
@@ -248,6 +161,7 @@ def publish(root: str, virtual: bool = False):
         skip_error_message=[SDIST_UPLOAD_WARNING],
         virtual=virtual,
     )
+
     if completed.returncode == SUCCESS:
         logging('Release completed')
     return completed.returncode
