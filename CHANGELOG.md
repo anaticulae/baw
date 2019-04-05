@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v0.6.0
+
+### Feature
+
+* ensure that cwd exists and is an folder (b16652a667f1)
+* add --raw flag to avoid replacing \\ character (7d1b5b0d7d5e)
+* expose VIRTUAL environment with --virtual flag (5493c64ec2cb)
+* add --format-cmd to format the project (21f9ecd4fba7)
+* abort release if version does not changed (c9b618899594)
+* add message and return error when no release is made (c03a33255318)
+
+### Fix
+
+* use .tmp folder instead the old temp one (9db24a88ec62)
+* publishing is complete not release (e63615e75e20)
+
 ## v0.5.3
 
 ### Feature

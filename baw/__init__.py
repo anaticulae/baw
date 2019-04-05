@@ -38,7 +38,7 @@ from baw.utils import PLAINOUTPUT
 from baw.utils import print_runtime
 from baw.utils import SUCCESS
 
-__version__ = '0.5.3'
+__version__ = '0.6.0'
 
 
 def run_main():
