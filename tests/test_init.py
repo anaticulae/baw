@@ -14,6 +14,7 @@ from tests import assert_run
 from tests import skip_cmd
 from tests import skip_longrun
 
+
 @skip_cmd
 def test_init_project_in_empty_folder(tmpdir):
     """Run --init in empty folder

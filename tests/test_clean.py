@@ -17,6 +17,7 @@ from tests import skip_longrun
 def file_count(path: str):
     return len(listdir(path))
 
+
 @skip_cmd
 def test_clean_files_and_dirs(tmpdir):
     """Create some files and folder and clean them afterwards.

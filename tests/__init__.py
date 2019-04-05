@@ -10,7 +10,9 @@ from subprocess import PIPE
 from subprocess import run as _run
 
 import pytest
+
 from baw.utils import get_setup
+from baw.utils import TMP
 
 MAX_NUMBER = 20
 MAX_TEST_RANDOM = 10**MAX_NUMBER
@@ -54,7 +56,7 @@ def tempfile():
         filepath(str): to tempfile in TEMP_FOLDER
     """
     # TODO: Investigate for better approch due pytest
-    TEMP = join(PROJECT, 'temp')
+    TEMP = join(PROJECT, TMP)
     makedirs(TEMP, exist_ok=True)
 
     name = 'temp%s' % tempname()
