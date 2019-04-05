@@ -22,6 +22,7 @@ from stat import S_IWRITE
 
 from baw.cmd import release
 from baw.config import commands
+from baw.config import shortcut
 from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import BAW_EXT
@@ -168,6 +169,28 @@ def publish(root: str, virtual: bool = False):
 
 
 SEPARATOR_WIDTH = 80
+
+
+def format_source(root: str, verbose: bool = False, virtual: bool = False):
+    short = shortcut(root)
+    for item in [short, 'tests']:
+        source = join(root, item)
+        command = 'yapf -r -i --style=google %s' % source
+        logging('Format source %s' % source)
+
+        completed = run_target(
+            root,
+            command,
+            source,
+            virtual=virtual,
+            verbose=verbose,
+        )
+
+        if completed.returncode:
+            logging_error('Error while fromating\n%s' % str(completed))
+            return FAILURE
+    logging('Format complete')
+    return SUCCESS
 
 
 def run(root: str, virtual=False):

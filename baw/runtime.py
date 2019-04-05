@@ -8,7 +8,6 @@
 #==============================================================================
 
 from contextlib import contextmanager
-from contextlib import suppress
 from os import environ
 from os import makedirs
 from os import scandir

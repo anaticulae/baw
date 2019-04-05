@@ -23,6 +23,7 @@ from baw.command import parse
 from baw.execution import clean as project_clean
 from baw.execution import clean_virtual
 from baw.execution import find_root
+from baw.execution import format_source
 from baw.execution import publish
 from baw.execution import run
 from baw.runtime import create as create_virtual
@@ -53,10 +54,16 @@ def run_main():
     init = args['init']
     clean = args['clean']
     clean_venv = args['clean_venv']
+    format_ = args['format']
 
     root = getcwd()
     if clean_venv:
         clean_virtual(root)
+
+    if format_:
+        failure = format_source(root, verbose=verbose, virtual=virtual)
+        if failure:
+            return failure
 
     if virtual:
         failure = create_virtual(root, clean=clean)
