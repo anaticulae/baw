@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+from os import environ
 from os import getcwd
 from sys import exc_info
 from time import time
@@ -55,6 +56,9 @@ def run_main():
     clean = args['clean']
     clean_venv = args['clean_venv']
     format_ = args['format']
+    if virtual:
+        # expose virtual flag
+        environ['VIRTUAL'] = "TRUE"
 
     root = getcwd()
     if clean_venv:
