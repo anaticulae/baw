@@ -15,6 +15,9 @@ tmp
 *.egg-info
 *.exe.stackdump
 *.pyc
+*.save
+*.swn
+*.swo
 *.swp
 .coverage
 
