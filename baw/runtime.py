@@ -12,6 +12,7 @@ from os import environ
 from os import makedirs
 from os import scandir
 from os.path import exists
+from os.path import isdir
 from os.path import join
 from shutil import rmtree
 from subprocess import CompletedProcess
@@ -20,6 +21,7 @@ from subprocess import run
 from sys import platform
 from time import time
 
+from baw.utils import FAILURE
 from baw.utils import file_create
 from baw.utils import file_read
 from baw.utils import file_remove
@@ -147,6 +149,14 @@ def run_target(
     start = time()
     if not cwd:
         cwd = root
+
+    if not exists(cwd):
+        logging_error('cwd: %s does not exists' % cwd)
+        return FAILURE
+
+    if not isdir(cwd):
+        logging_error('cwd: %s is not a directory' % cwd)
+        return FAILURE
 
     if not skip_error_code:
         skip_error_code = {}
@@ -282,12 +292,12 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
     process = run(
         command,
         cwd=cwd,
-        encoding='utf-8',
+        encoding='utf8',
         env=env,
         shell=True,
         stderr=None if debugging else PIPE,
         stdout=None if debugging else PIPE,
-        errors='xmlcharrefreplace',
+        errors='ignore',
         universal_newlines=True,
     )
     return process
