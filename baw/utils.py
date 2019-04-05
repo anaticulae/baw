@@ -77,7 +77,13 @@ def logging_error(msg: str):
     print('[ERROR] %s' % msg, file=stderr)
 
 
+PLAINOUTPUT = 'PLAINOUTPUT'
+
+
 def forward_slash(content: str):
+    if PLAINOUTPUT in environ:
+        return content
+
     content = str(content).replace(r'\\', '/').replace('\\', '/')
     return content
 

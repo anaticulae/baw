@@ -34,6 +34,7 @@ from baw.utils import forward_slash
 from baw.utils import handle_error
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import PLAINOUTPUT
 from baw.utils import print_runtime
 from baw.utils import SUCCESS
 
@@ -52,6 +53,7 @@ def run_main():
 
     verbose = args['verbose']
     virtual = args['virtual']
+    raw = args['raw']
     init = args['init']
     clean = args['clean']
     clean_venv = args['clean_venv']
@@ -59,6 +61,9 @@ def run_main():
     if virtual:
         # expose virtual flag
         environ['VIRTUAL'] = "TRUE"
+    if raw:
+        # expose raw out flag
+        environ[PLAINOUTPUT] = "TRUE"
 
     root = getcwd()
     if clean_venv:

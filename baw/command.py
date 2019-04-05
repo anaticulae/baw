@@ -37,6 +37,7 @@ INIT = Command('-i', '--init', 'Create .baw project', {
 DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
 FORMAT = Command('-f', '--format', 'Format repository')
 PUSH = Command('-p', '--publish', 'Push release to repository')
+RAW = Command('-ra', '--raw', 'Dont not modify stdout/stderr')
 RELEASE = Command(
     '-r', '--release', 'Test and tag commit as new release', {
         'nargs': '?',
@@ -85,6 +86,7 @@ def create_parser():  # noqa: Z21
         FORMAT,
         INIT,
         PUSH,
+        RAW,
         RELEASE,
         REPORT,
         RUN,
