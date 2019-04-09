@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v0.6.2
+
+### Feature
+
+* fail when --init on initialized project (4b9ee3381767)
+* do not run --virtual and --sync when --init (06a6b2e14f97)
+* add install command to install current project (dff9baab3fdc)
+* add option to generate std command line (a976607f329c)
+
+### Fix
+
+* use secure https connection (6993358766fa)
+
 ## v0.6.1
 
 ### Fix
