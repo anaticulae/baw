@@ -28,9 +28,44 @@ def sync(root: str, virtual: bool = False, verbose: bool = False):
     check_root(root)
     ret = 0
     logging()
-    ret += sync_files(root)
+    ret += sync_files(root, verbose=verbose)
     ret += sync_dependencies(root, virtual=virtual, verbose=verbose)
     return ret
+
+
+def check_dependency(
+        root: str,
+        package: str,
+        *,
+        virtual: bool,
+):
+    (adress, internal, external) = get_setup()
+
+    pip_index = '%s:%d' % (adress, internal)
+    extra_url = '%s:%d' % (adress, external)
+
+    if not connected(pip_index, extra_url):
+        msg = "Could not reach index %s or %s" % (pip_index, extra_url)
+        raise RuntimeError(msg)
+
+    for index in [pip_index, extra_url]:
+        pip = 'python -mpip search --retries 2 --index %s %s' % (index, package)
+        completed = run_target(
+            root,
+            pip,
+            verbose=False,
+            virtual=virtual,
+            skip_error_code=[23],  # package not found
+        )
+        if completed.returncode == 23:
+            # Package not available
+            continue
+        if completed.returncode and completed.stderr:
+            logging_error(completed.stderr)
+
+        if completed.stdout:
+            return completed.stdout
+    raise ValueError('Could not check dependencies %s' % (package))
 
 
 def sync_dependencies(

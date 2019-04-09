@@ -19,6 +19,7 @@ from baw.cmd import release
 from baw.cmd import run_test
 from baw.cmd import sync
 from baw.cmd import sync_files
+from baw.cmd import upgrade
 from baw.cmd.init import git_add
 from baw.command import parse
 from baw.execution import clean as project_clean
@@ -59,6 +60,7 @@ def run_main():
     clean = args['clean']
     clean_venv = args['clean_venv']
     format_ = args['format']
+    upgrade_ = args['upgrade']
 
     if virtual:
         # expose virtual flag
@@ -98,6 +100,7 @@ def run_main():
                 init_args[2] = True
 
             project_init(root, *init_args)
+
             sync_files(root)
             git_add(root, '*')
 
@@ -112,6 +115,11 @@ def run_main():
 
     with handle_error(ValueError, code=FAILURE):
         root = find_root(getcwd())
+
+    if upgrade_:
+        failure = upgrade(root, verbose=verbose, virtual=True)
+        print_runtime(start)
+        exit(failure)
 
     if clean:
         project_clean(root)
@@ -136,6 +144,7 @@ def run_main():
 
     if args['install']:
         ret += install(root, virtual=virtual)
+
     if args['release']:
         release_type = args['release']
         ret += release(root, release_type=release_type)

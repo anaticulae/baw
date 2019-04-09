@@ -55,6 +55,7 @@ RELEASE = Command(
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
 SYNC = Command('-s', '--sync', 'Sync dependencies')
+UPGRADE = Command('-up', '--upgrade', 'Upgrade requirements.txt')
 TEST = Command(
     '-t', '--test', 'Run tests and coverage', {
         'nargs': '?',
@@ -95,6 +96,7 @@ def create_parser():  # noqa: Z21
         RUN,
         SYNC,
         TEST,
+        UPGRADE,
         VENV,
         VERBOSE,
         VERSION,
