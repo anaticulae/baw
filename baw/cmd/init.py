@@ -44,6 +44,11 @@ def init(root: str, shortcut: str, name: str, cmdline: bool = False):
         shortcut(str): short name of project
         name(str): long name of generated project, used in documentation
     """
+    baw_path = join(root, BAW_EXT)
+    if exists(baw_path):
+        logging_error('Project %s already exists.' % baw_path)
+        exit(FAILURE)
+
     git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)
