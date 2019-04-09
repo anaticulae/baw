@@ -34,7 +34,7 @@ if __name__ == "__main__":
         platforms='any',
         setup_requires=[],
         tests_require=[],
-        url='http://dev.package.checkitweg.de/$_SHORT_$',
+        url='https://dev.package.checkitweg.de/$_SHORT_$',
         version=VERSION,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         packages=[
