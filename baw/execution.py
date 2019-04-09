@@ -145,8 +145,13 @@ SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
                         '(https://pypi.org/p/twine/)')
 
 
-def publish(root: str, virtual: bool = False):
-    tag = head_tag(root, virtual)
+def publish(root: str):
+    """Push release to defined repository
+
+    Hint:
+        publish is allways run in virtual
+    """
+    tag = head_tag(root, virtual=True)
     if not tag:
         logging_error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
@@ -160,7 +165,7 @@ def publish(root: str, virtual: bool = False):
         root,
         verbose=False,
         skip_error_message=[SDIST_UPLOAD_WARNING],
-        virtual=virtual,
+        virtual=True,
     )
 
     if completed.returncode == SUCCESS:

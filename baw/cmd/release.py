@@ -29,7 +29,6 @@ def release(
         *,
         stash: bool = False,
         verbose: bool = False,
-        virtual: bool = False,
         release_type: str = 'auto',
 ):
     """Running release. Running test, commit and tag.
@@ -52,13 +51,23 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
+    from baw.cmd.sync import sync
+    ret = sync(
+        root,
+        virtual=True,
+        verbose=verbose,
+    )
+    if ret:
+        logging_error('\nSync failed, could not release.\n')
+        return ret
+
     from baw.cmd.test import run_test  # break cyclic imports
     ret = run_test(
         root,
         longrun=True,
         stash=stash,
         verbose=verbose,
-        virtual=virtual,
+        virtual=True,
     )
     if ret:
         logging_error('\nTests failed, could not release.\n')

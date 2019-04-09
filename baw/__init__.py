@@ -88,7 +88,6 @@ def run_main():
             release(
                 root,
                 verbose=verbose,
-                virtual=virtual,
                 stash=False,  # Nothing to stash at the first time
             )
 
@@ -118,10 +117,10 @@ def run_main():
 
     if args['release']:
         release_type = args['release']
-        ret += release(root, virtual=virtual, release_type=release_type)
+        ret += release(root, release_type=release_type)
 
     if args['publish']:
-        ret += publish(root, virtual=virtual)
+        ret += publish(root)
 
     if args['run']:
         ret += run(root, virtual=virtual)
