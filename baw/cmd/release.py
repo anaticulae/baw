@@ -27,22 +27,24 @@ NO_RELEASE_MESSAGE = 'No release will be made.'
 def release(
         root: str,
         *,
+        release_type: str = 'auto',
         stash: bool = False,
         verbose: bool = False,
-        release_type: str = 'auto',
+        sync: bool = True,
+        virtual: bool = True,
 ):
     """Running release. Running test, commit and tag.
 
     Args:
         root(str): generated project
-        stash(bool): git stash to test on a clean git directory
-        verbose(bool): log additional output
-        virtual(bool): run in virtual environment
         release_type(str): major x.0.0
                            minor 0.x.0
                            patch 0.0.x
                            noop  0.0.0 do nothing
                            auto  let semantic release decide
+        stash(bool): git stash to test on a clean git directory
+        verbose(bool): log additional output
+        virtual(bool): run in virtual environment
     Return:
         0 if success else > 0
 
@@ -51,15 +53,16 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
-    from baw.cmd.sync import sync
-    ret = sync(
-        root,
-        virtual=True,
-        verbose=verbose,
-    )
-    if ret:
-        logging_error('\nSync failed, could not release.\n')
-        return ret
+    if sync:
+        from baw.cmd.sync import sync as run_sync
+        ret = run_sync(
+            root,
+            verbose=verbose,
+            virtual=virtual,
+        )
+        if ret:
+            logging_error('\nSync failed, could not release.\n')
+            return ret
 
     from baw.cmd.test import run_test  # break cyclic imports
     ret = run_test(
@@ -67,7 +70,7 @@ def release(
         longrun=True,
         stash=stash,
         verbose=verbose,
-        virtual=True,
+        virtual=virtual,
     )
     if ret:
         logging_error('\nTests failed, could not release.\n')

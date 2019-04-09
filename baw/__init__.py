@@ -101,9 +101,12 @@ def run_main():
             sync_files(root)
             git_add(root, '*')
 
+            # Deactivate options to reach fast reaction
             release(
                 root,
                 verbose=verbose,
+                sync=False,  # No sync for first time needed
+                virtual=False,  # No virtual for first time needed
                 stash=False,  # Nothing to stash at the first time
             )
 
