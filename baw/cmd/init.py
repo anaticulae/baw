@@ -28,12 +28,14 @@ from baw.resources import MAIN_CMD
 from baw.resources import SETUP_PY
 from baw.resources import template_replace
 from baw.runtime import NO_EXECUTABLE
+from baw.runtime import run_target
 from baw.utils import BAW_EXT
 from baw.utils import FAILURE
 from baw.utils import file_create
 from baw.utils import GIT_EXT
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import SUCCESS
 
 
 def init(root: str, shortcut: str, name: str, cmdline: bool = False):
@@ -47,13 +49,14 @@ def init(root: str, shortcut: str, name: str, cmdline: bool = False):
     baw_path = join(root, BAW_EXT)
     if exists(baw_path):
         logging_error('Project %s already exists.' % baw_path)
-        exit(FAILURE)
+        raise ValueError(FAILURE)
 
     git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
+    return SUCCESS
 
 
 def create_folder(root: str):
@@ -153,9 +156,20 @@ def git_add(root: str, pattern: str):
     Args:
         root(str): root of generated project
         pattern(str): pattern in linux-style"""
+    assert exists(root)
     logging('git add')
-    add = run(['git', 'add', pattern])
+    add = run_target(root, 'git add %s' % pattern, verbose=False)
     evaluate_git_error(add)
+
+
+def git_commit(root, source, message):
+    assert exists(root)
+    message = '"%s"' % message
+    logging('git commit')
+    process = run_target(
+        root, 'git commit %s -m %s' % (source, message), verbose=False)
+
+    return process.returncode
 
 
 def skip(msg: str):
@@ -179,4 +193,4 @@ def evaluate_git_error(process: CompletedProcess):
     if process.returncode == NO_EXECUTABLE:
         raise ChildProcessError('Git is not installed')
     if process.returncode:
-        raise ChildProcessError('Could not run git init')
+        raise ChildProcessError('Could not run git %s' % str(process))
