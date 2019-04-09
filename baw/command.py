@@ -9,6 +9,7 @@
 """Define structure of command line interface."""
 
 from argparse import ArgumentParser
+from argparse import REMAINDER
 from dataclasses import dataclass
 
 
@@ -29,10 +30,10 @@ BUILD = Command('-b', '--build', 'Run build tasks')
 CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
 CLEAN_VENV = Command('-cv', '--clean_venv', 'Clean virtual environment')
 DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
-INIT = Command('-i', '--init', 'Create .baw project', {
-    'nargs': 2,
-    'metavar': ('shortcut', 'name'),
-})
+INIT = Command('-i', '--init',
+               'Initialize .baw project - shortcut name [--with_cmd]', {
+                   'nargs': REMAINDER,
+               })
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
 FORMAT = Command('-f', '--format', 'Format repository')

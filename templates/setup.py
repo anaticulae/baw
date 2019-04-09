@@ -39,10 +39,12 @@ if __name__ == "__main__":
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         packages=[
             '$_SHORT_$',
+            $_ENTRY_POINT_PACKAGE_$
         ],
         classifiers=[
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
         ],
+        $_ENTRY_POINT_$
     )

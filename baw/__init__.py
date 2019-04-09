@@ -81,7 +81,21 @@ def run_main():
 
     if init:
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
-            project_init(root, *args['init'])
+            # TODO: Very dirty
+            init_args = args['init']
+            # with_cmd = False
+            if len(init_args) > 3:
+                logging_error('To many inputs: %s' % args['init'])
+                return FAILURE
+            if len(init_args) == 3:
+                if init_args[2] != '--with_cmd':
+                    logging_error('--with_cmd allowed, not %s' % init_args[2])
+                    return FAILURE
+                # with_cmd = True
+                # init_args = init_args[:2]
+                init_args[2] = True
+
+            project_init(root, *init_args)
             sync_files(root)
             git_add(root, '*')
 

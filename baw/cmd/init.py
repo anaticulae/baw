@@ -19,17 +19,24 @@ from subprocess import CompletedProcess
 from subprocess import run
 
 from baw.config import create_config
+from baw.resources import ENTRY_POINT
 from baw.resources import FILES
 from baw.resources import FOLDERS
 from baw.resources import INIT
+from baw.resources import INIT_CMD
+from baw.resources import MAIN_CMD
+from baw.resources import SETUP_PY
 from baw.resources import template_replace
 from baw.runtime import NO_EXECUTABLE
+from baw.utils import BAW_EXT
+from baw.utils import FAILURE
 from baw.utils import file_create
 from baw.utils import GIT_EXT
 from baw.utils import logging
+from baw.utils import logging_error
 
 
-def init(root: str, shortcut: str, name: str):
+def init(root: str, shortcut: str, name: str, cmdline: bool = False):
     """Init project due generatig file and folder
 
     Args:
@@ -40,7 +47,7 @@ def init(root: str, shortcut: str, name: str):
     git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)
-    create_python(root, shortcut)
+    create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
 
 
@@ -79,7 +86,12 @@ def create_files(root: str):
         file_create(create, content=replaced)
 
 
-def create_python(root: str, shortcut: str):
+def create_python(
+        root: str,
+        shortcut: str,
+        *,
+        cmdline: bool = False,
+):
     """Create __init__.py with containing __version__-tag
 
     Args:
@@ -87,10 +99,33 @@ def create_python(root: str, shortcut: str):
         shortcut(str): short name of generated project. Init file is located
                        in root/shortcut/__init__.py
     """
+    # TODO: DIRTY
     python_project = join(root, shortcut)
+    python_cmdline = join(python_project, 'command')
+
     makedirs(python_project, exist_ok=True)
+    makedirs(python_cmdline, exist_ok=True)
 
     file_create(join(python_project, '__init__.py'), INIT)
+
+    entry_point = ''
+    entry_point_package = ''
+    if cmdline:
+        main_replaced = template_replace(root, MAIN_CMD)
+        init_replaced = template_replace(root, INIT_CMD)
+
+        file_create(join(python_project, '__main__.py'), main_replaced)
+        file_create(join(python_cmdline, '__init__.py'), init_replaced)
+
+        entry_point = template_replace(root, ENTRY_POINT)
+        entry_point_package = "'%s.command'," % shortcut
+
+    setup_replaced = template_replace(root, SETUP_PY)
+    setup_replaced = setup_replaced.replace("$_ENTRY_POINT_$", entry_point)
+    setup_replaced = setup_replaced.replace("$_ENTRY_POINT_PACKAGE_$",
+                                            entry_point_package)
+
+    file_create(join(root, 'setup.py'), setup_replaced)
 
 
 def git_init(root: str):

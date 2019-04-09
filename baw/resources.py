@@ -86,7 +86,7 @@ Indices and tables
 
 REQUIREMENTS = ""
 
-INIT = """\
+COPYRIGHT = """\
 #==============================================================================
 # C O P Y R I G H T
 #------------------------------------------------------------------------------
@@ -95,12 +95,51 @@ INIT = """\
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+"""
 
+INIT = COPYRIGHT + """\
 import os
 
 __version__ = '0.0.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+"""
+
+ENTRY_POINT = """\
+entry_points={
+            'console_scripts': ['$_SHORT_$ = $_SHORT_$.command:main'],
+        },
+"""
+
+INIT_CMD = COPYRIGHT + """\
+from utila import SUCCESS
+from utila import create_parser
+from utila import parse
+from utila import saveme
+from utila import sources
+
+from $_SHORT_$ import __version__
+
+COMMANDS = [] # add additonal commands here
+
+@saveme
+def main():
+    parser = create_parser(
+        COMMANDS,
+        version=__version__,
+        outputparameter=True,
+        inputparameter=True,
+    )
+    args = parse(parser)
+    inputpath, output = sources(args)
+
+    return SUCCESS
+"""
+
+MAIN_CMD = COPYRIGHT + """\
+from $_SHORT_$.command import main
+
+main()
 """
 
 CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
@@ -126,7 +165,7 @@ FILES = [
     ('docs/pages/readme.rst', README_RST),
     ('docs/pages/todo.rst', TODO_RST),
     ('requirements.txt', REQUIREMENTS),
-    ('setup.py', SETUP_PY),
+    # ('setup.py', SETUP_PY),
 ]
 
 
