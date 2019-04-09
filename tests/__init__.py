@@ -28,6 +28,7 @@ LONGRUN = 'LONGRUN' in environ.keys()
 NO_LONGRUN_REASON = 'Takes to mutch time'
 
 FAST = 'FAST' in environ.keys()
+NON_VIRTUAL = 'VIRTUAL' not in environ.keys()
 
 NO_BAW = FAST
 NO_BAW_RESON = 'Installing baw takes long time'
@@ -37,6 +38,8 @@ skip_missing_packages = pytest.mark.skip(
 skip_longrun = pytest.mark.skipif(
     not LONGRUN or FAST, reason="Test require long time")
 skip_cmd = pytest.mark.skipif(NO_BAW, reason="Decrease response time")
+skip_nonvirtual = pytest.mark.skipif(
+    NON_VIRTUAL, reason="No virtual environment")
 
 
 def tempname():
