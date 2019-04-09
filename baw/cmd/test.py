@@ -35,6 +35,7 @@ def run_test(
         fast: bool = False,
         longrun: bool = False,
         pdb: bool = False,
+        quiet: bool = False,
         stash: bool = False,
         verbose: bool = False,
         virtual: bool = False,
@@ -79,10 +80,16 @@ def run_test(
     test_config = join(ROOT, 'templates', 'pytest.ini')
     assert exists(test_config), 'No testconfig available %s' % test_config
 
+    override_testconfig = '--verbose --durations=10'
+    if quiet:
+        override_testconfig = '--quiet'
+
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
-    cmd = ('python -m pytest -c %s %s %s --basetemp=%s --log-file="%s" %s') % (
+    cmd = 'python -m pytest -c %s %s %s %s --basetemp=%s --log-file="%s" %s'
+    cmd = cmd % (
         test_config,
+        override_testconfig,
         debugger,
         cov,
         tmp_test_path,
@@ -104,7 +111,7 @@ def run_test(
     )
 
     if stash:
-        with git_stash(root, virtual):
+        with git_stash(root, verbose=verbose, virtual=virtual):
             completed = target()
     else:
         completed = target()

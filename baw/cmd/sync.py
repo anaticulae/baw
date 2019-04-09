@@ -17,6 +17,7 @@ from baw.runtime import run_target
 from baw.utils import check_root
 from baw.utils import FAILURE
 from baw.utils import file_replace
+from baw.utils import get_setup
 from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import logging
 from baw.utils import logging_error
@@ -76,7 +77,6 @@ def sync_dependencies(
 ):
     check_root(root)
     logging('sync dependencies')
-    logging()
     requirements_dev = 'requirements-dev.txt'
     resources = ['requirements.txt', requirements_dev]
     # make path absolute in project
@@ -96,7 +96,8 @@ def sync_dependencies(
     ret = 0
     for to_install in resources:
         cmd = 'python -mpip install %s -U %s -r %s' % (pip, config, to_install)
-        logging(cmd)
+        if verbose:
+            logging(cmd)
 
         completed = run_target(
             root,
@@ -113,11 +114,13 @@ def sync_dependencies(
             for message in completed.stdout.splitlines():
                 if should_skip(message, verbose=verbose):
                     continue
-                logging(message)
-            logging()
+                if verbose:
+                    logging(message)
         if completed.returncode and completed.stderr:
             logging_error(completed.stderr)
         ret += completed.returncode
+    logging()
+    logging()
     return ret
 
 
@@ -151,7 +154,8 @@ def should_skip(msg: str, verbose: bool = False):
     return False
 
 
-def sync_files(root: str):
-    logging('sync gitexclude')
+def sync_files(root: str, verbose: bool = False):
+    if verbose:
+        logging('sync gitexclude')
     file_replace(join(root, GIT_REPO_EXCLUDE), GITIGNORE)
     return 0

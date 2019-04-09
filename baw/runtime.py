@@ -192,10 +192,12 @@ def run_target(
     returncode = completed.returncode
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
-        logging_error('Running `%(command)s` in `%(cwd)s`' % {
-            'command': command,
-            'cwd': cwd,
-        })
+        logging_error(
+            'Running `%(command)s` in `%(cwd)s` returncode: %(returncode)d' % {
+                'command': command,
+                'cwd': cwd,
+                'returncode': returncode,
+            })
 
     if completed.stdout and verbose:
         logging(completed.stdout)
@@ -304,7 +306,7 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
 
 
 @contextmanager
-def git_stash(root: str, virtual: bool):
+def git_stash(root: str, *, verbose: bool = False, virtual: bool = False):
     """Save uncommited/not versonied content to improve testability
 
     Args:
@@ -314,16 +316,16 @@ def git_stash(root: str, virtual: bool):
     """
     # TODO: Ivestigate here
     cmd = 'git stash --include-untracked'
-    completed = run_target(root, cmd, virtual=virtual)
+    completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
 
     error = None
     try:
         yield  # let user do there job
-    except Exception as error:
+    except Exception as error:  # exception is reraised after unstash
         pass
     # unstash to recreate dirty environment
     cmd = 'git stash pop'
-    completed = run_target(root, cmd, virtual=virtual)
+    completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
     if completed.returncode:
         logging_error(completed.stderr)
 

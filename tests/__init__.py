@@ -10,7 +10,6 @@ from subprocess import PIPE
 from subprocess import run as _run
 
 import pytest
-
 from baw.utils import get_setup
 from baw.utils import TMP
 
