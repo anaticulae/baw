@@ -20,7 +20,6 @@ from os.path import splitdrive
 from shutil import rmtree
 from stat import S_IWRITE
 
-from baw.cmd import release
 from baw.config import commands
 from baw.config import shortcut
 from baw.runtime import run_target
