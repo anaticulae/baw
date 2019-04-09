@@ -30,6 +30,7 @@ BUILD = Command('-b', '--build', 'Run build tasks')
 CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
 CLEAN_VENV = Command('-cv', '--clean_venv', 'Clean virtual environment')
 DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
+INSTALL = Command('-in', '--install', 'Run install task')
 INIT = Command('-i', '--init',
                'Initialize .baw project - shortcut name [--with_cmd]', {
                    'nargs': REMAINDER,
@@ -86,6 +87,7 @@ def create_parser():  # noqa: Z21
         DOCKER,
         FORMAT,
         INIT,
+        INSTALL,
         PUSH,
         RAW,
         RELEASE,

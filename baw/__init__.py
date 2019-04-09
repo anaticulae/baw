@@ -25,6 +25,7 @@ from baw.execution import clean as project_clean
 from baw.execution import clean_virtual
 from baw.execution import find_root
 from baw.execution import format_source
+from baw.execution import install
 from baw.execution import publish
 from baw.execution import run
 from baw.runtime import create as create_virtual
@@ -58,6 +59,7 @@ def run_main():
     clean = args['clean']
     clean_venv = args['clean_venv']
     format_ = args['format']
+
     if virtual:
         # expose virtual flag
         environ['VIRTUAL'] = "TRUE"
@@ -129,6 +131,8 @@ def run_main():
     if args['doc']:
         ret += doc(root, virtual=virtual)
 
+    if args['install']:
+        ret += install(root, virtual=virtual)
     if args['release']:
         release_type = args['release']
         ret += release(root, release_type=release_type)

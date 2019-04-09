@@ -131,6 +131,14 @@ def clean_virtual(root: str):
     logging('Finished')
 
 
+def install(root: str, virtual: bool):
+    command = 'python setup.py install'
+
+    completed = run_target(root, command, root, verbose=False, virtual=virtual)
+    print(completed.stdout)
+    return completed.returncode
+
+
 def head_tag(root: str, virtual: bool):
     command = 'git tag --points-at HEAD'
 
