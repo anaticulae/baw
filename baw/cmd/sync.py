@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from os import environ
 from os.path import exists
 from os.path import join
 from urllib.request import URLError
@@ -21,7 +20,6 @@ from baw.utils import file_replace
 from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import NEWLINE
 from baw.utils import package_address
 from baw.utils import ROOT
 

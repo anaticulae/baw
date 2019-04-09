@@ -25,7 +25,7 @@ class Command:
             yield item
 
 
-ALL = Command('-a', '--all', 'Clean and run all exepect of publishing')
+ALL = Command('-a', '--all', 'Clean and run all expect of publishing')
 BUILD = Command('-b', '--build', 'Run build tasks')
 CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
 CLEAN_VENV = Command('-cv', '--clean_venv', 'Clean virtual environment')
@@ -39,7 +39,7 @@ INIT = Command('-i', '--init',
 DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
 FORMAT = Command('-f', '--format', 'Format repository')
 PUSH = Command('-p', '--publish', 'Push release to repository')
-RAW = Command('-ra', '--raw', 'Dont not modify stdout/stderr')
+RAW = Command('-ra', '--raw', 'Do not modify stdout/stderr')
 RELEASE = Command(
     '-r', '--release', 'Test and tag commit as new release', {
         'nargs': '?',
