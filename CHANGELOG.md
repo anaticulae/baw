@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v0.6.1
+
+### Fix
+
+* change author mail to checkitweg (baafca845bc5)
+* remove outdated __init__ template (18dc4401beca)
+* run release always in virtual mode, sync before release (366191ba5161)
+* extend global git ignore with vim tmp-files (0f71be5303f2)
+
 ## v0.6.0
 
 ### Feature
