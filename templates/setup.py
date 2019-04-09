@@ -15,6 +15,7 @@ from re import search
 from setuptools import setup
 
 ROOT = dirname(__file__)
+
 with open(join(ROOT, 'README.md'), 'rt', encoding='utf8') as fp:
     README = fp.read()
 
@@ -24,7 +25,7 @@ with open(join(ROOT, '$_SHORT_$/__init__.py'), 'rt', encoding='utf8') as fp:
 if __name__ == "__main__":
     setup(
         author='Helmut Konrad Fahrendholz',
-        author_email='kiwi@derspanier.de',
+        author_email='info@checkitweg.de',
         description='$_NAME_$',
         include_package_data=True,
         install_requires=[],
