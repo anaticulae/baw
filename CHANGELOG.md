@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v0.6.3
+
+### Feature
+
+* add --upgrade option to update --requirements.txt (b9ab6a78ed29)
+
+### Fix
+
+* reduce verbosity of test logging (3d6abe0d61eb)
+* use default run_target for running git commands (51c91f827bf8)
+
 ## v0.6.2
 
 ### Feature
