@@ -75,13 +75,16 @@ def clean(root: str):
     check_root(root)
     logging('Start cleaning')
     patterns = [
+        '*.egg',
+        '*.egg-info',
         '.coverage',
         '.pytest_cache',
+        '.tmp',
         '__pycache__',
         'build',
+        'dist',
         'doctrees',
         'html',
-        '.tmp',
     ]
 
     # problems while deleting recursive
@@ -91,7 +94,6 @@ def clean(root: str):
             todo = glob(root + '/**/' + pattern, recursive=True)
         except NotADirectoryError:
             todo = glob(root + '**' + pattern, recursive=True)
-
         todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
             logging('Remove %s' % item)
