@@ -13,10 +13,8 @@ from re import search
 
 from baw.cmd.sync import check_dependency
 from baw.runtime import git_stash
-from baw.utils import FAILURE
 from baw.utils import file_read
 from baw.utils import file_replace
-from baw.utils import handle_error
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import REQUIREMENTS_TXT
@@ -30,8 +28,6 @@ def upgrade(
         virtual: bool = False,
 ):
     with git_stash(root, verbose=verbose, virtual=virtual):
-        logging('Stash environment')
-
         requirements = join(root, REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
 
@@ -86,11 +82,11 @@ def upgrade_requirements(
     requirements_path = join(root, requirements)
     msg = 'Path does not exists %s' % requirements_path
     assert exists(requirements_path), msg
-    logging('Start upgrading requirements %s' % requirements_path)
+    logging('\nStart upgrading requirements: %s' % requirements_path)
 
     content = file_read(requirements_path)
     if not content.strip():
-        logging('Empty %s. Skipping replacement.' % requirements_path)
+        logging('Empty: %s. Skipping replacement.' % requirements_path)
         # stop further synchonizing process and quit with SUCCESS
         return REQUIREMENTS_UP_TO_DATE
 
@@ -99,7 +95,7 @@ def upgrade_requirements(
     replaced = replace_requirements(content, upgraded)
 
     if replaced == content:
-        logging('\nRequirements are up to date.\n')
+        logging('Requirements are up to date.\n')
         return REQUIREMENTS_UP_TO_DATE
 
     file_replace(requirements_path, replaced)

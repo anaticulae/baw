@@ -28,6 +28,7 @@ from baw.utils import file_remove
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import print_runtime
+from baw.utils import SUCCESS
 
 VIRTUAL_FOLDER = '.virtual'
 
@@ -71,8 +72,8 @@ def create(root: str, clean: bool = False):
         makedirs(virtual)
 
     if exists(virtual) and list(scandir(virtual)):
-        logging('Using virtual environment %s\n' % virtual)
-        return 0
+        logging('Using virtual environment: %s\n' % virtual)
+        return SUCCESS
 
     venv_command = [
         "python",
@@ -87,14 +88,14 @@ def create(root: str, clean: bool = False):
     process = _run(command=venv_command, cwd=virtual)
     if process.returncode == 0:
         __fix_environment(root)
-        return 0
+        return SUCCESS
 
     logging_error('While creating virutal environment')
 
     logging(process.stdout)
     logging_error(process.stderr)
 
-    return 1
+    return FAILURE
 
 
 def __fix_environment(root: str):
