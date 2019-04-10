@@ -31,11 +31,16 @@ from baw.runtime import NO_EXECUTABLE
 from baw.runtime import run_target
 from baw.utils import BAW_EXT
 from baw.utils import FAILURE
+from baw.utils import file_append
 from baw.utils import file_create
 from baw.utils import GIT_EXT
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import NEWLINE
+from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
+
+ADDITONAL_REQUIREMENTS = []
 
 
 def init(root: str, shortcut: str, name: str, cmdline: bool = False):
@@ -56,6 +61,7 @@ def init(root: str, shortcut: str, name: str, cmdline: bool = False):
     create_config(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
+    create_requirements(root)
     return SUCCESS
 
 
@@ -73,7 +79,7 @@ def create_folder(root: str):
         logging('Create folder %s' % item)
 
 
-def create_files(root: str):
+def create_files(root: str, verbose: bool = False):
     """Copy file to generated template. Before copying, replce template vars
 
     Args:
@@ -128,12 +134,23 @@ def create_python(
         entry_point = template_replace(root, ENTRY_POINT)
         entry_point_package = "'%s.command'," % shortcut
 
+        ADDITONAL_REQUIREMENTS.append('utila')
+
     setup_replaced = template_replace(root, SETUP_PY)
     setup_replaced = setup_replaced.replace("$_ENTRY_POINT_$", entry_point)
     setup_replaced = setup_replaced.replace("$_ENTRY_POINT_PACKAGE_$",
                                             entry_point_package)
 
     file_create(join(root, 'setup.py'), setup_replaced)
+
+
+def create_requirements(root: str):
+    logging('add requirements')
+    content = ''
+    for item in ADDITONAL_REQUIREMENTS:
+        content += item + NEWLINE
+
+    file_append(join(root, REQUIREMENTS_TXT), content)
 
 
 def git_init(root: str):
