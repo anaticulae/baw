@@ -19,6 +19,7 @@ from baw.utils import file_replace
 from baw.utils import handle_error
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
 
 
@@ -31,10 +32,13 @@ def upgrade(
     with git_stash(root, verbose=verbose, virtual=virtual):
         logging('Stash environment')
 
-        requirements = join(root, 'requirements.txt')
+        requirements = join(root, REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
+
+        # requirements.txt is uptodate, no update requireded
         if failure == REQUIREMENTS_UP_TO_DATE:
             return SUCCESS
+
         if failure:
             logging_error('Error while upgrading requirements')
             return failure
@@ -55,7 +59,7 @@ def upgrade(
         failure = git_commit(
             root,
             source=requirements,
-            message='chore(requirements): upgrade requirements.txt')
+            message='chore(requirements): upgrade %s' % REQUIREMENTS_TXT)
         if failure:
             return failure
     return SUCCESS
@@ -66,7 +70,7 @@ REQUIREMENTS_UP_TO_DATE = 100
 
 def upgrade_requirements(
         root: str,
-        requirements: str = 'requirements.txt',
+        requirements: str = REQUIREMENTS_TXT,
         virtual: bool = False,
 ):
     """Take requirements.txt, replace version number with current available

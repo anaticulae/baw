@@ -31,6 +31,8 @@ GIT_EXT = '.git'
 GIT_REPO_EXCLUDE = '.git/info/exclude'
 TMP = '.tmp'
 
+REQUIREMENTS_TXT = 'requirements.txt'
+
 SUCCESS = 0
 FAILURE = 1
 

@@ -8,6 +8,7 @@ from baw.project import version
 from baw.utils import BAW_EXT
 from baw.utils import file_read
 from baw.utils import GIT_REPO_EXCLUDE
+from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 
 FOLDERS = [
@@ -164,7 +165,7 @@ FILES = [
     ('docs/pages/changelog.rst', CHANGELOG_RST),
     ('docs/pages/readme.rst', README_RST),
     ('docs/pages/todo.rst', TODO_RST),
-    ('requirements.txt', REQUIREMENTS),
+    (REQUIREMENTS_TXT, REQUIREMENTS),
     # ('setup.py', SETUP_PY),
 ]
 

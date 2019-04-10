@@ -16,6 +16,7 @@ from baw.cmd.upgrade import replace_requirements
 from baw.cmd.upgrade import upgrade_requirements
 from baw.utils import file_create
 from baw.utils import file_read
+from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 
 NEW_VERSION_AVAILABLE = """
@@ -126,7 +127,7 @@ iamraw
 
 
 def test_upgrading(tmpdir):
-    requirements_path = join(tmpdir, 'requirements.txt')
+    requirements_path = join(tmpdir, REQUIREMENTS_TXT)
 
     file_create(requirements_path, TEST_UPGRADE)
 

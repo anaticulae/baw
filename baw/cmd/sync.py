@@ -22,6 +22,7 @@ from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import package_address
+from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 
 
@@ -78,7 +79,7 @@ def sync_dependencies(
     check_root(root)
     logging('sync dependencies')
     requirements_dev = 'requirements-dev.txt'
-    resources = ['requirements.txt', requirements_dev]
+    resources = [REQUIREMENTS_TXT, requirements_dev]
     # make path absolute in project
     resources = [join(root, to_install) for to_install in resources]
     resources = [to_install for to_install in resources if exists(to_install)]
