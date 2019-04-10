@@ -132,7 +132,8 @@ def clean_virtual(root: str):
 
 
 def install(root: str, virtual: bool):
-    command = 'python setup.py install'
+    # -f always install newest one
+    command = 'python setup.py install -f'
 
     completed = run_target(root, command, root, verbose=False, virtual=virtual)
     print(completed.stdout)
