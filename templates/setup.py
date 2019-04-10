@@ -22,13 +22,18 @@ with open(join(ROOT, 'README.md'), 'rt', encoding='utf8') as fp:
 with open(join(ROOT, '$_SHORT_$/__init__.py'), 'rt', encoding='utf8') as fp:
     VERSION = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
+with open(join(ROOT, "requirements.txt"), mode='rt', encoding='utf-8') as fp:
+    INSTALL_REQUIRES = [
+        line for line in fp.readlines() if line and not '#' in line
+    ]
+
 if __name__ == "__main__":
     setup(
         author='Helmut Konrad Fahrendholz',
         author_email='info@checkitweg.de',
         description='$_NAME_$',
         include_package_data=True,
-        install_requires=[],
+        install_requires=INSTALL_REQUIRES,
         long_description=README,
         name='$_SHORT_$',
         platforms='any',
