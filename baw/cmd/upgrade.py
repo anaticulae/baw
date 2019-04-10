@@ -91,7 +91,8 @@ def upgrade_requirements(
     content = file_read(requirements_path)
     if not content.strip():
         logging('Empty %s. Skipping replacement.' % requirements_path)
-        return SUCCESS
+        # stop further synchonizing process and quit with SUCCESS
+        return REQUIREMENTS_UP_TO_DATE
 
     # parsed = parse_requirements(content)
     upgraded = determine_new_requirements(root, content, virtual=virtual)
