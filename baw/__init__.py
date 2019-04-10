@@ -62,6 +62,10 @@ def run_main():
     format_ = args['format']
     upgrade_ = args['upgrade']
 
+    if upgrade_:
+        # Upgrade command requires always virtual environment
+        virtual = True
+
     if virtual:
         # expose virtual flag
         environ['VIRTUAL'] = "TRUE"
@@ -139,6 +143,7 @@ def run_main():
             verbose=verbose,
             virtual=virtual,
         )
+
     if args['doc']:
         ret += doc(root, virtual=virtual)
 
