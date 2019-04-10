@@ -140,17 +140,17 @@ def determine_new_requirements(
 ) -> str:
     parsed = parse_requirements(requirements)
 
-    upgrade = {}
+    result = {}
     for package, version in parsed.items():
         try:
-            result = check_dependency(root, package, virtual=virtual)
+            dependency = check_dependency(root, package, virtual=virtual)
         except ValueError:
             logging_error('Package `%s` is not available' % package)
         else:
-            available = available_version(result)
+            available = available_version(dependency)
             if available != version:
-                upgrade[package] = (version, available)  #(old, new)
-    return upgrade
+                result[package] = (version, available)  #(old, new)
+    return result
 
 
 def replace_requirements(requirements: str, new_requirements: dict) -> str:
@@ -158,6 +158,7 @@ def replace_requirements(requirements: str, new_requirements: dict) -> str:
         if old:
             placeholder = '%s==%s' % (package, old)
         else:
+            # no version was given for old package
             placeholder = '%s' % package
 
         replacement = '%s==%s' % (package, new)

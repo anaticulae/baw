@@ -26,7 +26,7 @@ from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 
 
-def sync(root: str, virtual: bool = False, verbose: bool = False):
+def sync(root: str, *, virtual: bool = False, verbose: bool = False):
     check_root(root)
     ret = 0
     logging()
@@ -84,6 +84,9 @@ def sync_dependencies(
     resources = [join(root, to_install) for to_install in resources]
     resources = [to_install for to_install in resources if exists(to_install)]
 
+    # Requirements_dev is a `global` file from baw project. This file is not
+    # given in child project, it is referenced from global baw. Pay attention
+    # to the difference of ROOT (baw) and root(project).
     if not exists(join(root, requirements_dev)):
         resources.append(join(ROOT, requirements_dev))
 
