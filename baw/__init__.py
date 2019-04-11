@@ -65,8 +65,8 @@ def run_main():
     release_ = args['release']
     drop_release_ = args['drop_release']
 
-    if upgrade_:
-        # Upgrade command requires always virtual environment
+    if upgrade_ or release_:
+        # Upgrade, release command requires always virtual environment
         virtual = True
 
     if virtual:
