@@ -164,6 +164,9 @@ def run_main():
     return ret
 
 
+# TODO: add matrix with excluding cmds, eg. --init --drop_release
+
+
 def main():
     """Entry point of script"""
     try:

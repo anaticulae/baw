@@ -24,7 +24,7 @@ with open(join(ROOT, '$_SHORT_$/__init__.py'), 'rt', encoding='utf8') as fp:
 
 with open(join(ROOT, "requirements.txt"), mode='rt', encoding='utf-8') as fp:
     INSTALL_REQUIRES = [
-        line for line in fp.readlines() if line and not '#' in line
+        line for line in fp.readlines() if line and '#' not in line
     ]
 
 if __name__ == "__main__":

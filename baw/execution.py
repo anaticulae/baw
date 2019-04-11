@@ -159,7 +159,7 @@ def publish(root: str):
     """Push release to defined repository
 
     Hint:
-        publish is allways run in virtual
+        publish run's always in virtual environment
     """
     tag = head_tag(root, virtual=True)
     if not tag:
