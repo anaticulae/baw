@@ -6,9 +6,12 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-
 from contextlib import contextmanager
+from functools import partial
 from os import unlink
+from os.path import exists
+from os.path import join
+from re import match
 from tempfile import TemporaryFile
 
 from baw.config import shortcut
@@ -112,3 +115,81 @@ def temp_semantic_config(root: str):
 
     # remove file
     unlink(fp.name)
+
+
+RELEASE_PATTERN = r'(?P<release>v\d+\.\d+\.\d+)'
+
+DEFAULT_RELEASE = 'v0.0.0'
+
+
+def drop_release(root: str, virtual: bool = False, verbose: bool = False):
+    """
+    1. Check if last commit is a tagged release, if not abbort.
+    2. Remove last commit git reset HEAD~1
+    3. Checkout CHANGELOG and __init__.py
+    4. Remove tag
+    """
+    logging('Start dropping release')
+    # git tag --contains HEAD -> Answer the last commit
+    logging('Detect current release:')
+    runner = partial(run_target, verbose=verbose, virtual=virtual)
+    completed = runner(root, 'git tag --contains HEAD')
+    matched = match(RELEASE_PATTERN, completed.stdout)
+    if not matched:
+        logging_error('No release tag detected')
+        return FAILURE
+    current_release = matched['release']
+    # do not remove the first commit/release in the repository
+    if current_release == DEFAULT_RELEASE:
+        logging_error('Could not remove %s release' % DEFAULT_RELEASE)
+        return FAILURE
+    logging(current_release)
+
+    # remove the last release commit
+    # git reset HEAD~1
+    logging('Remove last commit')
+    completed = runner(root, 'git reset HEAD~1')
+    if completed.returncode:
+        logging_error('while removing the last commit: %s' % str(completed))
+        return completed.returncode
+
+    # git checkout CHANGELOG.md, $_NAME_$/__init__..py
+    to_reset = path_after_reset(root)
+    if not to_reset:
+        return FAILURE
+    to_reset = ' '.join(to_reset)
+    logging('Reset %s' % to_reset)
+    completed = runner(root, 'git checkout -q %s' % to_reset)
+    if completed.returncode:
+        msg = 'while checkout out %s\n%s' % (to_reset, str(completed))
+        logging_error(msg)
+        return completed.returncode
+
+    # git tag -d HEAD
+    logging('Remove release tag')
+    completed = runner(root, 'git tag -d %s' % current_release)
+    if completed.returncode:
+        logging_error('while remove tag: %s' % str(completed))
+        return completed.returncode
+
+    # TODO: ? remove upstream ? or just overwrite ?
+    return SUCCESS
+
+
+def path_after_reset(root: str):
+    short = shortcut(root)
+    init_path = join(short, '__init__.py')
+    changelog = 'CHANGELOG.md'
+
+    result = []
+    ret = 0
+    for item in [init_path, changelog]:
+        if not exists(join(root, item)):
+            msg = 'Item %s does not exists' % item
+            logging_error(msg)
+            ret += 1
+            continue
+        result.append(item)
+    if ret:
+        return None  # at least one path does not exist.
+    return result

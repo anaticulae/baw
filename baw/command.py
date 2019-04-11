@@ -52,6 +52,7 @@ RELEASE = Command(
             'auto',
         ],
     })
+DROP_RELEASE = Command(longcut='--drop_release', message='Remove last release.')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
 SYNC = Command('-s', '--sync', 'Sync dependencies')
@@ -92,6 +93,7 @@ def create_parser():  # noqa: Z21
         PUSH,
         RAW,
         RELEASE,
+        DROP_RELEASE,
         REPORT,
         RUN,
         SYNC,

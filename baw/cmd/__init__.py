@@ -9,6 +9,7 @@
 
 from baw.cmd.doc import doc
 from baw.cmd.init import init
+from baw.cmd.release import drop_release
 from baw.cmd.release import release
 from baw.cmd.sync import sync
 from baw.cmd.sync import sync_files

@@ -14,6 +14,7 @@ from time import time
 from traceback import format_exc
 
 from baw.cmd import doc
+from baw.cmd import drop_release
 from baw.cmd import init as project_init
 from baw.cmd import release
 from baw.cmd import run_test
@@ -61,6 +62,8 @@ def run_main():
     clean_venv = args['clean_venv']
     format_ = args['format']
     upgrade_ = args['upgrade']
+    release_ = args['release']
+    drop_release_ = args['drop_release']
 
     if upgrade_:
         # Upgrade command requires always virtual environment
@@ -86,6 +89,9 @@ def run_main():
         failure = create_virtual(root, clean=clean)
         if failure:
             return failure
+
+    if drop_release_:
+        return drop_release(root)
 
     if init:
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
@@ -150,7 +156,7 @@ def run_main():
     if args['install']:
         ret += install(root, virtual=virtual)
 
-    if args['release']:
+    if release_:
         release_type = args['release']
         ret += release(root, release_type=release_type)
 
