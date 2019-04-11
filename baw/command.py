@@ -15,9 +15,9 @@ from dataclasses import dataclass
 
 @dataclass
 class Command:
-    shortcut: str
-    longcut: str
-    message: str
+    shortcut: str = ''
+    longcut: str = ''
+    message: str = ''
     args: dict = None
 
     def __iter__(self):
@@ -41,7 +41,9 @@ FORMAT = Command('-f', '--format', 'Format repository')
 PUSH = Command('-p', '--publish', 'Push release to repository')
 RAW = Command('-ra', '--raw', 'Do not modify stdout/stderr')
 RELEASE = Command(
-    '-r', '--release', 'Test and tag commit as new release', {
+    longcut='--release',
+    message='Test, commit and and tag as new release.',
+    args={
         'nargs': '?',
         'const': 'auto',
         'choices': [
@@ -104,7 +106,7 @@ def create_parser():  # noqa: Z21
         VERSION,
     )
     for shortcut, longcut, msg, args in todo:
-        shortcuts = (shortcut, longcut)
+        shortcuts = (shortcut, longcut) if shortcut else (longcut,)
         add = parser.add_argument
         if args:
             args['help'] = msg
