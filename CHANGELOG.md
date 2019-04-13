@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v0.7.0
+
+### Feature
+
+* ensures that every operation is executed in project root (5f95546b1c44)
+* split requirements in minimal(dev) and maximal(dev + doc) (1311e374690a)
+* include resource into delivery, make setup independent from location (2f6c96af7a9d)
+* support commands with only long names (e26aa98c84e5)
+* add feature to drop release (24f08df39ed0)
+* add temps from python build process (df72ea31328c)
+* always overwrite current installation (44827e67c146)
+* write dependencies to requirements.txt if needed (bf847702892b)
+* detect when there is nothing to stash and do nothing (c436e8a4f0f2)
+
+### Fix
+
+* always run --release in virtual environment (fbd49cbb47bc)
+* stop upgrading process when all requirements are fulfilled (597b4256b7b8)
+* ensure that --upgrade can run in a virtual environment (7688c69cb839)
+
 ## v0.6.3
 
 ### Feature
