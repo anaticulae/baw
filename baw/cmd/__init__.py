@@ -15,12 +15,13 @@ from baw.cmd.sync import sync
 from baw.cmd.sync import sync_files
 from baw.cmd.test import run_test
 from baw.cmd.upgrade import upgrade
-from baw.utils import logging_error
 from baw.utils import SUCCESS
+from baw.utils import logging_error
 
 
 def sync_and_test(
         root: str,
+        packages: str = 'all',
         *,
         quiet: bool = False,
         stash: bool = False,
@@ -31,6 +32,7 @@ def sync_and_test(
         verbose = False
     ret = sync(
         root,
+        packages=packages,
         verbose=verbose,
         virtual=virtual,
     )

@@ -8,8 +8,8 @@
 #==============================================================================
 """Define structure of command line interface."""
 
-from argparse import ArgumentParser
 from argparse import REMAINDER
+from argparse import ArgumentParser
 from dataclasses import dataclass
 
 
@@ -57,7 +57,18 @@ RELEASE = Command(
 DROP_RELEASE = Command(longcut='--drop_release', message='Remove last release.')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
-SYNC = Command('-s', '--sync', 'Sync dependencies')
+SYNC = Command(
+    longcut='--sync',
+    message='Sync dependencies',
+    args={
+        'nargs': '?',
+        'const': 'dev',
+        'choices': [
+            'dev',
+            'doc',
+            'all',
+        ],
+    })
 UPGRADE = Command('-up', '--upgrade', 'Upgrade requirements.txt')
 TEST = Command(
     '-t', '--test', 'Run tests and coverage', {

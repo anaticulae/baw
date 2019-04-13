@@ -32,14 +32,14 @@ from baw.execution import publish
 from baw.execution import run
 from baw.runtime import create as create_virtual
 from baw.utils import FAILURE
+from baw.utils import PLAINOUTPUT
+from baw.utils import SUCCESS
 from baw.utils import flush
 from baw.utils import forward_slash
 from baw.utils import handle_error
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import PLAINOUTPUT
 from baw.utils import print_runtime
-from baw.utils import SUCCESS
 
 __version__ = '0.6.3'
 
@@ -135,8 +135,9 @@ def run_main():
         project_clean(root)
 
     ret = 0
-    if args['sync']:
-        ret += sync(root, virtual=virtual, verbose=verbose)
+    packages = args['sync']
+    if packages:
+        ret += sync(root, packages=packages, virtual=virtual, verbose=verbose)
 
     if args['test']:
         ret += run_test(

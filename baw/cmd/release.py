@@ -18,9 +18,9 @@ from baw.config import shortcut
 from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.utils import FAILURE
+from baw.utils import SUCCESS
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import SUCCESS
 
 # semantic release returns this message if no new release is provided, cause
 # of the absent of new features/bugfixes.
@@ -60,6 +60,7 @@ def release(
         from baw.cmd.sync import sync as run_sync
         ret = run_sync(
             root,
+            packages='dev',
             verbose=verbose,
             virtual=virtual,
         )

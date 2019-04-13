@@ -14,24 +14,40 @@ from urllib.request import urlopen
 
 from baw.resources import GITIGNORE
 from baw.runtime import run_target
-from baw.utils import check_root
 from baw.utils import FAILURE
+from baw.utils import GIT_REPO_EXCLUDE
+from baw.utils import REQUIREMENTS_TXT
+from baw.utils import ROOT
+from baw.utils import check_root
 from baw.utils import file_replace
 from baw.utils import get_setup
-from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import package_address
-from baw.utils import REQUIREMENTS_TXT
-from baw.utils import ROOT
 
 
-def sync(root: str, *, virtual: bool = False, verbose: bool = False):
+def sync(root: str,
+         packages: str,
+         *,
+         virtual: bool = False,
+         verbose: bool = False):
+    """
+    Args:
+        packages(str): decide whic packages should be synchronized:
+                        - dev/ minimal dev environment, formater, linter, test
+                        - doc/ Sphinx
+                        - all
+    """
     check_root(root)
     ret = 0
     logging()
     ret += sync_files(root, verbose=verbose)
-    ret += sync_dependencies(root, virtual=virtual, verbose=verbose)
+    ret += sync_dependencies(
+        root,
+        packages=packages,
+        virtual=virtual,
+        verbose=verbose,
+    )
     return ret
 
 
@@ -72,23 +88,36 @@ def check_dependency(
 
 def sync_dependencies(
         root: str,
+        packages: str,
         *,
         verbose: bool = False,
         virtual: bool = False,
 ):
     check_root(root)
     logging('sync dependencies')
+
     requirements_dev = 'requirements-dev.txt'
-    resources = [REQUIREMENTS_TXT, requirements_dev]
-    # make path absolute in project
-    resources = [join(root, to_install) for to_install in resources]
-    resources = [to_install for to_install in resources if exists(to_install)]
+    requirements_doc = 'requirements-doc.txt'
+
+    resources = []
+    if packages == 'dev':
+        resources.append(requirements_dev)
+    if packages == 'doc':
+        resources.append(requirements_doc)
+    if packages == 'all':
+        resources.append(requirements_dev)
+        resources.append(requirements_doc)
 
     # Requirements_dev is a `global` file from baw project. This file is not
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
-    if not exists(join(root, requirements_dev)):
-        resources.append(join(ROOT, requirements_dev))
+    # make path absolute in project
+    resources = [join(ROOT, to_install) for to_install in resources]
+
+    # local project file
+    local_requirement = join(root, REQUIREMENTS_TXT)
+    if exists(local_requirement):
+        resources.append(local_requirement)
 
     pip_index, extra_url = package_address()
 
