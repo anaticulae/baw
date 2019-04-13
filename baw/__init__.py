@@ -77,21 +77,6 @@ def run_main():
         environ[PLAINOUTPUT] = "TRUE"
 
     root = getcwd()
-    if clean_venv:
-        clean_virtual(root)
-
-    if format_:
-        failure = format_source(root, verbose=verbose, virtual=virtual)
-        if failure:
-            return failure
-
-    if virtual:
-        failure = create_virtual(root, clean=clean)
-        if failure:
-            return failure
-
-    if drop_release_:
-        return drop_release(root)
 
     if init:
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
@@ -123,8 +108,27 @@ def run_main():
                 stash=False,  # Nothing to stash at the first time
             )
 
+    # project must be init, if not, derminate here
     with handle_error(ValueError, code=FAILURE):
+        # if cwd is in child location of the project, the root is set to
+        # project root
         root = find_root(getcwd())
+
+    if clean_venv:
+        clean_virtual(root)
+
+    if format_:
+        failure = format_source(root, verbose=verbose, virtual=virtual)
+        if failure:
+            return failure
+
+    if virtual:
+        failure = create_virtual(root, clean=clean)
+        if failure:
+            return failure
+
+    if drop_release_:
+        return drop_release(root)
 
     if upgrade_:
         failure = upgrade(root, verbose=verbose, virtual=True)

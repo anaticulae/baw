@@ -27,7 +27,7 @@ from baw.utils import package_address
 
 
 def sync(root: str,
-         packages: str,
+         packages: str = 'dev',
          *,
          virtual: bool = False,
          verbose: bool = False):

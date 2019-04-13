@@ -9,7 +9,8 @@ PROJECT_PATH = '.baw/project.config'
 
 
 def config(path: str):
-    assert exists(path)
+    msg = 'Missing : %s' % path
+    assert exists(path), msg
     cfg = ConfigParser()
     with open(path, mode='r') as fp:
         cfg.read_file(fp)
@@ -17,7 +18,8 @@ def config(path: str):
 
 
 def project_name(path: str):
-    assert exists(path)
+    msg = 'Missing : %s' % path
+    assert exists(path), msg
     cfg = config(path)
     return (cfg['project']['short'], cfg['project']['name'])
 
