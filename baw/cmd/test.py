@@ -13,6 +13,7 @@ from os.path import join
 
 from baw.config import minimal_coverage
 from baw.config import shortcut
+from baw.config import sources
 from baw.runtime import git_stash
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -135,9 +136,6 @@ def cov_args(root: str, *, pdb: bool):
     Returns:
         args for coverage command
     """
-
-    short = shortcut(root)
-    source = join(root, short)
     output = join(tmp(root), 'report')
     cov_config = join(ROOT, 'templates', '.coveragerc')
     assert exists(cov_config)
@@ -149,12 +147,37 @@ def cov_args(root: str, *, pdb: bool):
         logging('Disable coverage report')
 
     min_cov = minimal_coverage(root)
-    cov = ('--cov-config="%s" --cov="%s" --cov-report=html:%s --cov-branch'
+
+    cov_sources = collect_cov_sources(root)
+    cov = ('--cov-config=%s %s --cov-report=html:%s --cov-branch'
            ' %s --cov-fail-under=%d') % (
                cov_config,
-               source,
+               cov_sources,
                output,
                no_cov,
                min_cov,
            )
     return cov
+
+
+def collect_cov_sources(root: str):
+    """Collect source code folder from project configuration
+
+    Args:
+        root(str): path to project root
+    Returns:
+        list of --cov= collected from `source` cfg
+    """
+    project_sources = sources(root)
+    ret = 0
+    cov_sources = ''
+    for item in project_sources:
+        code_path = join(root, item)
+        if not exists(code_path):
+            logging_error('Path %s in `projet.cfg` does not exist')
+            ret += 1
+            continue
+        cov_sources += '--cov=%s ' % code_path
+    if ret:
+        exit(ret)
+    return cov_sources

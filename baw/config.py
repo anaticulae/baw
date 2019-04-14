@@ -1,6 +1,7 @@
 """Handle access to project configuration which is stored in .baw-folder."""
 from configparser import ConfigParser
 from os.path import exists
+from os.path import isfile
 from os.path import join
 
 from baw.utils import NEWLINE
@@ -21,6 +22,30 @@ def config(path: str):
 def project_name(path: str):
     cfg = config(path)
     return (cfg['project']['short'], cfg['project']['name'])
+
+
+def sources(path: str):
+    """Read `source` form configuration `path`
+
+    Args:
+        path(str): path to project configuration
+    Returns:
+        list with source folder of project
+    """
+
+    # support accessing the config directly or due the project path
+    if not exists(path) or not isfile(path):
+        potential_config = join(path, PROJECT_PATH)
+        if exists(potential_config) and isfile(potential_config):
+            path = potential_config
+    cfg = config(path)
+    try:
+        source = cfg['project']['source'].splitlines()
+    except KeyError:
+        source = []
+    source.insert(0, cfg['project']['short'])
+
+    return source
 
 
 def shortcut(root: str):

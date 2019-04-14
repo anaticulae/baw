@@ -1,12 +1,16 @@
 from os import makedirs
 from os.path import exists
 from os.path import join
+from pytest import fixture
+from tests import DATA
+from textwrap import dedent
 
+from baw.config import PROJECT_PATH
 from baw.config import create_config
 from baw.config import project_name
-from baw.config import PROJECT_PATH
+from baw.config import sources
 from baw.utils import BAW_EXT
-from tests import DATA
+from baw.utils import file_create
 
 PROJECT = join(DATA, 'project.config')
 
@@ -34,6 +38,28 @@ def test_write_and_load_config(tmpdir):
     assert description == expected_description
 
 
-if __name__ == "__main__":
-    test_loading_project_config()
-    test_write_and_load_conifg()
+@fixture
+def configuration(tmpdir):
+    configuration = """\
+    [project]
+    short = baw
+    name = Black and White
+    source = abc
+        defg
+
+    [tests]
+    minimal_coverage = 50
+    """
+    configuration = dedent(configuration)
+
+    path = join(tmpdir, 'config.cfg')
+    file_create(path, configuration)
+    return path
+
+
+def test_with_sourcecode_extention(configuration):
+    """Include further directories in the test cov report"""
+
+    expected_sources = ['baw', 'abc', 'defg']
+
+    assert sources(configuration) == expected_sources
