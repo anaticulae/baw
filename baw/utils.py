@@ -37,6 +37,7 @@ SUCCESS = 0
 FAILURE = 1
 
 NEWLINE = '\n'
+UTF8 = 'utf8'
 
 
 @contextmanager

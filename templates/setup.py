@@ -14,17 +14,18 @@ from os.path import dirname
 from os.path import join
 from re import search
 
+from baw.utils import UTF8
 from setuptools import setup
 
 ROOT = abspath(dirname(__file__))
 
-with open(join(ROOT, 'README.md'), mode='rt', encoding='utf8') as fp:
+with open(join(ROOT, 'README.md'), mode='rt', encoding=UTF8) as fp:
     README = fp.read()
 
-with open(join(ROOT, '$_SHORT_$/__init__.py'), mode='rt', encoding='utf8') as fp:
+with open(join(ROOT, '$_SHORT_$/__init__.py'), mode='rt', encoding=UTF8) as fp:
     VERSION = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
-with open(join(ROOT, "requirements.txt"), mode='rt', encoding='utf-8') as fp:
+with open(join(ROOT, "requirements.txt"), mode='rt', encoding=UTF8) as fp:
     INSTALL_REQUIRES = [
         line for line in fp.readlines() if line and '#' not in line
     ]

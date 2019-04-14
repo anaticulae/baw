@@ -4,22 +4,21 @@ from os.path import exists
 from os.path import join
 
 from baw.utils import NEWLINE
+from baw.utils import UTF8
 
 PROJECT_PATH = '.baw/project.config'
 
 
 def config(path: str):
-    msg = 'Missing : %s' % path
-    assert exists(path), msg
+    if not exists(path):
+        raise ValueError('Configuration %s does not exists' % path)
     cfg = ConfigParser()
-    with open(path, mode='r') as fp:
+    with open(path, mode='r', encoding=UTF8) as fp:
         cfg.read_file(fp)
     return cfg
 
 
 def project_name(path: str):
-    msg = 'Missing : %s' % path
-    assert exists(path), msg
     cfg = config(path)
     return (cfg['project']['short'], cfg['project']['name'])
 
@@ -95,5 +94,5 @@ def create_config(root: str, shortcut: str, name: str):
     cfg = ConfigParser()
     cfg['project'] = {'short': shortcut, 'name': name}
     output = join(root, PROJECT_PATH)
-    with open(output, mode='w', encoding='utf8', newline=NEWLINE) as fp:
+    with open(output, mode='w', encoding=UTF8, newline=NEWLINE) as fp:
         cfg.write(fp)

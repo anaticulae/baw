@@ -15,20 +15,21 @@ from os.path import exists
 from os.path import isdir
 from os.path import join
 from shutil import rmtree
-from subprocess import CompletedProcess
 from subprocess import PIPE
+from subprocess import CompletedProcess
 from subprocess import run
 from sys import platform
 from time import time
 
 from baw.utils import FAILURE
+from baw.utils import SUCCESS
+from baw.utils import UTF8
 from baw.utils import file_create
 from baw.utils import file_read
 from baw.utils import file_remove
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import print_runtime
-from baw.utils import SUCCESS
 
 VIRTUAL_FOLDER = '.virtual'
 
@@ -295,7 +296,7 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
     process = run(
         command,
         cwd=cwd,
-        encoding='utf8',
+        encoding=UTF8,
         env=env,
         shell=True,
         stderr=None if debugging else PIPE,
