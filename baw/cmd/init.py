@@ -56,6 +56,9 @@ def init(root: str, shortcut: str, name: str, cmdline: bool = False):
         logging_error('Project %s already exists.' % baw_path)
         raise ValueError(FAILURE)
 
+    # Escape ' to avoid errors in generated code
+    name = name.replace("'", r'\'')
+
     git_init(root)
     create_folder(root)
     create_config(root, shortcut, name)

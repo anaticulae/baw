@@ -14,10 +14,10 @@ from os.path import dirname
 from os.path import join
 from re import search
 
-from baw.utils import UTF8
 from setuptools import setup
 
 ROOT = abspath(dirname(__file__))
+UTF8 = 'utf8'
 
 with open(join(ROOT, 'README.md'), mode='rt', encoding=UTF8) as fp:
     README = fp.read()

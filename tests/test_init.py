@@ -9,10 +9,10 @@
 
 from os.path import exists
 from os.path import join
-
 from tests import assert_run
 from tests import skip_cmd
 from tests import skip_longrun
+from tests import skip_nonvirtual
 
 
 @skip_cmd
@@ -35,3 +35,14 @@ def test_doc_command(tmpdir):
         pass
     with assert_run('baw --doc', cwd=tmpdir):
         assert exists(join(tmpdir, 'docs/html'))
+
+
+@skip_cmd
+@skip_longrun
+@skip_nonvirtual
+def test_escaping_single_collon(tmpdir):
+    """Generate project with ' in name and test install"""
+    with assert_run('baw --init xcd "I\'ts magic"', cwd=tmpdir):
+        pass
+    with assert_run('pip install --editable .', cwd=tmpdir):
+        pass
