@@ -28,7 +28,8 @@ class Command:
 ALL = Command('-a', '--all', 'Clean and run all expect of publishing')
 BUILD = Command('-b', '--build', 'Run build tasks')
 CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
-CLEAN_VENV = Command('-cv', '--clean_venv', 'Clean virtual environment')
+CLEAN_VENV = Command(
+    longcut='--clean_venv', message='Clean virtual environment')
 DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
 INSTALL = Command('-in', '--install', 'Run install task')
 INIT = Command('-i', '--init',
@@ -37,9 +38,9 @@ INIT = Command('-i', '--init',
                })
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
-FORMAT = Command('-f', '--format', 'Format repository')
+FORMAT = Command(longcut='--format', message='Format repository')
 PUSH = Command('-p', '--publish', 'Push release to repository')
-RAW = Command('-ra', '--raw', 'Do not modify stdout/stderr')
+RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 RELEASE = Command(
     longcut='--release',
     message='Test, commit and and tag as new release.',
@@ -69,9 +70,11 @@ SYNC = Command(
             'all',
         ],
     })
-UPGRADE = Command('-up', '--upgrade', 'Upgrade requirements.txt')
+UPGRADE = Command(longcut='--upgrade', message='Upgrade requirements.txt')
 TEST = Command(
-    '-t', '--test', 'Run tests and coverage', {
+    longcut='--test',
+    message='Run tests and coverage',
+    args={
         'nargs': '?',
         'action': 'append',
         'choices': [
@@ -82,8 +85,9 @@ TEST = Command(
             'stash',
         ],
     })
-VENV = Command('-vi', '--virtual', 'Run commands in virtual environment')
-VERBOSE = Command('-ver', '--verbose', 'Extend verbosity of logging')
+VENV = Command(longcut='--virtual', message='Run commands in venv')
+# TODO count V to determine verbosity. -VVV
+VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
 VERSION = Command('-v', '--version', 'Show version of this program')
 
 
