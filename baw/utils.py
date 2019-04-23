@@ -77,7 +77,7 @@ def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
-    print('[ERROR] %s' % msg, file=stderr)
+    print('[ERROR] %s' % msg, file=stderr, flush=True)
 
 
 PLAINOUTPUT = 'PLAINOUTPUT'
