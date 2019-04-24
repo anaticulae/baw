@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v0.7.1
+
+### Feature
+
+* when upgrade fails, reset requirements.txt (997aa7128bcf)
+* hide run from importing via outer scope (8d3650f4f991)
+* add checkout files to sync them with repository state (1cb2e43041e9)
+* enable fetching stdout/stderr by pytest capsys (835f7fd5318f)
+* support multiple sources for code coverage due project.config (ee338fdda608)
+
+### Fix
+
+* sync and test is not only used for releasing (f62d9df6ea9f)
+* flush error imminently to ensure log logic/order (cc79532aae76)
+* remove not used shortcuts to increase simplicity (7f4922590920)
+* fix not escaped special char ' (65a86077e025)
+
 ## v0.7.0
 
 ### Feature
