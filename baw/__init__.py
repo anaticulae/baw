@@ -15,6 +15,7 @@ from traceback import format_exc
 
 from baw.cmd import doc
 from baw.cmd import drop_release
+from baw.cmd import format_repository
 from baw.cmd import init as project_init
 from baw.cmd import release
 from baw.cmd import run_test
@@ -26,7 +27,6 @@ from baw.command import parse
 from baw.execution import clean as project_clean
 from baw.execution import clean_virtual
 from baw.execution import find_root
-from baw.execution import format_source
 from baw.execution import install
 from baw.execution import publish
 from baw.execution import run
@@ -118,7 +118,11 @@ def run_main():
         clean_virtual(root)
 
     if format_:
-        failure = format_source(root, verbose=verbose, virtual=virtual)
+        failure = format_repository(
+            root,
+            verbose=verbose,
+            virtual=virtual,
+        )
         if failure:
             return failure
 

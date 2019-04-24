@@ -8,6 +8,7 @@
 #==============================================================================
 
 from baw.cmd.doc import doc
+from baw.cmd.format import format_repository
 from baw.cmd.init import init
 from baw.cmd.release import drop_release
 from baw.cmd.release import release
