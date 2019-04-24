@@ -7,8 +7,9 @@
   ],
   "settings": {
     "files.exclude": {
+      "**/.log": true,
       "**/.cache": true,
-      "**/.coverage": true,
+      "**/.coverage*": true,
       "**/.git": true,
       "**/.pytest_cache": true,
       "**/.swn": true,
