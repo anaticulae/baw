@@ -32,7 +32,6 @@ def release(
         root: str,
         *,
         release_type: str = 'auto',
-        stash: bool = False,
         verbose: bool = False,
         sync: bool = True,
         virtual: bool = True,
@@ -46,7 +45,6 @@ def release(
                            patch 0.0.x
                            noop  0.0.0 do nothing
                            auto  let semantic release decide
-        stash(bool): git stash to test on a clean git directory
         verbose(bool): log additional output
         virtual(bool): run in virtual environment
     Return:
@@ -73,7 +71,7 @@ def release(
     ret = run_test(
         root,
         longrun=True,
-        stash=stash,
+        stash=True,
         verbose=verbose,
         virtual=virtual,
     )
