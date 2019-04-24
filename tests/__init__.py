@@ -1,5 +1,15 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
 from contextlib import contextmanager
 from os import environ
+from os import listdir
 from os import makedirs
 from os.path import abspath
 from os.path import dirname
@@ -35,13 +45,12 @@ NON_VIRTUAL = 'VIRTUAL' not in environ.keys()
 NO_BAW = FAST
 NO_BAW_RESON = 'Installing baw takes long time'
 
-skip_missing_packages = pytest.mark.skip(
-    reason="Required package(s) not available")
-skip_longrun = pytest.mark.skipif(
-    not LONGRUN or FAST, reason="Test requires long time")
-skip_cmd = pytest.mark.skipif(NO_BAW, reason="Decrease response time")
-skip_nonvirtual = pytest.mark.skipif(
-    NON_VIRTUAL, reason="No virtual environment")
+FAST_TESTS = not LONGRUN or FAST
+
+skip_cmd = mark.skipif(NO_BAW, reason="Decrease response time")
+skip_longrun = mark.skipif(FAST_TESTS, reason="Test requires long time")
+skip_missing_packages = mark.skip(reason="Required package(s) not available")
+skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="No virtual environment")
 
 
 def tempname():
@@ -59,12 +68,11 @@ def tempfile():
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    # TODO: Investigate for better approch due pytest
-    TEMP = join(PROJECT, TMP)
-    makedirs(TEMP, exist_ok=True)
+    temp = join(PROJECT, TMP)
+    makedirs(temp, exist_ok=True)
 
     name = 'temp%s' % tempname()
-    path = join(TEMP, name)
+    path = join(temp, name)
     if exists(path):
         return tempfile()
     return path
