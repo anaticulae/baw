@@ -9,7 +9,9 @@ from random import randrange
 from subprocess import PIPE
 from subprocess import run as _run
 
-import pytest
+from pytest import fixture
+from pytest import mark
+
 from baw.utils import TMP
 from baw.utils import get_setup
 
@@ -100,7 +102,7 @@ def assert_run_fail(command: str, cwd: str):
 EXAMPLE_PROJECT_NAME = 'xkcd'
 
 
-@pytest.fixture
+@fixture
 def example(tmpdir):
     """Creating example project due console"""
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
@@ -109,3 +111,7 @@ def example(tmpdir):
         assert exists(join(tmpdir, '.git'))
 
     return tmpdir
+
+
+def file_count(path: str):
+    return len(listdir(path))

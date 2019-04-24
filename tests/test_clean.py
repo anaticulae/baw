@@ -11,16 +11,12 @@ from os import listdir
 from os import makedirs
 from os.path import exists
 from os.path import join
-from tests import run
-from tests import skip_cmd
-from tests import skip_longrun
 
 from baw.utils import TMP
 from baw.utils import file_create
-
-
-def file_count(path: str):
-    return len(listdir(path))
+from tests import file_count
+from tests import run
+from tests import skip_cmd
 
 
 @skip_cmd

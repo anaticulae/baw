@@ -9,9 +9,10 @@
 
 import sys
 
-from baw import main
 from pytest import mark
 from pytest import raises
+
+from baw import main
 
 
 @mark.parametrize('command', [

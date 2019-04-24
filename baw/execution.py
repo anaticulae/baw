@@ -21,17 +21,16 @@ from shutil import rmtree
 from stat import S_IWRITE
 
 from baw.config import commands
-from baw.config import shortcut
-from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
+from baw.runtime import run_target
 from baw.utils import BAW_EXT
-from baw.utils import check_root
 from baw.utils import FAILURE
-from baw.utils import get_setup
 from baw.utils import GIT_EXT
+from baw.utils import SUCCESS
+from baw.utils import check_root
+from baw.utils import get_setup
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import SUCCESS
 
 
 def find_root(cwd: str):

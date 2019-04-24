@@ -11,17 +11,17 @@ environment afterwards.
  """
 from os.path import exists
 from os.path import join
+from textwrap import dedent
+
+from baw.runtime import VIRTUAL_FOLDER
+from baw.utils import SUCCESS
+from baw.utils import package_address
 from tests import REQUIREMENTS
 from tests import example  # required for fixture
 from tests import run
 from tests import skip_cmd
 from tests import skip_longrun
 from tests.test_test import project_with_test
-from textwrap import dedent
-
-from baw.runtime import VIRTUAL_FOLDER
-from baw.utils import SUCCESS
-from baw.utils import package_address
 
 
 @skip_cmd

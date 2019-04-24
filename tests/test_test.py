@@ -3,9 +3,10 @@ from os.path import join
 from textwrap import dedent
 
 import pytest
+
 from baw.utils import file_create
-from tests import example  # required for fixture
 from tests import EXAMPLE_PROJECT_NAME
+from tests import example  # required for fixture
 from tests import run
 from tests import skip_cmd
 

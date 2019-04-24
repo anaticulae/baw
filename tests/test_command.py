@@ -1,7 +1,16 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
 """Test runnig commands with --command."""
+
 from os.path import join
 
-import pytest
+from pytest import fixture
 
 from baw.config import PROJECT_PATH
 from baw.utils import file_append
@@ -15,7 +24,7 @@ command = ls
 """
 
 
-@pytest.fixture
+@fixture
 def project_with_command(example):
     """Create testproject which contains --run-command ls."""
     config = join(example, PROJECT_PATH)

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import pytest
+
 from baw.cmd.sync import sync
 from baw.utils import ROOT
 

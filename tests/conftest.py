@@ -12,12 +12,12 @@ fast feedback when only developing functions, baw will not installed.
 """
 from sys import argv
 
-from baw.runtime import run_target
 from baw.runtime import VIRTUAL_FOLDER
-from baw.utils import logging
-from baw.utils import profile
+from baw.runtime import run_target
 from baw.utils import ROOT
 from baw.utils import SUCCESS
+from baw.utils import logging
+from baw.utils import profile
 from tests import FAST
 
 

@@ -9,12 +9,13 @@
 
 from os.path import exists
 from os.path import join
+
+from pytest import fixture
+
 from tests import assert_run
 from tests import skip_cmd
 from tests import skip_longrun
 from tests import skip_nonvirtual
-
-from pytest import fixture
 
 
 @skip_cmd

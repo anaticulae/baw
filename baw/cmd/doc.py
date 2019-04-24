@@ -11,9 +11,9 @@ from os.path import join
 from baw.resources import DOC_CONF
 from baw.resources import template_replace
 from baw.runtime import run_target
+from baw.utils import TMP
 from baw.utils import file_replace
 from baw.utils import logging
-from baw.utils import TMP
 
 
 def update_template(root: str):

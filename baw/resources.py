@@ -6,10 +6,10 @@ from baw.config import name
 from baw.config import shortcut
 from baw.project import version
 from baw.utils import BAW_EXT
-from baw.utils import file_read
 from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
+from baw.utils import file_read
 
 FOLDERS = [
     BAW_EXT,

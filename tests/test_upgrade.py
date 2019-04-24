@@ -7,9 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 from os.path import join
-from tests import skip_longrun
-from tests import skip_nonvirtual
-from tests.test_init import project_example
 
 from baw.cmd.upgrade import available_version
 from baw.cmd.upgrade import determine_new_requirements
@@ -27,6 +24,9 @@ from baw.utils import file_append
 from baw.utils import file_create
 from baw.utils import file_read
 from baw.utils import file_remove
+from tests import skip_longrun
+from tests import skip_nonvirtual
+from tests.test_init import project_example
 
 NEW_VERSION_AVAILABLE = """
 utila (0.5.4)  - 0.5.4
