@@ -15,6 +15,7 @@ from re import match
 from tempfile import TemporaryFile
 
 from baw.config import shortcut
+from baw.git import checkout_file
 from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -158,13 +159,10 @@ def drop_release(root: str, virtual: bool = False, verbose: bool = False):
     to_reset = path_after_reset(root)
     if not to_reset:
         return FAILURE
-    to_reset = ' '.join(to_reset)
-    logging('Reset %s' % to_reset)
-    completed = runner(root, 'git checkout -q %s' % to_reset)
-    if completed.returncode:
-        msg = 'while checkout out %s\n%s' % (to_reset, str(completed))
-        logging_error(msg)
-        return completed.returncode
+
+    completed = checkout_file(root, to_reset, virtual=virtual, verbose=verbose)
+    if completed:
+        return completed
 
     # git tag -d HEAD
     logging('Remove release tag')

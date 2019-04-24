@@ -12,13 +12,14 @@ from os.path import join
 from re import search
 
 from baw.cmd.sync import check_dependency
+from baw.git import checkout_file
 from baw.runtime import git_stash
+from baw.utils import REQUIREMENTS_TXT
+from baw.utils import SUCCESS
 from baw.utils import file_read
 from baw.utils import file_replace
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import REQUIREMENTS_TXT
-from baw.utils import SUCCESS
 
 
 def upgrade(
@@ -43,12 +44,23 @@ def upgrade(
 
         failure = sync_and_test(
             root,
+            packages='dev',  # minimal requirements is required
             stash=False,
             verbose=False,
             quiet=True,
             virtual=virtual,
         )
         if failure:
+            # reset requirement
+            completed = checkout_file(
+                root,
+                requirements,
+                verbose=verbose,
+                virtual=virtual,
+            )
+            logging_error('Upgrading failed')
+            assert not completed
+
             return failure
 
         from baw.cmd.init import git_commit
