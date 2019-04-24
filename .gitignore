@@ -15,7 +15,7 @@ tmp
 *.exe.stackdump
 *.pyc
 *.swp
-.coverage
+.coverage*
 
 # Documentation
 docs/conf.py
