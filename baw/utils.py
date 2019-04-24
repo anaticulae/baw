@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import sys
 from contextlib import contextmanager
 from os import chmod
 from os import environ
@@ -19,8 +20,6 @@ from os.path import isfile
 from os.path import join
 from shutil import rmtree
 from stat import S_IWRITE
-from sys import stderr
-from sys import stdout
 from textwrap import wrap
 from time import time
 
@@ -70,14 +69,14 @@ def logging(msg: str = '', end: str = NEWLINE):
     """
     # msg = NEWLINE.join(wrap(msg, 120))
     msg = forward_slash(msg)
-    print(msg, end=end, file=stdout, flush=True)
+    print(msg, end=end, file=sys.stdout, flush=True)
 
 
 def logging_error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
-    print('[ERROR] %s' % msg, file=stderr, flush=True)
+    print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
 
 
 PLAINOUTPUT = 'PLAINOUTPUT'
