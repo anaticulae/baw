@@ -14,12 +14,13 @@ tmp
 *.cache
 *.egg-info
 *.exe.stackdump
+*.log
 *.pyc
 *.save
 *.swn
 *.swo
 *.swp
-.coverage
+.coverage*
 
 # Documentation
 docs/conf.py
