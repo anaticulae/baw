@@ -1,17 +1,22 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
 """Test clean command."""
 from os import listdir
 from os import makedirs
 from os.path import exists
 from os.path import join
-
-import pytest
-
-from baw.utils import file_create
-from baw.utils import TMP
 from tests import run
-
 from tests import skip_cmd
 from tests import skip_longrun
+
+from baw.utils import TMP
+from baw.utils import file_create
 
 
 def file_count(path: str):

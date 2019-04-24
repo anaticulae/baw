@@ -10,8 +10,8 @@ from subprocess import PIPE
 from subprocess import run as _run
 
 import pytest
-from baw.utils import get_setup
 from baw.utils import TMP
+from baw.utils import get_setup
 
 MAX_NUMBER = 20
 MAX_TEST_RANDOM = 10**MAX_NUMBER
@@ -36,7 +36,7 @@ NO_BAW_RESON = 'Installing baw takes long time'
 skip_missing_packages = pytest.mark.skip(
     reason="Required package(s) not available")
 skip_longrun = pytest.mark.skipif(
-    not LONGRUN or FAST, reason="Test require long time")
+    not LONGRUN or FAST, reason="Test requires long time")
 skip_cmd = pytest.mark.skipif(NO_BAW, reason="Decrease response time")
 skip_nonvirtual = pytest.mark.skipif(
     NON_VIRTUAL, reason="No virtual environment")

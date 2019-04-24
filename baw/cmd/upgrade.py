@@ -84,7 +84,7 @@ def upgrade_requirements(
     """Take requirements.txt, replace version number with current available
     version on pip repository.
 
-    Args
+    Args:
         root(str): generated project
         requirements(str): relativ path to requirements
         virtual(bool): run in virtual environment

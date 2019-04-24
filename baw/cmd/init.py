@@ -31,14 +31,14 @@ from baw.runtime import NO_EXECUTABLE
 from baw.runtime import run_target
 from baw.utils import BAW_EXT
 from baw.utils import FAILURE
-from baw.utils import file_append
-from baw.utils import file_create
 from baw.utils import GIT_EXT
-from baw.utils import logging
-from baw.utils import logging_error
 from baw.utils import NEWLINE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
+from baw.utils import file_append
+from baw.utils import file_create
+from baw.utils import logging
+from baw.utils import logging_error
 
 ADDITONAL_REQUIREMENTS = []
 

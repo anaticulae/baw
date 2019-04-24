@@ -53,6 +53,11 @@ def destroy(path: str):
     return True
 
 
+def venv(root: str) -> str:
+    assert root
+    return join(root, VIRTUAL_FOLDER)
+
+
 def create(root: str, clean: bool = False):
     """Create `virtual` folder in project root, do nothing if folder exists
 

@@ -11,17 +11,17 @@ environment afterwards.
  """
 from os.path import exists
 from os.path import join
-from textwrap import dedent
-
-import pytest
-from baw.runtime import VIRTUAL_FOLDER
-from baw.utils import package_address
-from tests import example  # required for fixture
 from tests import REQUIREMENTS
+from tests import example  # required for fixture
 from tests import run
 from tests import skip_cmd
 from tests import skip_longrun
 from tests.test_test import project_with_test
+from textwrap import dedent
+
+from baw.runtime import VIRTUAL_FOLDER
+from baw.utils import SUCCESS
+from baw.utils import package_address
 
 
 @skip_cmd
@@ -32,7 +32,7 @@ def test_creating_virtual_environment(example):
         'baw --virtual',
         cwd=example,
     )
-    assert completed.returncode == 0, completed.stderr
+    assert completed.returncode == SUCCESS, completed.stderr
 
     virtual = join(example, VIRTUAL_FOLDER)
     msg = 'Virtual folder does not exists: %s' % virtual
@@ -47,4 +47,4 @@ def test_running_test_in_virtual_environment(project_with_test):
     cmd = 'baw --virtual --sync' + ' && baw --test'  #python -mpytest tests -v'
     completed = run(cmd, project_with_test)
 
-    assert completed.returncode == 0, completed.stderr
+    assert completed.returncode == SUCCESS, completed.stderr

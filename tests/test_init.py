@@ -14,6 +14,8 @@ from tests import skip_cmd
 from tests import skip_longrun
 from tests import skip_nonvirtual
 
+from pytest import fixture
+
 
 @skip_cmd
 def test_init_project_in_empty_folder(tmpdir):
