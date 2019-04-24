@@ -46,3 +46,12 @@ def test_escaping_single_collon(tmpdir):
         pass
     with assert_run('pip install --editable .', cwd=tmpdir):
         pass
+
+
+@fixture
+def project_example(tmpdir):
+    with assert_run('baw --init xcd "I Like This Project"', cwd=tmpdir):
+        pass
+    with assert_run('baw --virtual', cwd=tmpdir):
+        pass
+    return tmpdir

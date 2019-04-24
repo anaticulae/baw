@@ -7,17 +7,26 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 from os.path import join
+from tests import skip_longrun
+from tests import skip_nonvirtual
+from tests.test_init import project_example
 
 from baw.cmd.upgrade import available_version
 from baw.cmd.upgrade import determine_new_requirements
 from baw.cmd.upgrade import installed_version
 from baw.cmd.upgrade import parse_requirements
 from baw.cmd.upgrade import replace_requirements
+from baw.cmd.upgrade import upgrade
 from baw.cmd.upgrade import upgrade_requirements
-from baw.utils import file_create
-from baw.utils import file_read
+from baw.runtime import run_target
+from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
+from baw.utils import SUCCESS
+from baw.utils import file_append
+from baw.utils import file_create
+from baw.utils import file_read
+from baw.utils import file_remove
 
 NEW_VERSION_AVAILABLE = """
 utila (0.5.4)  - 0.5.4
@@ -136,3 +145,51 @@ def test_upgrading(tmpdir):
 
     loaded = file_read(requirements_path)
     assert loaded != TEST_UPGRADE
+
+
+@skip_longrun
+@skip_nonvirtual
+def test_upgrade_requirement(project_example, capsys):
+
+    def commit_all():
+        completed = run_target(
+            path,
+            'git add . && git commit -m "Upgade requirements"',
+        )
+        assert completed.returncode == SUCCESS, completed
+
+    path = project_example
+    requirements = join(path, REQUIREMENTS_TXT)
+    # yapf in a higher version is provided by dev environment
+    file_append(requirements, 'yapf==0.10.0')
+
+    failed_test = """\
+def test_me():
+    assert 0
+    """
+    failingtest_path = join(path, 'tests/test_failed.py')
+    file_create(failingtest_path, failed_test)
+    commit_all()
+
+    result = upgrade(
+        path,
+        verbose=True,
+        virtual=True,
+    )
+    assert result == FAILURE
+    stdout = capsys.readouterr().out
+
+    assert stdout
+    assert 'Reset' in stdout, stdout
+
+    # Reuse virtual environment
+    # remove failling test
+    file_remove(failingtest_path)
+    commit_all()
+
+    result = upgrade(
+        path,
+        verbose=False,
+        virtual=True,
+    )
+    assert result == SUCCESS
