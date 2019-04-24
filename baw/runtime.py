@@ -17,7 +17,6 @@ from os.path import join
 from shutil import rmtree
 from subprocess import PIPE
 from subprocess import CompletedProcess
-from subprocess import run
 from sys import platform
 from time import time
 
@@ -291,6 +290,9 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
     if env is None:  # None: Empty dict is allowed.
         env = dict(environ.items())
 
+    # when user types from baw.runtime import r... run must not presented as
+    # option, so we import this here to hide it.
+    from subprocess import run
     # Capturering stdout and stderr reuqires PIPE in completed process.
     # Debugging with pdb due console require no PIPE.
     process = run(
