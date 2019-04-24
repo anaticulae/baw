@@ -49,6 +49,7 @@ def sync_and_test(
         quiet=quiet,
     )
     if ret:
-        logging_error('\nTests failed, could not release.\n')
+        if not quiet:
+            logging_error('Tests failed.')
         return ret
     return SUCCESS
