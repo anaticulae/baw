@@ -160,7 +160,7 @@ def run_main():
         )
 
     if args['doc']:
-        ret += doc(root, virtual=virtual)
+        ret += doc(root, virtual=virtual, verbose=verbose)
 
     if args['install']:
         ret += install(root, virtual=virtual)

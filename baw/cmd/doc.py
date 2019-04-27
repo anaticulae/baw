@@ -23,7 +23,7 @@ def update_template(root: str):
     file_replace(path, replaced)
 
 
-def doc(root: str, virtual: bool = False):
+def doc(root: str, virtual: bool = False, verbose: bool = False):
     """Run Sphinx doc generation
 
     The result is locatated in `doc/html` as html-report. The stderr and
@@ -44,6 +44,7 @@ def doc(root: str, virtual: bool = False):
     ignore = [
         'templates',
         'setup.py',
+        'conf.py',
     ]
     ignore = ' '.join(ignore)
 
@@ -55,13 +56,21 @@ def doc(root: str, virtual: bool = False):
     configuration = '-d 10 -M -f -e'
     command = 'sphinx-apidoc %s -o %s %s %s'
     command = command % (configuration, tmp, sources, ignore)
-    completed = run_target(root, command=command, cwd=root, virtual=virtual)
 
+    logging('generate docs')
+    logging(command)
+
+    completed = run_target(
+        root,
+        command=command,
+        cwd=root,
+        verbose=verbose,
+        virtual=virtual,
+    )
     if completed.returncode:
         return completed.returncode
 
     # Create html result
-    logging('Make html')
     build_options = [
         # '-vvvv ',
         # '-n',  # warn about all missing references
@@ -74,5 +83,14 @@ def doc(root: str, virtual: bool = False):
     command = 'sphinx-build -M html %s %s %s'
     command = command % (docs, docs, build_options)
 
-    result = run_target(root, command, virtual=virtual)
+    logging('make html')
+    logging(command)
+
+    result = run_target(
+        root,
+        command=command,
+        cwd=root,
+        virtual=virtual,
+        verbose=verbose,
+    )
     return result.returncode

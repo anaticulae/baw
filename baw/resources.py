@@ -188,5 +188,6 @@ def template_replace(root: str, template: str):
     template = template.replace('$_SHORT_$', short)
     template = template.replace('$_NAME_$', name_)
     template = template.replace('$_VERSION_$', version_tag)
+    template = template.replace('$_ROOT_$', root)
 
     return template

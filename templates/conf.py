@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append(r'$_ROOT_$')
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
