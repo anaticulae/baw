@@ -63,7 +63,6 @@ def install(root: str, virtual: bool):
     command = 'python setup.py install -f'
 
     completed = run_target(root, command, root, verbose=False, virtual=virtual)
-    print(completed.stdout)
     return completed.returncode
 
 

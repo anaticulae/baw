@@ -50,7 +50,7 @@ def run_main():
         return SUCCESS
 
     if args['version']:
-        print(__version__)
+        logging(__version__)
         return SUCCESS
 
     verbose = args['verbose']
@@ -186,7 +186,7 @@ def main():
     try:
         exit(run_main())
     except KeyboardInterrupt:
-        print('\nOperation cancelled by user')
+        logging('\nOperation cancelled by user')
     except Exception as error:  # pylint: disable=broad-except
         logging_error(error)
         stack_trace = format_exc()
