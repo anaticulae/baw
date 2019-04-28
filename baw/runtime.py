@@ -221,8 +221,9 @@ def run_target(
         error_message = error_message.replace(remove_skip, '')
 
     if error_message.strip():
-        logging_error('%s \n%s' % (error_message, str(completed)))
+        logging_error('%s' % error_message.strip())
     if verbose:
+        logging_error(str(completed))
         print_runtime(start)
 
     return completed
