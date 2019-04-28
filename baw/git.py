@@ -15,6 +15,7 @@ from subprocess import run
 
 from baw.runtime import NO_EXECUTABLE
 from baw.runtime import run_target
+from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import logging
 from baw.utils import logging_error
@@ -87,7 +88,12 @@ def git_checkout(
 
 
 @contextmanager
-def git_stash(root: str, *, verbose: bool = False, virtual: bool = False):
+def git_stash(
+        root: str,
+        *,
+        verbose: bool = False,
+        virtual: bool = False,
+):
     """Save uncommited/not versonied content to improve testability
 
     Args:
@@ -101,6 +107,10 @@ def git_stash(root: str, *, verbose: bool = False, virtual: bool = False):
     logging('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
+
+    if completed.returncode:
+        # Stashing an repository with not commit, produces an error
+        exit(completed.returncode)
 
     nostash = (completed.returncode == 0 and
                'No local changes to save' in completed.stdout)
