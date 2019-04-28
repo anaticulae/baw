@@ -96,7 +96,7 @@ def get_setup():
         return (adress, internal, external)
     except KeyError as error:
         logging_error('Missing global var %s' % error)
-        exit(1)
+        exit(FAILURE)
 
 
 def package_address():
@@ -106,7 +106,7 @@ def package_address():
         return (internal, external)
     except KeyError as error:
         logging_error('Missing global var %s' % error)
-        exit(1)
+        exit(FAILURE)
 
 
 def tmp(root):
@@ -155,9 +155,9 @@ def file_remove(path: str):
 def file_replace(path: str, content: str):
     """Replace file content
 
-    1. If not exit, create file
-    2. If exists,   compare content, if changed than replace
-                                     if not, do nothing
+    1. If not exists, create file
+    2. If exists,     compare content, if changed than replace
+                                       if not, do nothing
     Args:
         path(str): path to file
         content(str): content to write
