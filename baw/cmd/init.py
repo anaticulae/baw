@@ -118,16 +118,14 @@ def create_python(
     """
     # TODO: DIRTY
     python_project = join(root, shortcut)
-    python_cmdline = join(python_project, 'command')
-
     makedirs(python_project, exist_ok=True)
-    makedirs(python_cmdline, exist_ok=True)
-
     file_create(join(python_project, '__init__.py'), INIT)
 
     entry_point = ''
     entry_point_package = ''
     if cmdline:
+        python_cmdline = join(python_project, 'command')
+        makedirs(python_cmdline, exist_ok=True)
         main_replaced = template_replace(root, MAIN_CMD)
         init_replaced = template_replace(root, INIT_CMD)
 
