@@ -12,9 +12,8 @@ from os.path import exists
 from os.path import join
 
 from baw.config import minimal_coverage
-from baw.config import shortcut
 from baw.config import sources
-from baw.runtime import git_stash
+from baw.git import git_stash
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import ROOT

@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from contextlib import contextmanager
 from os import environ
 from os import makedirs
 from os import scandir
@@ -312,53 +311,3 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
         universal_newlines=True,
     )
     return process
-
-
-@contextmanager
-def git_stash(root: str, *, verbose: bool = False, virtual: bool = False):
-    """Save uncommited/not versonied content to improve testability
-
-    Args:
-        root(str): root of execution
-        virtual(bool): run in virtual environment
-    Returns:
-        SUCCESS if everything was successfull
-    Raises:
-        Reraises all user execeptions
-    """
-    logging('Stash environment')
-    cmd = 'git stash --include-untracked'
-    completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
-
-    nostash = (completed.returncode == 0 and
-               'No local changes to save' in completed.stdout)
-    if nostash:
-        logging('No stash is required. Environment is already clean.')
-
-    error = None
-    try:
-        yield  # let user do there job
-    except Exception as error:  # exception is reraised after unstash
-        pass
-
-    if nostash:
-        # reraise exception from user code
-        if error:
-            raise error
-        return SUCCESS
-
-    # unstash to recreate dirty environment
-    cmd = 'git stash pop'
-    completed = run_target(
-        root,
-        cmd,
-        verbose=verbose,
-        virtual=virtual,
-    )
-    if completed.returncode:
-        logging_error(completed.stderr)
-
-    # reraise except from user code
-    if error:
-        raise error
-    return completed.returncode

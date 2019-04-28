@@ -7,25 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 """Run every function which is used by `baw`."""
-from glob import glob
-from os import chmod
 from os import environ
-from os import remove
 from os.path import abspath
 from os.path import exists
 from os.path import isfile
 from os.path import join
 from os.path import split
 from os.path import splitdrive
-from shutil import rmtree
-from stat import S_IWRITE
 
 from baw.config import commands
-from baw.runtime import VIRTUAL_FOLDER
+from baw.git import GIT_EXT
 from baw.runtime import run_target
 from baw.utils import BAW_EXT
 from baw.utils import FAILURE
-from baw.utils import GIT_EXT
 from baw.utils import SUCCESS
 from baw.utils import check_root
 from baw.utils import get_setup
@@ -62,77 +56,6 @@ def find_root(cwd: str):
             msg = 'Could not determine project root. Current: %s' % cwd
             raise ValueError(msg)
     return cwd
-
-
-def remove_readonly(func, path, _):
-    "Clear the readonly bit and reattempt the removal"
-    chmod(path, S_IWRITE)
-    func(path)
-
-
-def clean(root: str):
-    check_root(root)
-    logging('Start cleaning')
-    patterns = [
-        '*.egg',
-        '*.egg-info',
-        '*.swo',
-        '*.swp',
-        '.coverage',
-        '.pytest_cache',
-        '.tmp',
-        '__pycache__',
-        'build',
-        'dist',
-        'doctrees',
-        'html',
-        'nano.save',
-    ]
-
-    # problems while deleting recursive
-    ret = 0
-    for pattern in patterns:
-        try:
-            todo = glob(root + '/**/' + pattern, recursive=True)
-        except NotADirectoryError:
-            todo = glob(root + '**' + pattern, recursive=True)
-        todo = sorted(todo, reverse=True)  # longtest path first, to avoid
-        for item in todo:
-            logging('Remove %s' % item)
-            try:
-                if isfile(item):
-                    remove(item)
-                else:
-                    rmtree(item, onerror=remove_readonly)
-            except OSError as error:
-                ret += 1
-                logging_error(error)
-    if ret:
-        exit(ret)
-    logging()  # Newline
-
-
-def clean_virtual(root: str):
-    """Clean virtual environment of given project
-
-    Args:
-        root(str): generated project
-    Hint:
-        Try to remove .virtual folder
-    Raises:
-        SystemExit if cleaning not work
-    """
-    virtual_path = join(root, VIRTUAL_FOLDER)
-    if not exists(virtual_path):
-        logging('Virtual environment does not exist %s' % virtual_path)
-        return
-    logging('Try to clean virtual environment %s' % virtual_path)
-    try:
-        rmtree(virtual_path)
-    except OSError as error:
-        logging_error(error)
-        exit(FAILURE)
-    logging('Finished')
 
 
 def install(root: str, virtual: bool):

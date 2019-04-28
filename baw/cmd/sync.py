@@ -12,10 +12,10 @@ from os.path import join
 from urllib.request import URLError
 from urllib.request import urlopen
 
+from baw.git import GIT_REPO_EXCLUDE
 from baw.resources import GITIGNORE
 from baw.runtime import run_target
 from baw.utils import FAILURE
-from baw.utils import GIT_REPO_EXCLUDE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 from baw.utils import check_root

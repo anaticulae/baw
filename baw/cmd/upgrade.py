@@ -12,8 +12,9 @@ from os.path import join
 from re import search
 
 from baw.cmd.sync import check_dependency
-from baw.git import checkout_file
-from baw.runtime import git_stash
+from baw.git import git_checkout
+from baw.git import git_commit
+from baw.git import git_stash
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
 from baw.utils import file_read
@@ -52,7 +53,7 @@ def upgrade(
         )
         if failure:
             # reset requirement
-            completed = checkout_file(
+            completed = git_checkout(
                 root,
                 requirements,
                 verbose=verbose,
@@ -63,7 +64,6 @@ def upgrade(
 
             return failure
 
-        from baw.cmd.init import git_commit
         failure = git_commit(
             root,
             source=requirements,

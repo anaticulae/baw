@@ -10,15 +10,13 @@
 
 Initialize a new repository due init. Add content afterwards and stash it.
 """
-
 from os import makedirs
 from os.path import dirname
 from os.path import exists
 from os.path import join
-from subprocess import CompletedProcess
-from subprocess import run
 
 from baw.config import create_config
+from baw.git import git_init
 from baw.resources import ENTRY_POINT
 from baw.resources import FILES
 from baw.resources import FOLDERS
@@ -27,11 +25,8 @@ from baw.resources import INIT_CMD
 from baw.resources import MAIN_CMD
 from baw.resources import SETUP_PY
 from baw.resources import template_replace
-from baw.runtime import NO_EXECUTABLE
-from baw.runtime import run_target
 from baw.utils import BAW_EXT
 from baw.utils import FAILURE
-from baw.utils import GIT_EXT
 from baw.utils import NEWLINE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
@@ -39,6 +34,7 @@ from baw.utils import file_append
 from baw.utils import file_create
 from baw.utils import logging
 from baw.utils import logging_error
+from baw.utils import skip
 
 ADDITONAL_REQUIREMENTS = []
 
@@ -151,63 +147,3 @@ def create_requirements(root: str):
         content += item + NEWLINE
 
     file_append(join(root, REQUIREMENTS_TXT), content)
-
-
-def git_init(root: str):
-    """Init git-repository if not exists, If .git exists, return
-
-    Args:
-        root(str): generated project"""
-    git_dir = join(root, GIT_EXT)
-    if exists(git_dir):
-        skip('git init')
-        return
-    logging('git init')
-    command = run(['git', 'init'])
-    evaluate_git_error(command)
-
-
-def git_add(root: str, pattern: str):
-    """Stage items matching on given pattern
-
-    Args:
-        root(str): root of generated project
-        pattern(str): pattern in linux-style"""
-    assert exists(root)
-    logging('git add')
-    add = run_target(root, 'git add %s' % pattern, verbose=False)
-    evaluate_git_error(add)
-
-
-def git_commit(root, source, message):
-    assert exists(root)
-    message = '"%s"' % message
-    logging('git commit')
-    process = run_target(
-        root, 'git commit %s -m %s' % (source, message), verbose=False)
-
-    return process.returncode
-
-
-def skip(msg: str):
-    """Logging skipped event
-
-    Args:
-        msg(str): message to skip"""
-    logging('Skip: %s' % msg)
-
-
-def evaluate_git_error(process: CompletedProcess):
-    """Raise exception depending on returncode of completed process
-
-    Args:
-        process(CompletedProcess): process to analyze returncode for raising
-                                   depended exception.
-    Raises:
-        ChildProcessError when git is not installed
-                               problems while initializing git repository
-    """
-    if process.returncode == NO_EXECUTABLE:
-        raise ChildProcessError('Git is not installed')
-    if process.returncode:
-        raise ChildProcessError('Could not run git %s' % str(process))

@@ -26,8 +26,6 @@ from time import time
 ROOT = abspath(join(dirname(__file__), '..'))  #  Path to installed baw-tool
 
 BAW_EXT = '.baw'
-GIT_EXT = '.git'
-GIT_REPO_EXCLUDE = '.git/info/exclude'
 TMP = '.tmp'
 
 REQUIREMENTS_TXT = 'requirements.txt'
@@ -217,3 +215,11 @@ def remove_tree(path: str):
     except PermissionError:
         logging_error('Could not remove %s' % path)
         exit(FAILURE)
+
+
+def skip(msg: str):
+    """Logging skipped event
+
+    Args:
+        msg(str): message to skip"""
+    logging('Skip: %s' % msg)

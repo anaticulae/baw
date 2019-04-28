@@ -15,7 +15,7 @@ from re import match
 from tempfile import TemporaryFile
 
 from baw.config import shortcut
-from baw.git import checkout_file
+from baw.git import git_checkout
 from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -158,7 +158,7 @@ def drop_release(root: str, virtual: bool = False, verbose: bool = False):
     if not to_reset:
         return FAILURE
 
-    completed = checkout_file(root, to_reset, virtual=virtual, verbose=verbose)
+    completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
     if completed:
         return completed
 
