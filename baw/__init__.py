@@ -26,11 +26,11 @@ from baw.cmd import sync
 from baw.cmd import sync_files
 from baw.cmd import upgrade
 from baw.command import parse
-from baw.execution import find_root
 from baw.execution import install
 from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
+from baw.project import find_root
 from baw.runtime import create as create_virtual
 from baw.utils import FAILURE
 from baw.utils import PLAINOUTPUT
