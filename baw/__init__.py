@@ -34,7 +34,6 @@ from baw.runtime import create as create_virtual
 from baw.utils import FAILURE
 from baw.utils import PLAINOUTPUT
 from baw.utils import SUCCESS
-from baw.utils import flush
 from baw.utils import forward_slash
 from baw.utils import handle_error
 from baw.utils import logging

@@ -88,11 +88,6 @@ def forward_slash(content: str):
     return content
 
 
-def flush():
-    """Flush stdout"""
-    print('', end='', flush=True)
-
-
 def get_setup():
     try:
         adress = environ['HELPY_URL']
