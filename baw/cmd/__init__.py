@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+from baw.cmd.clean import clean as clean_project
+from baw.cmd.clean import clean_virtual
 from baw.cmd.doc import doc
 from baw.cmd.format import format_repository
 from baw.cmd.init import init

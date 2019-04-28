@@ -13,6 +13,8 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+from baw.cmd import clean_project
+from baw.cmd import clean_virtual
 from baw.cmd import doc
 from baw.cmd import drop_release
 from baw.cmd import format_repository
@@ -24,8 +26,6 @@ from baw.cmd import sync_files
 from baw.cmd import upgrade
 from baw.cmd.init import git_add
 from baw.command import parse
-from baw.execution import clean as project_clean
-from baw.execution import clean_virtual
 from baw.execution import find_root
 from baw.execution import install
 from baw.execution import publish
@@ -140,7 +140,7 @@ def run_main():
         exit(failure)
 
     if clean:
-        project_clean(root)
+        clean_project(root)
 
     ret = 0
     packages = args['sync']
