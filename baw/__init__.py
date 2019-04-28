@@ -103,9 +103,9 @@ def run_main():
             release(
                 root,
                 verbose=verbose,
+                stash=False,  # Nothing to stash at the first time
                 sync=False,  # No sync for first time needed
                 virtual=False,  # No virtual for first time needed
-                stash=False,  # Nothing to stash at the first time
             )
 
     # project must be init, if not, derminate here

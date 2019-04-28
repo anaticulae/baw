@@ -32,8 +32,9 @@ def release(
         root: str,
         *,
         release_type: str = 'auto',
-        verbose: bool = False,
+        stash: bool = True,
         sync: bool = True,
+        verbose: bool = False,
         virtual: bool = True,
 ):
     """Running release. Running test, commit and tag.
@@ -71,7 +72,7 @@ def release(
     ret = run_test(
         root,
         longrun=True,
-        stash=True,
+        stash=stash,
         verbose=verbose,
         virtual=virtual,
     )
