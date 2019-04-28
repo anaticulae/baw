@@ -37,14 +37,14 @@ Every noteable change is logged here.
 LICENCE = """# Licence
 """
 
-TODO = """# TODO
+TODO = """# Todo
 """
 
-BUGS = """# BUGS
+BUGS = """# Bugs
 
-## Open
+## open
 
-## Closed
+## closed
 """
 
 BUGS_RST = """.. mdinclude:: ../../BUGS.md

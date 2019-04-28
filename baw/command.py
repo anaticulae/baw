@@ -55,7 +55,7 @@ RELEASE = Command(
             'auto',
         ],
     })
-DROP_RELEASE = Command(longcut='--drop_release', message='Remove last release.')
+DROP_RELEASE = Command(longcut='--drop_release', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
 SYNC = Command(
