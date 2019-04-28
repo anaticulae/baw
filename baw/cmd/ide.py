@@ -11,12 +11,14 @@ user and start the ide afterwards. """
 from os.path import join
 
 from baw.resources import CODE_WORKSPACE as TEMPLATE
+from baw.resources import ISORT_TEMPLATE
 from baw.resources import RCFILE_PATH
 from baw.resources import template_replace
 from baw.runtime import run_target
 from baw.utils import file_replace
 from baw.utils import forward_slash
 from baw.utils import logging
+from baw.utils import tmp
 
 WORKSPACE_NAME = '..code-workspace'
 
@@ -24,17 +26,26 @@ WORKSPACE_NAME = '..code-workspace'
 def ide_open(root: str):
     """Generate vscode workspace and run afterwards"""
     logging('generate')
-    generate(root)
+    generate_workspace(root)
+    generate_sort_config(root)
     logging('open')
     completed = start(root)
     return completed
 
 
-def generate(root: str):
+def generate_workspace(root: str):
     output = workspace_configuration(root)
     rcfile = forward_slash(RCFILE_PATH)
-    replaced = template_replace(root, TEMPLATE, rcfile=rcfile)
+    isortfile = sort_configuration(root)
 
+    replaced = template_replace(root, TEMPLATE, rcfile=rcfile, isort=isortfile)
+
+    file_replace(output, replaced)
+
+
+def generate_sort_config(root: str):
+    output = sort_configuration(root)
+    replaced = template_replace(root, ISORT_TEMPLATE)
     file_replace(output, replaced)
 
 
@@ -45,6 +56,10 @@ def start(root):
     return completed.returncode
 
 
+def sort_configuration(root: str):
+    return forward_slash(join(tmp(root), '.isort.cfg'))
+
+
 def workspace_configuration(root: str):
     """Path to generated workspace configuration"""
-    return join(root, '..code-workspace')
+    return forward_slash(join(root, '..code-workspace'))

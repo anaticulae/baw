@@ -29,6 +29,9 @@ assert exists(GIT_IGNORE_TEMPLATE), 'No gitignore %s' % GIT_IGNORE_TEMPLATE
 RCFILE_PATH = join(TEMPLATES, '.rcfile')
 assert exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
 
+ISORT_PATH = join(TEMPLATES, '.isort.cfg')
+assert exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
+
 README = """# $_SHORT_$
 """
 
@@ -171,6 +174,8 @@ FILES = [
     (REQUIREMENTS_TXT, REQUIREMENTS),
     # ('setup.py', SETUP_PY),
 ]
+
+ISORT_TEMPLATE = file_read(ISORT_PATH)
 
 
 def template_replace(root: str, template: str, **kwargs):
