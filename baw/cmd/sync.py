@@ -127,8 +127,14 @@ def sync_dependencies(
     pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
     config = '--retries 2'
     ret = 0
+    warning = '' if verbose else '--no-warn-conflicts'
     for to_install in resources:
-        cmd = 'python -mpip install %s -U %s -r %s' % (pip, config, to_install)
+        cmd = 'python -mpip install %s %s -U %s -r %s' % (
+            warning,
+            pip,
+            config,
+            to_install,
+        )
         if verbose:
             logging(cmd)
 
