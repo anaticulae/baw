@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v0.7.2
+
+### Feature
+
+* log raw value of process in verbose mode, exclude from normal mode (d024512914df)
+* let stash on empty repository fail (5c21c1030f60)
+* extend vim temp files to clean (c091377f7fc3)
+* add pylint rcfile with project style configuration (4b92822c9052)
+* extend --format to format imports of repository (b4b52cf90bf1)
+
+### Fix
+
+* use logging instead of print (ddfca1467794)
+* stash at the first time is forbidden, when repo not exists (9a8ec75902eb)
+* create command folder only when adding cmdline (d4452611055e)
+* add source path, that sphinx can locate the package (05f3d433b3e3)
+* always stash when running release (24f2ee8c27c0)
+
 ## v0.7.1
 
 ### Feature
