@@ -20,6 +20,7 @@ tmp
 *.swn
 *.swo
 *.swp
+..code-workspace
 .coverage*
 
 # Documentation

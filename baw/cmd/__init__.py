@@ -11,6 +11,7 @@ from baw.cmd.clean import clean as clean_project
 from baw.cmd.clean import clean_virtual
 from baw.cmd.doc import doc
 from baw.cmd.format import format_repository
+from baw.cmd.ide import ide_open
 from baw.cmd.init import init
 from baw.cmd.release import drop_release
 from baw.cmd.release import release

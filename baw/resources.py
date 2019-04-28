@@ -26,6 +26,9 @@ assert exists(WORKSPACE_TEMPLATE), 'No template %s' % WORKSPACE_TEMPLATE
 GIT_IGNORE_TEMPLATE = join(TEMPLATES, '.gitignore')
 assert exists(GIT_IGNORE_TEMPLATE), 'No gitignore %s' % GIT_IGNORE_TEMPLATE
 
+RCFILE_PATH = join(TEMPLATES, '.rcfile')
+assert exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
+
 README = """# $_SHORT_$
 """
 
@@ -153,7 +156,7 @@ DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
 
 # None copies files
 FILES = [
-    ('..code-workspace', CODE_WORKSPACE),
+    # ('..code-workspace', CODE_WORKSPACE),
     (GIT_REPO_EXCLUDE, GITIGNORE),
     ('BUGS.md', BUGS),
     ('CHANGELOG.md', CHANGELOG),
@@ -170,7 +173,7 @@ FILES = [
 ]
 
 
-def template_replace(root: str, template: str):
+def template_replace(root: str, template: str, **kwargs):
     """Replace $vars in template
 
     Args:
@@ -189,5 +192,8 @@ def template_replace(root: str, template: str):
     template = template.replace('$_NAME_$', name_)
     template = template.replace('$_VERSION_$', version_tag)
     template = template.replace('$_ROOT_$', root)
+
+    for key, value in kwargs.items():
+        template = template.replace('$_%s_$' % key.upper(), value)
 
     return template

@@ -18,6 +18,7 @@ from baw.cmd import clean_virtual
 from baw.cmd import doc
 from baw.cmd import drop_release
 from baw.cmd import format_repository
+from baw.cmd import ide_open
 from baw.cmd import init as project_init
 from baw.cmd import release
 from baw.cmd import run_test
@@ -53,16 +54,17 @@ def run_main():
         logging(__version__)
         return SUCCESS
 
-    verbose = args['verbose']
-    virtual = args['virtual']
-    raw = args['raw']
-    init = args['init']
     clean = args['clean']
     clean_venv = args['clean_venv']
-    format_ = args['format']
-    upgrade_ = args['upgrade']
-    release_ = args['release']
     drop_release_ = args['drop_release']
+    format_ = args['format']
+    ide = args['ide']
+    init = args['init']
+    raw = args['raw']
+    release_ = args['release']
+    upgrade_ = args['upgrade']
+    verbose = args['verbose']
+    virtual = args['virtual']
 
     if upgrade_ or release_:
         # Upgrade, release command requires always virtual environment
@@ -174,6 +176,8 @@ def run_main():
     if args['run']:
         ret += run(root, virtual=virtual)
 
+    if ide:
+        ide_open(root)
     print_runtime(start)
     return ret
 
