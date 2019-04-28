@@ -76,6 +76,8 @@ def clean(root: str):
     patterns = [
         '*.egg',
         '*.egg-info',
+        '*.swo',
+        '*.swp',
         '.coverage',
         '.pytest_cache',
         '.tmp',
@@ -84,6 +86,7 @@ def clean(root: str):
         'dist',
         'doctrees',
         'html',
+        'nano.save',
     ]
 
     # problems while deleting recursive
