@@ -13,47 +13,13 @@ from baw.cmd.doc import doc
 from baw.cmd.format import format_repository
 from baw.cmd.ide import ide_open
 from baw.cmd.init import init
-from baw.cmd.release import drop_release
+from baw.cmd.lint import lint
+from baw.cmd.release import drop
 from baw.cmd.release import release
 from baw.cmd.sync import sync
 from baw.cmd.sync import sync_files
 from baw.cmd.test import run_test
 from baw.cmd.upgrade import upgrade
+from baw.cmd.utils import sync_and_test
 from baw.utils import SUCCESS
 from baw.utils import logging_error
-
-
-def sync_and_test(
-        root: str,
-        packages: str = 'all',
-        *,
-        quiet: bool = False,
-        stash: bool = False,
-        verbose: bool = False,
-        virtual: bool = False,
-):
-    if quiet:
-        verbose = False
-    ret = sync(
-        root,
-        packages=packages,
-        verbose=verbose,
-        virtual=virtual,
-    )
-    if ret:
-        logging_error('\nSync failed, could not release.\n')
-        return ret
-
-    ret = run_test(
-        root,
-        longrun=True,
-        stash=stash,
-        verbose=verbose,
-        virtual=virtual,
-        quiet=quiet,
-    )
-    if ret:
-        if not quiet:
-            logging_error('Tests failed.')
-        return ret
-    return SUCCESS

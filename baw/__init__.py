@@ -16,10 +16,11 @@ from traceback import format_exc
 from baw.cmd import clean_project
 from baw.cmd import clean_virtual
 from baw.cmd import doc
-from baw.cmd import drop_release
+from baw.cmd import drop
 from baw.cmd import format_repository
 from baw.cmd import ide_open
 from baw.cmd import init as project_init
+from baw.cmd import lint as run_lint
 from baw.cmd import release
 from baw.cmd import run_test
 from baw.cmd import sync
@@ -56,7 +57,7 @@ def run_main():
 
     clean = args['clean']
     clean_venv = args['clean_venv']
-    drop_release_ = args['drop_release']
+    drop_release_ = args['drop']
     format_ = args['format']
     ide = args['ide']
     init = args['init']
@@ -65,6 +66,7 @@ def run_main():
     upgrade_ = args['upgrade']
     verbose = args['verbose']
     virtual = args['virtual']
+    lint = args['lint']
 
     if upgrade_ or release_:
         # Upgrade, release command requires always virtual environment
@@ -133,7 +135,7 @@ def run_main():
             return failure
 
     if drop_release_:
-        return drop_release(root)
+        return drop(root)
 
     if upgrade_:
         failure = upgrade(root, verbose=verbose, virtual=True)
@@ -176,8 +178,12 @@ def run_main():
     if args['run']:
         ret += run(root, virtual=virtual)
 
+    if lint:
+        ret += run_lint(root, verbose=verbose, virtual=virtual)
+
     if ide:
         ide_open(root)
+
     print_runtime(start)
     return ret
 

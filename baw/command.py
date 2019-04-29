@@ -32,6 +32,7 @@ CLEAN_VENV = Command(
     longcut='--clean_venv', message='Clean virtual environment')
 DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
 IDE = Command(longcut='--ide', message='Generate workspace and open vscode')
+LINT = Command(longcut='--lint', message='Run statical code analysis')
 INSTALL = Command('-in', '--install', 'Run install task')
 INIT = Command('-i', '--init',
                'Initialize .baw project - shortcut name [--with_cmd]', {
@@ -110,6 +111,7 @@ def create_parser():  # noqa: Z21
         IDE,
         INIT,
         INSTALL,
+        LINT,
         PUSH,
         RAW,
         RELEASE,

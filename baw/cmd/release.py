@@ -14,6 +14,7 @@ from os.path import join
 from re import match
 from tempfile import TemporaryFile
 
+import baw.cmd
 from baw.config import shortcut
 from baw.git import git_checkout
 from baw.resources import SETUP_CFG
@@ -56,28 +57,16 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
-    if sync:
-        from baw.cmd.sync import sync as run_sync
-        ret = run_sync(
-            root,
-            packages='dev',
-            verbose=verbose,
-            virtual=virtual,
-        )
-        if ret:
-            logging_error('\nSync failed, could not release.\n')
-            return ret
-
-    from baw.cmd.test import run_test  # break cyclic imports
-    ret = run_test(
+    ret = baw.cmd.sync_and_test(
         root,
         longrun=True,
+        packages='dev',
         stash=stash,
+        sync=sync,
         verbose=verbose,
         virtual=virtual,
     )
     if ret:
-        logging_error('\nTests failed, could not release.\n')
         return ret
 
     logging("Update version tag")
@@ -123,14 +112,20 @@ RELEASE_PATTERN = r'(?P<release>v\d+\.\d+\.\d+)'
 DEFAULT_RELEASE = 'v0.0.0'
 
 
-def drop_release(root: str, virtual: bool = False, verbose: bool = False):
-    """
-    1. Check if last commit is a tagged release, if not abbort.
+def drop(
+        root: str,
+        virtual: bool = False,
+        verbose: bool = False,
+):
+    """Remove the last release tag and commit
+
+    1. Check if last commit is a tagged release, if not abbort
     2. Remove last commit git reset HEAD~1
     3. Checkout CHANGELOG and __init__.py
     4. Remove tag
     """
     logging('Start dropping release')
+
     # git tag --contains HEAD -> Answer the last commit
     logging('Detect current release:')
     runner = partial(run_target, verbose=verbose, virtual=virtual)
@@ -140,6 +135,7 @@ def drop_release(root: str, virtual: bool = False, verbose: bool = False):
         logging_error('No release tag detected')
         return FAILURE
     current_release = matched['release']
+
     # do not remove the first commit/release in the repository
     if current_release == DEFAULT_RELEASE:
         logging_error('Could not remove %s release' % DEFAULT_RELEASE)
