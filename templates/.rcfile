@@ -31,7 +31,7 @@ exclude-protected = __version,
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=79
+max-line-length=85
 
 # Maximum number of arguments for function / method.
 max-args=10
