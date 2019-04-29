@@ -96,45 +96,15 @@ def sync_dependencies(
     check_root(root)
     logging('sync dependencies')
 
-    requirements_dev = 'requirements-dev.txt'
-    requirements_doc = 'requirements-doc.txt'
-
-    resources = []
-    if packages == 'dev':
-        resources.append(requirements_dev)
-    if packages == 'doc':
-        resources.append(requirements_doc)
-    if packages == 'all':
-        resources.append(requirements_dev)
-        resources.append(requirements_doc)
-
-    # Requirements_dev is a `global` file from baw project. This file is not
-    # given in child project, it is referenced from global baw. Pay attention
-    # to the difference of ROOT (baw) and root(project).
-    # make path absolute in project
-    resources = [join(ROOT, to_install) for to_install in resources]
-
-    # local project file
-    local_requirement = join(root, REQUIREMENTS_TXT)
-    if exists(local_requirement):
-        resources.append(local_requirement)
+    resources = determine_resources(root, packages)
 
     pip_index, extra_url = package_address()
-
     if not connected(pip_index, extra_url):
         return FAILURE
 
-    pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
-    config = '--retries 2'
     ret = 0
-    warning = '' if verbose else '--no-warn-conflicts'
     for to_install in resources:
-        cmd = 'python -mpip install %s %s -U %s -r %s' % (
-            warning,
-            pip,
-            config,
-            to_install,
-        )
+        cmd, pip = get_install_cmd(to_install, verbose, pip_index, extra_url)
         if verbose:
             logging(cmd)
 
@@ -161,6 +131,45 @@ def sync_dependencies(
     logging()
     logging()
     return ret
+
+
+def determine_resources(root: str, packages: str):
+    resources = []
+    requirements_dev = 'requirements-dev.txt'
+    requirements_doc = 'requirements-doc.txt'
+    if packages == 'dev':
+        resources.append(requirements_dev)
+    if packages == 'doc':
+        resources.append(requirements_doc)
+    if packages == 'all':
+        resources.append(requirements_dev)
+        resources.append(requirements_doc)
+
+    # Requirements_dev is a `global` file from baw project. This file is not
+    # given in child project, it is referenced from global baw. Pay attention
+    # to the difference of ROOT (baw) and root(project).
+    # make path absolute in project
+    resources = [join(ROOT, to_install) for to_install in resources]
+
+    # local project file
+    local_requirement = join(root, REQUIREMENTS_TXT)
+    if exists(local_requirement):
+        resources.append(local_requirement)
+    return resources
+
+
+def get_install_cmd(to_install, verbose, pip_index, extra_url):
+    warning = '' if verbose else '--no-warn-conflicts'
+    pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
+    config = '--retries 2'
+
+    cmd = 'python -mpip install %s %s -U %s -r %s' % (
+        warning,
+        pip,
+        config,
+        to_install,
+    )
+    return cmd, pip
 
 
 def connected(internal, external):

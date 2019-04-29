@@ -17,6 +17,7 @@ from baw.git import git_stash
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import ROOT
+from baw.utils import SUCCESS
 from baw.utils import check_root
 from baw.utils import logging
 from baw.utils import logging_error
@@ -56,9 +57,40 @@ def run_test(
     check_root(root)
 
     logging('Running tests')
-    test_dir = join(root, 'tests')
-    if not exists(test_dir):
-        logging_error('No testdirectory %s available' % test_dir)
+    testdir, testenv = setup_testenvironment(root, longrun, fast)
+
+    cmd = test_run_command(root, testdir, pdb, coverage, quiet)
+
+    skip_error_code = {NO_TEST_TO_RUN}  # no pytest available = no problem
+    target = partial(
+        run_target,
+        root,
+        cmd,
+        cwd=root,  # to include project code(namespace) into syspath
+        debugging=pdb,
+        env=testenv,
+        verbose=verbose,
+        skip_error_code=skip_error_code,
+        virtual=virtual,
+    )
+
+    if stash:
+        with git_stash(root, verbose=verbose, virtual=virtual):
+            completed = target()
+    else:
+        completed = target()
+
+    # Print output of test run
+    logging(completed.stdout)
+    if completed.returncode == NO_TEST_TO_RUN:
+        return SUCCESS
+    return completed.returncode
+
+
+def setup_testenvironment(root: str, longrun: bool, fast: bool):
+    testdir = join(root, 'tests')
+    if not exists(testdir):
+        logging_error('No testdirectory %s available' % testdir)
         exit(FAILURE)
 
     env = dict(environ.items())
@@ -66,7 +98,10 @@ def run_test(
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
     if fast:
         env['FAST'] = 'True'  # Skip all tests wich are long or medium
+    return testdir, env
 
+
+def test_run_command(root, test_dir, pdb, coverage, quiet):
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
     tmp_path = tmp(root)
@@ -80,9 +115,7 @@ def run_test(
     test_config = join(ROOT, 'templates', 'pytest.ini')
     assert exists(test_config), 'No testconfig available %s' % test_config
 
-    override_testconfig = '--verbose --durations=10'
-    if quiet:
-        override_testconfig = '--quiet'
+    override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
 
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
@@ -96,33 +129,7 @@ def run_test(
         log_file,
         test_dir,
     )
-
-    skip_error_code = {NO_TEST_TO_RUN}  # no pytest available = no problem
-    target = partial(
-        run_target,
-        root,
-        cmd,
-        cwd=root,  # to include project code(namespace) into syspath
-        debugging=pdb,
-        env=env,
-        verbose=verbose,
-        skip_error_code=skip_error_code,
-        virtual=virtual,
-    )
-
-    if stash:
-        with git_stash(root, verbose=verbose, virtual=virtual):
-            completed = target()
-    else:
-        completed = target()
-    returncode = completed.returncode
-
-    # Print output of test run
-    logging(completed.stdout)
-    if returncode == NO_TEST_TO_RUN:
-        return 0
-
-    return returncode
+    return cmd
 
 
 def cov_args(root: str, *, pdb: bool):

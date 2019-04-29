@@ -176,15 +176,15 @@ def replace_requirements(requirements: str, new_requirements: dict) -> str:
     return requirements
 
 
-"""
-PyYAML==5.1
-pdfminer.six==20181108
+# Example:
 
-# Internal packages
-iamraw==0.1.2
-serializeraw==0.1.0
-utila==0.5.3
-"""
+# PyYAML==5.1
+# pdfminer.six==20181108
+
+# # Internal packages
+# iamraw==0.1.2
+# serializeraw==0.1.0
+# utila==0.5.3
 
 
 def parse_requirements(content: str):

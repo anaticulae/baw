@@ -151,11 +151,7 @@ def drop(
         return completed.returncode
 
     # git checkout CHANGELOG.md, $_NAME_$/__init__..py
-    to_reset = path_after_reset(root)
-    if not to_reset:
-        return FAILURE
-
-    completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
+    completed = reset_resources(root, virtual=virtual, verbose=verbose)
     if completed:
         return completed
 
@@ -170,20 +166,28 @@ def drop(
     return SUCCESS
 
 
-def path_after_reset(root: str):
+def reset_resources(
+        root: str,
+        virtual: bool = False,
+        verbose: bool = False,
+):
     short = shortcut(root)
-    init_path = join(short, '__init__.py')
+    initpath = join(short, '__init__.py')
     changelog = 'CHANGELOG.md'
 
-    result = []
+    to_reset = []
     ret = 0
-    for item in [init_path, changelog]:
+    for item in [initpath, changelog]:
         if not exists(join(root, item)):
             msg = 'Item %s does not exists' % item
             logging_error(msg)
             ret += 1
             continue
-        result.append(item)
+        to_reset.append(item)
     if ret:
-        return None  # at least one path does not exist.
-    return result
+        return FAILURE  # at least one path does not exist.
+    if not to_reset:
+        return FAILURE
+
+    completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
+    return completed.returncode
