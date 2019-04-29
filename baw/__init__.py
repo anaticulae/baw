@@ -169,8 +169,7 @@ def run_main():
         ret += install(root, virtual=virtual)
 
     if release_:
-        release_type = args['release']
-        ret += release(root, release_type=release_type)
+        ret += release(root, release_type=args['release'])
 
     if args['publish']:
         ret += publish(root)

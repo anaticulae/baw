@@ -15,7 +15,6 @@ from subprocess import run
 
 from baw.runtime import NO_EXECUTABLE
 from baw.runtime import run_target
-from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import logging
 from baw.utils import logging_error

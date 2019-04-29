@@ -121,9 +121,9 @@ def install_requirements(requirements: str, path: str):
         True if creating was successful, else False and print stderr
     """
 
-    install_requirements = 'python -mpip install -r %s' % requirements
+    pip_intall = 'python -mpip install -r %s' % requirements
 
-    return run_target(path, install_requirements, virtual=True)
+    return run_target(path, pip_intall, virtual=True)
 
 
 def run_target(
@@ -152,22 +152,17 @@ def run_target(
         CompletedProcess - os process which was runned
     """
     start = time()
-    if not cwd:
-        cwd = root
 
-    if not exists(cwd):
-        logging_error('cwd: %s does not exists' % cwd)
+    try:
+        cwd, skip_error_code, skip_error_message = setup_target(
+            root,
+            cwd,
+            skip_error_code,
+            skip_error_message,
+        )
+    except ValueError as error:
+        logging_error(str(error))
         return FAILURE
-
-    if not isdir(cwd):
-        logging_error('cwd: %s is not a directory' % cwd)
-        return FAILURE
-
-    if not skip_error_code:
-        skip_error_code = {}
-
-    if not skip_error_message:
-        skip_error_message = []
 
     if virtual:
         try:
@@ -194,6 +189,47 @@ def run_target(
             debugging=debugging,
             env=env,
         )
+
+    log_result(
+        completed,
+        cwd,
+        skip_error_code,
+        skip_error_message,
+        start,
+        verbose,
+    )
+
+    return completed
+
+
+def setup_target(
+        root: str,
+        cwd: str,
+        skip_error_code,
+        skip_error_message,
+):
+    if not cwd:
+        cwd = root
+    if not exists(cwd):
+        raise ValueError('cwd: %s does not exists' % cwd)
+    if not isdir(cwd):
+        raise ValueError('cwd: %s is not a directory' % cwd)
+    if not skip_error_code:
+        skip_error_code = {}
+    if not skip_error_message:
+        skip_error_message = []
+    return cwd, skip_error_code, skip_error_message
+
+
+def log_result(
+        completed,
+        cwd,
+        skip_error_code,
+        skip_error_message,
+        start,
+        verbose,
+):
+    command = completed.args
     returncode = completed.returncode
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
@@ -225,8 +261,6 @@ def run_target(
     if verbose:
         logging_error(str(completed))
         print_runtime(start)
-
-    return completed
 
 
 def _run_local(command, cwd, env=None, debugging: bool = False):

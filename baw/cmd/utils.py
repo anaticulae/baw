@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from baw.cmd.sync import sync as run_sync
 from baw.cmd.test import run_test
 from baw.utils import SUCCESS
 from baw.utils import logging_error
@@ -26,7 +27,7 @@ def sync_and_test(
     verbose = False if quiet else verbose
 
     if sync:
-        ret = sync(
+        ret = run_sync(
             root,
             packages=packages,
             verbose=verbose,

@@ -65,8 +65,8 @@ def shortcut(root: str):
 def name(root: str):
     assert exists(root)
     cfg = join(root, PROJECT_PATH)
-    _, name = project_name(cfg)
-    return name
+    _, name_ = project_name(cfg)
+    return name_
 
 
 def minimal_coverage(root: str):
@@ -105,10 +105,10 @@ def commands(root: str):
         # TODO: DIRTY, goto standard lib
         return {item: cfg['run'][item] for item in cfg['run']}
     except KeyError:
-        return []
+        return {}
 
 
-def create_config(root: str, shortcut: str, name: str):
+def create_config(root: str, shortname: str, longname: str):
     """Create project-config in .baw folder
 
     Args:
@@ -117,7 +117,7 @@ def create_config(root: str, shortcut: str, name: str):
     """
     assert exists(root)
     cfg = ConfigParser()
-    cfg['project'] = {'short': shortcut, 'name': name}
+    cfg['project'] = {'short': shortname, 'name': longname}
     output = join(root, PROJECT_PATH)
     with open(output, mode='w', encoding=UTF8, newline=NEWLINE) as fp:
         cfg.write(fp)
