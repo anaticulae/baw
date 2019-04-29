@@ -34,14 +34,16 @@ DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
 IDE = Command(longcut='--ide', message='Generate workspace and open vscode')
 LINT = Command(longcut='--lint', message='Run statical code analysis')
 INSTALL = Command('-in', '--install', 'Run install task')
-INIT = Command('-i', '--init',
-               'Initialize .baw project - shortcut name [--with_cmd]', {
-                   'nargs': REMAINDER,
-               })
+INIT = Command(
+    longcut='--init',
+    message='Initialize .baw project - shortcut name [--with_cmd]',
+    args={
+        'nargs': REMAINDER,
+    })
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
-PUSH = Command('-p', '--publish', 'Push release to repository')
+PUSH = Command(longcut='--publish', message='Push release to repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 RELEASE = Command(
     longcut='--release',
@@ -57,7 +59,7 @@ RELEASE = Command(
             'auto',
         ],
     })
-DROP_RELEASE = Command(longcut='--drop_release', message='Remove last release')
+DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
 SYNC = Command(

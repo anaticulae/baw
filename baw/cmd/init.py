@@ -78,7 +78,7 @@ def create_folder(root: str):
         logging('Create folder %s' % item)
 
 
-def create_files(root: str, verbose: bool = False):
+def create_files(root: str):
     """Copy file to generated template. Before copying, replce template vars
 
     Args:
