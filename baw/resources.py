@@ -152,7 +152,7 @@ main()
 CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
 GITIGNORE = file_read(join(TEMPLATES, '.gitignore'))
 
-SETUP_PY = file_read(join(TEMPLATES, 'setup.py'))
+SETUP_PY = file_read(join(TEMPLATES, 'setup.tpy'))
 SETUP_CFG = file_read(join(TEMPLATES, 'setup.cfg'))
 
 DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
