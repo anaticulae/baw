@@ -11,22 +11,19 @@ environment afterwards.
  """
 from os.path import exists
 from os.path import join
-from textwrap import dedent
 
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import SUCCESS
-from baw.utils import package_address
-from tests import REQUIREMENTS
-from tests import example  # required for fixture
+from tests import example  # pylint: disable=W0611
 from tests import run
 from tests import skip_cmd
 from tests import skip_longrun
-from tests.test_test import project_with_test
+from tests.test_test import project_with_test  # pylint: disable=W0611
 
 
 @skip_cmd
 @skip_longrun
-def test_creating_virtual_environment(example):
+def test_create_venv(example):  # pylint: disable=W0621
     """Creating virtual environment."""
     completed = run(
         'baw --virtual',
@@ -41,7 +38,7 @@ def test_creating_virtual_environment(example):
 
 @skip_cmd
 @skip_longrun
-def test_running_test_in_virtual_environment(project_with_test):
+def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
     """Running test-example in virtual environment"""
     # install requirements first and run test later
     cmd = 'baw --virtual --sync' + ' && baw --test'  #python -mpytest tests -v'

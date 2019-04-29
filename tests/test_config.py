@@ -50,7 +50,7 @@ def test_write_and_load_config(tmpdir):
 
 @fixture
 def configuration(tmpdir):
-    configuration = """\
+    config = """\
     [project]
     short = baw
     name = Black and White
@@ -60,14 +60,14 @@ def configuration(tmpdir):
     [tests]
     minimal_coverage = 50
     """
-    configuration = dedent(configuration)
+    config = dedent(config)
 
     path = join(tmpdir, 'config.cfg')
-    file_create(path, configuration)
+    file_create(path, config)
     return path
 
 
-def test_with_sourcecode_extention(configuration):
+def test_with_sourcecode_extention(configuration):  #pylint: disable=W0621
     """Include further directories in the test cov report"""
 
     expected_sources = ['baw', 'abc', 'defg']

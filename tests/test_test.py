@@ -4,9 +4,10 @@ from textwrap import dedent
 
 import pytest
 
+from baw.utils import SUCCESS
 from baw.utils import file_create
 from tests import EXAMPLE_PROJECT_NAME
-from tests import example  # required for fixture
+from tests import example  # pylint: disable=W0611
 from tests import run
 from tests import skip_cmd
 
@@ -18,12 +19,12 @@ def test_creating_project(tmpdir):
         'baw --init xkcd "Longtime project"',
         cwd=tmpdir,
     )
-    assert completed.returncode == 0, completed.stderr
+    assert completed.returncode == SUCCESS, completed.stderr
     assert exists(join(tmpdir, '.git'))
 
 
 @skip_cmd
-def test_test_with_import(example):
+def test_test_with_import(example):  # pylint: disable=W0621
     """Ensure that import project package while writing tests need no additonal
     configuration on sys.path
 
@@ -55,7 +56,7 @@ def test_test_with_import(example):
 
 
 @pytest.fixture
-def project_with_test(example):
+def project_with_test(example):  # pylint: disable=W0621
     """Create project with one test case"""
 
     test_me = dedent("""\

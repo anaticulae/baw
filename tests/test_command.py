@@ -25,23 +25,23 @@ command = ls
 
 
 @fixture
-def project_with_command(example):
+def project_with_command(example):  #pylint: disable=W0621
     """Create testproject which contains --run-command ls."""
     config = join(example, PROJECT_PATH)
     file_append(config, RUN)
     return example
 
 
-def test_run_commands_with_ls(project_with_command):
+def test_run_commands_with_ls(project_with_command):  #pylint: disable=W0621
     """Running --run with ls."""
     tmpdir = project_with_command
     assert_run('baw --run', cwd=tmpdir)
 
 
-project_without_command = example
+project_without_command = example  #pylint: disable=C0103
 
 
-def test_run_without_commands_in_project(project_without_command):
+def test_run_without_commands_in_project(project_without_command):  #pylint: disable=W0621
     """Running --run without any registered command in project."""
     tmpdir = project_without_command
     assert_run_fail('baw --run', cwd=tmpdir)

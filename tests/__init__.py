@@ -47,10 +47,10 @@ NO_BAW_RESON = 'Installing baw takes long time'
 
 FAST_TESTS = not LONGRUN or FAST
 
-skip_cmd = mark.skipif(NO_BAW, reason="Decrease response time")
-skip_longrun = mark.skipif(FAST_TESTS, reason="Test requires long time")
-skip_missing_packages = mark.skip(reason="Required package(s) not available")
-skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="No virtual environment")
+skip_cmd = mark.skipif(NO_BAW, reason="Decrease response time")  # pylint: disable=invalid-name
+skip_longrun = mark.skipif(FAST_TESTS, reason="Test requires long time")  # pylint: disable=invalid-name
+skip_missing_packages = mark.skip(reason="Required package(s) not available")  # pylint: disable=invalid-name
+skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="No virtual environment")  # pylint: disable=invalid-name
 
 
 def tempname():

@@ -26,7 +26,7 @@ from baw.utils import file_read
 from baw.utils import file_remove
 from tests import skip_longrun
 from tests import skip_nonvirtual
-from tests.test_init import project_example
+from tests.test_init import project_example  # pylint: disable=W0611
 
 NEW_VERSION_AVAILABLE = """
 utila (0.5.4)  - 0.5.4
@@ -149,7 +149,7 @@ def test_upgrading(tmpdir):
 
 @skip_longrun
 @skip_nonvirtual
-def test_upgrade_requirement(project_example, capsys):
+def test_upgrade_requirement(project_example, capsys):  # pylint: disable=W0621
 
     def commit_all():
         completed = run_target(
