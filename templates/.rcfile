@@ -2,7 +2,7 @@
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=CVS
+ignore=conf.py,
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
@@ -12,9 +12,12 @@ ignore-patterns=Lib
 
 disable=C0111,E1121
 
+
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
 jobs=0
+
+exit_zero = True
 
 [BASIC]
 
