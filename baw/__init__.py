@@ -7,8 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from os import environ
-from os import getcwd
+import os
+from collections import OrderedDict
+from functools import partial
 from sys import exc_info
 from time import time
 from traceback import format_exc
@@ -24,13 +25,14 @@ from baw.cmd import lint as run_lint
 from baw.cmd import release
 from baw.cmd import run_test
 from baw.cmd import sync
-from baw.cmd import sync_files
 from baw.cmd import upgrade
+from baw.cmd.init import get_init_args
 from baw.command import parse
 from baw.execution import install
 from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
+from baw.git import update_gitignore
 from baw.project import find_root
 from baw.runtime import create as create_virtual
 from baw.utils import FAILURE
@@ -54,140 +56,106 @@ def run_main():
     if args['version']:
         logging(__version__)
         return SUCCESS
+    verbose, virtual = args['verbose'], args['virtual']
+    root = setup_environment(
+        args['upgrade'],
+        args['release'],
+        args['raw'],
+        virtual,
+    )
 
-    clean = args['clean']
-    clean_venv = args['clean_venv']
-    drop_release_ = args['drop']
-    format_ = args['format']
-    ide = args['ide']
-    init = args['init']
-    raw = args['raw']
-    release_ = args['release']
-    upgrade_ = args['upgrade']
-    verbose = args['verbose']
-    virtual = args['virtual']
-    lint = args['lint']
-
-    if upgrade_ or release_:
-        # Upgrade, release command requires always virtual environment
-        virtual = True
-
-    if virtual:
-        # expose virtual flag
-        environ['VIRTUAL'] = "TRUE"
-    if raw:
-        # expose raw out flag
-        environ[PLAINOUTPUT] = "TRUE"
-
-    root = getcwd()
-
-    if init:
+    if args['init']:
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
-            # TODO: Very dirty
-            init_args = args['init']
-            # with_cmd = False
-            if len(init_args) > 3:
-                logging_error('To many inputs: %s' % args['init'])
-                return FAILURE
-            if len(init_args) == 3:
-                if init_args[2] != '--with_cmd':
-                    logging_error('--with_cmd allowed, not %s' % init_args[2])
-                    return FAILURE
-                # with_cmd = True
-                # init_args = init_args[:2]
-                init_args[2] = True
-
+            init_args = get_init_args(args)
             project_init(root, *init_args)
-
-            sync_files(root)
-            git_add(root, '*')
-
-            # Deactivate options to reach fast reaction
-            release(
-                root,
-                verbose=verbose,
-                stash=False,  # Nothing to stash at the first time
-                sync=False,  # No sync for first time needed
-                virtual=False,  # No virtual for first time needed
-            )
 
     # project must be init, if not, derminate here
     with handle_error(ValueError, code=FAILURE):
         # if cwd is in child location of the project, the root is set to
         # project root
-        root = find_root(getcwd())
+        root = find_root(os.getcwd())
 
-    if clean_venv:
-        clean_virtual(root)
+    link = partial
 
-    if format_:
-        failure = format_repository(
-            root,
-            verbose=verbose,
-            virtual=virtual,
-        )
-        if failure:
-            return failure
+    fmap = OrderedDict([
+        ('clean_venv', link(clean_virtual, root=root)),
+        ('format',
+         link(format_repository, root=root, verbose=verbose, virtual=virtual)),
+        ('virtual', link(create_virtual, root=root, clean=args['clean'])),
+        ('drop', link(drop, root=root)),
+        ('upgrade', link(upgrade, root=root, verbose=verbose, virtual=True)),
+    ])
 
-    if virtual:
-        failure = create_virtual(root, clean=clean)
-        if failure:
-            return failure
-
-    if drop_release_:
-        return drop(root)
-
-    if upgrade_:
-        failure = upgrade(root, verbose=verbose, virtual=True)
-        print_runtime(start)
-        exit(failure)
-
-    if clean:
-        clean_project(root)
+    for argument, action in fmap.items():
+        if args[argument]:
+            failure = action()
+            if failure:
+                return failure
 
     ret = 0
-    packages = args['sync']
-    if packages:
-        ret += sync(root, packages=packages, virtual=virtual, verbose=verbose)
+    workmap = OrderedDict([
+        ('clean', link(clean_project, root=root)),
+        ('sync',
+         link(
+             sync,
+             root,
+             packages=args['sync'],
+             virtual=virtual,
+             verbose=verbose)),
+        ('test',
+         testcommand(root=root, args=args, verbose=verbose, virtual=virtual)),
+        ('doc', link(doc, root=root, virtual=virtual, verbose=verbose)),
+        ('install', link(install, root=root, virtual=virtual)),
+        ('release', link(release, root=root, release_type=args['release'])),
+        ('publish', link(publish, root=root)),
+        ('run', link(run, root=root, virtual=virtual)),
+        ('lint', link(run_lint, root=root, verbose=verbose, virtual=virtual)),
+        ('ide', link(ide_open, root=root)),
+    ])
 
-    if args['test']:
-        ret += run_test(
-            root,
-            coverage='cov' in args['test'],
-            fast='fast' in args['test'],
-            longrun='long' in args['test'],
-            pdb='pdb' in args['test'],
-            stash='stash' in args['test'],
-            verbose=verbose,
-            virtual=virtual,
-        )
-
-    if args['doc']:
-        ret += doc(root, virtual=virtual, verbose=verbose)
-
-    if args['install']:
-        ret += install(root, virtual=virtual)
-
-    if release_:
-        ret += release(root, release_type=args['release'])
-
-    if args['publish']:
-        ret += publish(root)
-
-    if args['run']:
-        ret += run(root, virtual=virtual)
-
-    if lint:
-        ret += run_lint(root, verbose=verbose, virtual=virtual)
-
-    if ide:
-        ide_open(root)
+    for argument, action in workmap.items():
+        if args[argument]:
+            ret += action()
 
     print_runtime(start)
     return ret
 
 
+def testcommand(root: str, args, *, verbose: bool, virtual: bool):
+    if not args['test']:
+        return None
+    call = partial(
+        run_test,
+        root=root,
+        coverage='cov' in args['test'],
+        fast='fast' in args['test'],
+        longrun='long' in args['test'],
+        pdb='pdb' in args['test'],
+        stash='stash' in args['test'],
+        verbose=verbose,
+        virtual=virtual,
+    )
+    return call
+
+
 # TODO: add matrix with excluding cmds, eg. --init --drop_release
+
+
+def setup_environment(upgrade, release, raw, virtual):  # pylint: disable=W0621
+    if upgrade or release:
+        # Upgrade, release command requires always virtual environment
+        virtual = True
+
+    if virtual:
+        # expose virtual flag
+        os.environ['VIRTUAL'] = "TRUE"
+
+    if raw:
+        # expose raw out flag
+        os.environ[PLAINOUTPUT] = "TRUE"
+
+    root = os.getcwd()
+    return root
 
 
 def main():
