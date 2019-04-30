@@ -99,7 +99,7 @@ def setup_testenvironment(root: str, longrun: bool, fast: bool):
     return testdir, env
 
 
-PYTEST_INI = join(ROOT, 'template/pytest.ini')
+PYTEST_INI = join(ROOT, 'templates/pytest.ini')
 
 
 def test_run_command(root, test_dir, pdb, coverage, quiet, parameter):
