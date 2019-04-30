@@ -15,6 +15,7 @@ from baw.utils import ROOT
 
 def test_template_replace():
     """Test replace pattern from variable key word argument"""
+
     assert '$_RCFILE_$' in CODE_WORKSPACE
     assert RCFILE_PATH not in CODE_WORKSPACE
 

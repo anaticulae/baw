@@ -16,6 +16,7 @@ from baw import main
 
 
 @mark.parametrize('command', [
+    [],
     ['-h'],
     ['-v'],
     ['--format'],

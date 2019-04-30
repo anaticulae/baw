@@ -9,7 +9,6 @@
 
 import sys
 from os.path import exists
-from os.path import join
 
 from pytest import fixture
 from pytest import mark
@@ -22,46 +21,39 @@ from tests import skip_longrun
 from tests import skip_nonvirtual
 
 
+@fixture
+def project_example(testdir, monkeypatch):
+    run_command(['--init', 'xcd', '"I Like This Project"'], monkeypatch)
+    run_command(['--virtual'], monkeypatch)
+    return testdir
+
+
 @skip_cmd
-def test_init_project_in_empty_folder(testdir):  #pylint: disable=W0613
+def test_init_project_in_empty_folder(project_example):  #pylint: disable=W0613,W0621
     """Run --init in empty folder
 
     Intitialize project and check if documentation is generated."""
-    with assert_run('baw --init xcd "I Like This Project"'):
-        assert exists('docs/pages/bugs.rst')
-        assert exists('docs/pages/changelog.rst')
-        assert exists('docs/pages/readme.rst')
-        assert exists('docs/pages/todo.rst')
+    assert exists('docs/pages/bugs.rst')
+    assert exists('docs/pages/changelog.rst')
+    assert exists('docs/pages/readme.rst')
+    assert exists('docs/pages/todo.rst')
 
 
 @skip_cmd
 @skip_longrun
-def test_doc_command(testdir):  #pylint: disable=W0613
+def test_doc_command(project_example, monkeypatch):  #pylint: disable=W0613,W0621
     """Run --doc command to generate documentation."""
-    with assert_run('baw --init xcd "I Like This Project"'):
-        pass
-    with assert_run('baw --doc'):
-        assert exists('docs/html')
+    run_command(['--doc'], monkeypatch)
+    assert exists('docs/html')
 
 
 @skip_cmd
 @skip_longrun
 @skip_nonvirtual
-def test_escaping_single_collon(testdir):
+def test_escaping_single_collon(testdir, monkeypatch):  #pylint: disable=W0613
     """Generate project with ' in name and test install"""
-    with assert_run('baw --init xcd "I\'ts magic"'):
-        pass
-    with assert_run('pip install --editable .'):
-        pass
-
-
-@fixture
-def project_example(testdir):
-    with assert_run('baw --init xcd "I Like This Project"'):
-        pass
-    with assert_run('baw --virtual'):
-        pass
-    return testdir
+    run_command(['--init', 'xcd', '"I\'ts magic"'], monkeypatch)
+    assert_run('.', 'pip install --editable .')
 
 
 @mark.parametrize('command', [
@@ -70,7 +62,10 @@ def project_example(testdir):
 ])
 def test_run_complex_command(testdir, monkeypatch, command):  # pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
+    run_command(command, monkeypatch)
 
+
+def run_command(command, monkeypatch):
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg

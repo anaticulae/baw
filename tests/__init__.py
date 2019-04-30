@@ -9,13 +9,6 @@
 
 import os
 from contextlib import contextmanager
-from os import environ
-from os import listdir
-from os import makedirs
-from os.path import abspath
-from os.path import dirname
-from os.path import exists
-from os.path import join
 from random import randrange
 from subprocess import PIPE
 from subprocess import run as _run
@@ -29,19 +22,19 @@ from baw.utils import get_setup
 MAX_NUMBER = 20
 MAX_TEST_RANDOM = 10**MAX_NUMBER
 
-THIS = dirname(__file__)
-PROJECT = abspath(join(THIS, '..'))
-DATA = join(THIS, 'data')
+THIS = os.path.dirname(__file__)
+PROJECT = os.path.abspath(os.path.join(THIS, '..'))
+DATA = os.path.join(THIS, 'data')
 
 PACKAGE_ADDRESS, INTERNAL_PACKAGE_PORT, EXTERNAL_PACKAGE_PORT = get_setup()
 
-REQUIREMENTS = join(PROJECT, 'requirements-dev.txt')
+REQUIREMENTS = os.path.join(PROJECT, 'requirements-dev.txt')
 
-LONGRUN = 'LONGRUN' in environ.keys()
+LONGRUN = 'LONGRUN' in os.environ.keys()
 NO_LONGRUN_REASON = 'Takes to mutch time'
 
-FAST = 'FAST' in environ.keys()
-NON_VIRTUAL = 'VIRTUAL' not in environ.keys()
+FAST = 'FAST' in os.environ.keys()
+NON_VIRTUAL = 'VIRTUAL' not in os.environ.keys()
 
 NO_BAW = FAST
 NO_BAW_RESON = 'Installing baw takes long time'
@@ -69,12 +62,12 @@ def tempfile():
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    temp = join(PROJECT, TMP)
-    makedirs(temp, exist_ok=True)
+    temp = os.path.join(PROJECT, TMP)
+    os.makedirs(temp, exist_ok=True)
 
     name = 'temp%s' % tempname()
-    path = join(temp, name)
-    if exists(path):
+    path = os.path.join(temp, name)
+    if os.path.exists(path):
         return tempfile()
     return path
 
@@ -119,10 +112,10 @@ def example(tmpdir):
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     cmd = 'baw --init %s "Longtime project"' % EXAMPLE_PROJECT_NAME
     with assert_run(cmd, cwd=tmpdir):
-        assert exists(join(tmpdir, '.git'))
+        assert os.path.exists(os.path.join(tmpdir, '.git'))
 
     return tmpdir
 
 
 def file_count(path: str):
-    return len(listdir(path))
+    return len(os.listdir(path))
