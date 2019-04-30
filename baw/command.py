@@ -89,6 +89,14 @@ TEST = Command(
             'stash',
         ],
     })
+TEST_CONFIG = Command(
+    longcut='--testconfig',
+    message='Paramterize test command',
+    args={
+        'dest': 'testconfig',
+        'nargs': '+'
+    })
+
 VENV = Command(longcut='--virtual', message='Run commands in venv')
 # TODO count V to determine verbosity. -VVV
 VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
@@ -121,6 +129,7 @@ def create_parser():  # noqa: Z21
         RUN,
         SYNC,
         TEST,
+        TEST_CONFIG,
         UPGRADE,
         VENV,
         VERBOSE,

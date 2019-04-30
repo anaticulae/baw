@@ -21,7 +21,6 @@ from baw.utils import SUCCESS
 from baw.utils import check_root
 from baw.utils import logging
 from baw.utils import logging_error
-from baw.utils import remove_tree
 from baw.utils import tmp
 
 # pytest returncode when runnining without tests
@@ -31,6 +30,7 @@ NO_TEST_TO_RUN = 5
 
 def run_test(
         root: str,
+        testconfig=None,
         *,
         coverage: bool = False,
         fast: bool = False,
@@ -59,9 +59,7 @@ def run_test(
     logging('Running tests')
     testdir, testenv = setup_testenvironment(root, longrun, fast)
 
-    cmd = test_run_command(root, testdir, pdb, coverage, quiet)
-
-    skip_error_code = {NO_TEST_TO_RUN}  # no pytest available = no problem
+    cmd = test_run_command(root, testdir, pdb, coverage, quiet, testconfig)
     target = partial(
         run_target,
         root,
@@ -70,7 +68,7 @@ def run_test(
         debugging=pdb,
         env=testenv,
         verbose=verbose,
-        skip_error_code=skip_error_code,
+        skip_error_code={NO_TEST_TO_RUN},  # no tests available => no problem
         virtual=virtual,
     )
 
@@ -101,32 +99,33 @@ def setup_testenvironment(root: str, longrun: bool, fast: bool):
     return testdir, env
 
 
-def test_run_command(root, test_dir, pdb, coverage, quiet):
+PYTEST_INI = join(ROOT, 'template/pytest.ini')
+
+
+def test_run_command(root, test_dir, pdb, coverage, quiet, parameter):
+    # using ROOT to get location from baw-tool
+    assert exists(PYTEST_INI), 'No testconfig available %s' % PYTEST_INI
+
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
+
     tmp_path = tmp(root)
     tmp_test_path = join(tmp_path, 'test')
 
-    if exists(tmp_test_path):
-        remove_tree(tmp_test_path)
-
-    log_file = join(tmp_path, 'tests.log')
-    # using ROOT to get location from baw-tool
-    test_config = join(ROOT, 'templates', 'pytest.ini')
-    assert exists(test_config), 'No testconfig available %s' % test_config
-
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
 
+    manual_parameter = ' '.join(parameter) if parameter else ''
+    manual_parameter = manual_parameter.replace('+', '-')
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
-    cmd = 'python -m pytest -c %s %s %s %s --basetemp=%s --log-file="%s" %s'
+    cmd = 'python -m pytest -c %s %s %s %s %s --basetemp=%s %s'
     cmd = cmd % (
-        test_config,
+        PYTEST_INI,
+        manual_parameter,
         override_testconfig,
         debugger,
         cov,
         tmp_test_path,
-        log_file,
         test_dir,
     )
     return cmd

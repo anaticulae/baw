@@ -46,9 +46,10 @@ def upgrade(
         failure = sync_and_test(
             root,
             packages='dev',  # minimal requirements is required
-            stash=False,
-            verbose=False,
             quiet=True,
+            stash=False,
+            testconfig=None,
+            verbose=False,
             virtual=virtual,
         )
         if failure:

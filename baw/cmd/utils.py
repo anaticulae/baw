@@ -16,6 +16,7 @@ from baw.utils import logging_error
 def sync_and_test(
         root: str,
         packages: str = 'all',
+        testconfig=None,
         *,
         quiet: bool = False,
         stash: bool = False,
@@ -39,6 +40,7 @@ def sync_and_test(
 
     ret = run_test(
         root,
+        testconfig=testconfig,
         longrun=longrun,
         quiet=quiet,
         stash=stash,

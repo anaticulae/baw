@@ -63,6 +63,7 @@ def release(
         packages='dev',
         stash=stash,
         sync=sync,
+        testconfig=None,
         verbose=verbose,
         virtual=virtual,
     )
