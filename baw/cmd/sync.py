@@ -12,14 +12,12 @@ from os.path import join
 from urllib.request import URLError
 from urllib.request import urlopen
 
-from baw.git import GIT_REPO_EXCLUDE
-from baw.resources import GITIGNORE
+from baw.git import update_gitignore
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 from baw.utils import check_root
-from baw.utils import file_replace
 from baw.utils import get_setup
 from baw.utils import logging
 from baw.utils import logging_error
@@ -41,7 +39,7 @@ def sync(root: str,
     check_root(root)
     ret = 0
     logging()
-    ret += sync_files(root, verbose=verbose)
+    ret += update_gitignore(root, verbose=verbose)
     ret += sync_dependencies(
         root,
         packages=packages,
@@ -200,10 +198,3 @@ def should_skip(msg: str, verbose: bool = False):
         logging('.', end='')
         return True
     return False
-
-
-def sync_files(root: str, verbose: bool = False):
-    if verbose:
-        logging('sync gitexclude')
-    file_replace(join(root, GIT_REPO_EXCLUDE), GITIGNORE)
-    return 0

@@ -20,7 +20,6 @@ from os.path import isfile
 from os.path import join
 from shutil import rmtree
 from stat import S_IWRITE
-from textwrap import wrap
 from time import time
 
 ROOT = abspath(join(dirname(__file__), '..'))  #  Path to installed baw-tool
@@ -65,7 +64,6 @@ def logging(msg: str = '', end: str = NEWLINE):
     Hint:
         Logging with default arguments will log a newline
     """
-    # msg = NEWLINE.join(wrap(msg, 120))
     msg = forward_slash(msg)
     print(msg, end=end, file=sys.stdout, flush=True)
 

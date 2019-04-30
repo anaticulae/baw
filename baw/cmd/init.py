@@ -16,7 +16,9 @@ from os.path import exists
 from os.path import join
 
 from baw.config import create_config
+from baw.git import git_add
 from baw.git import git_init
+from baw.git import update_gitignore
 from baw.resources import ENTRY_POINT
 from baw.resources import FILES
 from baw.resources import FOLDERS
@@ -39,7 +41,14 @@ from baw.utils import skip
 ADDITONAL_REQUIREMENTS = []
 
 
-def init(root: str, shortcut: str, name: str, cmdline: bool = False):
+def init(
+        root: str,
+        shortcut: str,
+        name: str,
+        cmdline: bool = False,
+        *,
+        verbose: bool = False,
+):
     """Init project due generatig file and folder
 
     Args:
@@ -61,7 +70,35 @@ def init(root: str, shortcut: str, name: str, cmdline: bool = False):
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
     create_requirements(root)
+
+    update_gitignore(root)
+    git_add(root, '*')
+
+    from baw.cmd import release
+    # Deactivate options to reach fast reaction
+    release(
+        root,
+        verbose=verbose,
+        stash=False,  # Nothing to stash at the first time
+        sync=False,  # No sync for first time needed
+        virtual=False,  # No virtual for first time needed
+    )
     return SUCCESS
+
+
+def get_init_args(args):
+    init_args = args['init']
+    cmdline = False
+    if len(init_args) > 3:
+        raise ValueError('To many inputs: %s' % args['init'])
+    if len(init_args) == 3:
+        if init_args[2] != '--with_cmd':
+            raise ValueError('--with_cmd allowed, not %s' % init_args[2])
+        cmdline = True
+    shortcut = init_args[0]
+    name = init_args[1]
+
+    return shortcut, name, cmdline
 
 
 def create_folder(root: str):

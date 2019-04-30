@@ -17,7 +17,6 @@ from baw.cmd.lint import lint
 from baw.cmd.release import drop
 from baw.cmd.release import release
 from baw.cmd.sync import sync
-from baw.cmd.sync import sync_files
 from baw.cmd.test import run_test
 from baw.cmd.upgrade import upgrade
 from baw.cmd.utils import sync_and_test

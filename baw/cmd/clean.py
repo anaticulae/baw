@@ -18,6 +18,7 @@ from stat import S_IWRITE
 
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import FAILURE
+from baw.utils import SUCCESS
 from baw.utils import check_root
 from baw.utils import logging
 from baw.utils import logging_error
@@ -63,6 +64,7 @@ def clean(root: str):
     if ret:
         exit(ret)
     logging()  # Newline
+    return SUCCESS
 
 
 def clean_virtual(root: str):
