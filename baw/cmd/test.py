@@ -10,9 +10,11 @@ from functools import partial
 from os import environ
 from os.path import exists
 from os.path import join
+from shutil import rmtree
 
 from baw.config import minimal_coverage
 from baw.config import sources
+from baw.datetime import current
 from baw.git import git_stash
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -109,9 +111,11 @@ def test_run_command(root, test_dir, pdb, coverage, quiet, parameter):
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
 
-    tmp_path = tmp(root)
-    tmp_test_path = join(tmp_path, 'test')
-
+    tmp_ = tmp(root)
+    tmp_testpath = join(tmp_, 'test_%s' % current(seconds=True, separator='_'))
+    if exists(tmp_testpath):
+        # remove test folder if exists
+        rmtree(tmp_testpath)
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
 
     manual_parameter = ' '.join(parameter) if parameter else ''
@@ -125,7 +129,7 @@ def test_run_command(root, test_dir, pdb, coverage, quiet, parameter):
         override_testconfig,
         debugger,
         cov,
-        tmp_test_path,
+        tmp_testpath,
         test_dir,
     )
     return cmd
