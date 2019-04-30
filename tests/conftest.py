@@ -20,6 +20,8 @@ from baw.utils import logging
 from baw.utils import profile
 from tests import FAST
 
+pytest_plugins = 'pytester'  # pylint: disable=invalid-name
+
 
 def install_baw():
     """Install baw-runtime to virtual environment"""

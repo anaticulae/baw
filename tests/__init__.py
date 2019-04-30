@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 from contextlib import contextmanager
 from os import environ
 from os import listdir
@@ -78,8 +79,9 @@ def tempfile():
     return path
 
 
-def run(command: str, cwd: str):
+def run(command: str, cwd: str = None):
     """Run external process"""
+    cwd = cwd if cwd else os.getcwd()
     completed = _run(
         command,
         cwd=cwd,
@@ -92,15 +94,16 @@ def run(command: str, cwd: str):
 
 
 @contextmanager
-def assert_run(command: str, cwd: str):
+def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
+
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode == 0, msg
     yield completed
 
 
 @contextmanager
-def assert_run_fail(command: str, cwd: str):
+def assert_run_fail(command: str, cwd: str = None):
     completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
     assert completed.returncode, msg
