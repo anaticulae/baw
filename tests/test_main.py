@@ -26,7 +26,6 @@ def test_run_command(monkeypatch, command):
         # Remove all environment vars
         # baw is removed as first arg
         context.setattr(sys, 'argv', ['baw'] + command)
-
         with raises(SystemExit) as result:
             main()
         result = str(result)
