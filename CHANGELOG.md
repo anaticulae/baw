@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v0.7.3
+
+### Feature
+
+* add --lint command to run python linter (7214e2916606)
+* generate sort rule with baw --ide (e6c3be37e735)
+* do not warn about conflicting dependencies in normal mode (83d4c77b80e4)
+* generate workspace with baw (d5d0828c1d4d)
+
+### Fix
+
+* reduce shortcut commands to improve clarity (c6260a6a9cfc)
+* rename template to avoid including in different tools (ae8c5e7e4c9e)
+* fix isort configuration (9179c759662f)
+
 ## v0.7.2
 
 ### Feature
