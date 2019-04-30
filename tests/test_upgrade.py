@@ -150,25 +150,26 @@ def test_upgrading(tmpdir):
 
 @skip_longrun
 @skip_nonvirtual
-def test_upgrade_requirement(project_example, capsys):  # pylint: disable=W0621
+def test_upgrade_requirement(project_example, capsys):  # pylint: disable=W0621, W0613
+
+    path = os.getcwd()
 
     def commit_all():
         completed = run_target(
             path,
             'git add . && git commit -m "Upgade requirements"',
         )
-        assert completed.returncode == SUCCESS, completed
+        assert completed.returncode == SUCCESS, str(completed)
 
-    path = project_example
-    requirements = join(path, REQUIREMENTS_TXT)
     # yapf in a higher version is provided by dev environment
-    file_append(requirements, 'yapf==0.10.0')
+    file_append(REQUIREMENTS_TXT, 'yapf==0.10.0')
 
     failed_test = """\
 def test_me():
     assert 0
     """
-    failingtest_path = join(path, 'tests/test_failed.py')
+    failingtest_path = 'tests/test_failed.py'
+
     file_create(failingtest_path, failed_test)
     commit_all()
 
