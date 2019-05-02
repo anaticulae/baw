@@ -4,6 +4,7 @@ from os.path import join
 
 from baw.config import name
 from baw.config import shortcut
+from baw.config import sources
 from baw.git import GIT_REPO_EXCLUDE
 from baw.project import version
 from baw.utils import BAW_EXT
@@ -189,10 +190,12 @@ def template_replace(root: str, template: str, **kwargs):
         Vars are defined as $_VARNAME_$.
     """
     short = shortcut(root)
+    source = sources(root)
     name_ = name(root)
     version_tag = version(root)
 
     template = template.replace('$_SHORT_$', short)
+    template = template.replace('$_SOURCES_$', ', '.join(source))
     template = template.replace('$_NAME_$', name_)
     template = template.replace('$_VERSION_$', version_tag)
     template = template.replace('$_ROOT_$', root)

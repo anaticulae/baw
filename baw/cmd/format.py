@@ -10,6 +10,7 @@
 from os.path import join
 
 from baw.config import shortcut
+from baw.config import sources
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
@@ -31,11 +32,11 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
 
 
 def format_imports(root: str, verbose: bool = False, virtual: bool = False):
-    short = shortcut(root)
+    short = ' -p '.join(sources(root))
     isort = [
         "-o",
         "pytest",
-        "-p",
+        '-p',
         short,
         "-p",
         "tests",
