@@ -98,6 +98,10 @@ def setup_testenvironment(root: str, longrun: bool, fast: bool):
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
     if fast:
         env['FAST'] = 'True'  # Skip all tests wich are long or medium
+
+    # comma-separated plugins to load during startup
+    env['PYTEST_PLUGINS'] = 'pytester'
+
     return testdir, env
 
 
