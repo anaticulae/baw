@@ -48,6 +48,7 @@ def upgrade(
             packages='dev',  # minimal requirements is required
             quiet=True,
             stash=False,
+            sync=True,  # install new packages
             testconfig=None,
             verbose=False,
             virtual=virtual,

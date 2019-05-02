@@ -152,7 +152,7 @@ def update_gitignore(root: str, verbose: bool = False):
     if verbose:
         logging('sync gitexclude')
     file_replace(join(root, GIT_REPO_EXCLUDE), GITIGNORE)
-    return 0
+    return SUCCESS
 
 
 def evaluate_git_error(process: CompletedProcess):
