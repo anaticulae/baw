@@ -191,4 +191,4 @@ def reset_resources(
         return FAILURE
 
     completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
-    return completed.returncode
+    return completed
