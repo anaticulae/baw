@@ -24,8 +24,7 @@ def lint(root: str, verbose: bool = False, virtual: bool = False):
         virtual=virtual,
         verbose=verbose,
     )
-    if completed.returncode:
-        logging(completed.stderr)
-        logging(completed.stdout)
+    logging(completed.stderr)
+    logging(completed.stdout)
 
     return completed.returncode
