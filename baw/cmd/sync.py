@@ -171,7 +171,7 @@ def determine_resources(root: str, packages: str):
 def get_install_cmd(to_install, verbose, pip_index, extra_url):
     warning = '' if verbose else '--no-warn-conflicts'
     pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
-    config = '--retries 2'
+    config = '--retries 2 --disable-pip-version-check'
 
     cmd = 'python -mpip install %s %s -U %s -r %s' % (
         warning,
