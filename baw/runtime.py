@@ -25,6 +25,7 @@ from baw.utils import UTF8
 from baw.utils import file_create
 from baw.utils import file_read
 from baw.utils import file_remove
+from baw.utils import file_replace
 from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import print_runtime
@@ -90,6 +91,9 @@ def create(root: str, clean: bool = False, verbose: bool = False):
         venv_command.append('--clear')
     venv_command = ' '.join(venv_command)
     process = _run(command=venv_command, cwd=virtual)
+
+    patch_pip(root)
+
     if process.returncode == 0:
         if verbose:
             logging(process.stdout)
@@ -105,6 +109,22 @@ def create(root: str, clean: bool = False, verbose: bool = False):
     logging_error(process.stderr)
 
     return FAILURE
+
+
+def patch_pip(root):
+    """This patch is required for install pdfminer.six==20181108 under
+    pip==18.1, this can may be removed with new pip or pdfminer. There is a
+    problem with sorting RECORS, cause mixing sort int and str.
+
+    TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
+    """
+    logging('Patching the wheel')
+
+    to_patch = join(root, '.virtual/Lib/site-packages/pip/_internal/wheel.py')
+    template = 'for row in sorted(outrows):'
+    replacement = 'for row in outrows:'
+    content = file_read(to_patch).replace(template, replacement)
+    file_replace(to_patch, content)
 
 
 def __fix_environment(root: str):
