@@ -259,7 +259,8 @@ def log_result(
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
         logging_error(
-            'Running `%(command)s` in `%(cwd)s` returncode: %(returncode)d' % {
+            'Running `%(command)s` in `%(cwd)s` returncode: %(returncode)d\n' %
+            {
                 'command': command,
                 'cwd': cwd,
                 'returncode': returncode,

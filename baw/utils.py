@@ -76,13 +76,19 @@ def logging_error(msg: str):
 
 
 PLAINOUTPUT = 'PLAINOUTPUT'
+SAVEGUARD = 'IAMTHESAVEGUARDXYXYXYXYXYXYXYXYXYXYXY'
 
 
 def forward_slash(content: str):
     if PLAINOUTPUT in environ:
         return content
-
-    content = str(content).replace(r'\\', '/').replace('\\', '/')
+    content = str(content)
+    # Save newline
+    content = content.replace(r'\n', SAVEGUARD)
+    # Forward slash
+    content = content.replace(r'\\', '/').replace('\\', '/')
+    # Restore newline
+    content = content.replace(SAVEGUARD, '\n')
     return content
 
 
@@ -179,7 +185,7 @@ def print_runtime(before: int):
         before(int): time recorded some time before - use time.time()
     """
     time_diff = time() - before
-    logging('Runtime: %.2f secs' % time_diff)
+    logging('Runtime: %.2f secs\n' % time_diff)
 
 
 @contextmanager
