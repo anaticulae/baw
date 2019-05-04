@@ -110,7 +110,7 @@ def sync_dependencies(
             root,
             cmd,
             cwd=root,
-            verbose=False,
+            verbose=verbose,
             virtual=virtual,
         )
         if 'NewConnectionError' in completed.stdout:

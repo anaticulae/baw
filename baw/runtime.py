@@ -57,7 +57,7 @@ def venv(root: str) -> str:
     return join(root, VIRTUAL_FOLDER)
 
 
-def create(root: str, clean: bool = False):
+def create(root: str, clean: bool = False, verbose: bool = False):
     """Create `virtual` folder in project root, do nothing if folder exists
 
     This method creates the folder and does the init via python `venv`-module.
@@ -91,6 +91,11 @@ def create(root: str, clean: bool = False):
     venv_command = ' '.join(venv_command)
     process = _run(command=venv_command, cwd=virtual)
     if process.returncode == 0:
+        if verbose:
+            logging(process.stdout)
+            if process.stderr:
+                logging_error(process.stderr)
+
         __fix_environment(root)
         return SUCCESS
 
@@ -250,7 +255,8 @@ def log_result(
                 'command': command,
                 'cwd': cwd,
             })
-        logging('Env: %s' % environ)
+        if verbose == 2:  # TODO: Introduce VERBOSE level
+            logging('Env: %s' % environ)
 
     error_message = completed.stderr
     for remove_skip in skip_error_message:
@@ -259,7 +265,10 @@ def log_result(
     if error_message.strip():
         logging_error('%s' % error_message.strip())
     if verbose:
-        logging_error(str(completed))
+        if completed.stderr:
+            logging_error(completed.stderr)
+        if completed.stdout:
+            logging(completed.stdout)
         print_runtime(start)
 
 
