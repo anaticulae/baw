@@ -64,14 +64,16 @@ REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
 SYNC = Command(
     longcut='--sync',
-    message='Sync dependencies',
+    message='Sync dependencies. Choices: dev(minimal), doc(sphinx), '
+    'packages(requirements.txt only), all(dev, doc, packages)',
     args={
         'nargs': '?',
         'const': 'dev',
         'choices': [
+            'all',
             'dev',
             'doc',
-            'all',
+            'requirements',
         ],
     })
 UPGRADE = Command(longcut='--upgrade', message='Upgrade requirements.txt')

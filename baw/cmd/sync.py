@@ -132,6 +132,18 @@ def sync_dependencies(
 
 
 def determine_resources(root: str, packages: str):
+    """Detemine requirements depending on package choice
+
+    Args:
+        root(str): root of generated project
+        packages(str): select package to install
+
+    Choices:
+        - all:
+        - dev:
+        - doc:
+        - requirements: only install requirements.txt
+    """
     resources = []
     requirements_dev = 'requirements-dev.txt'
     requirements_doc = 'requirements-doc.txt'
@@ -142,7 +154,6 @@ def determine_resources(root: str, packages: str):
     if packages == 'all':
         resources.append(requirements_dev)
         resources.append(requirements_doc)
-
     # Requirements_dev is a `global` file from baw project. This file is not
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
@@ -151,6 +162,7 @@ def determine_resources(root: str, packages: str):
 
     # local project file
     local_requirement = join(root, REQUIREMENTS_TXT)
+    # TODO: Always install requirements?
     if exists(local_requirement):
         resources.append(local_requirement)
     return resources
