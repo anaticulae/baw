@@ -17,6 +17,7 @@ from tempfile import TemporaryFile
 import baw.cmd
 from baw.config import shortcut
 from baw.git import git_checkout
+from baw.git import git_headtag
 from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.utils import FAILURE

@@ -147,6 +147,13 @@ def git_stash(
     return completed.returncode
 
 
+def git_headtag(root: str, virtual: bool):
+    command = 'git tag --points-at HEAD'
+
+    completed = run_target(root, command, root, verbose=False, virtual=virtual)
+    return completed.stdout.strip()
+
+
 def update_gitignore(root: str, verbose: bool = False):
     from baw.resources import GITIGNORE
     if verbose:

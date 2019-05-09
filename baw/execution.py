@@ -10,6 +10,7 @@
 from os import environ
 
 from baw.config import commands
+from baw.git import git_headtag
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
@@ -30,7 +31,7 @@ def publish(root: str):
     Hint:
         publish run's always in virtual environment
     """
-    tag = head_tag(root, virtual=True)
+    tag = git_headtag(root, virtual=True)
     if not tag:
         logging_error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
