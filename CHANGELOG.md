@@ -2,6 +2,34 @@
 
 Every noteable change is logged here.
 
+## v0.8.0
+
+### Feature
+
+* sync virtual and local package when running release (17ce37d804e0)
+* avoid creating release on tagged commit (e1ef244b46bd)
+* add option to sync requirements only (aff61133f818)
+* support more verbose options (1c0649db718d)
+* make formatter multi-project-able (9655a7ef7d8f)
+* always use pytester plugin when running pytest (4fa10a241982)
+* move cache folder and show progress in testnumber (773cecfd7af8)
+* use multiple source locations from project config for linting (50889d3c480f)
+* make test folder dependent on current time (3c3826b18e81)
+* use pytester to shorten test code (bf1f2352059a)
+* add new --testconfig flag to override test config file (4c4807340c0f)
+
+### Fix
+
+* don't patch the wheel when file does not exists. (90de85776b3a)
+* fix spelling (c3fb7392b32b)
+* do not remove newlines when use forward slash (ba6a19f38688)
+* patching pip to support installing pdfminer.six, remove later (676abdb4b7f5)
+* always show the result of the linter (ac232d1ebeea)
+* let linter not fail when using in ide (421de9262d03)
+* use return code to have a clear interface (b3e82387f19e)
+* install new packages when upgrading to use them (39f4200c4997)
+* fix templates path (87e7e6434ddd)
+
 ## v0.7.3
 
 ### Feature
