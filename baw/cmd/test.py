@@ -11,6 +11,7 @@ from os import environ
 from os.path import exists
 from os.path import join
 from shutil import rmtree
+from webbrowser import open_new
 
 from baw.config import minimal_coverage
 from baw.config import sources
@@ -84,7 +85,15 @@ def run_test(
     logging(completed.stdout)
     if completed.returncode == NO_TEST_TO_RUN:
         return SUCCESS
+    if completed.returncode == SUCCESS and coverage:
+        open_report(root)
     return completed.returncode
+
+
+def open_report(root: str):
+    """Open test coverage report after successful test-run"""
+    url = join(tmp(root), 'report/index.html')
+    open_new(url)
 
 
 def setup_testenvironment(root: str, longrun: bool, fast: bool):
