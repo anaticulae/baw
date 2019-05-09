@@ -40,12 +40,26 @@ def sync(root: str,
     ret = 0
     logging()
     ret += update_gitignore(root, verbose=verbose)
-    ret += sync_dependencies(
-        root,
-        packages=packages,
-        virtual=virtual,
-        verbose=verbose,
-    )
+
+    # HACK: Use ENUM
+    if virtual == 'BOTH':
+        for item in [True, False]:
+            ret += sync_dependencies(
+                root,
+                packages=packages,
+                virtual=item,
+                verbose=verbose,
+            )
+            if ret:
+                # Fast fail, if one failes, don't check the rest
+                return ret
+    else:
+        ret += sync_dependencies(
+            root,
+            packages=packages,
+            virtual=virtual,
+            verbose=verbose,
+        )
     return ret
 
 

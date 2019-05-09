@@ -29,6 +29,7 @@ def upgrade(
         verbose: bool = False,
         virtual: bool = False,
 ):
+    """Upgrade requirements"""
     with git_stash(root, verbose=verbose, virtual=virtual):
         requirements = join(root, REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
@@ -51,7 +52,7 @@ def upgrade(
             sync=True,  # install new packages
             testconfig=None,
             verbose=False,
-            virtual=virtual,
+            virtual='BOTH',  # sync virtual and non virtual environment
         )
         if failure:
             # reset requirement
