@@ -121,6 +121,8 @@ def patch_pip(root):
     logging('Patching the wheel')
 
     to_patch = join(root, '.virtual/Lib/site-packages/pip/_internal/wheel.py')
+    if not exists(to_patch):
+        return
     template = 'for row in sorted(outrows):'
     replacement = 'for row in outrows:'
     content = file_read(to_patch).replace(template, replacement)
