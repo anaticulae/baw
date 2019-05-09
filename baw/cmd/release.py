@@ -58,6 +58,11 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
+    current_head = git_headtag(root, virtual=virtual)
+    if current_head:
+        logging('No release is required, head is already: %s' % current_head)
+        return SUCCESS
+
     ret = baw.cmd.sync_and_test(
         root,
         longrun=True,
