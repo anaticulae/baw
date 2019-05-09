@@ -21,5 +21,3 @@ from baw.cmd.sync import sync
 from baw.cmd.test import run_test
 from baw.cmd.upgrade import upgrade
 from baw.cmd.utils import sync_and_test
-from baw.utils import SUCCESS
-from baw.utils import logging_error
