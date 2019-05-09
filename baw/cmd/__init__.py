@@ -13,6 +13,7 @@ from baw.cmd.doc import doc
 from baw.cmd.format import format_repository
 from baw.cmd.ide import ide_open
 from baw.cmd.init import init
+from baw.cmd.install import install
 from baw.cmd.lint import lint
 from baw.cmd.release import drop
 from baw.cmd.release import release

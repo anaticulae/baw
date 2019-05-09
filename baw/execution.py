@@ -18,22 +18,6 @@ from baw.utils import get_setup
 from baw.utils import logging
 from baw.utils import logging_error
 
-
-def install(root: str, virtual: bool):
-    # -f always install newest one
-    command = 'python setup.py install -f'
-
-    completed = run_target(root, command, root, verbose=False, virtual=virtual)
-    return completed.returncode
-
-
-def head_tag(root: str, virtual: bool):
-    command = 'git tag --points-at HEAD'
-
-    completed = run_target(root, command, root, verbose=False, virtual=virtual)
-    return completed.stdout.strip()
-
-
 # TODO: Use twine for uploading packages
 SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
                         'use twine to upload instead '

@@ -21,6 +21,7 @@ from baw.cmd import drop
 from baw.cmd import format_repository
 from baw.cmd import ide_open
 from baw.cmd import init as project_init
+from baw.cmd import install
 from baw.cmd import lint as run_lint
 from baw.cmd import release
 from baw.cmd import run_test
@@ -28,7 +29,6 @@ from baw.cmd import sync
 from baw.cmd import upgrade
 from baw.cmd.init import get_init_args
 from baw.command import parse
-from baw.execution import install
 from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
