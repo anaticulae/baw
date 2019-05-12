@@ -11,6 +11,7 @@ user and start the ide afterwards. """
 from os.path import join
 
 from baw.resources import CODE_WORKSPACE as TEMPLATE
+from baw.resources import CONFTEST_TEMPLATE
 from baw.resources import ISORT_TEMPLATE
 from baw.resources import RCFILE_PATH
 from baw.resources import template_replace
@@ -28,6 +29,8 @@ def ide_open(root: str):
     logging('generate')
     generate_workspace(root)
     generate_sort_config(root)
+    generate_conftest(root)
+
     logging('open')
     completed = start(root)
     return completed
@@ -41,6 +44,11 @@ def generate_workspace(root: str):
     replaced = template_replace(root, TEMPLATE, rcfile=rcfile, isort=isortfile)
 
     file_replace(output, replaced)
+
+
+def generate_conftest(root: str):
+    output = join(root, 'tests', 'conftest.py')
+    file_replace(output, CONFTEST_TEMPLATE)
 
 
 def generate_sort_config(root: str):

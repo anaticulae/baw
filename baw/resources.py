@@ -33,6 +33,9 @@ assert exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
 ISORT_PATH = join(TEMPLATES, '.isort.cfg')
 assert exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
 
+CONFTEST_PATH = join(TEMPLATES, 'conftest.py')
+assert exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
+
 README = """# $_SHORT_$
 """
 
@@ -176,6 +179,7 @@ FILES = [
 ]
 
 ISORT_TEMPLATE = file_read(ISORT_PATH)
+CONFTEST_TEMPLATE = file_read(CONFTEST_PATH)
 
 
 def template_replace(root: str, template: str, **kwargs):
