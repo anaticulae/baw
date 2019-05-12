@@ -196,7 +196,8 @@ def collect_cov_sources(root: str):
     for item in project_sources:
         code_path = join(root, item)
         if not exists(code_path):
-            logging_error('Path %s in `projet.cfg` does not exist')
+            msg = 'Path %s from `project.cfg` does not exist' % code_path
+            logging_error(msg)
             ret += 1
             continue
         cov_sources += '--cov=%s ' % code_path
