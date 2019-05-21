@@ -118,7 +118,11 @@ def run_main():
 
     for argument, action in workmap.items():
         if args[argument]:
-            ret += action()
+            try:
+                ret += action()
+            except TypeError:
+                logging_error('%s does not return exitcode' % action)
+                ret += FAILURE
 
     print_runtime(start)
     return ret
