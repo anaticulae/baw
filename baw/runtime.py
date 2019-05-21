@@ -338,6 +338,7 @@ def _run_virtual(root, command, cwd, env=None, debugging: bool = False):
     Returns:
         CompletedProcess
     """
+    # TODO: Use source ..\virtualenv\Scripts\activate.
     activation = activation_path(root)
     deactivation = deactivation_path(root)
     if not exists(activation):
