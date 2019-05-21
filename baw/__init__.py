@@ -23,6 +23,7 @@ from baw.cmd import ide_open
 from baw.cmd import init as project_init
 from baw.cmd import install
 from baw.cmd import lint as run_lint
+from baw.cmd import open_this
 from baw.cmd import release
 from baw.cmd import run_test
 from baw.cmd import sync
@@ -95,6 +96,7 @@ def run_main():
 
     ret = 0
     workmap = OrderedDict([
+        ('open', link(open_this, root=root)),
         ('clean', link(clean_project, root=root)),
         ('sync',
          link(

@@ -45,6 +45,7 @@ DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
 PUSH = Command(longcut='--publish', message='Push release to repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
+OPEN = Command(longcut='--open', message='Open current folder in explorer')
 RELEASE = Command(
     longcut='--release',
     message='Test, commit and and tag as new release.',
@@ -124,6 +125,7 @@ def create_parser():  # noqa: Z21
         INIT,
         INSTALL,
         LINT,
+        OPEN,
         PUSH,
         RAW,
         RELEASE,
