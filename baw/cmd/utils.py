@@ -18,11 +18,12 @@ def sync_and_test(
         packages: str = 'all',
         testconfig=None,
         *,
+        longrun: bool = False,
         quiet: bool = False,
         stash: bool = False,
         sync: bool = False,
+        test: bool = True,
         verbose: bool = False,
-        longrun: bool = False,
         virtual: bool = False,
 ):
     verbose = False if quiet else verbose
@@ -37,6 +38,9 @@ def sync_and_test(
         if ret:
             logging_error('\nSync failed, could not release.\n')
             return ret
+
+    if not test:
+        return SUCCESS
 
     ret = run_test(
         root,

@@ -36,6 +36,7 @@ def release(
         release_type: str = 'auto',
         stash: bool = True,
         sync: bool = True,
+        test: bool = True,
         verbose: bool = False,
         virtual: bool = True,
 ):
@@ -69,6 +70,7 @@ def release(
         packages='dev',
         stash=stash,
         sync=sync,
+        test=test,
         testconfig=None,
         verbose=verbose,
         virtual=virtual,

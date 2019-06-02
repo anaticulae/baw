@@ -78,9 +78,10 @@ def init(
     # Deactivate options to reach fast reaction
     release(
         root,
-        verbose=verbose,
         stash=False,  # Nothing to stash at the first time
         sync=False,  # No sync for first time needed
+        test=False,  # No testing for the first time needed
+        verbose=verbose,
         virtual=False,  # No virtual for first time needed
     )
     return SUCCESS
