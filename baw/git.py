@@ -150,7 +150,19 @@ def git_stash(
 def git_headtag(root: str, virtual: bool):
     command = 'git tag --points-at HEAD'
 
-    completed = run_target(root, command, root, verbose=False, virtual=virtual)
+    completed = run_target(
+        root,
+        command,
+        root,
+        # ignore error when collecting head on empty repository
+        skip_error_code={129},
+        skip_error_message=["error: malformed object name 'HEAD'"],
+        verbose=False,
+        virtual=virtual,
+    )
+    # could not collect any git tag of current head
+    if completed.returncode:
+        return None
     return completed.stdout.strip()
 
 
