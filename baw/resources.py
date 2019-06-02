@@ -174,6 +174,7 @@ FILES = [
     ('docs/pages/changelog.rst', CHANGELOG_RST),
     ('docs/pages/readme.rst', README_RST),
     ('docs/pages/todo.rst', TODO_RST),
+    ('tests/__init__.py', COPYRIGHT),
     (REQUIREMENTS_TXT, REQUIREMENTS),
     # ('setup.py', SETUP_PY),
 ]
