@@ -8,6 +8,7 @@
 # =============================================================================
 """The purpose of this module is to setup the development environment of the
 user and start the ide afterwards. """
+from os.path import exists
 from os.path import join
 
 from baw.resources import CODE_WORKSPACE as TEMPLATE
@@ -16,6 +17,8 @@ from baw.resources import ISORT_TEMPLATE
 from baw.resources import RCFILE_PATH
 from baw.resources import template_replace
 from baw.runtime import run_target
+from baw.utils import file_create
+from baw.utils import file_read
 from baw.utils import file_replace
 from baw.utils import forward_slash
 from baw.utils import logging
@@ -47,8 +50,16 @@ def generate_workspace(root: str):
 
 
 def generate_conftest(root: str):
+    """Generate conftest file if not exists, or update if file smaller than the
+    new one"""
+
     output = join(root, 'tests', 'conftest.py')
-    file_replace(output, CONFTEST_TEMPLATE)
+    if not exists(output):
+        file_create(output, CONFTEST_TEMPLATE)
+        return
+
+    if len(file_read(output)) < len(CONFTEST_TEMPLATE):
+        file_replace(output, CONFTEST_TEMPLATE)
 
 
 def generate_sort_config(root: str):
