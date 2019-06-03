@@ -30,10 +30,10 @@ BUILD = Command('-b', '--build', 'Run build tasks')
 CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
 CLEAN_VENV = Command(
     longcut='--clean_venv', message='Clean virtual environment')
-DOC = Command('-d', '--doc', 'Generate documentation with Sphinx')
+DOC = Command(longcut='--doc', message='Generate documentation with Sphinx')
 IDE = Command(longcut='--ide', message='Generate workspace and open vscode')
 LINT = Command(longcut='--lint', message='Run statical code analysis')
-INSTALL = Command('-in', '--install', 'Run install task')
+INSTALL = Command(longcut='--install', message='Run install task')
 INIT = Command(
     longcut='--init',
     message='Initialize .baw project - shortcut name [--with_cmd]',
@@ -41,7 +41,7 @@ INIT = Command(
         'nargs': REMAINDER,
     })
 # run tests, increment version, commit, git tag and push to package index
-DOCKER = Command('-do', '--docker', 'Run commands in docker environment')
+DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
 PUSH = Command(longcut='--publish', message='Push release to repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
