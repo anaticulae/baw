@@ -73,11 +73,11 @@ def create(root: str, clean: bool = False, verbose: bool = False):
     virtual = join(root, VIRTUAL_FOLDER)
 
     if not exists(virtual):
-        logging('Creating virtual environment %s\n' % virtual)
+        logging('Creating virtual environment %s' % virtual)
         makedirs(virtual)
 
     if exists(virtual) and list(scandir(virtual)):
-        logging('Using virtual environment: %s\n' % virtual)
+        logging('Using virtual environment: %s' % virtual)
         return SUCCESS
 
     venv_command = [
