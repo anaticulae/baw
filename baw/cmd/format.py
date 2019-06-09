@@ -9,7 +9,6 @@
 
 from os.path import join
 
-from baw.config import shortcut
 from baw.config import sources
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -32,7 +31,8 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
 
 
 def format_imports(root: str, verbose: bool = False, virtual: bool = False):
-    short = ' -p '.join(sources(root))
+    project_sources = sources(root)
+    short = ' -p '.join(project_sources)
     isort = [
         "-o",
         "pytest",
@@ -48,31 +48,38 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
         "-rc",  # recursive
     ]
     isort = 'isort %s' % (' '.join(isort))
-    return format_(root, cmd=isort, verbose=verbose, virtual=virtual)
+    return format_(
+        root,
+        cmd=isort,
+        info='imports',
+        verbose=verbose,
+        virtual=virtual,
+    )
 
 
 def format_(
         root: str,
         cmd: str,
+        info: str = 'source',
         *,
         verbose: bool = False,
         virtual: bool = False,
 ):
-    short = shortcut(root)
-    for item in [short, 'tests']:
+    project_sources = sources(root) + ['tests']
+    for item in project_sources:
         source = join(root, item)
         command = '%s %s' % (cmd, source)
-        logging('Format source %s' % source)
+        logging('Format %s %s' % (info, source))
 
         completed = run_target(
             root,
             command,
-            source,
+            cwd=source,
             virtual=virtual,
             verbose=verbose,
         )
         if completed.returncode:
             logging_error('Error while fromating\n%s' % str(completed))
             return FAILURE
-    logging('Format complete')
+    logging('Format complete\n')
     return SUCCESS
