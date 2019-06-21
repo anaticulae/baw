@@ -120,8 +120,11 @@ def git_stash(
     error = None
     try:
         yield  # let user do there job
-    except Exception as error:  # pylint: disable=broad-except
+    except Exception as error_:  # pylint: disable=broad-except
         # exception is reraised after unstash
+        # XXX: it seam that as error overwrites the variable error, dont not
+        # why, this workaound solve it now
+        error = error_
         pass
 
     if nostash:
