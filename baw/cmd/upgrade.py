@@ -99,7 +99,11 @@ def upgrade_requirements(
     """
     requirements_path = join(root, requirements)
     msg = 'Path does not exists %s' % requirements_path
-    assert exists(requirements_path), msg
+
+    if not exists(requirements_path):
+        msg = 'Could not locate any requirements: %s' % requirements_path
+        logging_error(msg)
+        return FAILURE
     logging('\nStart upgrading requirements: %s' % requirements_path)
 
     content = file_read(requirements_path)
