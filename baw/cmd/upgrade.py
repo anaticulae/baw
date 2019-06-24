@@ -15,6 +15,7 @@ from baw.cmd.sync import check_dependency
 from baw.git import git_checkout
 from baw.git import git_commit
 from baw.git import git_stash
+from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
 from baw.utils import file_read
@@ -107,6 +108,8 @@ def upgrade_requirements(
 
     # parsed = parse_requirements(content)
     upgraded = determine_new_requirements(root, content, virtual=virtual)
+    if upgraded == None:
+        return FAILURE
     replaced = replace_requirements(content, upgraded)
 
     if replaced == content:
@@ -150,17 +153,22 @@ def determine_new_requirements(
         virtual: bool = False,
 ) -> str:
     parsed = parse_requirements(requirements)
-
     result = {}
+    sync_error = False
     for package, version in parsed.items():
         try:
             dependency = check_dependency(root, package, virtual=virtual)
         except ValueError:
             logging_error('Package `%s` is not available' % package)
+        except RuntimeError:
+            logging_error('Could not reach package repository')
+            sync_error = True
         else:
             available = available_version(dependency)
             if available != version:
                 result[package] = (version, available)  #(old, new)
+    if sync_error:
+        return None
     return result
 
 

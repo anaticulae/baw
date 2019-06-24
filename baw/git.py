@@ -143,7 +143,6 @@ def git_stash(
     )
     if completed.returncode:
         logging_error(completed.stderr)
-
     # reraise except from user code
     if error:
         raise error

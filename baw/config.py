@@ -44,7 +44,6 @@ def sources(path: str):
     except KeyError:
         source = []
     source.insert(0, cfg['project']['short'])
-
     return source
 
 
