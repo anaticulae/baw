@@ -92,6 +92,10 @@ TEST = Command(
             'stash',
         ],
     })
+NOTESTS = Command(
+    longcut='--notests',
+    message='Do not run test suite',
+)
 TEST_CONFIG = Command(
     longcut='--testconfig',
     message='Paramterize test command',
@@ -125,6 +129,7 @@ def create_parser():  # noqa: Z21
         INIT,
         INSTALL,
         LINT,
+        NOTESTS,
         OPEN,
         PUSH,
         RAW,

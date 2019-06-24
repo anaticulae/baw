@@ -27,6 +27,7 @@ from baw.utils import logging_error
 def upgrade(
         root: str,
         *,
+        notests: bool = False,
         verbose: bool = False,
         virtual: bool = False,
 ):
@@ -52,6 +53,7 @@ def upgrade(
             stash=False,
             sync=True,  # install new packages
             testconfig=None,
+            test=not notests,
             verbose=False,
             virtual='BOTH',  # sync virtual and non virtual environment
         )

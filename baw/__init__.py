@@ -85,7 +85,15 @@ def run_main():
         ('virtual',
          link(create_venv, root=root, clean=args['clean'], verbose=verbose)),
         ('drop', link(drop, root=root)),
-        ('upgrade', link(upgrade, root=root, verbose=verbose, virtual=True)),
+        (
+            'upgrade',
+            link(
+                upgrade,
+                root=root,
+                verbose=verbose,
+                notests=args['notests'],
+                virtual=True),
+        ),
     ])
 
     for argument, action in fmap.items():
