@@ -65,6 +65,10 @@ def run_main():
         virtual,
     )
 
+    if args['release']:
+        # always publish after release
+        args['publish'] = True
+
     if args['init']:
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
             init_args = get_init_args(args)
