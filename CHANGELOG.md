@@ -2,6 +2,35 @@
 
 Every noteable change is logged here.
 
+## v0.8.1
+
+### Feature
+
+* run publish after completed release (e87870f5ccbb)
+* beautify non existing requirements error message (6a89da664302)
+* add --notests flag to ignore tests (51300621e866)
+* throw error if server is not reachable (0ebd52a86501)
+* ignore that the fixture testdir is linted on pytest tests (c71714f1ebf9)
+* add info about formatting to avoid confusion (1434b778fecf)
+* only override conftest when file smaller than the new one (a509e9c877a5)
+* run initial release without running tests (dc721015bb4c)
+* use auto generated file (ec0286361ba4)
+* ensure API call return status code (cb83cb4d4d8c)
+* add --open command to open current folder in win explorer (06840bc82037)
+* auto generate conftest file for pytest (edaa253a4400)
+* ignore __main__ file and convert to unix line endings (e5b480af136a)
+* open testcov report after successful test run (6c80cb4770e1)
+
+### Fix
+
+* catch None when baw is running without capturing stdout/err (9cce0b108757)
+* workaround for overwinding error scope (a3b231d746ac)
+* fix newlines in printing while creating new venv (ac671ed7a827)
+* remove useless short commands (c31f0b4603c5)
+* do not collect any head tag on empty repository (ada566b98cbf)
+* __init__ to initial test project to avoid problems with test discovery (9af1dd2fb92e)
+* fix error output for corrupted project.config (434902d316b0)
+
 ## v0.8.0
 
 ### Feature
