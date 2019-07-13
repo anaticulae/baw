@@ -282,6 +282,10 @@ def log_result(
             logging('Env: %s' % environ)
 
     error_message = completed.stderr
+    # catch stderr is None when running baw --test=pdb because the std-out/err
+    # is None
+    if error_message is None:
+        error_message = ''
     for remove_skip in skip_error_message:
         error_message = error_message.replace(remove_skip, '')
 
