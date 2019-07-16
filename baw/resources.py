@@ -119,19 +119,19 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 ENTRY_POINT = """\
 entry_points={
             'console_scripts': ['$_SHORT_$ = $_SHORT_$.command:main'],
-        },
+},
 """
 
 INIT_CMD = COPYRIGHT + """\
 from utila import SUCCESS
-from utila import create_parser
 from utila import parse
 from utila import saveme
 from utila import sources
+from utila.cmdline import create_parser
 
 from $_SHORT_$ import __version__
 
-COMMANDS = [] # add additonal commands here
+COMMANDS = [] # add additional commands here
 
 @saveme
 def main():
@@ -142,7 +142,7 @@ def main():
         inputparameter=True,
     )
     args = parse(parser)
-    inputpath, output = sources(args)
+    inputpath, output, _ = sources(args)
 
     return SUCCESS
 """
