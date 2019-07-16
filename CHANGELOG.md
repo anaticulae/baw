@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.8.2
+
+### Fix
+
+* fix import error of cmdline (92dbb57705b0)
+
 ## v0.8.1
 
 ### Feature
