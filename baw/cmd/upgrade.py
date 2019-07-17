@@ -23,6 +23,8 @@ from baw.utils import file_replace
 from baw.utils import logging
 from baw.utils import logging_error
 
+# TODO: Check duplication in requirements file!
+
 
 def upgrade(
         root: str,
