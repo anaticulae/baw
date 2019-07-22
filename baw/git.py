@@ -51,10 +51,11 @@ def git_add(root: str, pattern: str):
     evaluate_git_error(add)
 
 
-def git_commit(root, source, message):
+def git_commit(root, source, message, verbose: int = 0):
     assert exists(root)
     message = '"%s"' % message
-    logging('git commit')
+    if verbose:
+        logging('git commit')
     process = run_target(
         root, 'git commit %s -m %s' % (source, message), verbose=False)
 
