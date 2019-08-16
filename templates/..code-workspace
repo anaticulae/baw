@@ -20,6 +20,7 @@
             "**/.vscode": true,
             "**/build": true,
             "**/doctrees": true,
+            "**/extern": true,
             "**/html": true,
             "**/log": true,
             "**/nano.save": true,
