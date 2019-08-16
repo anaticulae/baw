@@ -133,26 +133,26 @@ def check_root(root: str):
 
 
 def file_append(path: str, content: str):
-    assert exists(path)
+    assert exists(path), str(path)
     with open(path, mode='a', newline=NEWLINE) as fp:
         fp.write(content)
 
 
 def file_create(path: str, content: str = ''):
-    assert not exists(path)
+    assert not exists(path), str(path)
     with open(path, mode='w', newline=NEWLINE) as fp:
         fp.write(content)
 
 
 def file_read(path: str):
-    assert exists(path), path
+    assert exists(path), str(path)
     with open(path, mode='r', newline=NEWLINE) as fp:
         return fp.read()
 
 
 def file_remove(path: str):
-    assert exists(path), path
-    assert isfile(path), path
+    assert exists(path), str(path)
+    assert isfile(path), str(path)
     remove(path)
 
 
