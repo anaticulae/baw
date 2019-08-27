@@ -22,7 +22,6 @@ tmp
 *.swp
 ..code-workspace
 .coverage*
-conftest.py
 
 # Documentation
 docs/conf.py
