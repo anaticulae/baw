@@ -127,7 +127,7 @@ from utila import SUCCESS
 from utila import parse
 from utila import saveme
 from utila import sources
-from utila.cmdline import create_parser
+from utila.cli import create_parser
 
 from $_SHORT_$ import __version__
 
