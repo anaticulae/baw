@@ -77,18 +77,22 @@ def logging_error(msg: str):
 
 PLAINOUTPUT = 'PLAINOUTPUT'
 SAVEGUARD = 'IAMTHESAVEGUARDXYXYXYXYXYXYXYXYXYXYXY'
+SECOND_GUARD = 'OHMANIHAVETGOLEARNMOREPYTHONTHATS'
 
 
 def forward_slash(content: str):
+    # TODO: HACK
     if PLAINOUTPUT in environ:
         return content
     content = str(content)
     # Save newline
+    content = content.replace('\n', SECOND_GUARD)
     content = content.replace(r'\n', SAVEGUARD)
     # Forward slash
     content = content.replace(r'\\', '/').replace('\\', '/')
     # Restore newline
-    content = content.replace(SAVEGUARD, '\n')
+    content = content.replace(SECOND_GUARD, '\n')
+    content = content.replace(SAVEGUARD, r'\n')
     return content
 
 
