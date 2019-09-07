@@ -149,6 +149,7 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
         coverage='cov' in args['test'],
         fast='fast' in args['test'],
         longrun='long' in args['test'],
+        nightly='nightly' in args['test'],
         pdb='pdb' in args['test'],
         stash='stash' in args['test'],
         testconfig=args['testconfig'] if args['testconfig'] else [],

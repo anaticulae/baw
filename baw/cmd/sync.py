@@ -24,11 +24,13 @@ from baw.utils import logging_error
 from baw.utils import package_address
 
 
-def sync(root: str,
-         packages: str = 'dev',
-         *,
-         virtual: bool = False,
-         verbose: bool = False):
+def sync(
+        root: str,
+        packages: str = 'dev',
+        *,
+        virtual: bool = False,
+        verbose: bool = False,
+):
     """
     Args:
         packages(str): decide whic packages should be synchronized:

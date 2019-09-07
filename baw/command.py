@@ -88,6 +88,7 @@ TEST = Command(
             'cov',
             'fast',
             'long',
+            'nightly',
             'pdb',
             'stash',
         ],

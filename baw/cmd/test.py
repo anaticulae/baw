@@ -38,6 +38,7 @@ def run_test(
         coverage: bool = False,
         fast: bool = False,
         longrun: bool = False,
+        nightly: bool = False,
         pdb: bool = False,
         quiet: bool = False,
         stash: bool = False,
@@ -60,7 +61,12 @@ def run_test(
     check_root(root)
 
     logging('Running tests')
-    testdir, testenv = setup_testenvironment(root, longrun, fast)
+    testdir, testenv = setup_testenvironment(
+        root,
+        fast=fast,
+        longrun=longrun,
+        nightly=nightly,
+    )
 
     cmd = test_run_command(root, testdir, pdb, coverage, quiet, testconfig)
     target = partial(
@@ -96,7 +102,12 @@ def open_report(root: str):
     open_new(url)
 
 
-def setup_testenvironment(root: str, longrun: bool, fast: bool):
+def setup_testenvironment(
+        root: str,
+        fast: bool,
+        longrun: bool,
+        nightly: bool,
+):
     testdir = join(root, 'tests')
     if not exists(testdir):
         logging_error('No testdirectory %s available' % testdir)
@@ -107,6 +118,8 @@ def setup_testenvironment(root: str, longrun: bool, fast: bool):
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
     if fast:
         env['FAST'] = 'True'  # Skip all tests wich are long or medium
+    if nightly:
+        env['NIGHTLY'] = 'True'  # Very long running test
 
     # comma-separated plugins to load during startup
     env['PYTEST_PLUGINS'] = 'pytester'
