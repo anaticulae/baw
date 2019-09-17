@@ -160,6 +160,7 @@ def run_target(
         env=None,
         *,
         debugging: bool = False,
+        runtimelog: bool = True,
         skip_error_code: set = None,
         skip_error_message: list = None,
         verbose: bool = True,
@@ -174,6 +175,8 @@ def run_target(
                   root is used.
         env(dict): environment variable, if nothing is passed, the global env
                    vars ared used
+        runtimelog(bool): after completion of target, print the duration
+                          in secs
 
     Returns:
         CompletedProcess - os process which was runned
@@ -222,7 +225,7 @@ def run_target(
         cwd,
         skip_error_code,
         skip_error_message,
-        start,
+        start if runtimelog else None,
         verbose,
     )
 
@@ -256,6 +259,11 @@ def log_result(
         start,
         verbose,
 ):
+    """
+    Args:
+        start(int): unix time when process started. If `start` is None, no time
+                    exection log will be printed.
+    """
     command = completed.args
     returncode = completed.returncode
     reporting = returncode and (returncode not in skip_error_code)
@@ -296,7 +304,8 @@ def log_result(
             logging_error(completed.stderr)
         if completed.stdout:
             logging(completed.stdout)
-        print_runtime(start)
+        if start is not None:
+            print_runtime(start)
 
 
 def _run_local(command, cwd, env=None, debugging: bool = False):
