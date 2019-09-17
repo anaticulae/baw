@@ -136,7 +136,10 @@ def run_main():
                 logging_error('%s does not return exitcode' % action)
                 ret += FAILURE
 
-    print_runtime(start)
+    if not args['ide']:
+        # --ide is a very long running task, sometimes 'endless'.
+        # Therefore it is senseless to measure the runtime.
+        print_runtime(start)
     return ret
 
 

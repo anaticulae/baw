@@ -69,9 +69,15 @@ def generate_sort_config(root: str):
 
 
 def start(root):
+    """Run vscode"""
     output = workspace_configuration(root)
-    cmd = 'code %s &' % output
-    completed = run_target(root, cmd, verbose=False)
+    cmd = f'code {output} &'
+    completed = run_target(
+        root,
+        cmd,
+        runtimelog=False,
+        verbose=False,
+    )
     return completed.returncode
 
 
