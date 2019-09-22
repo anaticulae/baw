@@ -51,7 +51,7 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
     return format_(
         root,
         cmd=isort,
-        info='imports',
+        info='sort imports',
         verbose=verbose,
         virtual=virtual,
     )
@@ -60,7 +60,7 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
 def format_(
         root: str,
         cmd: str,
-        info: str = 'source',
+        info: str = 'format source',
         *,
         verbose: bool = False,
         virtual: bool = False,
@@ -69,7 +69,7 @@ def format_(
     for item in project_sources:
         source = join(root, item)
         command = '%s %s' % (cmd, source)
-        logging('Format %s %s' % (info, source))
+        logging(f'{info}: {source}')
 
         completed = run_target(
             root,
