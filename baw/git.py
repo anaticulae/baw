@@ -126,7 +126,6 @@ def git_stash(
         # XXX: it seam that as error overwrites the variable error, dont not
         # why, this workaound solve it now
         error = error_
-        pass
 
     if nostash:
         # reraise exception from user code

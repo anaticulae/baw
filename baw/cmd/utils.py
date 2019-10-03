@@ -20,6 +20,7 @@ def sync_and_test(
         *,
         longrun: bool = False,
         quiet: bool = False,
+        generate: bool = False,
         stash: bool = False,
         sync: bool = False,
         test: bool = True,
@@ -44,10 +45,11 @@ def sync_and_test(
 
     ret = run_test(
         root,
-        testconfig=testconfig,
+        generate=generate,
         longrun=longrun,
         quiet=quiet,
         stash=stash,
+        testconfig=testconfig,
         verbose=verbose,
         virtual=virtual,
     )

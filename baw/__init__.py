@@ -154,6 +154,7 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
         longrun='long' in args['test'],
         nightly='nightly' in args['test'],
         pdb='pdb' in args['test'],
+        generate='generate' in args['test'],
         stash='stash' in args['test'],
         testconfig=args['testconfig'] if args['testconfig'] else [],
         verbose=verbose,

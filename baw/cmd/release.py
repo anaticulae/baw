@@ -66,6 +66,7 @@ def release(
 
     ret = baw.cmd.sync_and_test(
         root,
+        generate=True,
         longrun=True,
         packages='dev',
         stash=stash,

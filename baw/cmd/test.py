@@ -37,6 +37,7 @@ def run_test(
         *,
         coverage: bool = False,
         fast: bool = False,
+        generate: bool = False,
         longrun: bool = False,
         nightly: bool = False,
         pdb: bool = False,
@@ -66,9 +67,20 @@ def run_test(
         fast=fast,
         longrun=longrun,
         nightly=nightly,
+        generate=generate,
     )
 
-    cmd = test_run_command(root, testdir, pdb, coverage, quiet, testconfig)
+    generate_only = generate and not (fast or longrun or nightly)
+
+    cmd = test_run_command(
+        root,
+        testdir,
+        pdb,
+        coverage,
+        quiet,
+        testconfig,
+        generate_only=generate_only,
+    )
     target = partial(
         run_target,
         root,
@@ -87,8 +99,12 @@ def run_test(
     else:
         completed = target()
 
-    # Print output of test run
-    logging(completed.stdout)
+    if generate_only and completed.returncode == SUCCESS:
+        # do not write log of collect tests
+        logging('test data generated')
+    else:
+        # Print output of test run
+        logging(completed.stdout)
     if completed.returncode == NO_TEST_TO_RUN:
         return SUCCESS
     if completed.returncode == SUCCESS and coverage:
@@ -107,6 +123,7 @@ def setup_testenvironment(
         fast: bool,
         longrun: bool,
         nightly: bool,
+        generate: bool,
 ):
     testdir = join(root, 'tests')
     if not exists(testdir):
@@ -120,6 +137,8 @@ def setup_testenvironment(
         env['FAST'] = 'True'  # Skip all tests wich are long or medium
     if nightly:
         env['NIGHTLY'] = 'True'  # Very long running test
+    if generate:
+        env['GENERATE'] = 'True'  # Generate test resources
 
     # comma-separated plugins to load during startup
     env['PYTEST_PLUGINS'] = 'pytester'
@@ -130,7 +149,15 @@ def setup_testenvironment(
 PYTEST_INI = join(ROOT, 'templates/pytest.ini')
 
 
-def test_run_command(root, test_dir, pdb, coverage, quiet, parameter):
+def test_run_command(
+        root,
+        test_dir,
+        pdb,
+        coverage,
+        quiet,
+        parameter,
+        generate_only,
+):
     # using ROOT to get location from baw-tool
     assert exists(PYTEST_INI), 'No testconfig available %s' % PYTEST_INI
 
@@ -146,15 +173,18 @@ def test_run_command(root, test_dir, pdb, coverage, quiet, parameter):
 
     manual_parameter = ' '.join(parameter) if parameter else ''
     manual_parameter = manual_parameter.replace('+', '-')
+
+    generate_only = '--collect-only' if generate_only else ''
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
-    cmd = 'python -m pytest -c %s %s %s %s %s --basetemp=%s %s'
+    cmd = 'python -m pytest -c %s %s %s %s %s %s --basetemp=%s %s'
     cmd = cmd % (
         PYTEST_INI,
         manual_parameter,
         override_testconfig,
         debugger,
         cov,
+        generate_only,
         tmp_testpath,
         test_dir,
     )

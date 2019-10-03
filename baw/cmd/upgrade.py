@@ -50,12 +50,13 @@ def upgrade(
 
         failure = sync_and_test(
             root,
+            generate=True,  # generate test data
             packages='dev',  # minimal requirements is required
             quiet=True,
             stash=False,
             sync=True,  # install new packages
-            testconfig=None,
             test=not notests,
+            testconfig=None,
             verbose=False,
             virtual='BOTH',  # sync virtual and non virtual environment
         )

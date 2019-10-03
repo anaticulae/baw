@@ -90,6 +90,7 @@ TEST = Command(
             'long',
             'nightly',
             'pdb',
+            'generate',
             'stash',
         ],
     })
