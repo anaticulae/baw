@@ -1,6 +1,8 @@
 import sys
 
-sys.path.append(r'$_ROOT_$')
+# put to the start to avoid overwriting py other modules/packages.
+sys.path.insert(0, r'$_ROOT_$/tests')
+sys.path.insert(0, r'$_ROOT_$')
 
 extensions = [
     'sphinx.ext.autodoc',
