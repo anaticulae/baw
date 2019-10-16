@@ -19,8 +19,9 @@ from os.path import join
 from os.path import split
 from re import search
 
-from baw.utils import file_read
 from setuptools import setup
+
+from baw.utils import file_read
 
 THIS = dirname(__file__)
 README = file_read(join(THIS, 'README.md'))

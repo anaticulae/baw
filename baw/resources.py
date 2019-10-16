@@ -11,6 +11,7 @@ from baw.utils import BAW_EXT
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 from baw.utils import file_read
+from baw.utils import forward_slash
 
 FOLDERS = [
     BAW_EXT,
@@ -194,6 +195,7 @@ def template_replace(root: str, template: str, **kwargs):
     Hint:
         Vars are defined as $_VARNAME_$.
     """
+    root = forward_slash(root, save_newline=False)
     short = shortcut(root)
     source = sources(root)
     name_ = name(root)

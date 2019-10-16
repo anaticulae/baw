@@ -80,19 +80,21 @@ SAVEGUARD = 'IAMTHESAVEGUARDXYXYXYXYXYXYXYXYXYXYXY'
 SECOND_GUARD = 'OHMANIHAVETGOLEARNMOREPYTHONTHATS'
 
 
-def forward_slash(content: str):
+def forward_slash(content: str, save_newline=True):
     # TODO: HACK
     if PLAINOUTPUT in environ:
         return content
     content = str(content)
-    # Save newline
-    content = content.replace('\n', SECOND_GUARD)
-    content = content.replace(r'\n', SAVEGUARD)
+    if save_newline:
+        # Save newline
+        content = content.replace('\n', SECOND_GUARD)
+        content = content.replace(r'\n', SAVEGUARD)
     # Forward slash
     content = content.replace(r'\\', '/').replace('\\', '/')
-    # Restore newline
-    content = content.replace(SECOND_GUARD, '\n')
-    content = content.replace(SAVEGUARD, r'\n')
+    if save_newline:
+        # Restore newline
+        content = content.replace(SECOND_GUARD, '\n')
+        content = content.replace(SAVEGUARD, r'\n')
     return content
 
 
