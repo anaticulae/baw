@@ -7,7 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from os.path import join
+import concurrent.futures
+import functools
+import os
 
 from baw.config import sources
 from baw.runtime import run_target
@@ -26,7 +28,7 @@ def format_repository(root: str, verbose: bool = False, virtual: bool = False):
 
 
 def format_source(root: str, verbose: bool = False, virtual: bool = False):
-    command = 'yapf -r -i --style=google'
+    command = 'yapf -r -i --style=google -p'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
 
@@ -65,21 +67,31 @@ def format_(
         verbose: bool = False,
         virtual: bool = False,
 ):
-    project_sources = sources(root) + ['tests']
-    for item in project_sources:
-        source = join(root, item)
-        command = '%s %s' % (cmd, source)
-        logging(f'{info}: {source}')
-
-        completed = run_target(
-            root,
-            command,
+    todo = []
+    for item in sources(root) + ['tests']:
+        source = os.path.join(root, item)
+        command = f'{cmd} {source}'
+        runnable = functools.partial(
+            run_target,
+            root=root,
+            command=command,
             cwd=source,
             virtual=virtual,
             verbose=verbose,
         )
-        if completed.returncode:
-            logging_error('Error while fromating\n%s' % str(completed))
-            return FAILURE
-    logging('Format complete\n')
+        todo.append(runnable)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+        waitfor = []
+        for runme in todo:
+            logging(f'{info}: {runme.keywords["cwd"]}')
+            waitfor.append(executor.submit(runme))
+
+        for future in concurrent.futures.as_completed(waitfor):
+            completed = future.result()
+            if completed.returncode:
+                logging_error(f'error while formatting {completed}')
+                return FAILURE
+
+    logging('format complete\n')
     return SUCCESS
