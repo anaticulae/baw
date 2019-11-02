@@ -32,6 +32,8 @@ REQUIREMENTS_TXT = 'requirements.txt'
 SUCCESS = 0
 FAILURE = 1
 
+INPUT_ERROR = 2
+
 NEWLINE = '\n'
 UTF8 = 'utf8'
 

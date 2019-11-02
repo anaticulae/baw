@@ -29,6 +29,7 @@ from baw.resources import SETUP_PY
 from baw.resources import template_replace
 from baw.utils import BAW_EXT
 from baw.utils import FAILURE
+from baw.utils import INPUT_ERROR
 from baw.utils import NEWLINE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import SUCCESS
@@ -97,6 +98,9 @@ def get_init_args(args):
             raise ValueError('--with_cmd allowed, not %s' % init_args[2])
         cmdline = True
     shortcut = init_args[0]
+    if len(init_args) < 2:
+        logging_error('missing project name')
+        exit(INPUT_ERROR)
     name = init_args[1]
 
     return shortcut, name, cmdline
