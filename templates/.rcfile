@@ -16,6 +16,11 @@ disable=C0111,E1121
 # number of processors available to use.
 jobs=0
 
+load-plugins=pylint.extensions.docparams,
+             pylint.extensions.docstyle,
+             pylint.extensions.mccabe,
+             pylint.extensions.overlapping_exceptions,
+             pylint.extensions.redefined_variable_type
 
 [BASIC]
 
