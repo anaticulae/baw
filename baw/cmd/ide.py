@@ -8,6 +8,7 @@
 # =============================================================================
 """The purpose of this module is to setup the development environment of the
 user and start the ide afterwards. """
+import os
 from os.path import exists
 from os.path import join
 
@@ -50,10 +51,13 @@ def generate_workspace(root: str):
 
 
 def generate_conftest(root: str):
-    """Generate conftest file if not exists, or update if file smaller than the
-    new one"""
+    """Generate conftest file if not exists, or update if file smaller
+    than the new one"""
 
-    output = join(root, 'tests', 'conftest.py')
+    testpath = os.path.join(root, 'tests')
+    if not os.path.exists(testpath):
+        return
+    output = join(testpath, 'conftest.py')
     if not exists(output):
         file_create(output, CONFTEST_TEMPLATE)
         return
