@@ -6,8 +6,11 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+import os
+import webbrowser
 from os.path import join
 
+import baw.utils
 from baw.resources import DOC_CONF
 from baw.resources import template_replace
 from baw.runtime import run_target
@@ -40,6 +43,7 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
 
     docs = join(root, 'docs')
     tmp = join(docs, TMP)
+
     sources = root  # include test and package
     ignore = [
         'templates',
@@ -80,8 +84,8 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
     ]
     build_options = ' '.join(build_options)
 
-    command = 'sphinx-build -M html %s %s %s'
-    command = command % (docs, docs, build_options)
+    htmloutput = os.path.join(docs, 'html')
+    command = f'sphinx-build {docs} {htmloutput} {build_options}'
 
     logging('make html')
     logging(command)
@@ -93,4 +97,7 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
         virtual=virtual,
         verbose=verbose,
     )
+    if result.returncode == baw.utils.SUCCESS:
+        url = os.path.join(htmloutput, 'index.html')
+        webbrowser.open_new(url)
     return result.returncode
