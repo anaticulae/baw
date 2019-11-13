@@ -97,7 +97,12 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
         virtual=virtual,
         verbose=verbose,
     )
+    if 'PYTEST_CURRENT_TEST' in os.environ:
+        # running with pytest do not open webbrowser
+        return result.returncode
+
     if result.returncode == baw.utils.SUCCESS:
         url = os.path.join(htmloutput, 'index.html')
         webbrowser.open_new(url)
+
     return result.returncode
