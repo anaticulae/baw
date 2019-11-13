@@ -86,7 +86,7 @@ def run_test(
         root,
         cmd,
         cwd=root,  # to include project code(namespace) into syspath
-        debugging=pdb,
+        debugging=True,  # live test reporting
         env=testenv,
         verbose=verbose,
         skip_error_code={NO_TEST_TO_RUN},  # no tests available => no problem
