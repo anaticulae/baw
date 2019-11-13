@@ -72,7 +72,7 @@ def release(
         stash=stash,
         sync=sync,
         test=test,
-        testconfig=None,
+        testconfig=['-n', 'auto'],
         verbose=verbose,
         virtual=virtual,
     )
