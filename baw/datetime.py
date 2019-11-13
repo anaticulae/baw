@@ -7,19 +7,18 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from time import localtime as _localtime
-from time import time as _time
+import time
 
 
 def today() -> str:
     """Determine date in `german` format"""
-    cur = _localtime(_time())
+    cur = time.localtime(time.time())
     return "%02d.%02d.%04d" % (cur.tm_mday, cur.tm_mon, cur.tm_year)
 
 
 def current(seconds: bool = False, separator: str = ':') -> str:
     """Determine time in `german` format"""
-    cur = _localtime(_time())
+    cur = time.localtime(time.time())
     if seconds:
         return "%02d%s%02d%s%02d" % (cur.tm_hour, separator, cur.tm_min,
                                      separator, cur.tm_sec)
