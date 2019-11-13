@@ -10,7 +10,7 @@ ignore=conf.py,
 # Ignore standard python library
 ignore-patterns=Lib
 
-disable=C0111,E1121
+disable=C0111,E1121,C0301,R0903
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
