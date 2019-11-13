@@ -32,12 +32,12 @@ def upgrade(
         notests: bool = False,
         verbose: bool = False,
         virtual: bool = False,
+        generate: bool = True,
 ):
     """Upgrade requirements"""
     with git_stash(root, verbose=verbose, virtual=virtual):
         requirements = join(root, REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
-
         # requirements.txt is uptodate, no update requireded
         if failure == REQUIREMENTS_UP_TO_DATE:
             return SUCCESS
@@ -47,10 +47,9 @@ def upgrade(
             return failure
 
         from baw.cmd import sync_and_test
-
         failure = sync_and_test(
             root,
-            generate=True,  # generate test data
+            generate=generate,  # generate test data
             packages='dev',  # minimal requirements is required
             quiet=True,
             stash=False,

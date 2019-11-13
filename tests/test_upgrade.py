@@ -177,6 +177,7 @@ def test_me():
         path,
         verbose=True,
         virtual=True,
+        generate=False,  # do not change - see test.py/generate_only
     )
     assert result == FAILURE
     stdout = capsys.readouterr().out
@@ -193,5 +194,6 @@ def test_me():
         path,
         verbose=False,
         virtual=True,
+        generate=False,  # see above
     )
     assert result == SUCCESS

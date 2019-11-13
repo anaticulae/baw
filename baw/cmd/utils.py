@@ -28,7 +28,6 @@ def sync_and_test(
         virtual: bool = False,
 ):
     verbose = False if quiet else verbose
-
     if sync:
         ret = run_sync(
             root,

@@ -98,7 +98,6 @@ def run_test(
             completed = target()
     else:
         completed = target()
-
     if generate_only and completed.returncode == SUCCESS:
         # do not write log of collect tests
         logging('test data generated')
