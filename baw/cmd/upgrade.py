@@ -117,7 +117,7 @@ def upgrade_requirements(
 
     # parsed = parse_requirements(content)
     upgraded = determine_new_requirements(root, content, virtual=virtual)
-    if upgraded == None:
+    if upgraded is None:
         return FAILURE
     replaced = replace_requirements(content, upgraded)
 
