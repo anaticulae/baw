@@ -38,7 +38,12 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
     Returns:
         0 if generation was sucessful
         1 if some errors occurs
-     """
+    """
+    if not is_sphinx_installed(root=root, virtual=virtual):
+        msg = 'sphinx is not installed, run baw --sync=all --virtual'
+        baw.utils.logging_error(msg)
+        return baw.utils.FAILURE
+
     update_template(root)
 
     docs = join(root, 'docs')
@@ -106,3 +111,18 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
         webbrowser.open_new(url)
 
     return result.returncode
+
+
+def is_sphinx_installed(root: str, virtual: bool) -> bool:
+    """Use `pip` to verify that documentation tool `sphinx` is installed."""
+    command = 'pip show sphinx'
+    completed = run_target(
+        root,
+        command=command,
+        cwd=root,
+        virtual=virtual,
+        skip_error_code=[1],  # sphinx is not installed
+        verbose=False,
+    )
+    isinstalled = completed.returncode == baw.utils.SUCCESS
+    return isinstalled
