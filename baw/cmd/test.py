@@ -101,9 +101,7 @@ def run_test(
     if generate_only and completed.returncode == SUCCESS:
         # do not write log of collect tests
         logging('test data generated')
-    else:
-        # Print output of test run
-        logging(completed.stdout)
+
     if completed.returncode == NO_TEST_TO_RUN:
         return SUCCESS
     if completed.returncode == SUCCESS and coverage:
