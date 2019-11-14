@@ -8,7 +8,7 @@ Welcome to Black and White
 
   pages/changelog
 
-  pages/bugs
+  bugs
 
   pages/todo
 

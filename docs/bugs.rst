@@ -1,4 +1,5 @@
-# Bugs
+bugs
+======
 
 ## Open
 

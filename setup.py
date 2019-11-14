@@ -50,7 +50,6 @@ def data_files():
     result = [(prefix, current) for prefix, current in collector.items()]
 
     result.append(('.', [
-        'BUGS.md',
         'CHANGELOG.md',
         'README.md',
         'requirements-dev.txt',

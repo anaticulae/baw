@@ -30,13 +30,13 @@ def project_example(testdir, monkeypatch):
 
 @skip_cmd
 def test_init_project_in_empty_folder(project_example):  #pylint: disable=W0613,W0621
-    """Run --init in empty folder
+    """Run --init in empty folder.
 
     Intitialize project and check if documentation is generated."""
-    assert exists('docs/pages/bugs.rst')
+    assert exists('docs/bugs.rst')
     assert exists('docs/pages/changelog.rst')
     assert exists('docs/pages/readme.rst')
-    assert exists('docs/pages/todo.rst')
+    assert exists('docs/todo.rst')
 
 
 @skip_cmd
