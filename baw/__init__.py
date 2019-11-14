@@ -45,7 +45,7 @@ from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import print_runtime
 
-__version__ = '0.8.2'
+__version__ = '0.9.0'
 
 
 def run_main():

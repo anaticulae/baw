@@ -2,6 +2,50 @@
 
 Every noteable change is logged here.
 
+## v0.9.0
+
+### Feature
+
+* add live test reporting while running unit tests (5c9747712b82)
+* add Dockerfile to run unit tests in (b46cd65c11eb)
+* use all cores to run unit tests (ba820e5600a1)
+* add yaml as know library (2c2b359eb4e6)
+* extend linter white list (c465f1313e73)
+* open browser after generating docs successfully (1e74742cf81c)
+* extend linter plugins to improve code basis (d81754f5ca5a)
+* parallelize formatter(yapf, isort) (fd9eea9c8411)
+* extend forward slash with option to replace newlines (484ba8bd6364)
+* add test=generate flag to generate test data (8aa61413f8a9)
+* ensure that xpassed test will fail the test suite (e8343e85e573)
+* deactivate logging time of running IDE (16c687159dab)
+* add option to activate logging runtime of process (7241994ddbe9)
+* update email address of automatic release generation (661acec13164)
+* add test=nightly flag to mark very long running tests (6303c38369e1)
+* remove conftest from gitignore (672128b201e8)
+* add pytest parallel runner to reduce test endurance (2bfaf1b1497c)
+* show file path which violates the assertion (0f0a5c66293e)
+* extend vscode workspace template to ignore `external` folder (4f854cda350e)
+
+### Fix
+
+* remove --format test, there is a problem with multi processing (1bad42df69ed)
+* require baw installation in virtual test (55270b4f3421)
+* fix precondition that test can executed successfully (7589d014a3aa)
+* add missing conftest template (85fe3a8a7475)
+* add conftest after removing from generation long time ago (6a0a48aa1b1f)
+* lint test directory only if it exists (f5b69f38ff54)
+* support --ide command when test path does not exists (2ae558fb3995)
+* add error message when given no --init project name (1c2770dca817)
+* add path in front to avoid confusion by sys path (af0c300d90c8)
+* increase clearance of logging format source and imports (e3838f929cdc)
+* workaround for path which contain '\notes' for example (26b36e88cecf)
+* fix cmdline parser template to new utila version (7f788a013fb5)
+* add verbose parameter to reduce verbosity of logging (4a6d24d9339b)
+
+### Documentation
+
+* add backlog to store further development ideas (a24930e81e0b)
+
 ## v0.8.2
 
 ### Fix
