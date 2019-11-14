@@ -8,7 +8,6 @@
 #==============================================================================
 import os
 import webbrowser
-from os.path import join
 
 import baw.utils
 from baw.resources import DOC_CONF
@@ -40,8 +39,8 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
 
     update_template(root)
 
-    docs = join(root, 'docs')
-    tmp = join(docs, TMP)
+    docs = os.path.join(root, 'docs')
+    tmp = os.path.join(docs, TMP)
 
     sources = root  # include test and package
     ignore = ' '.join([
@@ -106,7 +105,7 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
 
 
 def update_template(root: str):
-    path = join(root, 'docs/conf.py')
+    path = os.path.join(root, 'docs/conf.py')
     replaced = template_replace(root, DOC_CONF)
 
     file_replace(path, replaced)
