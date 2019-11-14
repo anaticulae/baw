@@ -19,14 +19,7 @@ from baw.utils import file_replace
 from baw.utils import logging
 
 
-def update_template(root: str):
-    path = join(root, 'docs/conf.py')
-    replaced = template_replace(root, DOC_CONF)
-
-    file_replace(path, replaced)
-
-
-def doc(root: str, virtual: bool = False, verbose: bool = False):
+def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     """Run Sphinx doc generation
 
     The result is locatated in `doc/html` as html-report. The stderr and
@@ -35,8 +28,9 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
     Args:
         root(str): project root
         virtual(bool): run in virtual environment
+        verbose(bool): if True more logging information are provided
     Returns:
-        0 if generation was sucessful
+        0 if generation was successful
         1 if some errors occurs
     """
     if not is_sphinx_installed(root=root, virtual=virtual):
@@ -50,12 +44,11 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
     tmp = join(docs, TMP)
 
     sources = root  # include test and package
-    ignore = [
+    ignore = ' '.join([
         'templates',
         'setup.py',
         'conf.py',
-    ]
-    ignore = ' '.join(ignore)
+    ])
 
     # Create files out of source
     # -d maxdepth
@@ -80,14 +73,13 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
         return completed.returncode
 
     # Create html result
-    build_options = [
+    build_options = ' '.join([
         # '-vvvv ',
         # '-n',  # warn about all missing references
         # '-W',  # turn warning into error
         # '-b coverage',  # TODO: Check autodoc package
         '-j 8'
-    ]
-    build_options = ' '.join(build_options)
+    ])
 
     htmloutput = os.path.join(docs, 'html')
     command = f'sphinx-build {docs} {htmloutput} {build_options}'
@@ -111,6 +103,13 @@ def doc(root: str, virtual: bool = False, verbose: bool = False):
         webbrowser.open_new(url)
 
     return result.returncode
+
+
+def update_template(root: str):
+    path = join(root, 'docs/conf.py')
+    replaced = template_replace(root, DOC_CONF)
+
+    file_replace(path, replaced)
 
 
 def is_sphinx_installed(root: str, virtual: bool) -> bool:

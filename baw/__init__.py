@@ -96,7 +96,8 @@ def run_main():
                 root=root,
                 verbose=verbose,
                 notests=args['notests'],
-                virtual=True),
+                virtual=True,
+            ),
         ),
     ])
 
@@ -116,7 +117,8 @@ def run_main():
              root,
              packages=args['sync'],
              virtual=virtual,
-             verbose=verbose)),
+             verbose=verbose,
+         )),
         ('test',
          testcommand(root=root, args=args, verbose=verbose, virtual=virtual)),
         ('doc', link(doc, root=root, virtual=virtual, verbose=verbose)),
