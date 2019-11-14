@@ -2,12 +2,14 @@
 
 ## Open
 
+* No open bugs.
+
+## Closed
+
 ### Stash removes untracked content
 
 baw --virtual --test=stash: It stashes every untracked change, the venv is
 also an untracked change and there removed.
-
-## Closed
 
 ### Problem when activating venv on windows
 
