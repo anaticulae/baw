@@ -68,7 +68,13 @@ def format_(
         virtual: bool = False,
 ):
     todo = []
-    for item in sources(root) + ['tests']:
+    folder = sources(root)
+
+    # check that `tests` path exists
+    testpath = os.path.join(root, 'tests')
+    if os.path.exists(testpath):
+        folder.append('tests')
+    for item in folder:
         source = os.path.join(root, item)
         command = f'{cmd} {source}'
         runnable = functools.partial(
