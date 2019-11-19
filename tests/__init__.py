@@ -45,6 +45,10 @@ skip_cmd = mark.skipif(NO_BAW, reason="Decrease response time")  # pylint: disab
 skip_longrun = mark.skipif(FAST_TESTS, reason="Test requires long time")  # pylint: disable=invalid-name
 skip_missing_packages = mark.skip(reason="Required package(s) not available")  # pylint: disable=invalid-name
 skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="No virtual environment")  # pylint: disable=invalid-name
+skip_virtual = mark.skipif(  # pylint: disable=invalid-name
+    not NON_VIRTUAL,
+    reason="do not run in virtual environment",
+)
 
 
 def tempname():

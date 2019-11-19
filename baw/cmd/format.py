@@ -43,7 +43,7 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
         "-p",
         "tests",
         "-ot",
-        "-k",  # keep direct
+        "-y",
         "-sl",  # force single line
         "-ns",  # override default skip of __init__
         "__init__.py",
