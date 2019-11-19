@@ -34,7 +34,7 @@ LONGRUN = 'LONGRUN' in os.environ.keys()
 NO_LONGRUN_REASON = 'Takes to mutch time'
 
 FAST = 'FAST' in os.environ.keys()
-NON_VIRTUAL = 'VIRTUAL' not in os.environ.keys()
+VIRTUAL = 'VIRTUAL' in os.environ.keys()
 
 NO_BAW = FAST
 NO_BAW_RESON = 'Installing baw takes long time'
@@ -44,9 +44,9 @@ FAST_TESTS = not LONGRUN or FAST
 skip_cmd = mark.skipif(NO_BAW, reason="Decrease response time")  # pylint: disable=invalid-name
 skip_longrun = mark.skipif(FAST_TESTS, reason="Test requires long time")  # pylint: disable=invalid-name
 skip_missing_packages = mark.skip(reason="Required package(s) not available")  # pylint: disable=invalid-name
-skip_nonvirtual = mark.skipif(NON_VIRTUAL, reason="No virtual environment")  # pylint: disable=invalid-name
+skip_nonvirtual = mark.skipif(not VIRTUAL, reason="No virtual environment")  # pylint: disable=invalid-name
 skip_virtual = mark.skipif(  # pylint: disable=invalid-name
-    not NON_VIRTUAL,
+    VIRTUAL,
     reason="do not run in virtual environment",
 )
 
