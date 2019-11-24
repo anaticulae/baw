@@ -59,7 +59,8 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     command = command % (configuration, tmp, sources, ignore)
 
     logging('generate docs')
-    logging(command)
+    if verbose:
+        logging(command)
 
     completed = run_target(
         root,
@@ -84,7 +85,8 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     command = f'sphinx-build {docs} {htmloutput} {build_options}'
 
     logging('make html')
-    logging(command)
+    if verbose:
+        logging(command)
 
     result = run_target(
         root,
