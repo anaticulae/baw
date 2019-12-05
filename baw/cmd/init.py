@@ -172,7 +172,7 @@ def create_python(
     entry_point = ''
     entry_point_package = ''
     if cmdline:
-        python_cmdline = join(python_project, 'command')
+        python_cmdline = join(python_project, 'cli')
         makedirs(python_cmdline, exist_ok=True)
         main_replaced = template_replace(root, MAIN_CMD)
         init_replaced = template_replace(root, INIT_CMD)
@@ -181,7 +181,7 @@ def create_python(
         file_create(join(python_cmdline, '__init__.py'), init_replaced)
 
         entry_point = template_replace(root, ENTRY_POINT)
-        entry_point_package = "'%s.command'," % shortcut
+        entry_point_package = "'%s.cli'," % shortcut
 
         ADDITONAL_REQUIREMENTS.append(f'utila=={utila.__version__}')
 
