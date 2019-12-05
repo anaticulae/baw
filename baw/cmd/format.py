@@ -28,6 +28,11 @@ def format_repository(root: str, verbose: bool = False, virtual: bool = False):
 
 
 def format_source(root: str, verbose: bool = False, virtual: bool = False):
+    command = 'yapf -i --style=google setup.py'
+    failure = run_target(root, command, verbose=False)
+    if failure.returncode:
+        return failure.returncode
+
     command = 'yapf -r -i --style=google -p'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
@@ -74,6 +79,7 @@ def format_(
     testpath = os.path.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
+
     for item in folder:
         source = os.path.join(root, item)
         command = f'{cmd} {source}'
