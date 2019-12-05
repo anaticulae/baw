@@ -40,7 +40,7 @@ assert exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
 README = """# $_SHORT_$
 """
 
-CHANGELOG = """# Changelog
+CHANGELOG = """# changelog
 
 Every noteable change is logged here.
 """
@@ -48,43 +48,87 @@ Every noteable change is logged here.
 LICENCE = """# Licence
 """
 
-TODO = """# Todo
+BUGS_RST = """\
+.. _bugs:
+
+bugs
+====
+
+open
+----
+
+closed
+------
 """
 
-BUGS = """# Bugs
-
-## open
-
-## closed
-"""
-
-BUGS_RST = """.. mdinclude:: ../../BUGS.md
-"""
 CHANGELOG_RST = """.. mdinclude:: ../../CHANGELOG.md
 """
-TODO_RST = """.. mdinclude:: ../../TODO.md
+
+TODO_RST = """\
+.. _todo:
+
+todo
+====
 """
+
 README_RST = """.. mdinclude:: ../../README.md
+"""
+
+BACKLOG_RST = """\
+.. _backlog:
+
+backlog
+=======
+"""
+
+RELEASE_RST = """\
+releases
+========
+
+Upcomming releases must be planned here. See unplanned features in
+:ref:`backlog` to create next release plan.
+
+current
+-------
+
+.. toctree::
+  :maxdepth: 1
+
 """
 
 INDEX_RST = """Welcome to $_NAME_$
 =================================
 
+General
+-------
+
 .. toctree::
   :maxdepth: 1
 
-  pages/readme
+  bugs
 
+Progress
+--------
+
+.. toctree::
+  :maxdepth: 1
+
+  releases/releases
+  releases/backlog
   pages/changelog
 
-  pages/bugs
+Developer
+---------
 
-  pages/todo
+.. toctree::
+  :maxdepth: 1
+
+  todo
 
 Modules
 --------------------
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 4
 
    .tmp/modules
 
@@ -94,6 +138,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
 """
 
 REQUIREMENTS = ""
@@ -162,16 +207,14 @@ DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
     (GIT_REPO_EXCLUDE, GITIGNORE),
-    ('BUGS.md', BUGS),
     ('CHANGELOG.md', CHANGELOG),
-    ('LICENCE.md', LICENCE),
     ('README.md', README),
-    ('TODO.md', TODO),
+    ('docs/bugs.rst', BUGS_RST),
     ('docs/index.rst', INDEX_RST),
-    ('docs/pages/bugs.rst', BUGS_RST),
     ('docs/pages/changelog.rst', CHANGELOG_RST),
-    ('docs/pages/readme.rst', README_RST),
-    ('docs/pages/todo.rst', TODO_RST),
+    ('docs/releases/backlog.rst', BACKLOG_RST),
+    ('docs/releases/releases.rst', RELEASE_RST),
+    ('docs/todo.rst', TODO_RST),
     ('tests/__init__.py', COPYRIGHT),
     (REQUIREMENTS_TXT, REQUIREMENTS),
     # ('setup.py', SETUP_PY),
