@@ -75,6 +75,13 @@ def init(
     create_requirements(root)
 
     update_gitignore(root)
+
+    from baw.cmd.format import format_repository
+
+    completed = format_repository(root, verbose=verbose, virtual=False)
+    if completed:
+        return completed
+
     git_add(root, '*')
 
     from baw.cmd import release
