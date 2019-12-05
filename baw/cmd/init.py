@@ -78,6 +78,7 @@ def init(
 
     from baw.cmd.format import format_repository
 
+    logging()  # write newline
     completed = format_repository(root, verbose=verbose, virtual=False)
     if completed:
         return completed

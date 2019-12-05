@@ -203,6 +203,9 @@ SETUP_CFG = file_read(join(TEMPLATES, 'setup.cfg'))
 
 DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
 
+ISORT_TEMPLATE = file_read(ISORT_PATH)
+CONFTEST_TEMPLATE = file_read(CONFTEST_PATH)
+
 # None copies files
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
@@ -216,12 +219,10 @@ FILES = [
     ('docs/releases/releases.rst', RELEASE_RST),
     ('docs/todo.rst', TODO_RST),
     ('tests/__init__.py', COPYRIGHT),
+    ('tests/conftest.py', CONFTEST_TEMPLATE),
     (REQUIREMENTS_TXT, REQUIREMENTS),
     # ('setup.py', SETUP_PY),
 ]
-
-ISORT_TEMPLATE = file_read(ISORT_PATH)
-CONFTEST_TEMPLATE = file_read(CONFTEST_PATH)
 
 
 def template_replace(root: str, template: str, **kwargs):
