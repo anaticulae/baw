@@ -15,6 +15,8 @@ from os.path import dirname
 from os.path import exists
 from os.path import join
 
+import utila
+
 from baw.config import create_config
 from baw.git import git_add
 from baw.git import git_init
@@ -173,7 +175,7 @@ def create_python(
         entry_point = template_replace(root, ENTRY_POINT)
         entry_point_package = "'%s.command'," % shortcut
 
-        ADDITONAL_REQUIREMENTS.append('utila')
+        ADDITONAL_REQUIREMENTS.append(f'utila=={utila.__version__}')
 
     replaced = template_replace(root, SETUP_PY)
     replaced = replaced.replace("$_ENTRY_POINT_$", entry_point)
