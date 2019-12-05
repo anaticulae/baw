@@ -162,6 +162,7 @@ def create_python(
         root(str): project root of generated project
         shortcut(str): short name of generated project. Init file is located
                        in root/shortcut/__init__.py
+        cmdline(bool): if True, create command line template
     """
     # TODO: DIRTY
     python_project = join(root, shortcut)

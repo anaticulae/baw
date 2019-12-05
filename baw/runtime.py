@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import subprocess
 from os import environ
 from os import makedirs
 from os import scandir
@@ -165,7 +166,7 @@ def run_target(
         skip_error_message: list = None,
         verbose: bool = True,
         virtual: bool = False,
-):
+) -> subprocess.CompletedProcess:
     """Run target
 
     Args:
