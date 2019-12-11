@@ -65,6 +65,8 @@ def name(root: str):
     assert exists(root)
     cfg = join(root, PROJECT_PATH)
     _, name_ = project_name(cfg)
+    # escape '
+    name_ = name_.replace("'", r'\'')
     return name_
 
 
