@@ -1,6 +1,6 @@
 import sys
 
-# put to the start to avoid overwriting py other modules/packages.
+# put to the start to avoid overwriting by other modules/packages.
 sys.path.insert(0, r'$_ROOT_$/tests')
 sys.path.insert(0, r'$_ROOT_$')
 
