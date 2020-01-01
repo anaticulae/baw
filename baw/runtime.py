@@ -139,21 +139,6 @@ def __fix_environment(root: str):
     file_create(path, content=content)
 
 
-def install_requirements(requirements: str, path: str):
-    """Run pip with passed requirements file
-
-    Args:
-        requirement(str): path to requirements-file which is conform to pip -r
-        path(str): location of virtual environment
-    Returns:
-        True if creating was successful, else False and print stderr
-    """
-
-    pip_intall = 'python -mpip install -r %s' % requirements
-
-    return run_target(path, pip_intall, virtual=True)
-
-
 def run_target(
         root: str,
         command: str,
