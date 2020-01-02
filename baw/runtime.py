@@ -238,17 +238,22 @@ def setup_target(
 
 
 def log_result(
-        completed,
-        cwd,
-        skip_error_code,
-        skip_error_message,
-        start,
-        verbose,
+        completed: subprocess.CompletedProcess,
+        cwd: str,
+        skip_error_code: set,
+        skip_error_message: list,
+        start: int,
+        verbose: int,
 ):
     """
     Args:
-        start(int): unix time when process started. If `start` is None, no time
-                    exection log will be printed.
+        completed(subprocess.CompletedProcess): finished process to log
+        cwd(str): current work directory
+        skip_error_code(set): set of error codes to handle not as error
+        skip_error_message(list): list of error message to ignore
+        start(int): unix time when process was started. If `start` is
+                    None, no time exection log will be printed.
+        verbose(int): state of verbosity. Verbose starts at the level 1.
     """
     command = completed.args
     returncode = completed.returncode
