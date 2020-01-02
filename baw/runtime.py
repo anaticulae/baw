@@ -259,13 +259,8 @@ def log_result(
     returncode = completed.returncode
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
-        logging_error(
-            'Running `%(command)s` in `%(cwd)s` returncode: %(returncode)d\n' %
-            {
-                'command': command,
-                'cwd': cwd,
-                'returncode': returncode,
-            })
+        msg = f'Completed: `{command}` in `{cwd}` returncode: {returncode}\n'
+        logging_error(msg)
 
     if completed.stdout and verbose:
         logging(completed.stdout)
@@ -273,10 +268,7 @@ def log_result(
     if verbose:
         if not reporting:
             # Inform, not writing to stderr
-            logging('Running `%(command)s` in `%(cwd)s`\n' % {
-                'command': command,
-                'cwd': cwd,
-            })
+            logging('Completed: `{command}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
             logging('Env: %s' % environ)
 
