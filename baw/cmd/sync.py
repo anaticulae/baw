@@ -33,7 +33,7 @@ def sync(
 ):
     """
     Args:
-        packages(str): decide whic packages should be synchronized:
+        packages(str): decide which packages should be synchronized:
                         - dev/ minimal dev environment, formater, linter, test
                         - doc/ Sphinx
                         - all
