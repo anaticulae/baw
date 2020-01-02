@@ -15,8 +15,6 @@ from os.path import dirname
 from os.path import exists
 from os.path import join
 
-import utila
-
 from baw.config import create_config
 from baw.git import git_add
 from baw.git import git_init
@@ -184,7 +182,7 @@ def create_python(
         entry_point = template_replace(root, ENTRY_POINT)
         entry_point_package = "'%s.cli'," % shortcut
 
-        ADDITONAL_REQUIREMENTS.append(f'utila=={utila.__version__}')
+        ADDITONAL_REQUIREMENTS.append(f'utila=={utila_current()}')
 
     replaced = template_replace(root, SETUP_PY)
     replaced = replaced.replace("$_ENTRY_POINT_$", entry_point)
@@ -200,3 +198,13 @@ def create_requirements(root: str):
         content += item + NEWLINE
 
     file_append(join(root, REQUIREMENTS_TXT), content)
+
+
+def utila_current() -> str:
+    """Determine current version of `utila` package."""
+    default = "1.11.0"
+    try:
+        import utila
+        return utila.__version__
+    except ImportError:
+        return default
