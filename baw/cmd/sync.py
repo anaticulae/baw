@@ -119,8 +119,6 @@ def sync_dependencies(
     ret = 0
     for to_install in resources:
         cmd, pip = get_install_cmd(to_install, verbose, pip_index, extra_url)
-        if verbose:
-            logging(cmd)
 
         completed = run_target(
             root,
