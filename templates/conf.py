@@ -34,7 +34,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = '$_NAME_$'
-copyright = '2019, kiwi project'
+copyright = '2019-2020, kiwi project'
 author = 'Helmut Konrad Fahrendholz'
 
 version = '$_VERSION_$'
