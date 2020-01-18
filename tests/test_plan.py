@@ -38,3 +38,4 @@ def test_plan_code_quality(project_example):  # pylint:disable=W0621
     assert quality
     assert isinstance(quality.rating, float), quality.rating
     assert quality.rating <= 10.0, quality.rating
+    assert quality.coverage <= 100.0, quality.coverage

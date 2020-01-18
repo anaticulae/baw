@@ -112,4 +112,18 @@ def code_quality(root: str) -> CodeQuality:
     result = CodeQuality()
     if rating:
         result.rating = float(rating['major'] + '.' + rating['minor'])
+
+    # Total coverage: 0.00
+    completed = baw.runtime.run_target(
+        root,
+        command='baw --test=cov --test=long --virtual',
+        skip_error_code={1},
+        verbose=False,
+    )
+    coverage = re.search(
+        r'Total coverage: (?P<coverage>\d{1,3}\.\d{2})',
+        completed.stdout,
+    )
+    if coverage:
+        result.coverage = float(coverage['coverage'])
     return result
