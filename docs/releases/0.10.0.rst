@@ -10,6 +10,11 @@ releases
 
 * [ ] add baw --plan_close
 
+upgrade
+-------
+
+* [ ] support >= pattern in requirements
+
 code quality
 ------------
 
@@ -17,6 +22,7 @@ before
 ~~~~~~
 
 * Your code has been rated at 9.34/10
+* Total coverage: 67.01%
 
 after
 ~~~~~
