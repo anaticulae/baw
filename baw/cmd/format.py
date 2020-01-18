@@ -29,11 +29,15 @@ def format_repository(root: str, verbose: bool = False, virtual: bool = False):
 
 def format_source(root: str, verbose: bool = False, virtual: bool = False):
     command = 'yapf -i --style=google setup.py'
-    failure = run_target(root, command, verbose=False)
+    failure = run_target(root, command, verbose=False, virtual=virtual)
     if failure.returncode:
         return failure.returncode
 
-    command = 'yapf -r -i --style=google -p'
+    # run in parallel if not testing with pytest
+    testrun = os.environ.get('PYTEST_PLUGINS', False)
+    parallel = '-p' if not testrun else ''
+    command = f'yapf -r -i --style=google {parallel}'
+
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
 
@@ -72,7 +76,7 @@ def format_(
         verbose: bool = False,
         virtual: bool = False,
 ):
-    todo = []
+    logging(info)
     folder = sources(root)
 
     # check that `tests` path exists
@@ -80,25 +84,21 @@ def format_(
     if os.path.exists(testpath):
         folder.append('tests')
 
-    for item in folder:
-        source = os.path.join(root, item)
-        command = f'{cmd} {source}'
-        runnable = functools.partial(
-            run_target,
-            root=root,
-            command=command,
-            cwd=source,
-            virtual=virtual,
-            verbose=verbose,
-        )
-        todo.append(runnable)
-
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         waitfor = []
-        for runme in todo:
-            logging(f'{info}: {runme.keywords["cwd"]}')
-            waitfor.append(executor.submit(runme))
-
+        for item in folder:
+            source = os.path.join(root, item)
+            command = f'{cmd} {source}'
+            logging(command)
+            waitfor.append(
+                executor.submit(
+                    run_target,
+                    root=root,
+                    command=command,
+                    cwd=source,
+                    virtual=virtual,
+                    verbose=verbose,
+                ))
         for future in concurrent.futures.as_completed(waitfor):
             completed = future.result()
             if completed.returncode:

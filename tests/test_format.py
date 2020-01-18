@@ -33,8 +33,6 @@ name = alphabet"""
     return root
 
 
-# TODO: test does not run in virtual environment
-@tests.skip_virtual
 def test_regression_format_keep_single_list(simpleproject):  # pylint:disable=W0621
     """Do not use -k, as a result renaming does not work propper.
 
