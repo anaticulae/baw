@@ -12,6 +12,7 @@ import os
 import baw.cmd.plan
 import baw.utils
 import tests
+from tests.fixtures.project import project_example
 
 ROOT = baw.utils.ROOT
 
@@ -32,7 +33,7 @@ def test_plan_current_status():
 
 
 @tests.skip_longrun
-def test_plan_code_quality():
+def test_plan_code_quality(project_example):  # pylint:disable=W0621
     quality = baw.cmd.plan.code_quality(ROOT)
     assert quality
     assert isinstance(quality.rating, float), quality.rating

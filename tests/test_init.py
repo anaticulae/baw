@@ -7,25 +7,16 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import sys
 from os.path import exists
 
-from pytest import fixture
 from pytest import mark
-from pytest import raises
 
-from baw import main
+import tests
 from tests import assert_run
 from tests import skip_cmd
 from tests import skip_longrun
 from tests import skip_nonvirtual
-
-
-@fixture
-def project_example(testdir, monkeypatch):
-    run_command(['--init', 'xcd', '"I Like This Project"'], monkeypatch)
-    run_command(['--virtual'], monkeypatch)
-    return testdir
+from tests.fixtures.project import project_example  # pylint:disable=W0611
 
 
 @skip_cmd
@@ -43,7 +34,7 @@ def test_init_project_in_empty_folder(project_example):  #pylint: disable=W0613,
 @skip_longrun
 def test_doc_command(project_example, monkeypatch):  #pylint: disable=W0613,W0621
     """Run --doc command to generate documentation."""
-    run_command(['--doc'], monkeypatch)
+    tests.run_command(['--doc'], monkeypatch)
     assert exists('docs/html')
 
 
@@ -52,7 +43,7 @@ def test_doc_command(project_example, monkeypatch):  #pylint: disable=W0613,W062
 @skip_nonvirtual
 def test_escaping_single_collon(testdir, monkeypatch):  #pylint: disable=W0613
     """Generate project with ' in name and test install"""
-    run_command(['--init', 'xcd', '"I\'ts magic"'], monkeypatch)
+    tests.run_command(['--init', 'xcd', '"I\'ts magic"'], monkeypatch)
     assert_run('.', 'pip install --editable .')
 
 
@@ -63,15 +54,4 @@ def test_escaping_single_collon(testdir, monkeypatch):  #pylint: disable=W0613
 @skip_longrun
 def test_run_complex_command(testdir, monkeypatch, command):  # pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    run_command(command, monkeypatch)
-
-
-def run_command(command, monkeypatch):
-    with monkeypatch.context() as context:
-        # Remove all environment vars
-        # baw is removed as first arg
-        context.setattr(sys, 'argv', ['baw'] + command)
-        with raises(SystemExit) as result:
-            main()
-        result = str(result)
-        assert 'SystemExit: 0' in result, result
+    tests.run_command(command, monkeypatch)

@@ -11,9 +11,11 @@ import contextlib
 import os
 import random
 import subprocess
+import sys
 
 import pytest
 
+import baw
 import baw.utils
 
 MAX_NUMBER = 20
@@ -116,3 +118,14 @@ def example(tmpdir):
 
 def file_count(path: str):
     return len(os.listdir(path))
+
+
+def run_command(command, monkeypatch):
+    with monkeypatch.context() as context:
+        # Remove all environment vars
+        # baw is removed as first arg
+        context.setattr(sys, 'argv', ['baw'] + command)
+        with pytest.raises(SystemExit) as result:
+            baw.main()
+        result = str(result)
+        assert 'SystemExit: 0' in result, result
