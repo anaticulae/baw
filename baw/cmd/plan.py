@@ -77,8 +77,17 @@ def next_version(
     return major, minor
 
 
-def close():
-    pass
+def close(root: str):
+    current_status = status(root)
+    assert current_status == Status.DONE, current_status
+    quality = code_quality(root)
+    filled = AFTER.replace('{%LINTER%}', str(quality.rating))
+    filled = filled.replace('{%COVERAGE%}', str(quality.coverage))
+    plan = current_plan(root)
+    baw.utils.file_append(plan, filled)
+
+    current_status = status(root)
+    assert current_status == Status.CLOSED, current_status
 
 
 def current(root: str) -> str:
@@ -113,11 +122,18 @@ def current_plan(root: str) -> str:
     return os.path.join(source, f'{plan}.rst')
 
 
-AFTER = """\
+AFTER_SPLIT = """\
 after
 ~~~~~
 
-* Your code has been rated at
+* Total coverage:"""
+
+AFTER = """
+after
+~~~~~
+
+* Total coverage: {%COVERAGE%}%
+* Your code has been rated at {%LINTER%}/10
 """
 
 
@@ -132,7 +148,7 @@ def status(root: str) -> Status:
         return Status.INPROGESS
     if not todos and dones:
         # decide closed ore done
-        if AFTER in loaded:
+        if AFTER_SPLIT in loaded:
             return Status.CLOSED
         return Status.DONE
     return Status.OPEN

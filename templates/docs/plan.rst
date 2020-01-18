@@ -9,8 +9,5 @@ code quality
 before
 ~~~~~~
 
-* Your code has been rated at {%LINTER%}/10
 * Total coverage: {%COVERAGE%}%
-
-after
-~~~~~
+* Your code has been rated at {%LINTER%}/10
