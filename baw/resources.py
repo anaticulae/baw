@@ -250,16 +250,12 @@ def template_replace(root: str, template: str, **kwargs):
     source = sources(root)
     name_ = name(root)
     version_tag = baw.project.version.determine(root)
-    major = baw.project.version.major(version_tag)
-    minor = baw.project.version.minor(version_tag)
 
     template = template.replace('{%SHORT%}', short)
     template = template.replace('{%SOURCES%}', ', '.join(source))
     template = template.replace('{%NAME%}', name_)
     template = template.replace('{%VERSION%}', version_tag)
     template = template.replace('{%ROOT%}', root)
-    template = template.replace('{%MAJOR%}', major)
-    template = template.replace('{%MINOR%}', minor)
 
     for key, value in kwargs.items():
         value = str(value)  # ensure to repace str
