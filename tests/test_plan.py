@@ -13,7 +13,7 @@ import baw.cmd.plan
 import baw.git
 import baw.utils
 import tests
-from tests.fixtures.project import project_example
+from tests.fixtures.project import project_example  # pylint:disable=W0611
 
 ROOT = baw.utils.ROOT
 
