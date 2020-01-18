@@ -70,14 +70,14 @@ def name(root: str):
     return name_
 
 
-def minimal_coverage(root: str):
+def minimal_coverage(root: str) -> int:
     """Read percentage of required test coverage
 
     Args:
-        path(str): path to project root
-
+        root(str): path to project root
     Returns:
-        percentage of required test coverage"""
+        percentage of required test coverage
+    """
     assert exists(root)
     cfg = config(join(root, PROJECT_PATH))
 

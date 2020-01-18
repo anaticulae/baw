@@ -211,14 +211,9 @@ def cov_args(root: str, *, pdb: bool):
     min_cov = minimal_coverage(root)
 
     cov_sources = collect_cov_sources(root)
-    cov = ('--cov-config=%s %s --cov-report=html:%s --cov-branch'
-           ' %s --cov-fail-under=%d') % (
-               cov_config,
-               cov_sources,
-               output,
-               no_cov,
-               min_cov,
-           )
+    cov = (f'--cov-config={cov_config} {cov_sources} '
+           f'--cov-report=html:{output} --cov-branch {no_cov} '
+           f'--cov-fail-under={min_cov}')
     return cov
 
 
