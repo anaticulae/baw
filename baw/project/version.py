@@ -14,7 +14,7 @@ from baw.config import shortcut
 from baw.utils import file_read
 
 
-def version(root: str):
+def determine(root: str) -> str:
     """Determine current version out of __init__.py file
 
     Args:
@@ -22,7 +22,7 @@ def version(root: str):
     Returns:
         version number in format (x.y.z)
     Raises:
-        ValueError if no __version__ can be located
+        ValueError: if no __version__ can be located
     """
     assert exists(root)
     short = shortcut(root)

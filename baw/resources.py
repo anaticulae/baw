@@ -2,11 +2,11 @@
 from os.path import exists
 from os.path import join
 
+import baw.project.version
 from baw.config import name
 from baw.config import shortcut
 from baw.config import sources
 from baw.git import GIT_REPO_EXCLUDE
-from baw.project import version
 from baw.utils import BAW_EXT
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
@@ -240,7 +240,7 @@ def template_replace(root: str, template: str, **kwargs):
     short = shortcut(root)
     source = sources(root)
     name_ = name(root)
-    version_tag = version(root)
+    version_tag = baw.project.version.determine(root)
 
     template = template.replace('{%SHORT%}', short)
     template = template.replace('{%SOURCES%}', ', '.join(source))

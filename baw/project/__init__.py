@@ -16,7 +16,6 @@ from os.path import split
 from os.path import splitdrive
 
 from baw.git import GIT_EXT
-from baw.project.version import version
 from baw.utils import BAW_EXT
 
 
