@@ -14,6 +14,7 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+import baw.cmd.plan
 from baw.cli import parse
 from baw.cmd import clean_project
 from baw.cmd import clean_virtual
@@ -129,6 +130,7 @@ def run_main():
         ('run', link(run, root=root, virtual=virtual)),
         ('lint', link(run_lint, root=root, verbose=verbose, virtual=virtual)),
         ('ide', link(ide_open, root=root)),
+        ('plan', link(baw.cmd.plan.action, root=root, plan=args['plan'])),
     ])
 
     for argument, action in workmap.items():

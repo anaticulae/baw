@@ -32,6 +32,21 @@ class CodeQuality:
     rating: float = None
 
 
+def action(root: str, plan: str):
+    current_status = status(root)
+    if plan == 'new':
+        # TODO: DISTINCT BETWEEN NEW_MAJOR AND NEW_MINOR
+        if not current_status == Status.CLOSED:
+            baw.utils.logging_error(f'old plan is not closed: {current_status}')
+            return baw.utils.FAILURE
+    if plan == 'close':
+        if not current_status == Status.DONE:
+            baw.utils.logging_error(f'current plan is not done: {current_status}') # yapf:disable
+            return baw.utils.FAILURE
+        close(root)
+    return baw.utils.SUCCESS
+
+
 def create(
         root: str,
         upgrade_major: bool = False,
@@ -57,6 +72,7 @@ def create(
 
 
 def close(root: str):
+    baw.utils.logging('close current release plan')
     current_status = status(root)
     assert current_status == Status.DONE, current_status
     quality = code_quality(root)

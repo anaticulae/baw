@@ -94,6 +94,17 @@ TEST = Command(
             'stash',
         ],
     })
+PLAN = Command(
+    longcut='--plan',
+    message='modify current release plan',
+    args={
+        'nargs': '?',
+        'const': 'auto',
+        'choices': [
+            'new',
+            'close',
+        ],
+    })
 NOTESTS = Command(
     longcut='--notests',
     message='Do not run test suite',
@@ -133,6 +144,7 @@ def create_parser():  # noqa: Z21
         LINT,
         NOTESTS,
         OPEN,
+        PLAN,
         PUSH,
         RAW,
         RELEASE,
