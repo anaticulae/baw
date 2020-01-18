@@ -52,9 +52,14 @@ def create(
     baw.utils.file_create(outpath, replaced)
     baw.utils.logging(f'create new release plan: {outpath}')
 
-    # TODO: DIRY, REFACTOR
     message = f'releases(plan): add draft of release plan {major}.{minor}.0'
-    baw.git.add(root, pattern=f'docs/releases/{major}.{minor}.0.rst')
+    commit(root, message)
+
+
+def commit(root: str, message: str):
+    # TODO: DIRY, REFACTOR
+    plan = current_plan(root)
+    baw.git.add(root, pattern=plan)
     process = baw.runtime.run_target(root, f'git commit -m "{message}""')
     assert process.returncode == baw.utils.SUCCESS, process
 
@@ -88,6 +93,9 @@ def close(root: str):
 
     current_status = status(root)
     assert current_status == Status.CLOSED, current_status
+
+    message = f'releases(plan): close current release plan'
+    commit(root, message)
 
 
 def current(root: str) -> str:
