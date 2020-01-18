@@ -14,6 +14,7 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+from baw.cli import parse
 from baw.cmd import clean_project
 from baw.cmd import clean_virtual
 from baw.cmd import doc
@@ -29,7 +30,6 @@ from baw.cmd import run_test
 from baw.cmd import sync
 from baw.cmd import upgrade
 from baw.cmd.init import get_init_args
-from baw.command import parse
 from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
