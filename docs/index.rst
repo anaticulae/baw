@@ -1,21 +1,36 @@
 Welcome to Black and White
-=================================
+==========================
+
+General
+-------
 
 .. toctree::
   :maxdepth: 1
 
-  pages/readme
-
-  pages/changelog
-
   bugs
 
-  pages/todo
+Progress
+--------
+
+.. toctree::
+  :maxdepth: 1
+
+  releases/releases
+  releases/backlog
+  pages/changelog
+
+Developer
+---------
+
+.. toctree::
+  :maxdepth: 1
+
+  todo
 
 Modules
 --------------------
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 4
 
    .tmp/modules
 
