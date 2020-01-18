@@ -38,17 +38,7 @@ def create(
         linter: float = 10.0,
         coverage: float = 100.0,
 ):
-    version = current(root)
-    if version is None:
-        version = '0.0.0'
-    major, minor = (
-        baw.project.version.major(version),
-        baw.project.version.minor(version),
-    )
-    if upgrade_major:
-        major = str(int(major) + 1)
-    else:
-        minor = str(int(minor) + 1)
+    major, minor = next_version(root, upgrade_major=upgrade_major)
 
     replaced = baw.resources.template_replace(
         root,
@@ -67,6 +57,24 @@ def create(
     baw.git.add(root, pattern=f'docs/releases/{major}.{minor}.0.rst')
     process = baw.runtime.run_target(root, f'git commit -m "{message}""')
     assert process.returncode == baw.utils.SUCCESS, process
+
+
+def next_version(
+        root: str,
+        upgrade_major: bool = False,
+):
+    version = current(root)
+    if version is None:
+        version = '0.0.0'
+    major, minor = (
+        baw.project.version.major(version),
+        baw.project.version.minor(version),
+    )
+    if upgrade_major:
+        major = str(int(major) + 1)
+    else:
+        minor = str(int(minor) + 1)
+    return major, minor
 
 
 def close():
