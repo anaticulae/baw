@@ -17,6 +17,7 @@ from baw.utils import file_append
 from tests import assert_run
 from tests import assert_run_fail
 from tests import example
+from tests import skip_longrun
 
 RUN = """
 [run]
@@ -32,6 +33,7 @@ def project_with_command(example):  #pylint: disable=W0621
     return example
 
 
+@skip_longrun
 def test_run_commands_with_ls(project_with_command):  #pylint: disable=W0621
     """Running --run with ls."""
     tmpdir = project_with_command
@@ -41,6 +43,7 @@ def test_run_commands_with_ls(project_with_command):  #pylint: disable=W0621
 project_without_command = example  #pylint: disable=C0103
 
 
+@skip_longrun
 def test_run_without_commands_in_project(project_without_command):  #pylint: disable=W0621
     """Running --run without any registered command in project."""
     tmpdir = project_without_command

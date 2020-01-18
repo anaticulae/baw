@@ -10,6 +10,7 @@ from tests import EXAMPLE_PROJECT_NAME
 from tests import example  # pylint: disable=W0611
 from tests import run
 from tests import skip_cmd
+from tests import skip_longrun
 
 
 @skip_cmd
@@ -24,6 +25,7 @@ def test_creating_project(tmpdir):
 
 
 @skip_cmd
+@skip_longrun
 def test_test_with_import(example):  # pylint: disable=W0621
     """Ensure that import project package while writing tests need no additonal
     configuration on sys.path

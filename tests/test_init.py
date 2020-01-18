@@ -29,6 +29,7 @@ def project_example(testdir, monkeypatch):
 
 
 @skip_cmd
+@skip_longrun
 def test_init_project_in_empty_folder(project_example):  #pylint: disable=W0613,W0621
     """Run --init in empty folder.
 
@@ -59,6 +60,7 @@ def test_escaping_single_collon(testdir, monkeypatch):  #pylint: disable=W0613
     ['--init', 'myroject', '"This is a beautyful project'],
     ['--init', 'myroject', '"This is a beautyful project"', '--with_cmd'],
 ])
+@skip_longrun
 def test_run_complex_command(testdir, monkeypatch, command):  # pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_command(command, monkeypatch)

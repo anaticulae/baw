@@ -99,6 +99,7 @@ def test_requirements_parser():
     assert result == EXPECTED
 
 
+@skip_longrun
 def test_new_requirements():
     result = determine_new_requirements(ROOT, REQUIREMENTS)
     # utila should allways be new than 0.5.0
@@ -150,7 +151,7 @@ def test_upgrading(tmpdir):
 
 @skip_longrun
 @skip_nonvirtual
-def test_upgrade_requirement(project_example, capsys):  # pylint: disable=W0621, W0613
+def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621, W0613
 
     path = os.getcwd()
 
