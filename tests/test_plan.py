@@ -10,6 +10,7 @@
 import os
 
 import baw.cmd.plan
+import baw.git
 import baw.utils
 import tests
 from tests.fixtures.project import project_example
@@ -39,3 +40,13 @@ def test_plan_code_quality(project_example):  # pylint:disable=W0621
     assert isinstance(quality.rating, float), quality.rating
     assert quality.rating <= 10.0, quality.rating
     assert quality.coverage <= 100.0, quality.coverage
+
+
+@tests.skip_longrun
+def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
+    """Ensure that project --init generates first release plan"""
+    plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
+    assert os.path.exists(plan), plan
+
+    clean = baw.git.is_clean(project_example)
+    assert clean, clean

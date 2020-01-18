@@ -15,6 +15,7 @@ from os.path import dirname
 from os.path import exists
 from os.path import join
 
+import baw.cmd.plan
 from baw.config import create_config
 from baw.git import git_add
 from baw.git import git_init
@@ -93,6 +94,14 @@ def init(
         verbose=verbose,
         virtual=False,  # No virtual for first time needed
     )
+
+    quality = baw.cmd.plan.code_quality(root)
+    baw.cmd.plan.create(
+        root,
+        linter=quality.rating,
+        coverage=quality.coverage,
+    )
+
     return SUCCESS
 
 

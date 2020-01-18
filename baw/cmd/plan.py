@@ -12,6 +12,8 @@ import enum
 import os
 import re
 
+import baw.project.version
+import baw.resources
 import baw.runtime
 import baw.utils
 
@@ -30,8 +32,41 @@ class CodeQuality:
     rating: float = None
 
 
-def create():
-    pass
+def create(
+        root: str,
+        upgrade_major: bool = False,
+        linter: float = 10.0,
+        coverage: float = 100.0,
+):
+    version = current(root)
+    if version is None:
+        version = '0.0.0'
+    major, minor = (
+        baw.project.version.major(version),
+        baw.project.version.minor(version),
+    )
+    if upgrade_major:
+        major = str(int(major) + 1)
+    else:
+        minor = str(int(minor) + 1)
+
+    replaced = baw.resources.template_replace(
+        root,
+        template=baw.resources.RELEASE_PLAN,
+        major=major,
+        minor=minor,
+        linter=linter,
+        coverage=coverage,
+    )
+    outpath = os.path.join(releases(root), f'{major}.{minor}.0.rst')
+    baw.utils.file_create(outpath, replaced)
+    baw.utils.logging(f'create new release plan: {outpath}')
+
+    # TODO: DIRY, REFACTOR
+    message = f'releases(plan): add draft of release plan {major}.{minor}.0'
+    baw.git.add(root, pattern=f'docs/releases/{major}.{minor}.0.rst')
+    process = baw.runtime.run_target(root, f'git commit -m "{message}""')
+    assert process.returncode == baw.utils.SUCCESS, process
 
 
 def close():

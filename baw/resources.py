@@ -209,6 +209,7 @@ CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
 GITIGNORE = file_read(join(TEMPLATES, '.gitignore'))
 SETUP_PY = file_read(join(TEMPLATES, 'setup.tpy'))
 SETUP_CFG = file_read(join(TEMPLATES, 'setup.cfg'))
+RELEASE_PLAN = file_read(join(TEMPLATES, 'docs/plan.rst'))
 
 DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
 
