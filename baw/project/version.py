@@ -33,3 +33,13 @@ def determine(root: str) -> str:
     if not current:
         raise ValueError('Could not locate __version__ in %s' % path)
     return current
+
+
+def major(item: str) -> str:
+    result = item.split('.')[0]
+    return result
+
+
+def minor(item: str) -> str:
+    result = item.split('.')[1]
+    return result
