@@ -26,6 +26,7 @@ name = alphabet"""
     dotbaw = os.path.join(root, '.baw')
     os.makedirs(dotbaw)
     baw.utils.file_create(baw.config.PROJECT_PATH, config)
+    baw.utils.file_create('setup.py', '# setup')
 
     abc = os.path.join(root, 'abc')
     os.makedirs(abc)
@@ -50,7 +51,7 @@ def test_regression_format_keep_single_list(simpleproject):  # pylint:disable=W0
     baw.utils.file_create(path, source)
     assert os.path.exists(path)
 
-    completed = subprocess.run('baw --format', timeout=3.0)
+    completed = subprocess.run('baw --format', timeout=10.0)
     assert completed.returncode == baw.utils.SUCCESS
 
     read = baw.utils.file_read(path)
