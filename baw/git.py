@@ -51,6 +51,10 @@ def git_add(root: str, pattern: str):
     evaluate_git_error(add)
 
 
+def add(root: str, pattern: str):
+    return git_add(root, pattern)
+
+
 def git_commit(root, source, message, verbose: int = 0):
     assert exists(root)
     message = '"%s"' % message
@@ -60,6 +64,16 @@ def git_commit(root, source, message, verbose: int = 0):
         root, 'git commit %s -m %s' % (source, message), verbose=False)
 
     return process.returncode
+
+
+def commit(root, source, message, verbose: int = 0):
+    return git_commit(root, source, message, verbose)
+
+
+def is_clean(root):
+    process = run_target(root, 'git status')
+    assert process.returncode == 0
+    return 'nothing to commit, working tree clean' in process.stdout
 
 
 def git_checkout(
