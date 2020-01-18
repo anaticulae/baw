@@ -7,7 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import dataclasses
 import os
+import re
+
+import baw.runtime
+
+
+@dataclasses.dataclass
+class CodeQuality:
+    coverage: float = None
+    rating: float = None
 
 
 def create():
@@ -39,4 +49,24 @@ def releases(root: str) -> str:
     assert os.path.exists(root), root
     result = os.path.join(root, 'docs/releases')
     assert os.path.exists(result)
+    return result
+
+
+def code_quality(root: str) -> CodeQuality:
+    # Your code has been rated at 9.24/10
+    completed = baw.runtime.run_target(
+        root,
+        command='baw --lint',
+        skip_error_code=set(range(100)),
+        verbose=False,
+    )
+    stdout = completed.stdout
+    rating = re.search(
+        r'Your code has been rated at (?P<major>\d{1,2})\.(?P<minor>\d{1,2})/10',
+        stdout,
+    )
+
+    result = CodeQuality()
+    if rating:
+        result.rating = float(rating['major'] + '.' + rating['minor'])
     return result

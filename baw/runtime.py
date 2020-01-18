@@ -268,7 +268,7 @@ def log_result(
     if verbose:
         if not reporting:
             # Inform, not writing to stderr
-            logging('Completed: `{command}` in `{cwd}`\n')
+            logging(f'Completed: `{command}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
             logging('Env: %s' % environ)
 
@@ -280,7 +280,7 @@ def log_result(
     for remove_skip in skip_error_message:
         error_message = error_message.replace(remove_skip, '')
 
-    if error_message.strip():
+    if reporting and error_message.strip():
         logging_error('%s' % error_message.strip())
     if verbose:
         if completed.stderr:

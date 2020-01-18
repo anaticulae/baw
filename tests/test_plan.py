@@ -11,6 +11,7 @@ import os
 
 import baw.cmd.plan
 import baw.utils
+import tests
 
 ROOT = baw.utils.ROOT
 
@@ -23,3 +24,11 @@ def test_plan_releases():
 def test_plan_current():
     version = baw.cmd.plan.current(ROOT)
     assert '.' in version, version
+
+
+@tests.skip_longrun
+def test_plan_code_quality():
+    quality = baw.cmd.plan.code_quality(ROOT)
+    assert quality
+    assert isinstance(quality.rating, float), quality.rating
+    assert quality.rating <= 10.0, quality.rating
