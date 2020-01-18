@@ -7,17 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import os
-from contextlib import contextmanager
-from random import randrange
-from subprocess import PIPE
-from subprocess import run as _run
+import random
+import subprocess
 
-from pytest import fixture
-from pytest import mark
+import pytest
 
-from baw.utils import TMP
-from baw.utils import get_setup
+import baw.utils
 
 MAX_NUMBER = 20
 MAX_TEST_RANDOM = 10**MAX_NUMBER
@@ -25,8 +22,6 @@ MAX_TEST_RANDOM = 10**MAX_NUMBER
 THIS = os.path.dirname(__file__)
 PROJECT = os.path.abspath(os.path.join(THIS, '..'))
 DATA = os.path.join(THIS, 'data')
-
-PACKAGE_ADDRESS, INTERNAL_PACKAGE_PORT, EXTERNAL_PACKAGE_PORT = get_setup()
 
 REQUIREMENTS = os.path.join(PROJECT, 'requirements-dev.txt')
 
@@ -41,14 +36,12 @@ NO_BAW_RESON = 'Installing baw takes long time'
 
 FAST_TESTS = not LONGRUN or FAST
 
-skip_cmd = mark.skipif(NO_BAW, reason="Decrease response time")  # pylint: disable=invalid-name
-skip_longrun = mark.skipif(FAST_TESTS, reason="Test requires long time")  # pylint: disable=invalid-name
-skip_missing_packages = mark.skip(reason="Required package(s) not available")  # pylint: disable=invalid-name
-skip_nonvirtual = mark.skipif(not VIRTUAL, reason="No virtual environment")  # pylint: disable=invalid-name
-skip_virtual = mark.skipif(  # pylint: disable=invalid-name
-    VIRTUAL,
-    reason="do not run in virtual environment",
-)
+# pylint: disable=invalid-name
+skip_cmd = pytest.mark.skipif(NO_BAW, reason='Decrease response time')
+skip_longrun = pytest.mark.skipif(FAST_TESTS, reason='Test requires long time')
+skip_missing_packages = pytest.mark.skip(reason='Required package(s) not available') # yapf:disable
+skip_nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No virtual environment') # yapf:disable
+skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in virtual environment') # yapf:disable
 
 
 def tempname():
@@ -57,7 +50,7 @@ def tempname():
     Returns:
         filename(str): random file name
     """
-    return str(randrange(MAX_TEST_RANDOM)).zfill(MAX_NUMBER)
+    return str(random.randrange(MAX_TEST_RANDOM)).zfill(MAX_NUMBER)
 
 
 def tempfile():
@@ -66,7 +59,7 @@ def tempfile():
     Returns:
         filepath(str): to tempfile in TEMP_FOLDER
     """
-    temp = os.path.join(PROJECT, TMP)
+    temp = os.path.join(PROJECT, baw.utils.TMP)
     os.makedirs(temp, exist_ok=True)
 
     name = 'temp%s' % tempname()
@@ -77,20 +70,20 @@ def tempfile():
 
 
 def run(command: str, cwd: str = None):
-    """Run external process"""
+    """Run external process."""
     cwd = cwd if cwd else os.getcwd()
-    completed = _run(
+    completed = subprocess.run(
         command,
         cwd=cwd,
         shell=True,
-        stdout=PIPE,
-        stderr=PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         universal_newlines=True,
     )
     return completed
 
 
-@contextmanager
+@contextlib.contextmanager
 def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
 
@@ -99,7 +92,7 @@ def assert_run(command: str, cwd: str = None):
     yield completed
 
 
-@contextmanager
+@contextlib.contextmanager
 def assert_run_fail(command: str, cwd: str = None):
     completed = run(command, cwd)
     msg = '%s\n%s' % (completed.stderr, completed.stdout)
@@ -110,7 +103,7 @@ def assert_run_fail(command: str, cwd: str = None):
 EXAMPLE_PROJECT_NAME = 'xkcd'
 
 
-@fixture
+@pytest.fixture
 def example(tmpdir):
     """Creating example project due console"""
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
