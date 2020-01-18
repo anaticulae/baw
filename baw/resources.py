@@ -262,6 +262,7 @@ def template_replace(root: str, template: str, **kwargs):
     template = template.replace('{%MINOR%}', minor)
 
     for key, value in kwargs.items():
+        value = str(value)  # ensure to repace str
         template = template.replace('{%' + key.upper() + '%}', value)
 
     return template
