@@ -1,8 +1,0 @@
-include MANIFEST.in README.md CHANGELOG.md LICENSE.md setup.py setup.cfg
-include templates/.coveragerc
-include templates/docs/bugs.rst
-include templates/docs/changelog.rst
-include templates/docs/readme.rst
-include templates/docs/todo.rst
-include templates/pytest.ini
-include templates/*
