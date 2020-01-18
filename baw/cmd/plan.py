@@ -8,10 +8,20 @@
 # =============================================================================
 
 import dataclasses
+import enum
 import os
 import re
 
 import baw.runtime
+import baw.utils
+
+
+class Status(enum.Enum):
+    OPEN = enum.auto()
+    INPROGESS = enum.auto()
+    DONE = enum.auto()
+    CLOSED = enum.auto()
+    EMPTY = enum.auto()
 
 
 @dataclasses.dataclass
@@ -50,6 +60,39 @@ def releases(root: str) -> str:
     result = os.path.join(root, 'docs/releases')
     assert os.path.exists(result)
     return result
+
+
+def current_plan(root: str) -> str:
+    plan = current(root)
+    if plan is None:
+        return None
+    source = releases(root)
+    return os.path.join(source, f'{plan}.rst')
+
+
+AFTER = """\
+after
+~~~~~
+
+* Your code has been rated at
+"""
+
+
+def status(root: str) -> Status:
+    plan = current_plan(root)
+    if plan is None:
+        return Status.EMPTY
+    loaded = baw.utils.file_read(plan)
+    todos = loaded.count('* [ ]')
+    dones = loaded.count('* [x]')
+    if todos:
+        return Status.INPROGESS
+    if not todos and dones:
+        # decide closed ore done
+        if AFTER in loaded:
+            return Status.CLOSED
+        return Status.DONE
+    return Status.OPEN
 
 
 def code_quality(root: str) -> CodeQuality:

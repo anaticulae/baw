@@ -26,6 +26,11 @@ def test_plan_current():
     assert '.' in version, version
 
 
+def test_plan_current_status():
+    status = baw.cmd.plan.status(ROOT)
+    assert status != baw.cmd.plan.Status.EMPTY
+
+
 @tests.skip_longrun
 def test_plan_code_quality():
     quality = baw.cmd.plan.code_quality(ROOT)
