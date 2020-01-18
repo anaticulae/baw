@@ -185,8 +185,8 @@ def create_python(
         ADDITONAL_REQUIREMENTS.append(f'utila=={utila_current()}')
 
     replaced = template_replace(root, SETUP_PY)
-    replaced = replaced.replace("$_ENTRY_POINT_$", entry_point)
-    replaced = replaced.replace("$_ENTRY_POINT_PACKAGE_$", entry_point_package)
+    replaced = replaced.replace("{%ENTRY_POINT%}", entry_point)
+    replaced = replaced.replace("{%ENTRY_POINT_PACKAGE%}", entry_point_package)
 
     file_create(join(root, 'setup.py'), replaced)
 

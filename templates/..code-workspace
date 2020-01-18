@@ -1,7 +1,7 @@
 {
     "folders": [
         {
-            "name": "$_NAME_$",
+            "name": "{%NAME%}",
             "path": "."
         }
     ],
@@ -34,12 +34,12 @@
         ],
         "python.linting.pylintArgs": [
             "--rcfile",
-            "$_RCFILE_$",
+            "{%RCFILE%}",
             "--exit-zero",
         ],
         "python.sortImports.args": [
             "-sp",
-            "$_ISORT_$"
+            "{%ISORT%}"
         ],
     }
 }

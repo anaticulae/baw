@@ -22,7 +22,7 @@ UTF8 = 'utf8'
 with open(join(ROOT, 'README.md'), mode='rt', encoding=UTF8) as fp:
     README = fp.read()
 
-with open(join(ROOT, '$_SHORT_$/__init__.py'), mode='rt', encoding=UTF8) as fp:
+with open(join(ROOT, '{%SHORT%}/__init__.py'), mode='rt', encoding=UTF8) as fp:
     VERSION = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
 with open(join(ROOT, "requirements.txt"), mode='rt', encoding=UTF8) as fp:
@@ -44,13 +44,13 @@ if __name__ == "__main__":
         author='Helmut Konrad Fahrendholz',
         author_email='info@checkitweg.de',
         data_files=datafiles(),
-        description='$_NAME_$',
+        description='{%NAME%}',
         include_package_data=True,
         install_requires=INSTALL_REQUIRES,
         long_description=README,
-        name='$_SHORT_$',
+        name='{%SHORT%}',
         platforms='any',
-        url='https://dev.package.checkitweg.de/$_SHORT_$',
+        url='https://dev.package.checkitweg.de/{%SHORT%}',
         version=VERSION,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
@@ -59,8 +59,8 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.8',
         ],
         packages=[
-            '$_SHORT_$',
-            $_ENTRY_POINT_PACKAGE_$
+            '{%SHORT%}',
+            {%ENTRY_POINT_PACKAGE%}
         ],
-        $_ENTRY_POINT_$
+        {%ENTRY_POINT%}
     )

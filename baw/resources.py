@@ -37,7 +37,7 @@ assert exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
 CONFTEST_PATH = join(TEMPLATES, 'conftest.py')
 assert exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
 
-README = """# $_SHORT_$
+README = """# {%SHORT%}
 """
 
 CHANGELOG = """# changelog
@@ -96,7 +96,7 @@ current
 
 """
 
-INDEX_RST = """Welcome to $_NAME_$
+INDEX_RST = """Welcome to {%NAME%}
 =================================
 
 General
@@ -164,7 +164,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 ENTRY_POINT = """\
 entry_points={
-            'console_scripts': ['$_SHORT_$ = $_SHORT_$.cli:main'],
+            'console_scripts': ['{%SHORT%} = {%SHORT%}.cli:main'],
 },
 """
 
@@ -172,7 +172,7 @@ INIT_CMD = COPYRIGHT + """\
 import utila
 import utila.cli
 
-from $_SHORT_$ import __version__
+from {%SHORT%} import __version__
 
 COMMANDS = [] # add additional commands here
 
@@ -191,7 +191,7 @@ def main():
 """
 
 MAIN_CMD = COPYRIGHT + """\
-from $_SHORT_$.cli import main
+from {%SHORT%}.cli import main
 
 main()
 """
@@ -230,11 +230,11 @@ def template_replace(root: str, template: str, **kwargs):
 
     Args:
         root(str): project root
-        template(str): which contains the $_VARS_$
+        template(str): which contains the {%VARS%}
     Returns:
         content of template with replaced vars
     Hint:
-        Vars are defined as $_VARNAME_$.
+        Vars are defined as {%VARNAME%}.
     """
     root = forward_slash(root, save_newline=False)
     short = shortcut(root)
@@ -242,13 +242,13 @@ def template_replace(root: str, template: str, **kwargs):
     name_ = name(root)
     version_tag = version(root)
 
-    template = template.replace('$_SHORT_$', short)
-    template = template.replace('$_SOURCES_$', ', '.join(source))
-    template = template.replace('$_NAME_$', name_)
-    template = template.replace('$_VERSION_$', version_tag)
-    template = template.replace('$_ROOT_$', root)
+    template = template.replace('{%SHORT%}', short)
+    template = template.replace('{%SOURCES%}', ', '.join(source))
+    template = template.replace('{%NAME%}', name_)
+    template = template.replace('{%VERSION%}', version_tag)
+    template = template.replace('{%ROOT%}', root)
 
     for key, value in kwargs.items():
-        template = template.replace('$_%s_$' % key.upper(), value)
+        template = template.replace('{%' + key.upper() + '%}', value)
 
     return template

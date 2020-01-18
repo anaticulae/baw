@@ -16,10 +16,10 @@ from baw.utils import ROOT
 def test_template_replace():
     """Test replace pattern from variable key word argument"""
 
-    assert '$_RCFILE_$' in CODE_WORKSPACE
+    assert '{%RCFILE%}' in CODE_WORKSPACE
     assert RCFILE_PATH not in CODE_WORKSPACE
 
     replaced = template_replace(ROOT, CODE_WORKSPACE, rcfile=RCFILE_PATH)
 
-    assert not '$_RCFILE_$' in replaced
+    assert not '{%RCFILE%}' in replaced
     assert RCFILE_PATH in replaced
