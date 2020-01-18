@@ -56,6 +56,22 @@ def create(
     commit(root, message)
 
 
+def close(root: str):
+    current_status = status(root)
+    assert current_status == Status.DONE, current_status
+    quality = code_quality(root)
+    filled = AFTER.replace('{%LINTER%}', str(quality.rating))
+    filled = filled.replace('{%COVERAGE%}', str(quality.coverage))
+    plan = current_plan(root)
+    baw.utils.file_append(plan, filled)
+
+    current_status = status(root)
+    assert current_status == Status.CLOSED, current_status
+
+    message = f'releases(plan): close current release plan'
+    commit(root, message)
+
+
 def commit(root: str, message: str):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
@@ -80,22 +96,6 @@ def next_version(
     else:
         minor = str(int(minor) + 1)
     return major, minor
-
-
-def close(root: str):
-    current_status = status(root)
-    assert current_status == Status.DONE, current_status
-    quality = code_quality(root)
-    filled = AFTER.replace('{%LINTER%}', str(quality.rating))
-    filled = filled.replace('{%COVERAGE%}', str(quality.coverage))
-    plan = current_plan(root)
-    baw.utils.file_append(plan, filled)
-
-    current_status = status(root)
-    assert current_status == Status.CLOSED, current_status
-
-    message = f'releases(plan): close current release plan'
-    commit(root, message)
 
 
 def current(root: str) -> str:
