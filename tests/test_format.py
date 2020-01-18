@@ -49,7 +49,7 @@ def test_regression_format_keep_single_list(simpleproject):  # pylint:disable=W0
     baw.utils.file_create(path, source)
     assert os.path.exists(path)
 
-    completed = subprocess.run('baw --format', timeout=10.0)
+    completed = subprocess.run('baw --format')
     assert completed.returncode == baw.utils.SUCCESS
 
     read = baw.utils.file_read(path)
