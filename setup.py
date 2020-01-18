@@ -7,44 +7,47 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-""" Run this setup script to install baw on your local maschine or virtual
-environment.
-"""
+""" Run this setup script to install baw on your local maschine or
+virtual environment."""
 
-from collections import defaultdict
-from os import walk
-from os.path import commonpath
-from os.path import dirname
-from os.path import join
-from os.path import split
-from re import search
+import collections
+import os
+import re
 
-from setuptools import setup
+import setuptools
 
-from baw.utils import file_read
+THIS = os.path.dirname(__file__)
 
-THIS = dirname(__file__)
-README = file_read(join(THIS, 'README.md'))
+README = open(
+    os.path.join(THIS, 'README.md'),
+    mode='r',
+    newline='\n',
+).read()
 
-VERSION_FILE = file_read(join(THIS, 'baw/__init__.py'))
-VERSION = search(r'__version__ = \'(.*?)\'', VERSION_FILE).group(1)
+VERSION_FILE = open(
+    os.path.join(THIS, 'baw/__init__.py'),
+    mode='r',
+    newline='\n',
+).read()
 
-TEMPLATES = join(THIS, 'templates')
+VERSION = re.search(r'__version__ = \'(.*?)\'', VERSION_FILE).group(1)
+
+TEMPLATES = os.path.join(THIS, 'templates')
 
 
 def data_files():
-    collector = defaultdict(list)
+    collector = collections.defaultdict(list)
     for to_copy in [TEMPLATES]:
         result = []
-        for root, _, files in walk(to_copy):
+        for root, _, files in os.walk(to_copy):
             for item in files:
                 # if any([test in root + item for test in filter]):
                 #     continue
-                absolut = join(root, item)
-                common = commonpath([THIS, to_copy])
+                absolut = os.path.join(root, item)
+                common = os.path.commonpath([THIS, to_copy])
                 current = absolut.replace(common, '').replace('\\', '/')
                 current = current.lstrip('/')
-                base, _ = split(current)
+                base, _ = os.path.split(current)
                 collector[base].append(current)
 
     result = [(prefix, current) for prefix, current in collector.items()]
@@ -59,25 +62,19 @@ def data_files():
 
 
 if __name__ == "__main__":
-    setup(
+    setuptools.setup(
         author='Helmut Konrad Fahrendholz',
-        author_email='kiwi@derspanier.de',
+        author_email='helmi3000@outlook.com',
         data_files=data_files(),
-        description='A simple console-application to manage project complexity',
+        description='A simple console-application to manage project complexity.',
         include_package_data=True,
-        install_requires=[],
-        license='BSD',
         long_description=README,
         name='baw',
         platforms='any',
-        setup_requires=[],
-        tests_require=[],
         url='https://dev.baw.checkitweg.de',
         version=VERSION,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
-            'Programming Language :: Python :: 3.6',
-            'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
         ],
         entry_points={
