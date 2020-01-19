@@ -14,7 +14,6 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
-import baw.cmd.plan
 from baw.cli import parse
 from baw.cmd import clean_project
 from baw.cmd import clean_virtual
@@ -31,6 +30,7 @@ from baw.cmd import run_test
 from baw.cmd import sync
 from baw.cmd import upgrade
 from baw.cmd.init import get_init_args
+from baw.cmd.plan import action
 from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
@@ -102,10 +102,10 @@ def run_main():
         ),
     ])
 
-    for argument, action in fmap.items():
+    for argument, process in fmap.items():
         if not args[argument]:
             continue
-        failure = action()
+        failure = process()
         if failure:
             return failure
 
@@ -130,15 +130,15 @@ def run_main():
         ('run', link(run, root=root, virtual=virtual)),
         ('lint', link(run_lint, root=root, verbose=verbose, virtual=virtual)),
         ('ide', link(ide_open, root=root)),
-        ('plan', link(baw.cmd.plan.action, root=root, plan=args['plan'])),
+        ('plan', link(action, root=root, plan=args['plan'], verbose=verbose)),
     ])
 
-    for argument, action in workmap.items():
+    for argument, process in workmap.items():
         if args[argument]:
             try:
-                ret += action()
+                ret += process()
             except TypeError:
-                logging_error('%s does not return exitcode' % action)
+                logging_error(f'{process} does not return exitcode')
                 ret += FAILURE
 
     if not args['ide']:

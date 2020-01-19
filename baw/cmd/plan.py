@@ -32,7 +32,7 @@ class CodeQuality:
     rating: float = None
 
 
-def action(root: str, plan: str):
+def action(root: str, plan: str, verbose: bool = False):
     current_status = status(root)
     if plan == 'new':
         # TODO: DISTINCT BETWEEN NEW_MAJOR AND NEW_MINOR
@@ -72,11 +72,11 @@ def create(
     commit(root, message)
 
 
-def close(root: str):
+def close(root: str, verbose: bool = False):
     baw.utils.logging('close current release plan')
     current_status = status(root)
     assert current_status == Status.DONE, current_status
-    quality = code_quality(root)
+    quality = code_quality(root, verbose=verbose)
     filled = AFTER.replace('{%LINTER%}', str(quality.rating))
     filled = filled.replace('{%COVERAGE%}', str(quality.coverage))
     plan = current_plan(root)
@@ -183,13 +183,13 @@ def status(root: str) -> Status:
     return Status.OPEN
 
 
-def code_quality(root: str) -> CodeQuality:
+def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Your code has been rated at 9.24/10
     completed = baw.runtime.run_target(
         root,
         command='baw --lint',
         skip_error_code=set(range(100)),
-        verbose=False,
+        verbose=verbose,
     )
     stdout = completed.stdout
     rating = re.search(
@@ -206,7 +206,7 @@ def code_quality(root: str) -> CodeQuality:
         root,
         command='baw --test=cov --test=long --virtual',
         skip_error_code={1},
-        verbose=False,
+        verbose=verbose,
     )
     coverage = re.search(
         r'Total coverage: (?P<coverage>\d{1,3}\.\d{2})',
