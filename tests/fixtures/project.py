@@ -7,8 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import pytest
 
+import baw.utils
 import tests
 
 
@@ -17,3 +20,23 @@ def project_example(testdir, monkeypatch):
     tests.run_command(['--init', 'xcd', '"I Like This Project"'], monkeypatch)
     tests.run_command(['--virtual'], monkeypatch)
     return str(testdir)
+
+
+@pytest.fixture
+def project_example_done(project_example):  # pylint:disable=W0621
+    # fake to add a done todo
+    pattern = """\
+RP 0.1.0
+=========
+"""
+    replacement = """\
+RP 0.1.0
+=========
+
+* [x] this is a faked done todo
+"""
+    source = os.path.join(project_example, 'docs/releases/0.1.0.rst')
+    loaded = baw.utils.file_read(source)
+    replaced = loaded.replace(pattern, replacement)
+    baw.utils.file_replace(source, replaced)
+    return project_example

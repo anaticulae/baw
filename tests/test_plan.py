@@ -13,7 +13,9 @@ import baw.cmd.plan
 import baw.git
 import baw.utils
 import tests
-from tests.fixtures.project import project_example  # pylint:disable=W0611
+# pylint:disable=W0611
+from tests.fixtures.project import project_example
+from tests.fixtures.project import project_example_done
 
 ROOT = baw.utils.ROOT
 
@@ -53,24 +55,9 @@ def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
 
 
 @tests.skip_longrun
-def test_plan_close_plan(project_example):  # pylint:disable=W0621
-    # fake to add a done todo
-    pattern = """\
-RP 0.1.0
-=========
-"""
-    replacement = """\
-RP 0.1.0
-=========
+def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
+    workspace = project_example_done
+    baw.cmd.plan.close(workspace)
 
-* [x] this is a faked done todo
-"""
-    source = os.path.join(project_example, 'docs/releases/0.1.0.rst')
-    loaded = baw.utils.file_read(source)
-    replaced = loaded.replace(pattern, replacement)
-    baw.utils.file_replace(source, replaced)
-
-    baw.cmd.plan.close(project_example)
-
-    current_status = baw.cmd.plan.status(project_example)
+    current_status = baw.cmd.plan.status(workspace)
     assert current_status == baw.cmd.plan.Status.CLOSED, current_status
