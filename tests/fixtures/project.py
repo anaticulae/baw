@@ -8,6 +8,7 @@
 # =============================================================================
 
 import os
+import textwrap
 
 import pytest
 
@@ -25,16 +26,16 @@ def project_example(testdir, monkeypatch):
 @pytest.fixture
 def project_example_done(project_example):  # pylint:disable=W0621
     # fake to add a done todo
-    pattern = """\
-RP 0.1.0
-=========
-"""
-    replacement = """\
-RP 0.1.0
-=========
+    pattern = textwrap.dedent("""\
+    RP 0.1.0
+    =========
+    """)
+    replacement = textwrap.dedent("""\
+    RP 0.1.0
+    =========
 
-* [x] this is a faked done todo
-"""
+    * [x] this is a faked done todo
+    """)
     source = os.path.join(project_example, 'docs/releases/0.1.0.rst')
     loaded = baw.utils.file_read(source)
     replaced = loaded.replace(pattern, replacement)
