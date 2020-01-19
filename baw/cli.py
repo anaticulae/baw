@@ -48,7 +48,7 @@ RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 OPEN = Command(longcut='--open', message='Open current folder in explorer')
 RELEASE = Command(
     longcut='--release',
-    message='Test, commit and and tag as new release.',
+    message='Test, commit and tag as new release.',
     args={
         'nargs': '?',
         'const': 'auto',
@@ -100,7 +100,7 @@ NOTESTS = Command(
 )
 TEST_CONFIG = Command(
     longcut='--testconfig',
-    message='Paramterize test command',
+    message='parametrize test command',
     args={
         'dest': 'testconfig',
         'nargs': '+'
@@ -113,7 +113,7 @@ VERSION = Command('-v', '--version', 'Show version of this program')
 
 
 def create_parser():  # noqa: Z21
-    """Create parser out of defined dictonary with command-line-definiton.
+    """Create parser out of defined dictionary with command-line-definition.
 
     Returns created argparser
     """
@@ -158,7 +158,7 @@ def create_parser():  # noqa: Z21
 
 
 def parse():
-    """Parse arguments from sys-args and return the result as dictonary."""
+    """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
     args = vars(parser.parse_args())
     need_help = not any(args.values())
