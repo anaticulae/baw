@@ -90,7 +90,7 @@ def clean_virtual(root: str):
     logging('Finished')
 
 
-def remove_readonly(func, path, _):
-    "Clear the readonly bit and reattempt the removal"
+def remove_readonly(func, path, _):  # pylint:disable=W0613
+    """Clear the readonly bit and reattempt the removal"""
     chmod(path, S_IWRITE)
     func(path)
