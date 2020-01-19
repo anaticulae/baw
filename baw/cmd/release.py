@@ -39,7 +39,7 @@ def release(
         test: bool = True,
         verbose: bool = False,
         virtual: bool = True,
-):
+) -> int:
     """Running release. Running test, commit and tag.
 
     Args:
@@ -49,6 +49,10 @@ def release(
                            patch 0.0.x
                            noop  0.0.0 do nothing
                            auto  let semantic release decide
+        stash(bool): stash uncommitted content before running release
+        sync(bool): if True synchronize dependencies before runnig test
+        test(bool): running test suite before release: first release
+                    0.0.0 does not require any testing.
         verbose(bool): log additional output
         virtual(bool): run in virtual environment
     Return:

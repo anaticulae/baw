@@ -30,20 +30,27 @@ def sync(
         *,
         virtual: bool = False,
         verbose: bool = False,
-):
-    """
+) -> int:
+    """Sync packages which are defined in requirements.txt
     Args:
+        root(str): root path of project to sync
         packages(str): decide which packages should be synchronized:
                         - dev/ minimal dev environment, formater, linter, test
                         - doc/ Sphinx
                         - all
+        virtual(bool): if True sync the virtual environment
+                       if BOTH sync virtual and local environment
+                       if False sync local environment
+        verbose(bool): if True, increase verbosity of logging
+    Returns:
+        summed exit code of sync processes
     """
     check_root(root)
     ret = 0
     logging()
     ret += update_gitignore(root, verbose=verbose)
 
-    # HACK: Use ENUM
+    # NOTE: Should we use Enum?
     if virtual == 'BOTH':
         for item in [True, False]:
             ret += sync_dependencies(
@@ -145,18 +152,20 @@ def sync_dependencies(
     return ret
 
 
-def determine_resources(root: str, packages: str):
-    """Detemine requirements depending on package choice
+def determine_resources(root: str, packages: str) -> list:
+    """Determine requirements depending on `packages` choice.
 
     Args:
         root(str): root of generated project
         packages(str): select package to install
+    Returns:
+        list of absolute paths to requirements.txt's
 
-    Choices:
-        - all:
-        - dev:
-        - doc:
-        - requirements: only install requirements.txt
+    Choices(packages):
+        - all: install project, test and doc environment
+        - dev: install pytest, pycov etc.
+        - doc: install Sphinx requirements
+        - requirements: only install project requirements.txt
     """
     resources = []
     requirements_dev = 'requirements-dev.txt'
@@ -176,7 +185,6 @@ def determine_resources(root: str, packages: str):
 
     # local project file
     local_requirement = join(root, REQUIREMENTS_TXT)
-    # TODO: Always install requirements?
     if exists(local_requirement):
         resources.append(local_requirement)
     return resources
@@ -196,9 +204,9 @@ def get_install_cmd(to_install, verbose, pip_index, extra_url):
     return cmd, pip
 
 
-def connected(internal, external):
+def connected(internal: str, external: str) -> bool:
     """Test connect to internal and external server. Send a simple http-request
-    and check the resonse
+    and check the resonse.
 
     Args:
         internal(str): adress of internal pip server
