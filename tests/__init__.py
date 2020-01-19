@@ -121,6 +121,8 @@ def file_count(path: str):
 
 
 def run_command(command, monkeypatch):
+    with contextlib.suppress(AttributeError):
+        command = command.split()
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
