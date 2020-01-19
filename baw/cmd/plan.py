@@ -213,4 +213,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     )
     if coverage:
         result.coverage = float(coverage['coverage'])
+
+    assert coverage is not None
+    assert rating is not None
     return result
