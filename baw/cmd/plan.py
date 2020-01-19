@@ -39,6 +39,7 @@ def action(root: str, plan: str):
         if not current_status == Status.CLOSED:
             baw.utils.logging_error(f'old plan is not closed: {current_status}')
             return baw.utils.FAILURE
+        create(root)
     if plan == 'close':
         if not current_status == Status.DONE:
             baw.utils.logging_error(f'current plan is not done: {current_status}') # yapf:disable
