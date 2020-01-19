@@ -102,10 +102,11 @@ def run_main():
     ])
 
     for argument, action in fmap.items():
-        if args[argument]:
-            failure = action()
-            if failure:
-                return failure
+        if not args[argument]:
+            continue
+        failure = action()
+        if failure:
+            return failure
 
     ret = 0
     workmap = OrderedDict([
