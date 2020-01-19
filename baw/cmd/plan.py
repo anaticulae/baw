@@ -92,7 +92,11 @@ def commit(root: str, message: str):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
     baw.git.add(root, pattern=plan)
-    process = baw.runtime.run_target(root, f'git commit -m "{message}""')
+    process = baw.runtime.run_target(
+        root,
+        f'git commit -m "{message}""',
+        verbose=False,
+    )
     assert process.returncode == baw.utils.SUCCESS, process
 
 
