@@ -191,10 +191,9 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
         skip_error_code=set(range(100)),
         verbose=verbose,
     )
-    stdout = completed.stdout
     rating = re.search(
         r'Your code has been rated at (?P<major>\d{1,2})\.(?P<minor>\d{1,2})/10',
-        stdout,
+        completed.stdout,
     )
 
     result = CodeQuality()
