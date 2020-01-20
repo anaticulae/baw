@@ -29,7 +29,8 @@ def determine(root: str) -> str:
 
     path = join(root, '%s/__init__.py' % short)
     content = file_read(path)
-    current = search(r'__version__ = \'(.*?)\'', content).group(1)
+    # support __version__ = "1.0.0" and __version__ = '1.0.0'
+    current = search(r'__version__ = [\'\"](.*?)[\'\"]', content).group(1)
     if not current:
         raise ValueError('Could not locate __version__ in %s' % path)
     return current
