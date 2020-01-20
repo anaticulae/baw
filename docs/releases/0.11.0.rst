@@ -1,0 +1,21 @@
+.. _0_11_0:
+
+RP 0.11.0
+=========
+
+* [ ] extend --linter with [all, todo] to reduce scope of analysis
+
+* [ ] support project.cfg file
+
+* [ ] add option to mark project to not release with --linter finding
+
+* [ ] define user configuration file in ~/.baw
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Total coverage: 73.63%
+* Your code has been rated: 9.56/10
