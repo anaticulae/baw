@@ -203,7 +203,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Total coverage: 0.00
     completed = baw.runtime.run_target(
         root,
-        command='baw --test=cov --test=long',
+        command='baw --test=cov --test=long --testconfig=+n=auto',
         skip_error_code={1},
         verbose=verbose,
     )
