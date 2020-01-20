@@ -6,9 +6,9 @@ RP 1.10.0
 releases
 --------
 
-* [ ] add baw --plan_new
+* [x] add baw --plan_new
 
-* [ ] add baw --plan_close
+* [x] add baw --plan_close
 
 upgrade
 -------
@@ -21,8 +21,11 @@ code quality
 before
 ~~~~~~
 
-* Your code has been rated at 9.34/10
 * Total coverage: 67.01%
+* Your code has been rated at 9.34/10
 
 after
 ~~~~~
+
+* Total coverage: 73.29%
+* Your code has been rated at 9.53/10
