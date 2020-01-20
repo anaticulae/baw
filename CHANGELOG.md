@@ -2,6 +2,62 @@
 
 Every noteable change is logged here.
 
+## v0.10.0
+
+### Feature
+
+* use multiple core to determine coverage (c0143fc5c7ef)
+* uniform linter messages (fa0459b266b1)
+* check that requirements are defined only once (7bc9da2dce47)
+* add replacement of "greater than requirements" (67fe9006c92e)
+* extend parser to support >= pattern (d444bd9f7822)
+* support both string assignments to parse version tag (15fb1e4ad777)
+* ensure that coverage and linting is detected (9c3b49ef6e2f)
+* add verbose flag to --plan command (2482375d944c)
+* add --plan=new to cli (792f2533f77f)
+* add --plan to create and close release plans (de0dc2b2e494)
+* commit plan after closing (3159b8e61630)
+* add method to close current release plan (5cb09b9e4d33)
+* add first release plan on project initialisation (a92e74141bc2)
+* extend git API (72d2d0ffa5a5)
+* add method to measure code coverage (5d40281ae5d7)
+* add release plan template (d3c276b61465)
+* replace with $_ _$ template with {% %} jinja-style (f4a3f41a178f)
+* add method to determine the status of the last release plan (2c9787c43249)
+* add method to determine code quality of current project (3bcab4c96a87)
+* always generate conftest template (8800d680ece7)
+* use new doc structure/template (b3b8ad290a68)
+* rename generated command line package to `cli` (e0923ff1dee0)
+* format generated source code before adding to git (6fa0142d1ac8)
+* add setup.py to code formatter (2d1aa96c56b5)
+* add current version to utila requirement (5ede3f558288)
+* check that `Sphinx` is installed before generating docs (ef6e60e65a72)
+
+### Fix
+
+* do not run in virtual environment to run at baw --init (f02e053baddc)
+* fix commit header (9e713e9714fa)
+* reduce logging of git commit (efbcf05efc90)
+* fix spelling error (2a385090710c)
+* ensure that template engine gets correct key (667077fa83cd)
+* enable testing with pytest (cd054172b5cd)
+* fix required test resources (6854d2d68ae8)
+* command is already logged in `log_result` (4994943e8934)
+* escape ' to avoid syntax error in generated code (2b547129d1c5)
+* log command in verbose mode (c73f7b25884b)
+* do not format tests folder if not exists (3c4ef054841a)
+* do not generate not renamed import (1d43697cad18)
+* remove None output of test (03bac57bac60)
+
+### Documentation
+
+* extend interface documentation (aa33c1c351d0)
+* Happy New Year! (e20371fe70df)
+* extend interface documentation (7fb1926b2b01)
+* extend interface documentation (9595638e1ce7)
+* reformat with rst markup (8dc61d95fac1)
+* move bugs to new location (2d809a48d019)
+
 ## v0.9.0
 
 ### Feature
