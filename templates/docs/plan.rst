@@ -10,4 +10,4 @@ before
 ~~~~~~
 
 * Total coverage: {%COVERAGE%}%
-* Your code has been rated at {%LINTER%}/10
+* Your code has been rated: {%LINTER%}/10

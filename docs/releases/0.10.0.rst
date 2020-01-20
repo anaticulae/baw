@@ -22,10 +22,4 @@ before
 ~~~~~~
 
 * Total coverage: 67.01%
-* Your code has been rated at 9.34/10
-
-after
-~~~~~
-
-* Total coverage: 73.29%
-* Your code has been rated at 9.53/10
+* Your code has been rated: 9.34/10
