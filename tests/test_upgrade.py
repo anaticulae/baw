@@ -121,7 +121,7 @@ def test_requirements_parser_greater_equal():
 def test_new_requirements():
     result = determine_new_requirements(ROOT, REQUIREMENTS)
     # utila should allways be new than 0.5.0
-    assert 'utila' in result
+    assert 'utila' in result[0]
 
 
 REPLACED = """
@@ -139,10 +139,13 @@ pip
 
 
 def test_replace_requirements():
-    upgrades = {
-        'PyYAML': ('5.1', '6.3.2'),
-        'utila': ('0.5.0', '3.5.0'),
-    }
+    upgrades = (
+        {
+            'PyYAML': ('5.1', '6.3.2'),
+            'utila': ('0.5.0', '3.5.0'),
+        },
+        {},
+    )
 
     replaced = replace_requirements(REQUIREMENTS, upgrades)
 

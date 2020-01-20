@@ -157,47 +157,55 @@ def determine_new_requirements(
         requirements: str,
         *,
         virtual: bool = False,
-) -> str:
+) -> dict:
     parsed = parse_requirements(requirements)
     if parsed is None:
         baw.utils.logging_error('could not parse requirements')
         return None
 
-    result = {}
     sync_error = False
-
-    for package, version in parsed.equal.items():  # pylint:disable=E1101
-        try:
-            dependency = baw.cmd.sync.check_dependency(
-                root,
-                package,
-                virtual=virtual,
-            )
-        except ValueError:
-            baw.utils.logging_error('Package `%s` is not available' % package)
-        except RuntimeError:
-            baw.utils.logging_error('Could not reach package repository')
-            sync_error = True
-        else:
-            available = available_version(dependency)
-            if available != version:
-                result[package] = (version, available)  #(old, new)
+    equal = {}
+    greater = {}
+    for source, sink in [(parsed.equal, equal), (parsed.greater, greater)]:
+        for package, version in source.items():  # pylint:disable=E1101
+            try:
+                dependency = baw.cmd.sync.check_dependency(
+                    root,
+                    package,
+                    virtual=virtual,
+                )
+            except ValueError:
+                baw.utils.logging_error(f'package: {package} is not available')
+            except RuntimeError:
+                baw.utils.logging_error('could not reach package repository')
+                sync_error = True
+            else:
+                available = available_version(dependency)
+                if available != version:
+                    sink[package] = (version, available)  #(old, new)
     if sync_error:
         return None
-    return result
+    return equal, greater
 
 
 def replace_requirements(requirements: str, new_requirements: dict) -> str:
-    for package, [old, new] in new_requirements.items():
+    equal, greater = new_requirements
+    for package, [old, new] in equal.items():
         if old:
-            pattern = '%s==%s' % (package, old)
+            pattern = f'{package}=={old}'
         else:
             # no version was given for old package
-            pattern = '%s' % package
+            pattern = f'{package}'
+        replacement = f'{package}=={new}'
 
-        replacement = '%s==%s' % (package, new)
+        baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
+        requirements = requirements.replace(pattern, replacement)
 
-        baw.utils.logging(f'Replace requirement:\n{pattern}\n{replacement}')
+    for package, [old, new] in greater.items():
+        pattern = f'{package}>={old}'
+        replacement = f'{package}>={new}'
+
+        baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = requirements.replace(pattern, replacement)
     return requirements
 
