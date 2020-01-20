@@ -15,8 +15,6 @@ import baw.cmd.sync
 import baw.git
 import baw.utils
 
-# TODO: Check duplication in requirements file!
-
 
 @dataclasses.dataclass
 class Requirements:
@@ -245,6 +243,12 @@ def parse_requirements(content: str) -> Requirements:
             error = True
     if error:
         return None
+
+    common_keys = set(equal.keys()) | set(greater.keys())
+    if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
+        baw.utils.logging_error('duplicated key definiton')
+        baw.utils.logging_error(content)
+        exit(baw.utils.FAILURE)
 
     result = Requirements(equal=equal, greater=greater)
     return result
