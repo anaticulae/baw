@@ -83,6 +83,12 @@ utila==0.5.0
 pip
 """
 
+REQUIREMENTS_GREATER = """
+PyYAML==5.1
+pdfminer.six>=20181108
+utila>=0.5.0
+"""
+
 EXPECTED = {
     'PyYAML': '5.1',
     'iamraw': '0.1.2',
@@ -92,11 +98,22 @@ EXPECTED = {
     'pip': '',
 }
 
+EXPECTED_GREATER = {
+    'pdfminer.six': '20181108',
+    'utila': '0.5.0',
+}
+
 
 def test_requirements_parser():
     result = parse_requirements(REQUIREMENTS)
+    assert result, 'requirements parsing error'
+    assert result.equal == EXPECTED
 
-    assert result == EXPECTED
+
+def test_requirements_parser_greater_equal():
+    result = parse_requirements(REQUIREMENTS_GREATER)
+    assert result, 'requirements parsing error'
+    assert result.greater == EXPECTED_GREATER
 
 
 @skip_longrun

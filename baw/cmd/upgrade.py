@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import dataclasses
 from os.path import exists
 from os.path import join
 from re import search
@@ -24,6 +25,12 @@ from baw.utils import logging
 from baw.utils import logging_error
 
 # TODO: Check duplication in requirements file!
+
+
+@dataclasses.dataclass
+class Requirements:
+    equal: dict = dataclasses.field(default=dict)
+    greater: dict = dataclasses.field(default=dict)
 
 
 def upgrade(
@@ -161,9 +168,14 @@ def determine_new_requirements(
         virtual: bool = False,
 ) -> str:
     parsed = parse_requirements(requirements)
+    if parsed is None:
+        logging_error('could not parse requirements')
+        return None
+
     result = {}
     sync_error = False
-    for package, version in parsed.items():
+
+    for package, version in parsed.equal.items():  # pylint:disable=E1101
         try:
             dependency = check_dependency(root, package, virtual=virtual)
         except ValueError:
@@ -206,16 +218,30 @@ def replace_requirements(requirements: str, new_requirements: dict) -> str:
 # utila==0.5.3
 
 
-def parse_requirements(content: str):
+def parse_requirements(content: str) -> Requirements:
     assert isinstance(content, str)
-    result = {}
+    equal = {}
+    greater = {}
+    error = False
     for line in content.splitlines():
-        if '#' in line or not line:
+        line = line.strip()
+        if not line or line[0] == '#':
             continue
         try:
-            package, version = line.split('==')
-            result[package] = version
+            if '==' in line:
+                package, version = line.split('==')
+                equal[package] = version
+            elif '>=' in line:
+                package, version = line.split('>=')
+                greater[package] = version
+            else:
+                # package without version
+                equal[line] = ''
         except ValueError:
-            # packakge without version
-            result[line] = ''
+            logging_error(f'could not parse: "{line}"')
+            error = True
+    if error:
+        return None
+
+    result = Requirements(equal=equal, greater=greater)
     return result
