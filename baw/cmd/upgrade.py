@@ -8,21 +8,12 @@
 #==============================================================================
 
 import dataclasses
-from os.path import exists
-from os.path import join
-from re import search
+import os
+import re
 
-from baw.cmd.sync import check_dependency
-from baw.git import git_checkout
-from baw.git import git_commit
-from baw.git import git_stash
-from baw.utils import FAILURE
-from baw.utils import REQUIREMENTS_TXT
-from baw.utils import SUCCESS
-from baw.utils import file_read
-from baw.utils import file_replace
-from baw.utils import logging
-from baw.utils import logging_error
+import baw.cmd.sync
+import baw.git
+import baw.utils
 
 # TODO: Check duplication in requirements file!
 
@@ -42,15 +33,15 @@ def upgrade(
         generate: bool = True,
 ) -> int:
     """Upgrade requirements"""
-    with git_stash(root, verbose=verbose, virtual=virtual):
-        requirements = join(root, REQUIREMENTS_TXT)
+    with baw.git.git_stash(root, verbose=verbose, virtual=virtual):
+        requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
         # requirements.txt is uptodate, no update requireded
         if failure == REQUIREMENTS_UP_TO_DATE:
-            return SUCCESS
+            return baw.utils.SUCCESS
 
         if failure:
-            logging_error('Error while upgrading requirements')
+            baw.utils.logging_error('Error while upgrading requirements')
             return failure
 
         from baw.cmd import sync_and_test
@@ -68,24 +59,25 @@ def upgrade(
         )
         if failure:
             # reset requirement
-            completed = git_checkout(
+            completed = baw.git.git_checkout(
                 root,
                 requirements,
                 verbose=verbose,
                 virtual=virtual,
             )
-            logging_error('Upgrading failed')
+            baw.utils.logging_error('Upgrading failed')
             assert not completed
 
             return failure
 
-        failure = git_commit(
+        failure = baw.git.git_commit(
             root,
             source=requirements,
-            message='chore(requirements): upgrade %s' % REQUIREMENTS_TXT)
+            message=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',
+        )
         if failure:
             return failure
-    return SUCCESS
+    return baw.utils.SUCCESS
 
 
 REQUIREMENTS_UP_TO_DATE = 100
@@ -93,7 +85,7 @@ REQUIREMENTS_UP_TO_DATE = 100
 
 def upgrade_requirements(
         root: str,
-        requirements: str = REQUIREMENTS_TXT,
+        requirements: str = baw.utils.REQUIREMENTS_TXT,
         virtual: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
@@ -106,46 +98,46 @@ def upgrade_requirements(
     Returns:
         SUCCESS if file was upgraded
     """
-    requirements_path = join(root, requirements)
+    requirements_path = os.path.join(root, requirements)
     msg = 'Path does not exists %s' % requirements_path
 
-    if not exists(requirements_path):
+    if not os.path.exists(requirements_path):
         msg = 'Could not locate any requirements: %s' % requirements_path
-        logging_error(msg)
-        return FAILURE
-    logging('\nStart upgrading requirements: %s' % requirements_path)
+        baw.utils.logging_error(msg)
+        return baw.utils.FAILURE
+    baw.utils.logging('\nStart upgrading requirements: %s' % requirements_path)
 
-    content = file_read(requirements_path)
+    content = baw.utils.file_read(requirements_path)
     if not content.strip():
-        logging('Empty: %s. Skipping replacement.' % requirements_path)
+        baw.utils.logging(f'Empty: {requirements_path}. Skipping replacement.')
         # stop further synchonizing process and quit with SUCCESS
         return REQUIREMENTS_UP_TO_DATE
 
     upgraded = determine_new_requirements(root, content, virtual=virtual)
     if upgraded is None:
-        return FAILURE
+        return baw.utils.FAILURE
     replaced = replace_requirements(content, upgraded)
 
     if replaced == content:
-        logging('Requirements are up to date.\n')
+        baw.utils.logging('Requirements are up to date.\n')
         return REQUIREMENTS_UP_TO_DATE
 
-    file_replace(requirements_path, replaced)
+    baw.utils.file_replace(requirements_path, replaced)
 
-    logging('Upgrading finished')
+    baw.utils.logging('Upgrading finished')
 
-    return SUCCESS
+    return baw.utils.SUCCESS
 
 
 def installed_version(content: str):
-    searched = search(r'INSTALLED: (?P<installed>[\w|\d|\.]+)', content)
+    searched = re.search(r'INSTALLED: (?P<installed>[\w|\d|\.]+)', content)
     if not searched:
         return None
     return searched.group('installed')
 
 
 def available_version(content: str):
-    searched = search(r'\w+\s\((?P<available>[\w|\d|\.]+)', content)
+    searched = re.search(r'\w+\s\((?P<available>[\w|\d|\.]+)', content)
     if not searched:
         return None
     return searched.group('available')
@@ -168,7 +160,7 @@ def determine_new_requirements(
 ) -> str:
     parsed = parse_requirements(requirements)
     if parsed is None:
-        logging_error('could not parse requirements')
+        baw.utils.logging_error('could not parse requirements')
         return None
 
     result = {}
@@ -176,11 +168,15 @@ def determine_new_requirements(
 
     for package, version in parsed.equal.items():  # pylint:disable=E1101
         try:
-            dependency = check_dependency(root, package, virtual=virtual)
+            dependency = baw.cmd.sync.check_dependency(
+                root,
+                package,
+                virtual=virtual,
+            )
         except ValueError:
-            logging_error('Package `%s` is not available' % package)
+            baw.utils.logging_error('Package `%s` is not available' % package)
         except RuntimeError:
-            logging_error('Could not reach package repository')
+            baw.utils.logging_error('Could not reach package repository')
             sync_error = True
         else:
             available = available_version(dependency)
@@ -201,7 +197,7 @@ def replace_requirements(requirements: str, new_requirements: dict) -> str:
 
         replacement = '%s==%s' % (package, new)
 
-        logging('Replace requirement:\n%s\n%s' % (pattern, replacement))
+        baw.utils.logging(f'Replace requirement:\n{pattern}\n{replacement}')
         requirements = requirements.replace(pattern, replacement)
     return requirements
 
@@ -237,7 +233,7 @@ def parse_requirements(content: str) -> Requirements:
                 # package without version
                 equal[line] = ''
         except ValueError:
-            logging_error(f'could not parse: "{line}"')
+            baw.utils.logging_error(f'could not parse: "{line}"')
             error = True
     if error:
         return None

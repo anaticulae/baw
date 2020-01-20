@@ -27,10 +27,10 @@ from baw.cmd import lint as run_lint
 from baw.cmd import open_this
 from baw.cmd import release
 from baw.cmd import run_test
-from baw.cmd import sync
 from baw.cmd import upgrade
 from baw.cmd.init import get_init_args
 from baw.cmd.plan import action
+from baw.cmd.sync import sync
 from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
