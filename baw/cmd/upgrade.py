@@ -40,7 +40,7 @@ def upgrade(
         verbose: bool = False,
         virtual: bool = False,
         generate: bool = True,
-):
+) -> int:
     """Upgrade requirements"""
     with git_stash(root, verbose=verbose, virtual=virtual):
         requirements = join(root, REQUIREMENTS_TXT)
@@ -95,9 +95,9 @@ def upgrade_requirements(
         root: str,
         requirements: str = REQUIREMENTS_TXT,
         virtual: bool = False,
-):
-    """Take requirements.txt, replace version number with current available
-    version on pip repository.
+) -> int:
+    """Take requirements.txt, replace version number with current
+    available version on pip repository.
 
     Args:
         root(str): generated project
@@ -121,7 +121,6 @@ def upgrade_requirements(
         # stop further synchonizing process and quit with SUCCESS
         return REQUIREMENTS_UP_TO_DATE
 
-    # parsed = parse_requirements(content)
     upgraded = determine_new_requirements(root, content, virtual=virtual)
     if upgraded is None:
         return FAILURE
@@ -195,15 +194,15 @@ def determine_new_requirements(
 def replace_requirements(requirements: str, new_requirements: dict) -> str:
     for package, [old, new] in new_requirements.items():
         if old:
-            placeholder = '%s==%s' % (package, old)
+            pattern = '%s==%s' % (package, old)
         else:
             # no version was given for old package
-            placeholder = '%s' % package
+            pattern = '%s' % package
 
         replacement = '%s==%s' % (package, new)
 
-        logging('Replace requirement:\n%s\n%s' % (placeholder, replacement))
-        requirements = requirements.replace(placeholder, replacement)
+        logging('Replace requirement:\n%s\n%s' % (pattern, replacement))
+        requirements = requirements.replace(pattern, replacement)
     return requirements
 
 

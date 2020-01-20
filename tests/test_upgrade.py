@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import os
+import textwrap
 from os.path import join
 
 from baw.cmd.upgrade import available_version
@@ -182,10 +183,10 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621
     # yapf in a higher version is provided by dev environment
     file_append(REQUIREMENTS_TXT, 'yapf==0.10.0')
 
-    failed_test = """\
-def test_me():
-    assert 0
-    """
+    failed_test = textwrap.dedent("""\
+    def test_me():
+        assert 0
+    """)
     failingtest_path = 'tests/test_failed.py'
 
     file_create(failingtest_path, failed_test)
