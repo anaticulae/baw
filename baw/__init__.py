@@ -14,6 +14,7 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+import baw.cmd.upgrade
 from baw.cli import parse
 from baw.cmd import clean_project
 from baw.cmd import clean_virtual
@@ -27,7 +28,6 @@ from baw.cmd import lint as run_lint
 from baw.cmd import open_this
 from baw.cmd import release
 from baw.cmd import run_test
-from baw.cmd import upgrade
 from baw.cmd.init import get_init_args
 from baw.cmd.plan import action
 from baw.cmd.sync import sync
@@ -93,7 +93,7 @@ def run_main():
         (
             'upgrade',
             link(
-                upgrade,
+                baw.cmd.upgrade.upgrade,
                 root=root,
                 verbose=verbose,
                 notests=args['notests'],

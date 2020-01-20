@@ -22,6 +22,17 @@ class Requirements:
     greater: dict = dataclasses.field(default=dict)
 
 
+@dataclasses.dataclass
+class NewRequirements(Requirements):
+
+    def __getitem__(self, index):
+        if index == 0:
+            return self.equal
+        if index == 1:
+            return self.greater
+        raise IndexError(f'{index} not supported')
+
+
 def upgrade(
         root: str,
         *,
@@ -155,7 +166,7 @@ def determine_new_requirements(
         requirements: str,
         *,
         virtual: bool = False,
-) -> dict:
+) -> NewRequirements:
     parsed = parse_requirements(requirements)
     if parsed is None:
         baw.utils.logging_error('could not parse requirements')
@@ -183,12 +194,11 @@ def determine_new_requirements(
                     sink[package] = (version, available)  #(old, new)
     if sync_error:
         return None
-    return equal, greater
+    return NewRequirements(equal=equal, greater=greater)
 
 
-def replace_requirements(requirements: str, new_requirements: dict) -> str:
-    equal, greater = new_requirements
-    for package, [old, new] in equal.items():
+def replace_requirements(requirements: str, update: NewRequirements) -> str:
+    for package, [old, new] in update.equal.items():
         if old:
             pattern = f'{package}=={old}'
         else:
@@ -199,7 +209,7 @@ def replace_requirements(requirements: str, new_requirements: dict) -> str:
         baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = requirements.replace(pattern, replacement)
 
-    for package, [old, new] in greater.items():
+    for package, [old, new] in update.greater.items():
         pattern = f'{package}>={old}'
         replacement = f'{package}>={new}'
 
@@ -246,7 +256,7 @@ def parse_requirements(content: str) -> Requirements:
 
     common_keys = set(equal.keys()) | set(greater.keys())
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
-        baw.utils.logging_error('duplicated key definiton')
+        baw.utils.logging_error('duplicated package definition')
         baw.utils.logging_error(content)
         exit(baw.utils.FAILURE)
 

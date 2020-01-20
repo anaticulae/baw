@@ -10,12 +10,12 @@ import os
 import textwrap
 from os.path import join
 
+import baw.cmd.upgrade
 from baw.cmd.upgrade import available_version
 from baw.cmd.upgrade import determine_new_requirements
 from baw.cmd.upgrade import installed_version
 from baw.cmd.upgrade import parse_requirements
 from baw.cmd.upgrade import replace_requirements
-from baw.cmd.upgrade import upgrade
 from baw.cmd.upgrade import upgrade_requirements
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -139,16 +139,14 @@ pip
 
 
 def test_replace_requirements():
-    upgrades = (
-        {
+    upgrades = baw.cmd.upgrade.NewRequirements(
+        equal={
             'PyYAML': ('5.1', '6.3.2'),
             'utila': ('0.5.0', '3.5.0'),
         },
-        {},
+        greater={},
     )
-
     replaced = replace_requirements(REQUIREMENTS, upgrades)
-
     assert replaced == REPLACED
 
 
@@ -195,7 +193,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621
     file_create(failingtest_path, failed_test)
     commit_all()
 
-    result = upgrade(
+    result = baw.cmd.upgrade.upgrade(
         path,
         verbose=True,
         virtual=True,
@@ -212,7 +210,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621
     file_remove(failingtest_path)
     commit_all()
 
-    result = upgrade(
+    result = baw.cmd.upgrade.upgrade(
         path,
         verbose=False,
         virtual=True,

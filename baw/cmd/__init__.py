@@ -19,5 +19,4 @@ from baw.cmd.open import open_this
 from baw.cmd.release import drop
 from baw.cmd.release import release
 from baw.cmd.test import run_test
-from baw.cmd.upgrade import upgrade
 from baw.cmd.utils import sync_and_test
