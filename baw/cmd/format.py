@@ -102,7 +102,7 @@ def format_(
         for future in concurrent.futures.as_completed(waitfor):
             completed = future.result()
             if completed.returncode:
-                logging_error(f'error while formatting {completed}')
+                logging_error(f'error while formatting {completed.stderr}')
                 return FAILURE
 
     logging('format complete\n')
