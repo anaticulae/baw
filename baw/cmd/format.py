@@ -89,7 +89,8 @@ def format_(
         for item in folder:
             source = os.path.join(root, item)
             command = f'{cmd} {source}'
-            logging(command)
+            if verbose:
+                logging(command)
             waitfor.append(
                 executor.submit(
                     run_target,
