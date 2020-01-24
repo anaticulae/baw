@@ -105,6 +105,5 @@ def format_(
             if completed.returncode:
                 logging_error(f'error while formatting {completed.stderr}')
                 return FAILURE
-
-    logging('format complete\n')
+    logging(f'{info}: complete\n')
     return SUCCESS
