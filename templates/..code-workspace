@@ -25,6 +25,7 @@
             "**/log": true,
             "**/nano.save": true,
             "**/tmp": true,
+            "tests/resources/generated": true,
         },
         "python.unitTest.nosetestsEnabled": false,
         "python.unitTest.pyTestEnabled": true,
