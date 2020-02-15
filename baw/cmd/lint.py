@@ -6,7 +6,17 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""The purpose of this module is to run python linter safely."""
+"""The purpose of this module is to run statical code analysis on
+selected project.
+
+There are three different options to run the linter: all, todo and
+minimal:
+
+* all: every check out of RCFILE_PATH is executed
+* todo: only todos are collected
+* minimal: everything expect of todo is collected
+
+"""
 
 import enum
 import os
