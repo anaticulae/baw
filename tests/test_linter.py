@@ -15,6 +15,7 @@ import tests
 from tests import example  # pylint:disable=W0611
 
 
+@tests.skip_longrun
 def test_linter_run_with_scope(example, capsys):  # pylint:disable=W0621
     root = str(example)
     returncode = baw.cmd.lint.lint(root)
@@ -46,5 +47,6 @@ def test_linter_run_with_scope(example, capsys):  # pylint:disable=W0621
     assert returncode >= baw.utils.FAILURE, f'{returncode} capsys.readouterr()'
 
 
+@tests.skip_longrun
 def test_linter_run_cli(example, monkeypatch):  # pylint:disable=W0613,W0621
     tests.run_command('--lint=todo', monkeypatch=monkeypatch)
