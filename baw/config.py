@@ -9,6 +9,7 @@
 """Handle access to project configuration which is stored in .baw-folder."""
 import configparser
 import os
+import typing
 
 import baw.utils
 
@@ -24,13 +25,22 @@ def config(path: str):
     return cfg
 
 
-def project_name(path: str):
+def project(path: str) -> typing.Tuple[str, str]:
+    """Determine tuple of `shortcut` and `project name` current `path`
+    project.
+
+    Args:
+        path to configuration file
+    Returns:
+        tuple of shortcut and project name
+    """
+    assert os.path.exists(path), str(path)
     cfg = config(path)
     return (cfg['project']['short'], cfg['project']['name'])
 
 
-def sources(path: str):
-    """Read `source` form configuration `path`
+def sources(path: str) -> list:
+    """Read `source` form configuration `path`.
 
     Args:
         path(str): path to project configuration
@@ -60,14 +70,14 @@ def shortcut(root: str):
         shortname of the project"""
     assert os.path.exists(root)
     cfg = os.path.join(root, PROJECT_PATH)
-    short, _ = project_name(cfg)
+    short, _ = project(cfg)
     return short
 
 
 def name(root: str):
     assert os.path.exists(root)
     cfg = os.path.join(root, PROJECT_PATH)
-    _, name_ = project_name(cfg)
+    _, name_ = project(cfg)
     # escape '
     name_ = name_.replace("'", r'\'')
     return name_
