@@ -42,7 +42,7 @@ def shortcut(root: str) -> str:
     return short
 
 
-def create_config(root: str, shortname: str, longname: str):
+def create(root: str, shortname: str, longname: str):
     """Create project-config in .baw folder
 
     Args:
@@ -75,7 +75,7 @@ def commands(root: str) -> dict:
 
     path = config_path(root)
     assert os.path.exists(path), path
-    cfg = config_load(path)
+    cfg = load(path)
     try:
         # TODO: DIRTY, goto standard lib
         return {item: cfg['run'][item] for item in cfg['run']}
@@ -93,7 +93,7 @@ def minimal_coverage(root: str) -> int:
     """
     assert os.path.exists(root)
     path = config_path(root)
-    cfg = config_load(path)
+    cfg = load(path)
 
     try:
         min_coverage = int(cfg['tests']['minimal_coverage'])
@@ -102,7 +102,7 @@ def minimal_coverage(root: str) -> int:
     return min_coverage
 
 
-def config_load(path: str):
+def load(path: str):
     if not os.path.exists(path):
         raise ValueError('Configuration %s does not exists' % path)
     cfg = configparser.ConfigParser()
@@ -121,7 +121,7 @@ def project(path: str) -> typing.Tuple[str, str]:
         tuple of shortcut and project name
     """
     assert os.path.exists(path), str(path)
-    cfg = config_load(path)
+    cfg = load(path)
     return (cfg['project']['short'], cfg['project']['name'])
 
 
@@ -139,7 +139,7 @@ def sources(root: str) -> list:
     else:
         path = config_path(root)
     assert os.path.exists(path), path
-    cfg = config_load(path)
+    cfg = load(path)
     try:
         source = cfg['project']['source'].splitlines()
     except KeyError:

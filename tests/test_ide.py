@@ -19,7 +19,7 @@ def test_ide_open(testdir, monkeypatch):
     testdir.mkdir('.baw')
     name = 'short'
 
-    baw.config.create_config(workspace, name, 'description')
+    baw.config.create(workspace, name, 'description')
     testdir.mkpydir(name)
     baw.utils.file_append(
         os.path.join(workspace, name, '__init__.py'),

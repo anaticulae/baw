@@ -16,7 +16,7 @@ from os.path import exists
 from os.path import join
 
 import baw.cmd.plan
-from baw.config import create_config
+import baw.config
 from baw.git import git_add
 from baw.git import git_init
 from baw.git import update_gitignore
@@ -68,7 +68,7 @@ def init(
 
     git_init(root)
     create_folder(root)
-    create_config(root, shortcut, name)
+    baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
     create_requirements(root)

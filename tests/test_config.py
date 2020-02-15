@@ -52,7 +52,7 @@ def test_config_create_and_load(tmpdir):
     expected_short = 'xesey'
     expected_description = 'this is sparta'
 
-    baw.config.create_config(tmpdir, expected_short, expected_description)
+    baw.config.create(tmpdir, expected_short, expected_description)
 
     short, description = baw.config.project(baw.config.config_path(tmpdir))
 
