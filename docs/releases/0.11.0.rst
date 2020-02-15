@@ -9,8 +9,6 @@ RP 0.11.0
 
 * [x] add option to mark project to not release with --linter finding
 
-* [ ] define user configuration file in ~/.baw
-
 code quality
 ------------
 

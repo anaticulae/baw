@@ -11,3 +11,5 @@ backlog
 * [ ] display unprintable chars on test log, see pytest
 
 * [ ] do not strip long pytest logs
+
+* define user configuration file in ~/.baw
