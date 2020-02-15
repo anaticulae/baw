@@ -37,7 +37,7 @@ LINT = Command(
     message='Run statical code analysis.',
     args={
         'nargs': '?',
-        'const': 'all',
+        'const': 'minimal',
         'choices': [
             'all',
             'minimal',
