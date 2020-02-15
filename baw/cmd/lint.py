@@ -8,6 +8,7 @@
 # =============================================================================
 """The purpose of this module is to run python linter safely."""
 
+import enum
 import os
 
 from baw.config import sources
@@ -16,13 +17,44 @@ from baw.runtime import run_target
 from baw.utils import logging
 
 
-def lint(root: str, verbose: bool = False, virtual: bool = False):
+class Scope:
+    ALL = enum.auto()
+    MINIMAL = enum.auto()
+    TODO = enum.auto()
+
+
+def lint(
+        root: str,
+        scope: Scope = Scope.ALL,
+        verbose: bool = False,
+        virtual: bool = False,
+) -> int:
+    """Run statical code analysis on `root`.
+
+    Args:
+        root(str): root of anlysed project
+        scope(Mode): select included findings - all, use RCFILE_PATH;
+                    minimal, exclude todos from analysis; todo, exclude
+                    all expect todos.
+        verbose(bool): increase logging
+        virtual(bool): run command in virtual environment
+    Returns:
+        Returncode of linter process.
+    """
     code = ' '.join(sources(root))
 
     testpath = os.path.join(root, 'tests')
     linttest = testpath if os.path.exists(testpath) else ''
 
-    cmd = f'pylint {code} {linttest} --rcfile={RCFILE_PATH}'
+    cmd = f'pylint {code} {linttest} '
+    if scope in (Scope.ALL, Scope.MINIMAL):
+        cmd += f'--rcfile={RCFILE_PATH} '
+    if scope == Scope.MINIMAL:
+        # :fixme (W0511):
+        # Used when a warning note as fixme, todo or xxx is detected.
+        cmd += '-d W0511'
+    if scope == Scope.TODO:
+        cmd += '--disable=all --enable=W0511'
 
     completed = run_target(
         root,
