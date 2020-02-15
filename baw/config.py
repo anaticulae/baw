@@ -13,13 +13,16 @@ import typing
 
 import baw.utils
 
-PROJECT_PATH = '.baw/project.config'
+PROJECT_PATH = [
+    '.baw/project.cfg',
+    '.baw/project.config',  # legacy
+]
 
 
 def name(root: str):
     assert os.path.exists(root)
-    cfg = os.path.join(root, PROJECT_PATH)
-    _, name_ = project(cfg)
+    path = config_path(root)
+    _, name_ = project(path)
     # escape '
     name_ = name_.replace("'", r'\'')
     return name_
@@ -34,8 +37,8 @@ def shortcut(root: str) -> str:
         shortname of the project
     """
     assert os.path.exists(root)
-    cfg = os.path.join(root, PROJECT_PATH)
-    short, _ = project(cfg)
+    path = config_path(root)
+    short, _ = project(path)
     return short
 
 
@@ -50,9 +53,9 @@ def create_config(root: str, shortname: str, longname: str):
     assert os.path.exists(root)
     cfg = configparser.ConfigParser()
     cfg['project'] = {'short': shortname, 'name': longname}
-    output = os.path.join(root, PROJECT_PATH)
+    outpath = config_path(root)
     with open(
-            output,
+            outpath,
             mode='w',
             encoding=baw.utils.UTF8,
             newline=baw.utils.NEWLINE,
@@ -68,12 +71,11 @@ def commands(root: str) -> dict:
     Returns:
         dict{name, command}: dict with commands to execute
     """
-    assert os.path.exists(root)
+    assert os.path.exists(root), root
 
-    path = os.path.join(root, PROJECT_PATH)
-    assert os.path.exists(path)
-
-    cfg = config(path)
+    path = config_path(root)
+    assert os.path.exists(path), path
+    cfg = config_load(path)
     try:
         # TODO: DIRTY, goto standard lib
         return {item: cfg['run'][item] for item in cfg['run']}
@@ -90,7 +92,8 @@ def minimal_coverage(root: str) -> int:
         percentage of required test coverage
     """
     assert os.path.exists(root)
-    cfg = config(os.path.join(root, PROJECT_PATH))
+    path = config_path(root)
+    cfg = config_load(path)
 
     try:
         min_coverage = int(cfg['tests']['minimal_coverage'])
@@ -99,7 +102,7 @@ def minimal_coverage(root: str) -> int:
     return min_coverage
 
 
-def config(path: str):
+def config_load(path: str):
     if not os.path.exists(path):
         raise ValueError('Configuration %s does not exists' % path)
     cfg = configparser.ConfigParser()
@@ -118,27 +121,39 @@ def project(path: str) -> typing.Tuple[str, str]:
         tuple of shortcut and project name
     """
     assert os.path.exists(path), str(path)
-    cfg = config(path)
+    cfg = config_load(path)
     return (cfg['project']['short'], cfg['project']['name'])
 
 
-def sources(path: str) -> list:
+def sources(root: str) -> list:
     """Read `source` form configuration `path`.
 
     Args:
-        path(str): path to project configuration
+        root(str): path to project configuration
     Returns:
         list with source folder of project
     """
     # support accessing the config directly or due the project path
-    if not os.path.exists(path) or not os.path.isfile(path):
-        potential_cfg = os.path.join(path, PROJECT_PATH)
-        if os.path.exists(potential_cfg) and os.path.isfile(potential_cfg):
-            path = potential_cfg
-    cfg = config(path)
+    if os.path.isfile(root):
+        path = root
+    else:
+        path = config_path(root)
+    assert os.path.exists(path), path
+    cfg = config_load(path)
     try:
         source = cfg['project']['source'].splitlines()
     except KeyError:
         source = []
     source.insert(0, cfg['project']['short'])
     return source
+
+
+def config_path(root: str) -> str:
+    """Select configuration path based on project `root`. If no paths
+    exists return prefered expected path."""
+    for item in PROJECT_PATH:
+        expected = os.path.join(root, item)
+        if os.path.exists(expected):
+            return expected
+    # if no path exists, return default one
+    return os.path.join(root, PROJECT_PATH[0])

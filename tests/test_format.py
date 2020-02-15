@@ -19,12 +19,9 @@ import baw.utils
 @pytest.fixture
 def simpleproject(testdir):
     root = str(testdir)
-    config = """[project]
-short = abc
-name = alphabet"""
     dotbaw = os.path.join(root, '.baw')
     os.makedirs(dotbaw)
-    baw.utils.file_create(baw.config.PROJECT_PATH, config)
+    baw.config.create_config(root, 'abc', 'alphabet')
     baw.utils.file_create('setup.py', '# setup')
 
     abc = os.path.join(root, 'abc')

@@ -16,7 +16,7 @@ import baw.config
 import baw.utils
 import tests
 
-PROJECT = os.path.join(tests.DATA, 'project.config')
+PROJECT = os.path.join(tests.DATA, 'project.cfg')
 assert os.path.exists(PROJECT), str(PROJECT)
 
 
@@ -54,11 +54,7 @@ def test_config_create_and_load(tmpdir):
 
     baw.config.create_config(tmpdir, expected_short, expected_description)
 
-    short, description = baw.config.project(
-        os.path.join(
-            tmpdir,
-            baw.config.PROJECT_PATH,
-        ))
+    short, description = baw.config.project(baw.config.config_path(tmpdir))
 
     assert short == expected_short
     assert description == expected_description

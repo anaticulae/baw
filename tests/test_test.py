@@ -20,7 +20,7 @@ def test_creating_project(tmpdir):
         'baw --init xkcd "Longtime project"',
         cwd=tmpdir,
     )
-    assert completed.returncode == SUCCESS, completed.stderr
+    assert completed.returncode == SUCCESS, f'{completed.stderr}\n{completed.stdout}'
     assert exists(join(tmpdir, '.git'))
 
 

@@ -195,6 +195,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
         r'Your code has been rated at (?P<major>\d{1,2})\.(?P<minor>\d{1,2})/10',
         completed.stdout,
     )
+    assert rating is not None, rating
 
     result = CodeQuality()
     if rating:
@@ -213,7 +214,6 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     )
     if coverage:
         result.coverage = float(coverage['coverage'])
+    assert coverage is not None, completed
 
-    assert coverage is not None
-    assert rating is not None
     return result
