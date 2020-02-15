@@ -6,7 +6,18 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""Handle access to project configuration which is stored in .baw-folder."""
+"""Handle access to project configuration which is stored in .baw-folder.
+
+Parameter
+---------
+
+release
+~~~~~~~
+
+* minimal_coverage: do not release with fewer test coverage
+* fail_on_finding: if True allow only todo-findings. The build must be
+                   free of statical code errors.
+"""
 import configparser
 import os
 import typing
@@ -95,11 +106,27 @@ def minimal_coverage(root: str) -> int:
     path = config_path(root)
     cfg = load(path)
 
-    try:
-        min_coverage = int(cfg['tests']['minimal_coverage'])
-    except KeyError:
-        min_coverage = 20
+    for package in [
+            'release',
+            'tests',  # legacy: remove later
+    ]:
+        try:
+            min_coverage = int(cfg[package]['minimal_coverage'])
+            break
+        except KeyError:
+            min_coverage = 20
     return min_coverage
+
+
+def fail_on_finding(root: str) -> bool:
+    """Let release fail when build contain statical code errors."""
+    assert os.path.exists(root), root
+    config = load(config_path(root))
+    try:
+        return bool(config['release']['fail_on_finding'])
+    except KeyError:
+        # TODO: TURN ON AS DEFAULT, LATER
+        return False
 
 
 def load(path: str):
