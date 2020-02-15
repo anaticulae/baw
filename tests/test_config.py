@@ -7,27 +7,20 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from os import makedirs
-from os.path import exists
-from os.path import join
-from textwrap import dedent
+import os
+import textwrap
 
-from pytest import fixture
+import pytest
 
-from baw.config import PROJECT_PATH
-from baw.config import create_config
-from baw.config import project_name
-from baw.config import sources
-from baw.utils import BAW_EXT
-from baw.utils import file_create
-from tests import DATA
+import baw.config
+import baw.utils
+import tests
 
-PROJECT = join(DATA, 'project.config')
-
-assert exists(PROJECT)
+PROJECT = os.path.join(tests.DATA, 'project.config')
+assert os.path.exists(PROJECT), str(PROJECT)
 
 
-@fixture
+@pytest.fixture
 def configuration(tmpdir):
     config = """\
     [project]
@@ -39,29 +32,33 @@ def configuration(tmpdir):
     [tests]
     minimal_coverage = 50
     """
-    config = dedent(config)
+    config = textwrap.dedent(config)
 
-    path = join(tmpdir, 'config.cfg')
-    file_create(path, config)
+    path = os.path.join(tmpdir, 'config.cfg')
+    baw.utils.file_create(path, config)
     return path
 
 
 def test_config_load():
-    short, name = project_name(PROJECT)
+    short, name = baw.config.project_name(PROJECT)
 
     assert short == 'baw'
     assert name == 'Black and White'
 
 
 def test_config_create_and_load(tmpdir):
-    makedirs(join(tmpdir, BAW_EXT))
+    os.makedirs(os.path.join(tmpdir, baw.utils.BAW_EXT))
 
     expected_short = 'xesey'
     expected_description = 'this is sparta'
 
-    create_config(tmpdir, expected_short, expected_description)
+    baw.config.create_config(tmpdir, expected_short, expected_description)
 
-    short, description = project_name(join(tmpdir, PROJECT_PATH))
+    short, description = baw.config.project_name(
+        os.path.join(
+            tmpdir,
+            baw.config.PROJECT_PATH,
+        ))
 
     assert short == expected_short
     assert description == expected_description
@@ -72,4 +69,4 @@ def test_config_defined_subproject_with_source_parameter(configuration):  #pylin
     # baw main project and `abc` and `defg` as subprojects
     expected_sources = ['baw', 'abc', 'defg']
 
-    assert sources(configuration) == expected_sources
+    assert baw.config.sources(configuration) == expected_sources
