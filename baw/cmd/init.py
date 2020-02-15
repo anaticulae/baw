@@ -95,12 +95,15 @@ def init(
         virtual=False,  # No virtual for first time needed
     )
 
-    quality = baw.cmd.plan.code_quality(root)
-    baw.cmd.plan.create(
-        root,
-        linter=quality.rating,
-        coverage=quality.coverage,
-    )
+    # TODO: Think aboud activating later? Add test flag?
+    # Reduces times of creating from 8 to 2 secs
+    # quality = baw.cmd.plan.code_quality(root)
+    # baw.cmd.plan.create(
+    #     root,
+    #     linter=quality.rating,
+    #     coverage=quality.coverage,
+    # )
+    baw.cmd.plan.create(root)
 
     return SUCCESS
 
