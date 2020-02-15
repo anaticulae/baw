@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.11.2
+
+### Fix
+
+* do not log linting if everything is fine (2133c5e0fcfc)
+
 ## v0.11.1
 
 ### Fix
