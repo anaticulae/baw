@@ -15,6 +15,7 @@ from re import match
 from tempfile import TemporaryFile
 
 import baw.cmd
+import baw.config
 from baw.config import shortcut
 from baw.git import git_checkout
 from baw.git import git_headtag
@@ -67,6 +68,10 @@ def release(
     if current_head:
         logging('No release is required, head is already: %s' % current_head)
         return SUCCESS
+
+    ret = check_findings(root, verbose, virtual)
+    if ret:
+        return ret
 
     ret = baw.cmd.sync_and_test(
         root,
@@ -205,3 +210,19 @@ def reset_resources(
 
     completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
     return completed
+
+
+def check_findings(root: str, verbose: bool, virtual: bool) -> int:
+    if baw.config.fail_on_finding(root):
+        # run linter step before running test and release
+        ret = baw.cmd.lint.lint(
+            root,
+            baw.cmd.lint.Scope.MINIMAL,
+            verbose=verbose,
+            virtual=virtual,
+        )
+        if ret:
+            logging_error('could not release, solve this errors first.')
+            logging_error('turn `fail_on_release` off to release with errors')
+            return ret
+    return baw.utils.SUCCESS
