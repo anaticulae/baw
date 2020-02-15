@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.11.1
+
+### Fix
+
+* set minimal as default (b3554d1c6240)
+
 ## v0.11.0
 
 ### Feature
