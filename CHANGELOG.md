@@ -2,6 +2,33 @@
 
 Every noteable change is logged here.
 
+## v0.11.0
+
+### Feature
+
+* add optional linter step before running tests (a423088ce1a9)
+* add `fail_on_finding` to configuration (288f0681bc83)
+* extend linter command with different scopes (e3363fe32264)
+* add option to specify linter scope (00dc6c7ad6ea)
+* use new project.cfg naming (9435b05db80b)
+* support project.cfg and project.config as configuration file (a69eb899df7d)
+* exclude generated data folder (2072eb788d6e)
+
+### Fix
+
+* fix hiding import (f0e2dbfcad29)
+* do not check code quality at project init (00c30b6bf08c)
+* fix complete message (9586fdbd4f3d)
+* suppress format command if not using verbose mode (906dfc9af333)
+* print new lines (17ae2798be83)
+* fix data in copyright header (b667b3e49d6b)
+
+### Documentation
+
+* remove duplicated backlog (fa55ba1e1a8e)
+* extend module documentation (193f026950f9)
+* correct version number of closed release (4de6b2d1fecc)
+
 ## v0.10.0
 
 ### Feature
