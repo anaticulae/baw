@@ -106,14 +106,14 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 
 
 @pytest.fixture
-def example(tmpdir):
+def example(testdir):
     """Creating example project due console"""
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
+    root = str(testdir)
     cmd = 'baw --init %s "Longtime project"' % EXAMPLE_PROJECT_NAME
-    with assert_run(cmd, cwd=tmpdir):
-        assert os.path.exists(os.path.join(tmpdir, '.git'))
-
-    return tmpdir
+    with assert_run(cmd, cwd=root):
+        assert os.path.exists(os.path.join(root, '.git'))
+    return root
 
 
 def file_count(path: str):
