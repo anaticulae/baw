@@ -21,7 +21,8 @@ assert os.path.exists(PROJECT), str(PROJECT)
 
 
 @pytest.fixture
-def configuration(tmpdir):
+def configuration(testdir):
+    root = str(testdir)
     config = """\
     [project]
     short = baw
@@ -29,14 +30,18 @@ def configuration(tmpdir):
     source = abc
         defg
 
-    [tests]
+    [release]
     minimal_coverage = 50
+    fail_on_finding = True
     """
     config = textwrap.dedent(config)
 
-    path = os.path.join(tmpdir, 'config.cfg')
+    configpath = os.path.join(root, '.baw')
+    os.makedirs(configpath)
+
+    path = os.path.join(configpath, 'project.cfg')
     baw.utils.file_create(path, config)
-    return path
+    return root
 
 
 def test_config_load():
@@ -66,3 +71,9 @@ def test_config_defined_subproject_with_source_parameter(configuration):  #pylin
     expected_sources = ['baw', 'abc', 'defg']
 
     assert baw.config.sources(configuration) == expected_sources
+
+
+def test_config_fail_on_finding(configuration):  #pylint: disable=W0621
+    root = str(configuration)
+    fail = baw.config.fail_on_finding(root)
+    assert fail, 'variable is not parsed correctly'

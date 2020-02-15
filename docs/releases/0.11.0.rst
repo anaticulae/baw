@@ -7,7 +7,7 @@ RP 0.11.0
 
 * [x] support project.cfg file
 
-* [ ] add option to mark project to not release with --linter finding
+* [x] add option to mark project to not release with --linter finding
 
 * [ ] define user configuration file in ~/.baw
 
