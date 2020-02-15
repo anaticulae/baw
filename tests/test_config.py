@@ -27,27 +27,6 @@ PROJECT = join(DATA, 'project.config')
 assert exists(PROJECT)
 
 
-def test_loading_project_config():
-    short, name = project_name(PROJECT)
-
-    assert short == 'baw'
-    assert name == 'Black and White'
-
-
-def test_write_and_load_config(tmpdir):
-    makedirs(join(tmpdir, BAW_EXT))
-
-    expected_short = 'xesey'
-    expected_description = 'this is sparta'
-
-    create_config(tmpdir, expected_short, expected_description)
-
-    short, description = project_name(join(tmpdir, PROJECT_PATH))
-
-    assert short == expected_short
-    assert description == expected_description
-
-
 @fixture
 def configuration(tmpdir):
     config = """\
@@ -67,9 +46,30 @@ def configuration(tmpdir):
     return path
 
 
-def test_with_sourcecode_extention(configuration):  #pylint: disable=W0621
-    """Include further directories in the test cov report"""
+def test_config_load():
+    short, name = project_name(PROJECT)
 
+    assert short == 'baw'
+    assert name == 'Black and White'
+
+
+def test_config_create_and_load(tmpdir):
+    makedirs(join(tmpdir, BAW_EXT))
+
+    expected_short = 'xesey'
+    expected_description = 'this is sparta'
+
+    create_config(tmpdir, expected_short, expected_description)
+
+    short, description = project_name(join(tmpdir, PROJECT_PATH))
+
+    assert short == expected_short
+    assert description == expected_description
+
+
+def test_config_defined_subproject_with_source_parameter(configuration):  #pylint: disable=W0621
+    """Include further directories in the test cov report and unit testing."""
+    # baw main project and `abc` and `defg` as subprojects
     expected_sources = ['baw', 'abc', 'defg']
 
     assert sources(configuration) == expected_sources
