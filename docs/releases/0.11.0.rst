@@ -3,7 +3,7 @@
 RP 0.11.0
 =========
 
-* [ ] extend --linter with [all, todo] to reduce scope of analysis
+* [x] extend --linter with [all, todo] to reduce scope of analysis
 
 * [x] support project.cfg file
 

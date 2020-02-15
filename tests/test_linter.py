@@ -11,10 +11,11 @@ import os
 
 import baw.cmd.lint
 import baw.utils
+import tests
 from tests import example  # pylint:disable=W0611
 
 
-def test_lint_run_with_scope(example, capsys):  # pylint:disable=W0621
+def test_linter_run_with_scope(example, capsys):  # pylint:disable=W0621
     root = str(example)
     returncode = baw.cmd.lint.lint(root)
 
@@ -43,3 +44,7 @@ def test_lint_run_with_scope(example, capsys):  # pylint:disable=W0621
 
     returncode = baw.cmd.lint.lint(root, scope=baw.cmd.lint.Scope.ALL)
     assert returncode >= baw.utils.FAILURE, f'{returncode} capsys.readouterr()'
+
+
+def test_linter_run_cli(example, monkeypatch):  # pylint:disable=W0613,W0621
+    tests.run_command('--lint=todo', monkeypatch=monkeypatch)

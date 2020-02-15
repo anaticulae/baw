@@ -32,7 +32,18 @@ CLEAN_VENV = Command(
     longcut='--clean_venv', message='Clean virtual environment')
 DOC = Command(longcut='--doc', message='Generate documentation with Sphinx')
 IDE = Command(longcut='--ide', message='Generate workspace and open vscode')
-LINT = Command(longcut='--lint', message='Run statical code analysis')
+LINT = Command(
+    longcut='--lint',
+    message='Run statical code analysis.',
+    args={
+        'nargs': '?',
+        'const': 'all',
+        'choices': [
+            'all',
+            'minimal',
+            'todo',
+        ],
+    })
 INSTALL = Command(longcut='--install', message='Run install task')
 INIT = Command(
     longcut='--init',

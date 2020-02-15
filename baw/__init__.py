@@ -132,6 +132,7 @@ def run_main():
          link(
              baw.cmd.lint.lint,
              root=root,
+             scope=args['lint'],
              verbose=verbose,
              virtual=virtual,
          )),

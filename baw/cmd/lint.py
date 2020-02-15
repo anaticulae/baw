@@ -32,6 +32,18 @@ class Scope:
     MINIMAL = enum.auto()
     TODO = enum.auto()
 
+    @staticmethod
+    def from_str(name):
+        # TODO: REPLACE WITH PYTHONIC WAY
+        name = name.upper()
+        if name == 'ALL':
+            return Scope.ALL
+        if name == 'MINIMAL':
+            return Scope.MINIMAL
+        if name == 'TODO':
+            return Scope.TODO
+        raise ValueError(name)
+
 
 def lint(
         root: str,
@@ -51,6 +63,8 @@ def lint(
     Returns:
         Returncode of linter process.
     """
+    if isinstance(scope, str):
+        scope = Scope.from_str(scope)
     code = ' '.join(sources(root))
 
     testpath = os.path.join(root, 'tests')
