@@ -14,6 +14,7 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+import baw.cmd.lint
 import baw.cmd.upgrade
 from baw.cli import parse
 from baw.cmd import clean_project
@@ -24,7 +25,6 @@ from baw.cmd import format_repository
 from baw.cmd import ide_open
 from baw.cmd import init as project_init
 from baw.cmd import install
-from baw.cmd import lint as run_lint
 from baw.cmd import open_this
 from baw.cmd import release
 from baw.cmd import run_test
@@ -128,7 +128,13 @@ def run_main():
         ('release', link(release, root=root, release_type=args['release'])),
         ('publish', link(publish, root=root)),
         ('run', link(run, root=root, virtual=virtual)),
-        ('lint', link(run_lint, root=root, verbose=verbose, virtual=virtual)),
+        ('lint',
+         link(
+             baw.cmd.lint.lint,
+             root=root,
+             verbose=verbose,
+             virtual=virtual,
+         )),
         ('ide', link(ide_open, root=root)),
         ('plan', link(action, root=root, plan=args['plan'], verbose=verbose)),
     ])
