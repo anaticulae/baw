@@ -220,6 +220,7 @@ def check_findings(root: str, verbose: bool, virtual: bool) -> int:
             baw.cmd.lint.Scope.MINIMAL,
             verbose=verbose,
             virtual=virtual,
+            log_always=False,
         )
         if ret:
             logging_error('could not release, solve this errors first.')

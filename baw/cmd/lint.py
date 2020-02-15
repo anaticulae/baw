@@ -50,16 +50,19 @@ def lint(
         scope: Scope = Scope.ALL,
         verbose: bool = False,
         virtual: bool = False,
+        log_always: bool = True,
 ) -> int:
     """Run statical code analysis on `root`.
 
     Args:
-        root(str): root of anlysed project
+        root(str): root of analysed project
         scope(Mode): select included findings - all, use RCFILE_PATH;
                     minimal, exclude todos from analysis; todo, exclude
                     all expect todos.
         verbose(bool): increase logging
         virtual(bool): run command in virtual environment
+        log_always(bool): suppress logging if False and process completed
+                          successful
     Returns:
         Returncode of linter process.
     """
@@ -87,7 +90,8 @@ def lint(
         virtual=virtual,
         verbose=verbose,
     )
-    logging(completed.stderr)
-    logging(completed.stdout)
 
+    if log_always or completed.returncode:
+        logging(completed.stderr)
+        logging(completed.stdout)
     return completed.returncode
