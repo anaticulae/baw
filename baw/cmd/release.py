@@ -224,6 +224,6 @@ def check_findings(root: str, verbose: bool, virtual: bool) -> int:
         )
         if ret:
             logging_error('could not release, solve this errors first.')
-            logging_error('turn `fail_on_release` off to release with errors')
+            logging_error('turn `fail_on_finding` off to release with errors')
             return ret
     return baw.utils.SUCCESS
