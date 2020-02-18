@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import concurrent.futures
 import dataclasses
 import os
 import re
@@ -176,13 +177,27 @@ def determine_new_requirements(
     equal = {}
     greater = {}
     for source, sink in [(parsed.equal, equal), (parsed.greater, greater)]:
-        for package, version in source.items():  # pylint:disable=E1101
+        sync_error |= collect_new_packages(root, source, sink, virtual)
+    if sync_error:
+        return None
+    return NewRequirements(equal=equal, greater=greater)
+
+
+def collect_new_packages(root, source, sink, virtual):
+    sync_error = False
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+        todo = {
+            executor.submit(
+                baw.cmd.sync.check_dependency,
+                root,
+                package,
+                virtual=virtual,
+            ): (package, version) for package, version in source.items()
+        }
+        for future in concurrent.futures.as_completed(todo):
+            (package, version) = todo[future]
             try:
-                dependency = baw.cmd.sync.check_dependency(
-                    root,
-                    package,
-                    virtual=virtual,
-                )
+                dependency = future.result()
             except ValueError:
                 baw.utils.logging_error(f'package: {package} is not available')
             except RuntimeError:
@@ -192,9 +207,7 @@ def determine_new_requirements(
                 available = available_version(dependency)
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
-    if sync_error:
-        return None
-    return NewRequirements(equal=equal, greater=greater)
+    return sync_error
 
 
 def replace_requirements(requirements: str, update: NewRequirements) -> str:
