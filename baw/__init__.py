@@ -144,8 +144,9 @@ def run_main():
         if args[argument]:
             try:
                 ret += process()
-            except TypeError:
+            except TypeError as error:
                 logging_error(f'{process} does not return exitcode')
+                logging_error(error)
                 ret += FAILURE
 
     if not args['ide']:
