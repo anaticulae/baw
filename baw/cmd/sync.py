@@ -80,6 +80,7 @@ def check_dependency(
         *,
         virtual: bool,
 ):
+    """Check if packages need an upgrade."""
     (adress, internal, external) = get_setup()
 
     pip_index = '%s:%d' % (adress, internal)
@@ -115,7 +116,7 @@ def sync_dependencies(
         *,
         verbose: bool = False,
         virtual: bool = False,
-):
+) -> int:
     check_root(root)
     logging('sync dependencies')
 
@@ -125,33 +126,63 @@ def sync_dependencies(
     if not connected(pip_index, extra_url):
         return FAILURE
 
-    ret = 0
-    for to_install in resources:
-        cmd, pip = get_install_cmd(to_install, verbose, pip_index, extra_url)
+    required = required_installation(
+        root,
+        resources,
+        verbose=verbose,
+        virtual=virtual,
+    )
+    if not required.equal:
+        return baw.utils.SUCCESS
 
-        completed = run_target(
-            root,
-            cmd,
-            cwd=root,
-            verbose=verbose,
-            virtual=virtual,
-        )
-        if 'NewConnectionError' in completed.stdout:
-            logging_error('Could not reach server: %s' % pip)
-            ret += 1
-            break
-        if completed.stdout:
-            for message in completed.stdout.splitlines():
-                if should_skip(message, verbose=verbose):
-                    continue
-                if verbose:
-                    logging(message)
-        if completed.returncode and completed.stderr:
-            logging_error(completed.stderr)
-        ret += completed.returncode
+    logging(f'\nrequire update:\n{required}')
+
+    requirements = os.path.join(root, '.baw/.requirements.txt')
+    baw.utils.file_replace(requirements, str(required))
+
+    cmd, pip = get_install_cmd(requirements, verbose, pip_index, extra_url)
+
+    completed = run_target(
+        root,
+        cmd,
+        cwd=root,
+        verbose=verbose,
+        virtual=virtual,
+    )
+
+    baw.utils.file_remove(requirements)
+    if 'NewConnectionError' in completed.stdout:
+        logging_error('Could not reach server: %s' % pip)
+        return completed.returncode
+
+    if completed.stdout:
+        for message in completed.stdout.splitlines():
+            if should_skip(message, verbose=verbose):
+                continue
+            if verbose:
+                logging(message)
+    if completed.returncode and completed.stderr:
+        logging_error(completed.stderr)
+
     logging()
-    logging()
-    return ret
+    return completed.returncode
+
+
+def required_installation(
+        root,
+        txts: list,
+        virtual: bool = False,
+        verbose: bool = False,
+):
+    current = pip_list(root, verbose=verbose, virtual=virtual)
+    requested = [
+        baw.requirements.parse(baw.utils.file_read(item)) for item in txts
+    ]
+    missing = [baw.requirements.diff(current, item) for item in requested]
+    result = baw.requirements.Requirements()
+    for item in missing:
+        result.equal.update(item.equal)  # pylint:disable=E1101
+    return result
 
 
 def determine_resources(root: str, packages: str) -> list:
@@ -205,17 +236,17 @@ def get_install_cmd(to_install, verbose, pip_index, extra_url):
     )
     return cmd, pip
 
+
 def pip_list(
         root,
         verbose: bool = False,
         virtual: bool = False,
 ) -> baw.requirements.Requirements:
-    cwd = root
     cmd = 'pip list --format=freeze'
     completed = run_target(
         root,
         cmd,
-        cwd=cwd,
+        cwd=root,
         verbose=verbose,
         virtual=virtual,
     )
