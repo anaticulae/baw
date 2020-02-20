@@ -30,8 +30,8 @@ import baw.utils
 
 @dataclasses.dataclass
 class Requirements:
-    equal: dict = dataclasses.field(default=dict)
-    greater: dict = dataclasses.field(default=dict)
+    equal: dict = dataclasses.field(default_factory=dict)
+    greater: dict = dataclasses.field(default_factory=dict)
 
 
 @dataclasses.dataclass
