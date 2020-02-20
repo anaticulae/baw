@@ -34,6 +34,14 @@ class Requirements:
     equal: dict = dataclasses.field(default_factory=dict)
     greater: dict = dataclasses.field(default_factory=dict)
 
+    def __str__(self):
+        result = [
+            f'{package}=={version}' for package, version in self.equal.items()  # pylint:disable=E1101
+        ]
+        result = sorted(result)
+        raw = '\n'.join(result)
+        return raw
+
 
 @dataclasses.dataclass
 class NewRequirements(Requirements):
