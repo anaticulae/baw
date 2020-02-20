@@ -23,6 +23,7 @@ Example
     # utila==0.5.3
 """
 
+import contextlib
 import dataclasses
 
 import baw.utils
@@ -77,6 +78,17 @@ def parse(content: str) -> Requirements:
         exit(baw.utils.FAILURE)
 
     result = Requirements(equal=equal, greater=greater)
+    return result
+
+
+def diff(current: Requirements, requested: Requirements):
+    # TODO: SUPPORT GREATER THAN
+    result = Requirements()
+    for key, value in requested.equal.items():
+        with contextlib.suppress(KeyError):
+            if current.equal[key] == value:
+                continue
+        result.equal[key] = value  # pylint:disable=E1137
     return result
 
 

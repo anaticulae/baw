@@ -69,3 +69,24 @@ def test_requirements_parser_greater_equal():
     result = baw.requirements.parse(REQUIREMENTS_GREATER)
     assert result, 'requirements parsing error'
     assert result.greater == EXPECTED_GREATER
+
+
+def test_requirements_diff_equal():
+    parsed = baw.requirements.parse(tests.fixtures.requirements.REQUIREMENTS)
+    empty = baw.requirements.diff(parsed, parsed)
+    assert not empty.equal, empty
+
+
+def test_requirements_diff():
+    current = baw.requirements.Requirements(equal={
+        'PyYAML': '5.1',
+    })
+    requested = baw.requirements.Requirements(equal={
+        'PyYAML': '5.1',
+        'pdfminer.six': '20181108',
+    })
+    expected = baw.requirements.Requirements(equal={
+        'pdfminer.six': '20181108',
+    })
+    diff = baw.requirements.diff(current, requested)
+    assert diff == expected
