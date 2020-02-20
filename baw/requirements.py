@@ -63,13 +63,18 @@ def parse(content: str) -> Requirements:
         line = line.strip()
         if not line or line[0] == '#':
             continue
+        with contextlib.suppress(ValueError):
+            # remove right side comment: 'rawmaker==1.0.0 # this is rawmaker'
+            line = line.split('#')[0]
+            # remove whitespace between comment and version sign
+            line = line.strip()
         try:
             if '==' in line:
                 package, version = line.split('==')
-                equal[package] = version
+                equal[package] = version.strip()
             elif '>=' in line:
                 package, version = line.split('>=')
-                greater[package] = version
+                greater[package] = version.strip()
             else:
                 # package without version
                 equal[line] = ''
