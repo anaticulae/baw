@@ -8,14 +8,13 @@
 #==============================================================================
 import os
 import textwrap
-from os.path import join
 
 import baw.cmd.upgrade
+import baw.requirements
+import tests.fixtures.requirements
 from baw.cmd.upgrade import available_version
 from baw.cmd.upgrade import determine_new_requirements
 from baw.cmd.upgrade import installed_version
-from baw.cmd.upgrade import parse_requirements
-from baw.cmd.upgrade import replace_requirements
 from baw.cmd.upgrade import upgrade_requirements
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -71,83 +70,14 @@ def test_out_of_date():
     assert installed == "0.5.3"
 
 
-REQUIREMENTS = """
-PyYAML==5.1
-pdfminer.six==20181108
-
-# Internal packages
-iamraw==0.1.2
-serializeraw==0.1.0
-utila==0.5.0
-
-# without version
-pip
-"""
-
-REQUIREMENTS_GREATER = """
-PyYAML==5.1
-pdfminer.six>=20181108
-utila>=0.5.0
-"""
-
-EXPECTED = {
-    'PyYAML': '5.1',
-    'iamraw': '0.1.2',
-    'pdfminer.six': '20181108',
-    'serializeraw': '0.1.0',
-    'utila': '0.5.0',
-    'pip': '',
-}
-
-EXPECTED_GREATER = {
-    'pdfminer.six': '20181108',
-    'utila': '0.5.0',
-}
-
-
-def test_requirements_parser():
-    result = parse_requirements(REQUIREMENTS)
-    assert result, 'requirements parsing error'
-    assert result.equal == EXPECTED
-
-
-def test_requirements_parser_greater_equal():
-    result = parse_requirements(REQUIREMENTS_GREATER)
-    assert result, 'requirements parsing error'
-    assert result.greater == EXPECTED_GREATER
-
-
 @skip_longrun
 def test_new_requirements():
-    result = determine_new_requirements(ROOT, REQUIREMENTS)
+    result = determine_new_requirements(
+        ROOT,
+        tests.fixtures.requirements.REQUIREMENTS,
+    )
     # utila should allways be new than 0.5.0
     assert 'utila' in result[0]
-
-
-REPLACED = """
-PyYAML==6.3.2
-pdfminer.six==20181108
-
-# Internal packages
-iamraw==0.1.2
-serializeraw==0.1.0
-utila==3.5.0
-
-# without version
-pip
-"""
-
-
-def test_replace_requirements():
-    upgrades = baw.cmd.upgrade.NewRequirements(
-        equal={
-            'PyYAML': ('5.1', '6.3.2'),
-            'utila': ('0.5.0', '3.5.0'),
-        },
-        greater={},
-    )
-    replaced = replace_requirements(REQUIREMENTS, upgrades)
-    assert replaced == REPLACED
 
 
 TEST_UPGRADE = """\
@@ -157,7 +87,7 @@ iamraw
 
 
 def test_upgrading(tmpdir):
-    requirements_path = join(tmpdir, REQUIREMENTS_TXT)
+    requirements_path = os.path.join(tmpdir, REQUIREMENTS_TXT)
 
     file_create(requirements_path, TEST_UPGRADE)
 
@@ -171,7 +101,6 @@ def test_upgrading(tmpdir):
 @skip_longrun
 @skip_nonvirtual
 def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621, W0613
-
     path = os.getcwd()
 
     def commit_all():

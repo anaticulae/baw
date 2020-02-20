@@ -8,30 +8,13 @@
 #==============================================================================
 
 import concurrent.futures
-import dataclasses
 import os
 import re
 
 import baw.cmd.sync
 import baw.git
+import baw.requirements
 import baw.utils
-
-
-@dataclasses.dataclass
-class Requirements:
-    equal: dict = dataclasses.field(default=dict)
-    greater: dict = dataclasses.field(default=dict)
-
-
-@dataclasses.dataclass
-class NewRequirements(Requirements):
-
-    def __getitem__(self, index):
-        if index == 0:
-            return self.equal
-        if index == 1:
-            return self.greater
-        raise IndexError(f'{index} not supported')
 
 
 def upgrade(
@@ -126,7 +109,7 @@ def upgrade_requirements(
     upgraded = determine_new_requirements(root, content, virtual=virtual)
     if upgraded is None:
         return baw.utils.FAILURE
-    replaced = replace_requirements(content, upgraded)
+    replaced = baw.requirements.replace(content, upgraded)
 
     if replaced == content:
         baw.utils.logging('Requirements are up to date.\n')
@@ -167,8 +150,8 @@ def determine_new_requirements(
         requirements: str,
         *,
         virtual: bool = False,
-) -> NewRequirements:
-    parsed = parse_requirements(requirements)
+) -> baw.requirements.NewRequirements:
+    parsed = baw.requirements.parse(requirements)
     if parsed is None:
         baw.utils.logging_error('could not parse requirements')
         return None
@@ -180,7 +163,7 @@ def determine_new_requirements(
         sync_error |= collect_new_packages(root, source, sink, virtual)
     if sync_error:
         return None
-    return NewRequirements(equal=equal, greater=greater)
+    return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
 def collect_new_packages(root, source, sink, virtual):
@@ -208,70 +191,3 @@ def collect_new_packages(root, source, sink, virtual):
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
     return sync_error
-
-
-def replace_requirements(requirements: str, update: NewRequirements) -> str:
-    for package, [old, new] in update.equal.items():
-        if old:
-            pattern = f'{package}=={old}'
-        else:
-            # no version was given for old package
-            pattern = f'{package}'
-        replacement = f'{package}=={new}'
-
-        baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
-        requirements = requirements.replace(pattern, replacement)
-
-    for package, [old, new] in update.greater.items():
-        pattern = f'{package}>={old}'
-        replacement = f'{package}>={new}'
-
-        baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
-        requirements = requirements.replace(pattern, replacement)
-    return requirements
-
-
-# Example:
-
-# PyYAML==5.1
-# pdfminer.six==20181108
-
-# # Internal packages
-# iamraw==0.1.2
-# serializeraw==0.1.0
-# utila==0.5.3
-
-
-def parse_requirements(content: str) -> Requirements:
-    assert isinstance(content, str)
-    equal = {}
-    greater = {}
-    error = False
-    for line in content.splitlines():
-        line = line.strip()
-        if not line or line[0] == '#':
-            continue
-        try:
-            if '==' in line:
-                package, version = line.split('==')
-                equal[package] = version
-            elif '>=' in line:
-                package, version = line.split('>=')
-                greater[package] = version
-            else:
-                # package without version
-                equal[line] = ''
-        except ValueError:
-            baw.utils.logging_error(f'could not parse: "{line}"')
-            error = True
-    if error:
-        return None
-
-    common_keys = set(equal.keys()) | set(greater.keys())
-    if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
-        baw.utils.logging_error('duplicated package definition')
-        baw.utils.logging_error(content)
-        exit(baw.utils.FAILURE)
-
-    result = Requirements(equal=equal, greater=greater)
-    return result
