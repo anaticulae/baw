@@ -168,7 +168,7 @@ def determine_new_requirements(
 
 def collect_new_packages(root, source, sink, virtual):
     sync_error = False
-    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=18) as executor:
         todo = {
             executor.submit(
                 baw.cmd.sync.check_dependency,
