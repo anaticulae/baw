@@ -7,11 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 from os.path import exists
 from os.path import join
 from urllib.request import URLError
 from urllib.request import urlopen
 
+import baw.requirements
 from baw.git import update_gitignore
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -202,6 +204,27 @@ def get_install_cmd(to_install, verbose, pip_index, extra_url):
         to_install,
     )
     return cmd, pip
+
+def pip_list(
+        root,
+        verbose: bool = False,
+        virtual: bool = False,
+) -> baw.requirements.Requirements:
+    cwd = root
+    cmd = 'pip list --format=freeze'
+    completed = run_target(
+        root,
+        cmd,
+        cwd=cwd,
+        verbose=verbose,
+        virtual=virtual,
+    )
+    if completed.returncode and completed.stderr:
+        logging_error(completed.stderr)
+        exit(completed.returncode)
+    content = completed.stdout
+    parsed = baw.requirements.parse(content)
+    return parsed
 
 
 def connected(internal: str, external: str) -> bool:
