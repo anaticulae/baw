@@ -47,8 +47,8 @@ def git_add(root: str, pattern: str):
         pattern(str): pattern in linux-style"""
     assert exists(root)
     logging('git add')
-    add = run_target(root, 'git add %s' % pattern, verbose=False)
-    evaluate_git_error(add)
+    cmd = run_target(root, 'git add %s' % pattern, verbose=False)
+    evaluate_git_error(cmd)
 
 
 def add(root: str, pattern: str):
@@ -77,17 +77,19 @@ def is_clean(root):
 
 
 def git_checkout(
-        root,
-        files,
+        root: str,
+        files: str,
         *,
         verbose: bool = False,
         virtual: bool = False,
-):
+) -> int:
     """Checkout files from git repository
 
     Args:
         root(str): root to generated project
-        files(str/iterable): files to checkout
+        files(str or iterable): files to checkout
+        verbose(bool): increase logging
+        virtual(bool): run in virtual environment
     Returns:
         0 if SUCCESS else FAILURE
     """
@@ -108,12 +110,15 @@ def git_stash(
         *,
         verbose: bool = False,
         virtual: bool = False,
-):
+) -> int:
     """Save uncommited/not versonied content to improve testability
 
     Args:
         root(str): root of execution
         virtual(bool): run in virtual environment
+        verbose(bool): increase logging
+    Yields:
+        Context: to run user operation which requires stashed environment.
     Returns:
         SUCCESS if everything was successfull
     Raises:
@@ -137,8 +142,6 @@ def git_stash(
         yield  # let user do there job
     except Exception as error_:  # pylint: disable=broad-except
         # exception is reraised after unstash
-        # XXX: it seam that as error overwrites the variable error, dont not
-        # why, this workaound solve it now
         error = error_
 
     if nostash:
@@ -197,10 +200,10 @@ def evaluate_git_error(process: CompletedProcess):
         process(CompletedProcess): process to analyze returncode for raising
                                    depended exception.
     Raises:
-        ChildProcessError when git is not installed
-                               problems while initializing git repository
+        ChildProcessError: when git is not installed problems while
+                           initializing git repository.
     """
     if process.returncode == NO_EXECUTABLE:
         raise ChildProcessError('Git is not installed')
     if process.returncode:
-        raise ChildProcessError('Could not run git %s' % str(process))
+        raise ChildProcessError(f'Could not run git: {process}')

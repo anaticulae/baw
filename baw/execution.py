@@ -56,7 +56,7 @@ def publish(root: str):
 SEPARATOR_WIDTH = 80
 
 
-def run(root: str, virtual=False):
+def run(root: str, virtual: bool = False) -> int:
     """Check project-environment for custom run sequences, execute them from
     first to end.
 

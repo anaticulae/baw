@@ -7,23 +7,24 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from os import getcwd
+import os
 
-from baw.runtime import run_target
-from baw.utils import SUCCESS
-from baw.utils import forward_slash
+import baw.runtime
+import baw.utils
 
 
 def open_this(root: str):
-    path = getcwd()
+    path = os.getcwd()
 
     cmd = 'explorer %s' % path
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         cmd,
         cwd=path,
         skip_error_code={1},
         verbose=False,
     )
-
-    exit(SUCCESS)  # avoid printing runtime
+    # dont know why windows returns 1
+    assert completed.returncode == 1, completed
+    # avoid printing runtime error
+    exit(baw.utils.SUCCESS)

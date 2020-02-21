@@ -39,16 +39,17 @@ UTF8 = 'utf8'
 
 
 @contextmanager
-def handle_error(*exceptions, code=1):
+def handle_error(*exceptions: list, code: int = 1):
     """Catch given `exceptions` and print there message to `stderr`. Exit
     system with given `code`.
 
     Args:
-        exeception(iterable): of exception, which are handle by this context
+        exceptions(iterable): of exception, which are handle by this context
         code(int): returned error-code
     Raises:
-        SystemExitExecetion if given `exceptions` is raised while executing
-        contextmanager.
+        SystemExit: if given `exceptions` is raised while executing context
+    Yields:
+        Context: to run operation
     """
     try:
         yield
@@ -121,8 +122,8 @@ def package_address():
         exit(FAILURE)
 
 
-def tmp(root):
-    """Return path to temporary folder. If not exists, create folder
+def tmp(root: str) -> str:
+    """Return path to temporary folder. Create folder if required.
 
     Args:
         root(str): project root
@@ -210,14 +211,14 @@ def profile():
 
 
 def remove_tree(path: str):
-    assert exists(path)
+    assert exists(path), path
+
+    def remove_readonly(func, path, _):  # pylint:disable=W0613
+        """Clear the readonly bit and reattempt the removal."""
+        chmod(path, S_IWRITE)
+        func(path)
+
     try:
-
-        def remove_readonly(func, path, _):
-            "Clear the readonly bit and reattempt the removal"
-            chmod(path, S_IWRITE)
-            func(path)
-
         rmtree(path, onerror=remove_readonly)
     except PermissionError:
         logging_error('Could not remove %s' % path)
@@ -225,8 +226,9 @@ def remove_tree(path: str):
 
 
 def skip(msg: str):
-    """Logging skipped event
+    """Logging skipped event.
 
     Args:
-        msg(str): message to skip"""
+        msg(str): message to skip
+    """
     logging('Skip: %s' % msg)
