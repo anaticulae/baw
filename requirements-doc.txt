@@ -2,7 +2,7 @@
 added-value==0.14.2
 m2r==0.2.1
 recommonmark==0.5.0
-sphinx==1.8.5
-sphinx_autodoc_typehints==1.6.0
+Sphinx==1.8.5
+sphinx-autodoc-typehints==1.6.0
 sphinxcontrib-mermaid==0.3.1
 tomlkit==0.5.3
