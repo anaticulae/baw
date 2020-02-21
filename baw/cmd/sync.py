@@ -118,7 +118,8 @@ def sync_dependencies(
         virtual: bool = False,
 ) -> int:
     check_root(root)
-    logging('sync dependencies')
+
+    logging('sync virtual' if virtual else 'sync local')
 
     resources = determine_resources(root, packages)
 
