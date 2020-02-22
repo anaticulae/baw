@@ -46,7 +46,7 @@ from baw.utils import logging
 from baw.utils import logging_error
 from baw.utils import print_runtime
 
-__version__ = '0.11.2'
+__version__ = '0.12.0'
 
 
 def run_main():  # pylint:disable=R1260

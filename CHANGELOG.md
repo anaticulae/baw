@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v0.12.0
+
+### Feature
+
+* use new sync approach (659e4830572c)
+* use more worker to reduce required time (2f76f9c5c69d)
+* extend parser to support comments at line ending (477551e010a1)
+* add method to create freeze-style requirements (6e788de18974)
+* add requirements diff to determine not installed packages (42fdb234921c)
+* add method to determine install requirements via pip (bba29be50b95)
+* run collecting dependencies with multiple threads (8cd0e1fa8d70)
+
+### Fix
+
+* fix required packages (ffe05a151b22)
+* fix logging message (30637d53d3a2)
+* clarify source of error (c746c023aeed)
+* fix default factory (06f86056b245)
+* fix error message (62f77ed81013)
+
 ## v0.11.2
 
 ### Fix
