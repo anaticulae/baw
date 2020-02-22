@@ -15,8 +15,6 @@ from os.path import exists
 from os.path import isdir
 from os.path import join
 from shutil import rmtree
-from subprocess import PIPE
-from subprocess import CompletedProcess
 from sys import platform
 from time import time
 
@@ -59,17 +57,17 @@ def venv(root: str) -> str:
     return join(root, VIRTUAL_FOLDER)
 
 
-def create(root: str, clean: bool = False, verbose: bool = False):
+def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     """Create `virtual` folder in project root, do nothing if folder exists
 
     This method creates the folder and does the init via python `venv`-module.
 
     Args:
-        path(str): path for creating environment, if path already exists,
-                   nothing happens
+        root(str): project root
         clean(bool): virtual path is removed before creating new environment
+        verbose(bool): explain what is being done
     Returns:
-        true if creating was succesfull, else False
+        SUCCESS if creating was was succesfull else FAILURE
     """
     virtual = join(root, VIRTUAL_FOLDER)
 
@@ -90,26 +88,26 @@ def create(root: str, clean: bool = False, verbose: bool = False):
     ]
     if clean:
         venv_command.append('--clear')
-    venv_command = ' '.join(venv_command)
-    process = _run(command=venv_command, cwd=virtual)
+    cmd = ' '.join(venv_command)  # TODO: Is this required?
+    process = _run(command=cmd, cwd=virtual)
 
     patch_pip(root)
 
-    if process.returncode == 0:
-        if verbose:
-            logging(process.stdout)
-            if process.stderr:
-                logging_error(process.stderr)
+    if process.returncode:
+        logging_error('While creating virutal environment')
 
-        __fix_environment(root)
-        return SUCCESS
+        logging(process.stdout)
+        logging_error(process.stderr)
 
-    logging_error('While creating virutal environment')
+        return FAILURE
 
-    logging(process.stdout)
-    logging_error(process.stderr)
+    if verbose:
+        logging(process.stdout)
+        if process.stderr:
+            logging_error(process.stderr)
 
-    return FAILURE
+    __fix_environment(root)
+    return SUCCESS
 
 
 def patch_pip(root):
@@ -161,8 +159,14 @@ def run_target(
                   root is used.
         env(dict): environment variable, if nothing is passed, the global env
                    vars ared used
-        runtimelog(bool): after completion of target, print the duration
-                          in secs
+        debugging(bool): run pdf if error occurs
+        runtimelog(bool): print the duration of execution in secs
+        skip_error_code(set): set of codes which are assumed that
+                              process works successfully
+        skip_error_message(list): list of error messages which are
+                                  expected as no problem
+        verbose(bool): explain what is beeing done
+        virtual(bool): run in virtual environment
 
     Returns:
         CompletedProcess - os process which was runned
@@ -191,7 +195,7 @@ def run_target(
             )
         except RuntimeError as error:
             message = str(error)
-            process = CompletedProcess(
+            process = subprocess.CompletedProcess(
                 command,
                 NO_EXECUTABLE,
                 stdout=message,
@@ -199,8 +203,9 @@ def run_target(
             )
             return process
     else:
-        completed = _run_local(
-            command,
+        # run local
+        completed = _run(
+            command=command,
             cwd=cwd,
             debugging=debugging,
             env=env,
@@ -237,7 +242,7 @@ def setup_target(
     return cwd, skip_error_code, skip_error_message
 
 
-def log_result(
+def log_result(  # pylint:disable=R1260
         completed: subprocess.CompletedProcess,
         cwd: str,
         skip_error_code: set,
@@ -245,7 +250,8 @@ def log_result(
         start: int,
         verbose: int,
 ):
-    """
+    """Log result to console.
+
     Args:
         completed(subprocess.CompletedProcess): finished process to log
         cwd(str): current work directory
@@ -291,22 +297,6 @@ def log_result(
             print_runtime(start)
 
 
-def _run_local(command, cwd, env=None, debugging: bool = False):
-    """Run external process and return an CompleatedProcess
-
-    Args:
-        command(str/iterable): command to execute
-        cwd(str): working directory where the command is executed
-    Returns:
-        CompletedProcess with execution result
-    """
-    if not isinstance(command, str):
-        command = ' '.join(command)
-    process = _run(command, cwd, env, debugging=debugging)
-
-    return process
-
-
 def activation_path(root: str):
     virtual = join(root, VIRTUAL_FOLDER)
     path = join(virtual, 'Scripts', 'activate')
@@ -323,14 +313,23 @@ def deactivation_path(root: str):
     return path
 
 
-def _run_virtual(root, command, cwd, env=None, debugging: bool = False):
+def _run_virtual(
+        root: str,
+        command: str,
+        cwd: str,
+        env: dict = None,
+        debugging: bool = False,
+) -> subprocess.CompletedProcess:
     """Run command with virtual environment
 
     Args:
         root(str): project root to locate `virtual`-folder
         command(str): command to execute
         cwd(str): working directoy where command is executed
-
+        env(dict): replace enviroment variables
+        debugging(bool): run pdb when error occurs
+    Raises:
+        RuntimeError: if virtual path does not exists
     Returns:
         CompletedProcess
     """
@@ -349,28 +348,28 @@ def _run_virtual(root, command, cwd, env=None, debugging: bool = False):
 
 
 def _run(command: str, cwd: str, env=None, debugging: bool = False):
-    """
+    """Run process.
 
     Hint:
         Do not use stdout/stderr=PIPE, after this, running pdb with
         commandline is not feasible :) anymore. TODO: Investigate why.
     """
+    if not isinstance(command, str):
+        command = ' '.join(command)
+
     if env is None:  # None: Empty dict is allowed.
         env = dict(environ.items())
 
-    # when user types from baw.runtime import r... run must not presented as
-    # option, so we import this here to hide it.
-    from subprocess import run
     # Capturering stdout and stderr reuqires PIPE in completed process.
-    # Debugging with pdb due console require no PIPE.
-    process = run(
+    # Debugging with pdb due console requires no PIPE.
+    process = subprocess.run(
         command,
         cwd=cwd,
         encoding=UTF8,
         env=env,
         shell=True,
-        stderr=None if debugging else PIPE,
-        stdout=None if debugging else PIPE,
+        stderr=None if debugging else subprocess.PIPE,
+        stdout=None if debugging else subprocess.PIPE,
         errors='ignore',
         universal_newlines=True,
     )
