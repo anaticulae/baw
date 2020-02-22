@@ -50,13 +50,19 @@ def init(
         cmdline: bool = False,
         *,
         verbose: bool = False,
-):
+) -> int:
     """Init project due generatig file and folder
 
     Args:
         root(str): root of generated project
         shortcut(str): short name of project
         name(str): long name of generated project, used in documentation
+        cmdline(bool): add default cmdline template to use project as cli
+        verbose(bool): increase logging
+    Raises:
+        ValueError: if project already exists
+    Returns:
+        SUCCESS or return code of failed process
     """
     baw_path = join(root, BAW_EXT)
     if exists(baw_path):

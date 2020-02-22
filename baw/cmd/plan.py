@@ -32,7 +32,7 @@ class CodeQuality:
     rating: float = None
 
 
-def action(root: str, plan: str, verbose: bool = False):
+def action(root: str, plan: str):
     current_status = status(root)
     if plan == 'new':
         # TODO: DISTINCT BETWEEN NEW_MAJOR AND NEW_MINOR

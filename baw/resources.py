@@ -235,12 +235,13 @@ FILES = [
 ]
 
 
-def template_replace(root: str, template: str, **kwargs):
+def template_replace(root: str, template: str, **kwargs) -> str:
     """Replace $vars in template
 
     Args:
         root(str): project root
         template(str): which contains the {%VARS%}
+        kwargs(str): list of variables to replace in template
     Returns:
         content of template with replaced vars
     Hint:

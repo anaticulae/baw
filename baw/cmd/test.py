@@ -6,13 +6,13 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-from functools import partial
 from os import environ
 from os.path import exists
 from os.path import join
 from shutil import rmtree
 from webbrowser import open_new
 
+import baw.utils
 from baw.config import minimal_coverage
 from baw.config import sources
 from baw.datetime import current
@@ -31,9 +31,9 @@ from baw.utils import tmp
 NO_TEST_TO_RUN = 5
 
 
-def run_test(
+def run_test(  # pylint:disable=R0914
         root: str,
-        testconfig=None,
+        testconfig: list = None,
         *,
         coverage: bool = False,
         fast: bool = False,
@@ -45,23 +45,30 @@ def run_test(
         stash: bool = False,
         verbose: bool = False,
         virtual: bool = False,
-):
+) -> int:
     """Running test-step in root/tests
 
     Hint:
         The tests run in `root` to include namespace of project code.
     Args:
-        longrun(bool): Runnig all tests
-        pdf(bool): Run debugger on error
-        stash(bool): Stash all changes to test commited-change in repository
+        root(str): path to root of tested project
+        testconfig(list): list of user defined test parameter via -k
+        coverage(bool): run python test coverage
+        fast(bool): skip long running tests
+        generate(bool): generate required test data
+        longrun(bool): run long running tests
+        nightly(bool): run all tests
+        pdb(bool): run debugger on error
+        quiet(bool): pytest - use minimal logging
+        stash(bool): stash all changes to test commited-change in repository
+        verbose(bool): extend logging
         virtual(bool): run command in virtual environment
     Returns:
         returncode(int): 0 if successful else > 0
-
     """
     check_root(root)
 
-    logging('Running tests')
+    logging('running tests')
     testdir, testenv = setup_testenvironment(
         root,
         fast=fast,
@@ -72,7 +79,7 @@ def run_test(
 
     generate_only = generate and not (fast or longrun or nightly)
 
-    cmd = test_run_command(
+    cmd = create_test_cmd(
         root,
         testdir,
         pdb,
@@ -81,31 +88,30 @@ def run_test(
         testconfig,
         generate_only=generate_only,
     )
-    target = partial(
-        run_target,
-        root,
-        cmd,
-        cwd=root,  # to include project code(namespace) into syspath
-        debugging=True,  # live test reporting
-        env=testenv,
-        verbose=verbose,
-        skip_error_code={NO_TEST_TO_RUN},  # no tests available => no problem
-        virtual=virtual,
-    )
 
-    if stash:
-        with git_stash(root, verbose=verbose, virtual=virtual):
-            completed = target()
-    else:
-        completed = target()
-    if generate_only and completed.returncode == SUCCESS:
-        # do not write log of collect tests
-        logging('test data generated')
+    environment = git_stash if stash else baw.utils.empty
+    with environment(root, verbose=verbose, virtual=virtual):
+        completed = run_target(
+            root,
+            cmd,
+            cwd=root,  # to include project code(namespace) into syspath
+            debugging=True,  # live test reporting
+            env=testenv,
+            verbose=verbose,
+            # no tests available => no problem
+            skip_error_code={NO_TEST_TO_RUN},
+            virtual=virtual,
+        )
 
+    if completed.returncode == SUCCESS:
+        if generate_only:
+            # do not write log of collect tests
+            logging('test data generated')
+        if coverage:
+            open_report(root)
     if completed.returncode == NO_TEST_TO_RUN:
+        # override pytest error code
         return SUCCESS
-    if completed.returncode == SUCCESS and coverage:
-        open_report(root)
     return completed.returncode
 
 
@@ -146,7 +152,7 @@ def setup_testenvironment(
 PYTEST_INI = join(ROOT, 'templates/pytest.ini')
 
 
-def test_run_command(
+def create_test_cmd(
         root,
         test_dir,
         pdb,
@@ -188,8 +194,8 @@ def test_run_command(
     return cmd
 
 
-def cov_args(root: str, *, pdb: bool):
-    """Determine args for running tests based on project-root
+def cov_args(root: str, *, pdb: bool) -> str:
+    """Determine args for running tests based on project-root.
 
     Args:
         root(str): project root
@@ -217,8 +223,8 @@ def cov_args(root: str, *, pdb: bool):
     return cov
 
 
-def collect_cov_sources(root: str):
-    """Collect source code folder from project configuration
+def collect_cov_sources(root: str) -> str:
+    """Collect source code folder from project configuration.
 
     Args:
         root(str): path to project root

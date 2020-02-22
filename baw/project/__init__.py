@@ -29,7 +29,7 @@ def find_root(cwd: str):
     Returns:
         path(str): of project-root(git)
     Raises:
-        ValueError if no root is located or cwd does not exists
+        ValueError: if no root is located or cwd does not exists
     """
     if not exists(cwd):
         raise ValueError('Current work directory does not exists %s' % cwd)

@@ -7,8 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import contextlib
 import sys
-from contextlib import contextmanager
 from os import chmod
 from os import environ
 from os import makedirs
@@ -38,7 +38,7 @@ NEWLINE = '\n'
 UTF8 = 'utf8'
 
 
-@contextmanager
+@contextlib.contextmanager
 def handle_error(*exceptions: list, code: int = 1):
     """Catch given `exceptions` and print there message to `stderr`. Exit
     system with given `code`.
@@ -197,7 +197,7 @@ def print_runtime(before: int):
     logging('Runtime: %.2f secs\n' % time_diff)
 
 
-@contextmanager
+@contextlib.contextmanager
 def profile():
     """Print runtime to logger to monitore performance"""
     start = time()
@@ -232,3 +232,8 @@ def skip(msg: str):
         msg(str): message to skip
     """
     logging('Skip: %s' % msg)
+
+
+@contextlib.contextmanager
+def empty(*args, **kwargs):  # pylint:disable=W0613
+    yield

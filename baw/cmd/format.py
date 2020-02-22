@@ -8,7 +8,6 @@
 # =============================================================================
 
 import concurrent.futures
-import functools
 import os
 
 from baw.config import sources
@@ -58,10 +57,10 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
         "__init__.py",
         "-rc",  # recursive
     ]
-    isort = 'isort %s' % (' '.join(isort))
+    cmd = 'isort %s' % (' '.join(isort))
     return format_(
         root,
-        cmd=isort,
+        cmd=cmd,
         info='sort imports',
         verbose=verbose,
         virtual=virtual,

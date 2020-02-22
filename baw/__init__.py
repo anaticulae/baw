@@ -49,7 +49,7 @@ from baw.utils import print_runtime
 __version__ = '0.11.2'
 
 
-def run_main():
+def run_main():  # pylint:disable=R1260
     start = time()
     args = parse()
     if not any(args.values()):
@@ -137,7 +137,7 @@ def run_main():
              virtual=virtual,
          )),
         ('ide', link(ide_open, root=root)),
-        ('plan', link(action, root=root, plan=args['plan'], verbose=verbose)),
+        ('plan', link(action, root=root, plan=args['plan'])),
     ])
 
     for argument, process in workmap.items():
