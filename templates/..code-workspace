@@ -1,9 +1,6 @@
 {
     "folders": [
-        {
-            "name": "{%NAME%}",
-            "path": "."
-        }
+        "{%FOLDERS%}"
     ],
     "settings": {
         "files.exclude": {

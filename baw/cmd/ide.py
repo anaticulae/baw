@@ -12,6 +12,7 @@ import os
 from os.path import exists
 from os.path import join
 
+import baw.config
 from baw.resources import CODE_WORKSPACE as TEMPLATE
 from baw.resources import CONFTEST_TEMPLATE
 from baw.resources import ISORT_TEMPLATE
@@ -40,13 +41,27 @@ def ide_open(root: str):
     return completed
 
 
-def generate_workspace(root: str):
+def generate_workspace(root: str, packages: tuple = None):
+    name = baw.config.name(root)
     output = workspace_configuration(root)
     rcfile = forward_slash(RCFILE_PATH)
     isortfile = sort_configuration(root)
 
-    replaced = template_replace(root, TEMPLATE, rcfile=rcfile, isort=isortfile)
+    if packages is None:
+        folders = """\
+            {
+                "name": "%s",
+                "path": "."
+            }
+        """ % name
 
+    replaced = template_replace(
+        root,
+        TEMPLATE,
+        folders=folders,
+        rcfile=rcfile,
+        isort=isortfile,
+    )
     file_replace(output, replaced)
 
 
