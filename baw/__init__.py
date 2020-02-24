@@ -49,7 +49,7 @@ from baw.utils import print_runtime
 __version__ = '0.12.0'
 
 
-def run_main():  # pylint:disable=R1260
+def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
     start = time()
     args = parse()
     if not any(args.values()):
@@ -74,6 +74,12 @@ def run_main():  # pylint:disable=R1260
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
             init_args = get_init_args(args)
             project_init(root, *init_args)
+
+    if args['ide']:
+        packages = tuple(args['ide']) if args['ide'] != [None] else None
+        returncode = ide_open(root=root, packages=packages)
+        if returncode:
+            return returncode
 
     # project must be init, if not, derminate here
     with handle_error(ValueError, code=FAILURE):
@@ -136,7 +142,6 @@ def run_main():  # pylint:disable=R1260
              verbose=verbose,
              virtual=virtual,
          )),
-        ('ide', link(ide_open, root=root)),
         ('plan', link(action, root=root, plan=args['plan'])),
     ])
 

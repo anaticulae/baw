@@ -29,19 +29,31 @@ from baw.utils import tmp
 WORKSPACE_NAME = '..code-workspace'
 
 
-def ide_open(root: str):
+def ide_open(root: str, packages: tuple = None) -> int:
     """Generate vscode workspace and run afterwards"""
     logging('generate')
-    generate_workspace(root)
+    generate_workspace(root, packages=packages)
     generate_sort_config(root)
     generate_conftest(root)
 
     logging('open')
-    completed = start(root)
-    return completed
+    returncode = start(root)
+    return returncode
 
 
 def generate_workspace(root: str, packages: tuple = None):
+    """Generate workspace configuration depending on selected
+    `packages`. Packages enables to generate only a part of the
+    project.
+
+    If package is None, all folders of the project are included.
+    If package is given as a tuple, the package folder, test folder,
+    docs and resources is generated.
+
+    Args:
+        root(str): path to project root
+        packages(tuple): tuple of packages
+    """
     name = baw.config.name(root)
     output = workspace_configuration(root)
     rcfile = forward_slash(RCFILE_PATH)
@@ -54,6 +66,21 @@ def generate_workspace(root: str, packages: tuple = None):
                 "path": "."
             }
         """ % name
+    else:
+        packages = sorted(packages)
+        todo = []
+        for item in packages:
+            todo.append((item, item))
+            todo.append(('tests', f'tests/{item}_'))
+        todo.append(('docs', 'docs'))
+        todo.append(('resources', 'tests/resources'))
+        folders = []
+        for (name, path) in todo:
+            if not os.path.exists(path):
+                baw.utils.logging_error(f'{path} does not exists')
+                continue
+            folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))
+        folders = baw.utils.NEWLINE.join(folders)  # pylint:disable=R0204
 
     replaced = template_replace(
         root,

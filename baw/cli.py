@@ -31,7 +31,14 @@ CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
 CLEAN_VENV = Command(
     longcut='--clean_venv', message='Clean virtual environment')
 DOC = Command(longcut='--doc', message='Generate documentation with Sphinx')
-IDE = Command(longcut='--ide', message='Generate workspace and open vscode')
+IDE = Command(
+    longcut='--ide',
+    message='generate workspace and open vscode',
+    args={
+        'nargs': '?',
+        'dest': 'ide',
+        'action': 'append',
+    })
 LINT = Command(
     longcut='--lint',
     message='Run statical code analysis.',
