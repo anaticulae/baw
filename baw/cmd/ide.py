@@ -19,11 +19,13 @@ from baw.resources import ISORT_TEMPLATE
 from baw.resources import RCFILE_PATH
 from baw.resources import template_replace
 from baw.runtime import run_target
+from baw.utils import FAILURE
 from baw.utils import file_create
 from baw.utils import file_read
 from baw.utils import file_replace
 from baw.utils import forward_slash
 from baw.utils import logging
+from baw.utils import logging_error
 from baw.utils import tmp
 
 WORKSPACE_NAME = '..code-workspace'
@@ -31,6 +33,12 @@ WORKSPACE_NAME = '..code-workspace'
 
 def ide_open(root: str, packages: tuple = None) -> int:
     """Generate vscode workspace and run afterwards"""
+    detected = determine_root(root)
+    if detected is None:
+        logging_error(f'could not locate .baw project in: {root}')
+        return FAILURE
+    root = detected
+
     logging('generate')
     generate_workspace(root, packages=packages)
     generate_sort_config(root)
@@ -134,3 +142,12 @@ def sort_configuration(root: str):
 def workspace_configuration(root: str):
     """Path to generated workspace configuration"""
     return forward_slash(join(root, '..code-workspace'))
+
+
+def determine_root(path) -> str:
+    current = str(path)
+    while not os.path.exists(os.path.join(current, '.baw')):
+        current, base = os.path.split(current)
+        if not str(base).strip():
+            return None
+    return current
