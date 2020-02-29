@@ -12,6 +12,7 @@ the user and start the ide afterwards. """
 import os
 
 import baw.config
+import baw.project
 import baw.resources
 import baw.runtime
 import baw.utils
@@ -20,8 +21,8 @@ WORKSPACE_NAME = '..code-workspace'
 
 
 def ide_open(root: str, packages: tuple = None) -> int:
-    """Generate vscode workspace and run afterwards"""
-    detected = determine_root(root)
+    """Generate vscode workspace and run afterwards."""
+    detected = baw.project.determine_root(root)
     if detected is None:
         baw.utils.logging_error(f'could not locate .baw project in: {root}')
         return baw.utils.FAILURE
@@ -135,12 +136,3 @@ def sort_configuration(root: str) -> str:
 def workspace_configuration(root: str):
     """Path to generated workspace configuration"""
     return baw.utils.forward_slash(os.path.join(root, '..code-workspace'))
-
-
-def determine_root(path) -> str:
-    current = str(path)
-    while not os.path.exists(os.path.join(current, '.baw')):
-        current, base = os.path.split(current)
-        if not str(base).strip():
-            return None
-    return current

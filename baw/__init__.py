@@ -35,7 +35,7 @@ from baw.execution import publish
 from baw.execution import run
 from baw.git import git_add
 from baw.git import update_gitignore
-from baw.project import find_root
+from baw.project import determine_root
 from baw.runtime import create as create_venv
 from baw.utils import FAILURE
 from baw.utils import PLAINOUTPUT
@@ -81,11 +81,9 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
         if returncode:
             return returncode
 
-    # project must be init, if not, derminate here
-    with handle_error(ValueError, code=FAILURE):
-        # if cwd is in child location of the project, the root is set to
-        # project root
-        root = find_root(os.getcwd())
+    root = determine_root(os.getcwd())
+    if root is None:
+        return FAILURE
 
     link = partial
 
