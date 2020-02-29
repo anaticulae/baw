@@ -6,27 +6,15 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""The purpose of this module is to setup the development environment of the
-user and start the ide afterwards. """
+"""The purpose of this module is to setup the development environment of
+the user and start the ide afterwards. """
+
 import os
-from os.path import exists
-from os.path import join
 
 import baw.config
-from baw.resources import CODE_WORKSPACE as TEMPLATE
-from baw.resources import CONFTEST_TEMPLATE
-from baw.resources import ISORT_TEMPLATE
-from baw.resources import RCFILE_PATH
-from baw.resources import template_replace
-from baw.runtime import run_target
-from baw.utils import FAILURE
-from baw.utils import file_create
-from baw.utils import file_read
-from baw.utils import file_replace
-from baw.utils import forward_slash
-from baw.utils import logging
-from baw.utils import logging_error
-from baw.utils import tmp
+import baw.resources
+import baw.runtime
+import baw.utils
 
 WORKSPACE_NAME = '..code-workspace'
 
@@ -35,16 +23,16 @@ def ide_open(root: str, packages: tuple = None) -> int:
     """Generate vscode workspace and run afterwards"""
     detected = determine_root(root)
     if detected is None:
-        logging_error(f'could not locate .baw project in: {root}')
-        return FAILURE
+        baw.utils.logging_error(f'could not locate .baw project in: {root}')
+        return baw.utils.FAILURE
     root = detected
 
-    logging('generate')
+    baw.utils.logging('generate')
     generate_workspace(root, packages=packages)
     generate_sort_config(root)
     generate_conftest(root)
 
-    logging('open')
+    baw.utils.logging('open')
     returncode = start(root)
     return returncode
 
@@ -64,7 +52,7 @@ def generate_workspace(root: str, packages: tuple = None):
     """
     name = baw.config.name(root)
     output = workspace_configuration(root)
-    rcfile = forward_slash(RCFILE_PATH)
+    rcfile = baw.utils.forward_slash(baw.resources.RCFILE_PATH)
     isortfile = sort_configuration(root)
 
     if packages is None:
@@ -90,14 +78,14 @@ def generate_workspace(root: str, packages: tuple = None):
             folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))
         folders = baw.utils.NEWLINE.join(folders)  # pylint:disable=R0204
 
-    replaced = template_replace(
+    replaced = baw.resources.template_replace(
         root,
-        TEMPLATE,
+        baw.resources.CODE_WORKSPACE,
         folders=folders,
         rcfile=rcfile,
         isort=isortfile,
     )
-    file_replace(output, replaced)
+    baw.utils.file_replace(output, replaced)
 
 
 def generate_conftest(root: str):
@@ -107,26 +95,29 @@ def generate_conftest(root: str):
     testpath = os.path.join(root, 'tests')
     if not os.path.exists(testpath):
         return
-    output = join(testpath, 'conftest.py')
-    if not exists(output):
-        file_create(output, CONFTEST_TEMPLATE)
+    output = os.path.join(testpath, 'conftest.py')
+    if not os.path.exists(output):
+        baw.utils.file_create(output, baw.resources.CONFTEST_TEMPLATE)
         return
 
-    if len(file_read(output)) < len(CONFTEST_TEMPLATE):
-        file_replace(output, CONFTEST_TEMPLATE)
+    if len(baw.utils.file_read(output)) < len(baw.resources.CONFTEST_TEMPLATE):
+        baw.utils.file_replace(output, baw.resources.CONFTEST_TEMPLATE)
 
 
 def generate_sort_config(root: str):
     output = sort_configuration(root)
-    replaced = template_replace(root, ISORT_TEMPLATE)
-    file_replace(output, replaced)
+    replaced = baw.resources.template_replace(
+        root,
+        baw.resources.ISORT_TEMPLATE,
+    )
+    baw.utils.file_replace(output, replaced)
 
 
 def start(root):
     """Run vscode"""
     output = workspace_configuration(root)
     cmd = f'code {output} &'
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         cmd,
         runtimelog=False,
@@ -135,13 +126,15 @@ def start(root):
     return completed.returncode
 
 
-def sort_configuration(root: str):
-    return forward_slash(join(tmp(root), '.isort.cfg'))
+def sort_configuration(root: str) -> str:
+    config = os.path.join(baw.utils.tmp(root), '.isort.cfg')
+    forward = baw.utils.forward_slash(config)
+    return forward
 
 
 def workspace_configuration(root: str):
     """Path to generated workspace configuration"""
-    return forward_slash(join(root, '..code-workspace'))
+    return baw.utils.forward_slash(os.path.join(root, '..code-workspace'))
 
 
 def determine_root(path) -> str:
