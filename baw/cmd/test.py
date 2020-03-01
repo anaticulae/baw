@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import os
 from os import environ
 from os.path import exists
 from os.path import join
@@ -178,6 +179,9 @@ def create_test_cmd(
     manual_parameter = manual_parameter.replace('+', '-')
 
     generate_only = '--collect-only' if generate_only else ''
+
+    # set to root to run doctests for all subproject's
+    test_dir = root
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     cmd = 'python -m pytest -c %s %s %s %s %s %s --basetemp=%s %s'
