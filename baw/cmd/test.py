@@ -69,7 +69,7 @@ def run_test(  # pylint:disable=R0914
     """
     check_root(root)
 
-    logging('running tests')
+    logging('tests')
     testdir, testenv = setup_testenvironment(
         root,
         fast=fast,
