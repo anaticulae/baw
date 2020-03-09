@@ -184,7 +184,8 @@ def create_test_cmd(
     test_dir = root
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
-    cmd = 'python -m pytest -c %s %s %s %s %s %s --basetemp=%s %s'
+    cache_dir = os.path.join(tmp_, 'pytest_cache')
+    cmd = 'python -m pytest -c %s %s %s %s %s %s --basetemp=%s -o cache_dir=%s %s'
     cmd = cmd % (
         PYTEST_INI,
         manual_parameter,
@@ -193,6 +194,7 @@ def create_test_cmd(
         cov,
         generate_only,
         tmp_testpath,
+        cache_dir,
         test_dir,
     )
     return cmd
