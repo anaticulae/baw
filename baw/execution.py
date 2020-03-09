@@ -36,9 +36,10 @@ def publish(root: str):
         logging_error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
 
-    adress, internal, _ = get_setup()
-    url = '%s:%d' % (adress, internal)
-    command = 'python setup.py sdist upload -r %s' % url
+    adress, internal_port, _ = get_setup()
+    url = f'{adress}:{internal_port}'
+    distribution = 'bdist_wheel --universal'
+    command = f'python setup.py {distribution} upload -r {url}'
     completed = run_target(
         root,
         command,
