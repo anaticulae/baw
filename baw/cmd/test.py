@@ -155,7 +155,7 @@ PYTEST_INI = join(ROOT, 'templates/pytest.ini')
 
 def create_test_cmd(
         root,
-        test_dir,
+        testdir,  # TODO: REMOVE?
         pdb,
         coverage,
         quiet,
@@ -168,8 +168,9 @@ def create_test_cmd(
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
 
-    tmp_ = tmp(root)
-    tmp_testpath = join(tmp_, 'test_%s' % current(seconds=True, separator='_'))
+    tmpdir = tmp(root)
+    tmp_testpath = join(tmpdir,
+                        'test_%s' % current(seconds=True, separator='_'))
     if exists(tmp_testpath):
         # remove test folder if exists
         rmtree(tmp_testpath)
@@ -181,22 +182,15 @@ def create_test_cmd(
     generate_only = '--collect-only' if generate_only else ''
 
     # set to root to run doctests for all subproject's
-    test_dir = root
+    testdir = root
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
-    cache_dir = os.path.join(tmp_, 'pytest_cache')
-    cmd = 'python -m pytest -c %s %s %s %s %s %s --basetemp=%s -o cache_dir=%s %s'
-    cmd = cmd % (
-        PYTEST_INI,
-        manual_parameter,
-        override_testconfig,
-        debugger,
-        cov,
-        generate_only,
-        tmp_testpath,
-        cache_dir,
-        test_dir,
-    )
+    cachedir = os.path.join(tmpdir, 'pytest_cache')
+
+    cmd = (f'python -m pytest -c {PYTEST_INI} {manual_parameter} '
+           f'{override_testconfig} {debugger} {cov} {generate_only} '
+           f'--basetemp={tmp_testpath} '
+           f'-o cache_dir={cachedir} {testdir}')
     return cmd
 
 
