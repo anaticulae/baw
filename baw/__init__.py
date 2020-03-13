@@ -130,7 +130,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
         ('doc', link(doc, root=root, virtual=virtual, verbose=verbose)),
         ('install', link(install, root=root, virtual=virtual)),
         ('release', link(release, root=root, release_type=args['release'])),
-        ('publish', link(publish, root=root)),
+        ('publish', link(publish, root=root, verbose=verbose)),
         ('run', link(run, root=root, virtual=virtual)),
         ('lint',
          link(

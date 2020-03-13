@@ -25,13 +25,14 @@ SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
                         '(https://pypi.org/p/twine/)')
 
 
-def publish(root: str):
+def publish(root: str, verbose: bool = False):
     """Push release to defined repository
 
     Hint:
         publish run's always in virtual environment
     """
-    tag = git_headtag(root, virtual=True)
+    logging('publish start')
+    tag = git_headtag(root, virtual=False, verbose=verbose)
     if not tag:
         logging_error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
@@ -40,17 +41,19 @@ def publish(root: str):
     url = f'{adress}:{internal_port}'
     distribution = 'bdist_wheel --universal'
     command = f'python setup.py {distribution} upload -r {url}'
+    if verbose:
+        logging(f'build distribution: {command}')
     completed = run_target(
         root,
         command,
         root,
-        verbose=False,
+        verbose=verbose,
         skip_error_message=[SDIST_UPLOAD_WARNING],
         virtual=True,
     )
 
     if completed.returncode == SUCCESS:
-        logging('Publish completed')
+        logging('publish completed')
     return completed.returncode
 
 
