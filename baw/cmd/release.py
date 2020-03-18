@@ -98,7 +98,9 @@ def release(
         completed = run_target(root, cmd, verbose=verbose)
         logging(completed.stdout)
         if NO_RELEASE_MESSAGE in completed.stdout:
-            logging_error('Abort release')
+            logging_error('abort release')
+            logging('ensure that some (feat) are commited')
+            logging('use: `baw --release=minor` to force release')
             return FAILURE
 
     if completed.returncode:
