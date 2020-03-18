@@ -75,8 +75,9 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     # Create html result
     build_options = ' '.join([
         # '-vvvv ',
-        # '-n',  # warn about all missing references
-        # '-W',  # turn warning into error
+        '-n',  # warn about all missing references
+        '-W',  # turn warning into error
+        '--keep-going',
         # '-b coverage',  # TODO: Check autodoc package
         '-j 8'
     ])
