@@ -35,7 +35,7 @@ assert exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
 ISORT_PATH = join(TEMPLATES, '.isort.cfg')
 assert exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
 
-CONFTEST_PATH = join(TEMPLATES, 'conftest.py')
+CONFTEST_PATH = join(TEMPLATES, 'conftest.tpy')
 assert exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
 
 README = """# {%SHORT%}
