@@ -54,6 +54,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
     args = parse()
     if not any(args.values()):
         return SUCCESS
+    cwd = os.getcwd()
 
     if args['version']:
         logging(__version__)
@@ -116,7 +117,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
     ret = 0
     workmap = OrderedDict([
         ('open', link(open_this, root=root)),
-        ('clean', link(clean_project, root=root)),
+        ('clean', link(clean_project, root=cwd)),
         ('sync',
          link(
              sync,
