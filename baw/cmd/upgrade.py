@@ -29,11 +29,17 @@ def upgrade(
     with baw.git.git_stash(root, verbose=verbose, virtual=virtual):
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
+        requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
+
+        failure_dev = REQUIREMENTS_UP_TO_DATE
+        if os.path.exists(requirements_dev):
+            failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
+
         # requirements.txt is uptodate, no update requireded
-        if failure == REQUIREMENTS_UP_TO_DATE:
+        if failure == REQUIREMENTS_UP_TO_DATE and failure_dev == REQUIREMENTS_UP_TO_DATE:
             return baw.utils.SUCCESS
 
-        if failure:
+        if failure or (failure_dev != REQUIREMENTS_UP_TO_DATE):
             baw.utils.logging_error('Error while upgrading requirements')
             return failure
 
@@ -50,6 +56,9 @@ def upgrade(
             verbose=False,
             virtual='BOTH',  # sync virtual and non virtual environment
         )
+        if requirements_dev:
+            requirements = (requirements, requirements_dev)
+
         if failure:
             # reset requirement
             completed = baw.git.git_checkout(
@@ -60,7 +69,6 @@ def upgrade(
             )
             baw.utils.logging_error('Upgrading failed')
             assert not completed
-
             return failure
 
         failure = baw.git.git_commit(

@@ -60,9 +60,13 @@ def git_commit(root, source, message, verbose: int = 0):
     message = '"%s"' % message
     if verbose:
         logging('git commit')
+    # support multiple files
+    source = ' '.join(source)
     process = run_target(
-        root, 'git commit %s -m %s' % (source, message), verbose=False)
-
+        root,
+        'git commit %s -m %s' % (source, message),
+        verbose=False,
+    )
     return process.returncode
 
 

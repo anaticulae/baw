@@ -28,6 +28,7 @@ BAW_EXT = '.baw'
 TMP = '.tmp'
 
 REQUIREMENTS_TXT = 'requirements.txt'
+REQUIREMENTS_DEV = 'requirements.dev'
 
 SUCCESS = 0
 FAILURE = 1
