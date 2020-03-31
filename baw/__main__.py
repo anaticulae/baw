@@ -10,4 +10,5 @@
 
 import baw
 
-baw.main()
+if __name__ == "__main__":
+    baw.main()

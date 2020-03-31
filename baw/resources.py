@@ -202,7 +202,8 @@ def main():
 MAIN_CMD = COPYRIGHT + """\
 from {%SHORT%}.cli import main
 
-main()
+if __name__ == "__main__":
+    main()
 """
 
 CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
