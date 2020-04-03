@@ -76,6 +76,7 @@ def upgrade(
             root,
             source=requirements,
             message=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',
+            verbose=verbose,
         )
         if failure:
             return failure

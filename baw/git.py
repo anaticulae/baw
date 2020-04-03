@@ -66,7 +66,7 @@ def git_commit(root, source, message, verbose: int = 0):
     process = run_target(
         root,
         'git commit %s -m %s' % (source, message),
-        verbose=False,
+        verbose=verbose,
     )
     return process.returncode
 

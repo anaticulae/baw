@@ -86,17 +86,17 @@ def close(root: str, verbose: bool = False):
     assert current_status == Status.CLOSED, current_status
 
     message = f'releases(plan): close current release plan'
-    commit(root, message)
+    commit(root, message, verbose=verbose)
 
 
-def commit(root: str, message: str):
+def commit(root: str, message: str, verbose: bool = False):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
     baw.git.add(root, pattern=plan)
     process = baw.runtime.run_target(
         root,
         f'git commit -m "{message}"',
-        verbose=False,
+        verbose=verbose,
     )
     assert process.returncode == baw.utils.SUCCESS, process
 
