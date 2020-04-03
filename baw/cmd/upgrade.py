@@ -39,8 +39,9 @@ def upgrade(
         # requirements.txt is uptodate, no update requireded
         if failure == REQUIREMENTS_UP_TO_DATE and failure_dev == REQUIREMENTS_UP_TO_DATE:
             return baw.utils.SUCCESS
-
-        if failure or (failure_dev != REQUIREMENTS_UP_TO_DATE):
+        devupgade_failure = failure_dev not in (REQUIREMENTS_UP_TO_DATE,
+                                                baw.utils.SUCCESS)
+        if failure or devupgade_failure:
             baw.utils.logging_error('Error while upgrading requirements')
             return failure
 
