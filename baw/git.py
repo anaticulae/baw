@@ -61,7 +61,8 @@ def git_commit(root, source, message, verbose: int = 0):
     if verbose:
         logging('git commit')
     # support multiple files
-    source = ' '.join(source)
+    if not isinstance(source, str):
+        source = ' '.join(source)
     process = run_target(
         root,
         'git commit %s -m %s' % (source, message),
