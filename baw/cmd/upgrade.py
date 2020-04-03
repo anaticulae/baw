@@ -30,9 +30,10 @@ def upgrade(
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
         requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
-
+        if not os.path.exists(requirements_dev):
+            requirements_dev = None
         failure_dev = REQUIREMENTS_UP_TO_DATE
-        if os.path.exists(requirements_dev):
+        if requirements_dev:
             failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
 
         # requirements.txt is uptodate, no update requireded
