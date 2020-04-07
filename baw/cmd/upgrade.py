@@ -41,9 +41,11 @@ def upgrade(
             return baw.utils.SUCCESS
         devupgade_failure = failure_dev not in (REQUIREMENTS_UP_TO_DATE,
                                                 baw.utils.SUCCESS)
-        if failure or devupgade_failure:
+        upgrade_failure = failure not in (REQUIREMENTS_UP_TO_DATE,
+                                          baw.utils.SUCCESS)
+        if upgrade_failure or devupgade_failure:
             baw.utils.logging_error('Error while upgrading requirements')
-            return failure
+            return baw.utils.FAILURE
 
         from baw.cmd import sync_and_test
         failure = sync_and_test(
