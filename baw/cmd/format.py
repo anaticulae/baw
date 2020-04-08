@@ -56,6 +56,7 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
         "-ns",  # override default skip of __init__
         "__init__.py",
         "-rc",  # recursive
+        "--line-width 999",  # do not break imports
     ]
     cmd = 'isort %s' % (' '.join(isort))
     return format_(
