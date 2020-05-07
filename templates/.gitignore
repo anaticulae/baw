@@ -21,6 +21,7 @@ tmp
 *.swn
 *.swo
 *.swp
+*.tmp
 ..code-workspace
 .coverage*
 
