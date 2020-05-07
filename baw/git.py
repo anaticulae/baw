@@ -190,6 +190,14 @@ def git_headtag(root: str, virtual: bool, verbose: bool = False):
     return completed.stdout.strip()
 
 
+def git_headhash(root: str) -> str:
+    cmd = 'git rev-parse --verify HEAD'
+    completed = run_target(root, cmd)
+    if completed.returncode:
+        return None
+    return completed.stdout.strip()
+
+
 def update_gitignore(root: str, verbose: bool = False):
     from baw.resources import GITIGNORE
     if verbose:
