@@ -110,10 +110,12 @@ def run_test(  # pylint:disable=R0914
             logging('test data generated')
         if coverage:
             open_report(root)
-        if not testconfig and (longrun or nightly):
+        # do not log partial long running tests as completed
+        complete = (not testconfig) or (testconfig == ['+n=auto'])
+        if complete and (longrun or nightly):
             head = baw.git.git_headhash(root)
             if head:
-                tested(root, head)
+                mark_tested(root, head)
     if completed.returncode == NO_TEST_TO_RUN:
         # override pytest error code
         return SUCCESS
@@ -252,7 +254,7 @@ def collect_cov_sources(root: str) -> str:
 
 
 def test_archive_path(root: str) -> str:
-    return os.path.join(root, '.baw/tested.lookup')
+    return os.path.join(root, '.baw/tested.tmp')
 
 
 def tested(root: str, hashed: str) -> bool:
@@ -272,6 +274,7 @@ def mark_tested(root: str, hashed: str) -> bool:
     assert hashed.strip(), 'require hashed value'
     if tested(root, hashed):
         return True
+
     archive = test_archive_path(root)
     writer = baw.utils.file_append if os.path.exists(archive) else baw.utils.file_create # yapf:disable
     writer(archive, hashed)

@@ -192,7 +192,7 @@ def git_headtag(root: str, virtual: bool, verbose: bool = False):
 
 def git_headhash(root: str) -> str:
     cmd = 'git rev-parse --verify HEAD'
-    completed = run_target(root, cmd)
+    completed = run_target(root, cmd, verbose=False)
     if completed.returncode:
         return None
     return completed.stdout.strip()

@@ -15,6 +15,7 @@ from re import match
 from tempfile import TemporaryFile
 
 import baw.cmd
+import baw.cmd.test
 import baw.config
 from baw.config import shortcut
 from baw.git import git_checkout
@@ -73,20 +74,24 @@ def release(
     if ret:
         return ret
 
-    ret = baw.cmd.sync_and_test(
-        root,
-        generate=True,
-        longrun=True,
-        packages='dev',
-        stash=stash,
-        sync=sync,
-        test=test,
-        testconfig=['-n', 'auto'],
-        verbose=verbose,
-        virtual=virtual,
-    )
-    if ret:
-        return ret
+    hashed = baw.git.git_headhash(root)
+    if not hashed or not baw.cmd.test.tested(root, hashed):
+        ret = baw.cmd.sync_and_test(
+            root,
+            generate=True,
+            longrun=True,
+            packages='dev',
+            stash=stash,
+            sync=sync,
+            test=test,
+            testconfig=['-n', 'auto'],
+            verbose=verbose,
+            virtual=virtual,
+        )
+        if ret:
+            return ret
+    else:
+        logging('release was already tested successfully')
 
     logging("Update version tag")
     with temp_semantic_config(root) as config:
