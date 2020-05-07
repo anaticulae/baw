@@ -16,7 +16,7 @@ import baw.utils
 def open_this(root: str):
     path = os.getcwd()
 
-    cmd = 'explorer %s' % path
+    cmd = f'explorer {path}'
     completed = baw.runtime.run_target(
         root,
         cmd,

@@ -14,9 +14,7 @@ minimal:
 
 * all: every check out of RCFILE_PATH is executed
 * todo: only todos are collected
-* minimal: everything expect of todo is collected
-
-"""
+* minimal: everything expect of todo is collected"""
 
 import enum
 import os
