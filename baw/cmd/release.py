@@ -14,6 +14,7 @@ from os.path import join
 from re import match
 from tempfile import TemporaryFile
 
+import baw.archive.test
 import baw.cmd
 import baw.cmd.test
 import baw.config
@@ -75,7 +76,7 @@ def release(
         return ret
 
     hashed = baw.git.git_headhash(root)
-    if not hashed or not baw.cmd.test.tested(root, hashed):
+    if not hashed or not baw.archive.test.tested(root, hashed):
         ret = baw.cmd.sync_and_test(
             root,
             generate=True,

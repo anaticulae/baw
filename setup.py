@@ -82,6 +82,7 @@ if __name__ == "__main__":
         },
         packages=[
             'baw',
+            'baw.archive',
             'baw.cmd',
             'baw.project',
         ],
