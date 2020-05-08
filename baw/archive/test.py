@@ -33,9 +33,9 @@ def mark_tested(root: str, hashed: str) -> bool:
     assert hashed.strip(), 'require hashed value'
     if tested(root, hashed):
         return True
-
     archive = test_archive_path(root)
-
+    # add newline to separate hash values in file
+    hashed = f'{hashed}\n'
     if os.path.exists(archive):
         baw.utils.file_append(archive, hashed)
     else:
