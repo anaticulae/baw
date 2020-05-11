@@ -14,6 +14,7 @@ from shutil import rmtree
 from webbrowser import open_new
 
 import baw.archive.test
+import baw.config
 import baw.utils
 from baw.config import minimal_coverage
 from baw.config import sources
@@ -189,7 +190,9 @@ def create_test_cmd(
     generate_only = '--collect-only' if generate_only else ''
 
     # set to root to run doctests for all subproject's
-    testdir = root
+    testdir = str(os.path.join(root, 'tests'))
+
+    doctests = ' '.join(baw.config.sources(root))
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     cachedir = os.path.join(tmpdir, 'pytest_cache')
@@ -197,7 +200,7 @@ def create_test_cmd(
     cmd = (f'python -m pytest -c {PYTEST_INI} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} '
-           f'-o cache_dir={cachedir} {testdir}')
+           f'-o cache_dir={cachedir} {testdir} {doctests}')
     return cmd
 
 
