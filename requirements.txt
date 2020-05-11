@@ -1,0 +1,26 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019-2020 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+# baw --format
+yapf==0.26.0 # format source code
+isort==4.3.15 # format imports
+
+# baw --lint
+pylint==2.3.1
+
+# baw --doc
+Sphinx==1.8.5
+
+#baw --test
+pytest==4.3.1
+pytest-cov==2.6.1
+pytest-xdist==1.26.1
+
+# baw --release
+python-semantic-release==4.1.2 # TODO: Helmut's custom version. Replace with official release.
