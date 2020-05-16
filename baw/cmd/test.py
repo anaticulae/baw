@@ -16,8 +16,6 @@ from webbrowser import open_new
 import baw.archive.test
 import baw.config
 import baw.utils
-from baw.config import minimal_coverage
-from baw.config import sources
 from baw.datetime import current
 from baw.git import git_stash
 from baw.runtime import run_target
@@ -224,7 +222,7 @@ def cov_args(root: str, *, pdb: bool) -> str:
     if no_cov:
         logging('Disable coverage report')
 
-    min_cov = minimal_coverage(root)
+    min_cov = baw.config.minimal_coverage(root)
 
     cov_sources = collect_cov_sources(root)
     cov = (f'--cov-config={cov_config} {cov_sources} '
@@ -241,7 +239,7 @@ def collect_cov_sources(root: str) -> str:
     Returns:
         list of --cov= collected from `source` cfg
     """
-    project_sources = sources(root)
+    project_sources = baw.config.sources(root)
     ret = 0
     cov_sources = ''
     for item in project_sources:
