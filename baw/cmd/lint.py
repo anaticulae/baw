@@ -70,8 +70,18 @@ def lint(
 
     testpath = os.path.join(root, 'tests')
     linttest = testpath if os.path.exists(testpath) else ''
+    run_in = f'{code} {linttest} '
 
-    cmd = f'pylint {code} {linttest} '
+    # TODO: ADD TO RETURNCODE LATER
+    bandit(root, run_in, virtual, log_always, verbose)
+
+    returncode = pylint(root, scope, run_in, virtual, log_always, verbose)
+
+    return returncode
+
+
+def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
+    cmd = f'pylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={RCFILE_PATH} '
     if scope == Scope.MINIMAL:
@@ -80,6 +90,22 @@ def lint(
         cmd += '-d W0511'
     if scope == Scope.TODO:
         cmd += '--disable=all --enable=W0511'
+    completed = run_target(
+        root,
+        cmd,
+        cwd=root,
+        virtual=virtual,
+        verbose=verbose,
+    )
+    if log_always or completed.returncode:
+        logging(completed.stderr)
+        logging(completed.stdout)
+    return completed.returncode
+
+
+def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
+    cmd = f'bandit {run_in} -r '
+    cmd += '--skip B101 '  # skip assert is used
 
     completed = run_target(
         root,
@@ -88,8 +114,10 @@ def lint(
         virtual=virtual,
         verbose=verbose,
     )
-
-    if log_always or completed.returncode:
+    if completed.returncode:
         logging(completed.stderr)
         logging(completed.stdout)
+    else:
+        if log_always:
+            logging('bandit complete')
     return completed.returncode
