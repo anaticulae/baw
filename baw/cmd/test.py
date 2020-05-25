@@ -9,7 +9,6 @@
 
 import os
 import shutil
-import webbrowser
 
 import baw.archive.test
 import baw.config
@@ -116,7 +115,7 @@ def run_test(  # pylint:disable=R0914
 def open_report(root: str):
     """Open test coverage report after successful test-run"""
     url = os.path.join(baw.utils.tmp(root), 'report/index.html')
-    webbrowser.open_new(url)
+    baw.utils.openbrowser(url)
 
 
 def setup_testenvironment(

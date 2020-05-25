@@ -8,7 +8,9 @@
 #==============================================================================
 
 import contextlib
+import os
 import sys
+import webbrowser
 from os import chmod
 from os import environ
 from os import makedirs
@@ -242,3 +244,10 @@ def skip(msg: str):
 @contextlib.contextmanager
 def empty(*args, **kwargs):  # pylint:disable=W0613
     yield
+
+
+def openbrowser(url: str):
+    if 'PYTEST_CURRENT_TEST' in os.environ:
+        # running with pytest do not open webbrowser
+        return
+    webbrowser.open_new(url)

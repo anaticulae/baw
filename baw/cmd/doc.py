@@ -6,8 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import os
-import webbrowser
 
 import baw.utils
 from baw.resources import DOC_CONF
@@ -96,14 +96,9 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
         virtual=virtual,
         verbose=verbose,
     )
-    if 'PYTEST_CURRENT_TEST' in os.environ:
-        # running with pytest do not open webbrowser
-        return result.returncode
-
     if result.returncode == baw.utils.SUCCESS:
         url = os.path.join(htmloutput, 'index.html')
-        webbrowser.open_new(url)
-
+        baw.utils.openbrowser(url)
     return result.returncode
 
 
