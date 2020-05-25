@@ -6,26 +6,17 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import os
-from os import environ
-from os.path import exists
-from os.path import join
-from shutil import rmtree
-from webbrowser import open_new
+import shutil
+import webbrowser
 
 import baw.archive.test
 import baw.config
+import baw.datetime
+import baw.git
+import baw.runtime
 import baw.utils
-from baw.datetime import current
-from baw.git import git_stash
-from baw.runtime import run_target
-from baw.utils import FAILURE
-from baw.utils import ROOT
-from baw.utils import SUCCESS
-from baw.utils import check_root
-from baw.utils import logging
-from baw.utils import logging_error
-from baw.utils import tmp
 
 # pytest returncode when runnining without tests
 # from _pytest.main import EXIT_NOTESTSCOLLECTED
@@ -67,9 +58,9 @@ def run_test(  # pylint:disable=R0914
     Returns:
         returncode(int): 0 if successful else > 0
     """
-    check_root(root)
+    baw.utils.check_root(root)
 
-    logging('tests')
+    baw.utils.logging('tests')
     testdir, testenv = setup_testenvironment(
         root,
         fast=fast,
@@ -90,9 +81,9 @@ def run_test(  # pylint:disable=R0914
         generate_only=generate_only,
     )
 
-    environment = git_stash if stash else baw.utils.empty
+    environment = baw.git.git_stash if stash else baw.utils.empty
     with environment(root, verbose=verbose, virtual=virtual):
-        completed = run_target(
+        completed = baw.runtime.run_target(
             root,
             cmd,
             cwd=root,  # to include project code(namespace) into syspath
@@ -104,10 +95,10 @@ def run_test(  # pylint:disable=R0914
             virtual=virtual,
         )
 
-    if completed.returncode == SUCCESS:
+    if completed.returncode == baw.utils.SUCCESS:
         if generate_only:
             # do not write log of collect tests
-            logging('test data generated')
+            baw.utils.logging('test data generated')
         if coverage:
             open_report(root)
         # do not log partial long running tests as completed
@@ -118,14 +109,14 @@ def run_test(  # pylint:disable=R0914
                 baw.archive.test.mark_tested(root, head)
     if completed.returncode == NO_TEST_TO_RUN:
         # override pytest error code
-        return SUCCESS
+        return baw.utils.SUCCESS
     return completed.returncode
 
 
 def open_report(root: str):
     """Open test coverage report after successful test-run"""
-    url = join(tmp(root), 'report/index.html')
-    open_new(url)
+    url = os.path.join(baw.utils.tmp(root), 'report/index.html')
+    webbrowser.open_new(url)
 
 
 def setup_testenvironment(
@@ -135,12 +126,12 @@ def setup_testenvironment(
         nightly: bool,
         generate: bool,
 ):
-    testdir = join(root, 'tests')
-    if not exists(testdir):
-        logging_error('No testdirectory %s available' % testdir)
-        exit(FAILURE)
+    testdir = os.path.join(root, 'tests')
+    if not os.path.exists(testdir):
+        baw.utils.logging_error('No testdirectory %s available' % testdir)
+        exit(baw.utils.FAILURE)
 
-    env = dict(environ.items())
+    env = dict(os.environ.items())
     if longrun:
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
     if fast:
@@ -156,10 +147,10 @@ def setup_testenvironment(
     return testdir, env
 
 
-PYTEST_INI = join(ROOT, 'templates/pytest.ini')
+PYTEST_INI = os.path.join(baw.utils.ROOT, 'templates/pytest.ini')
 
 
-def create_test_cmd(
+def create_test_cmd(  # pylint:disable=R0914
         root,
         testdir,  # TODO: REMOVE?
         pdb,
@@ -169,7 +160,7 @@ def create_test_cmd(
         generate_only,
 ):
     # using ROOT to get location from baw-tool
-    assert exists(PYTEST_INI), 'No testconfig available %s' % PYTEST_INI
+    assert os.path.exists(PYTEST_INI), 'No testconfig available %s' % PYTEST_INI
 
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
@@ -179,7 +170,7 @@ def create_test_cmd(
     tmp_testpath = os.path.join(tmpdir, testfolder)
     if os.path.exists(tmp_testpath):
         # remove test folder if exists
-        rmtree(tmp_testpath)
+        shutil.rmtree(tmp_testpath)
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
 
     manual_parameter = ' '.join(parameter) if parameter else ''
@@ -214,15 +205,15 @@ def cov_args(root: str, *, pdb: bool) -> str:
     Returns:
         args for coverage command
     """
-    output = join(tmp(root), 'report')
-    cov_config = join(ROOT, 'templates', '.coveragerc')
-    assert exists(cov_config)
+    output = os.path.join(baw.utils.tmp(root), 'report')
+    cov_config = os.path.join(baw.utils.ROOT, 'templates', '.coveragerc')
+    assert os.path.exists(cov_config)
 
     #   --no-cov  Disable coverage report completely (useful for
     #             debuggers) default: False
     no_cov = '--no-cov ' if pdb else ''
     if no_cov:
-        logging('Disable coverage report')
+        baw.utils.logging('Disable coverage report')
 
     min_cov = baw.config.minimal_coverage(root)
 
@@ -245,10 +236,10 @@ def collect_cov_sources(root: str) -> str:
     ret = 0
     cov_sources = ''
     for item in project_sources:
-        code_path = join(root, item)
-        if not exists(code_path):
+        code_path = os.path.join(root, item)
+        if not os.path.exists(code_path):
             msg = 'Path %s from `project.cfg` does not exist' % code_path
-            logging_error(msg)
+            baw.utils.logging_error(msg)
             ret += 1
             continue
         cov_sources += '--cov=%s ' % code_path
