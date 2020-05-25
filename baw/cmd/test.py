@@ -174,10 +174,10 @@ def create_test_cmd(
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
 
-    tmpdir = tmp(root)
-    tmp_testpath = join(tmpdir,
-                        'test_%s' % current(seconds=True, separator='_'))
-    if exists(tmp_testpath):
+    tmpdir = baw.utils.tmp(root)
+    testfolder = 'test_%s' % baw.datetime.current(seconds=True, separator='_')
+    tmp_testpath = os.path.join(tmpdir, testfolder)
+    if os.path.exists(tmp_testpath):
         # remove test folder if exists
         rmtree(tmp_testpath)
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
@@ -195,10 +195,12 @@ def create_test_cmd(
     # --basetemp define temp directory where the tests run
     cachedir = os.path.join(tmpdir, 'pytest_cache')
 
+    testlog = os.path.join(tmpdir, f'{testfolder}.log')
+
     cmd = (f'python -m pytest -c {PYTEST_INI} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} '
-           f'-o cache_dir={cachedir} {testdir} {doctests}')
+           f'-o cache_dir={cachedir} {testdir} {doctests} | tee {testlog}')
     return cmd
 
 
