@@ -54,12 +54,12 @@ def handle_error(*exceptions: list, code: int = 1):
     """
     try:
         yield
-    except exceptions as error:
-        logging_error(error)
+    except exceptions as failure:
+        error(failure)
         exit(code)
 
 
-def logging(msg: str = '', end: str = NEWLINE):
+def log(msg: str = '', end: str = NEWLINE):
     """Write message to logger
 
     Args:
@@ -72,12 +72,16 @@ def logging(msg: str = '', end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
-def logging_error(msg: str):
+def error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
     print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
 
+
+# backward compatibility
+logging = log  # pylint:disable=C0103
+logging_error = error  # pylint:disable=C0103
 
 PLAINOUTPUT = 'PLAINOUTPUT'
 SAVEGUARD = 'IAMTHESAVEGUARDXYXYXYXYXYXYXYXYXYXYXY'
@@ -108,8 +112,8 @@ def get_setup():
         internal = int(environ['HELPY_INT_PORT'])
         external = int(environ['HELPY_EXT_PORT'])
         return (adress, internal, external)
-    except KeyError as error:
-        logging_error('Missing global var %s' % error)
+    except KeyError as failure:
+        logging_error(f'Missing global var {failure}')
         exit(FAILURE)
 
 
@@ -118,8 +122,8 @@ def package_address():
         internal = environ['HELPY_INT_DIRECT']
         external = environ['HELPY_EXT_DIRECT']
         return (internal, external)
-    except KeyError as error:
-        logging_error('Missing global var %s' % error)
+    except KeyError as failure:
+        logging_error(f'Missing global var {failure}')
         exit(FAILURE)
 
 
