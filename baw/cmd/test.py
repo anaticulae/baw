@@ -166,6 +166,10 @@ def create_test_cmd(  # pylint:disable=R0914
 
     tmpdir = baw.utils.tmp(root)
     testfolder = 'test_%s' % baw.datetime.current(seconds=True, separator='_')
+    logfolder = os.path.join(tmpdir, 'log')
+    os.makedirs(logfolder, exist_ok=True)
+    logfolder = os.path.join(logfolder, testfolder)
+
     tmp_testpath = os.path.join(tmpdir, testfolder)
     if os.path.exists(tmp_testpath):
         # remove test folder if exists
@@ -185,7 +189,7 @@ def create_test_cmd(  # pylint:disable=R0914
     # --basetemp define temp directory where the tests run
     cachedir = os.path.join(tmpdir, 'pytest_cache')
 
-    testlog = os.path.join(tmpdir, f'{testfolder}.log')
+    testlog = os.path.join(tmpdir, f'{logfolder}.log')
 
     cmd = (f'python -m pytest -c {PYTEST_INI} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
