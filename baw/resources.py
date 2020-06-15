@@ -49,27 +49,7 @@ Every noteable change is logged here.
 LICENCE = """# Licence
 """
 
-BUGS_RST = """\
-.. _bugs:
-
-bugs
-====
-
-open
-----
-
-closed
-------
-"""
-
 CHANGELOG_RST = """.. mdinclude:: ../../CHANGELOG.md
-"""
-
-TODO_RST = """\
-.. _todo:
-
-todo
-====
 """
 
 README_RST = """.. mdinclude:: ../../README.md
@@ -108,14 +88,6 @@ completed
 INDEX_RST = """Welcome to {%NAME%}
 =================================
 
-General
--------
-
-.. toctree::
-  :maxdepth: 1
-
-  bugs
-
 Progress
 --------
 
@@ -125,14 +97,6 @@ Progress
   releases/releases
   releases/backlog
   pages/changelog
-
-Developer
----------
-
-.. toctree::
-  :maxdepth: 1
-
-  todo
 
 Modules
 --------------------
@@ -190,8 +154,10 @@ def main():
     parser = utila.cli.create_parser(
         COMMANDS,
         version=__version__,
-        outputparameter=True,
-        inputparameter=True,
+        config=utila.ParserConfiguration(
+            outputparameter=True,
+            inputparameter=True,
+        ),
     )
     args = utila.parse(parser)
     inputpath, output, _ = utila.sources(args)  # pylint:disable=W0612
@@ -223,12 +189,10 @@ FILES = [
     (GIT_REPO_EXCLUDE, GITIGNORE),
     ('CHANGELOG.md', CHANGELOG),
     ('README.md', README),
-    ('docs/bugs.rst', BUGS_RST),
     ('docs/index.rst', INDEX_RST),
     ('docs/pages/changelog.rst', CHANGELOG_RST),
     ('docs/releases/backlog.rst', BACKLOG_RST),
     ('docs/releases/releases.rst', RELEASE_RST),
-    ('docs/todo.rst', TODO_RST),
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
     (REQUIREMENTS_TXT, REQUIREMENTS),
