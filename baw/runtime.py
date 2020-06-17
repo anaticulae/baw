@@ -188,7 +188,7 @@ def run_target(
         try:
             completed = _run_virtual(
                 root,
-                command,
+                cmd=command,
                 cwd=root,
                 debugging=debugging,
                 env=env,
@@ -311,7 +311,7 @@ def deactivation_path(root: str):
 
 def _run_virtual(
         root: str,
-        command: str,
+        cmd: str,
         cwd: str,
         env: dict = None,
         debugging: bool = False,
@@ -320,7 +320,7 @@ def _run_virtual(
 
     Args:
         root(str): project root to locate `virtual`-folder
-        command(str): command to execute
+        cmd(str): command to execute
         cwd(str): working directoy where command is executed
         env(dict): replace enviroment variables
         debugging(bool): run pdb when error occurs
@@ -332,13 +332,13 @@ def _run_virtual(
     activation = activation_path(root)
     deactivation = deactivation_path(root)
     if not exists(activation):
-        msg = ('Path `%s` does not exists.\n'
-               'Regenerate the virtual env') % activation
+        msg = (f'Path `{activation}` does not exists.\n'
+               'Regenerate the virtual env')
         raise RuntimeError(msg)
 
     start = 'sh' if platform == 'win32' else 'source'
     end = '' if platform == 'win32' else 'source'
-    execute = f'{start} {activation} && {command} && {end} {deactivation}'
+    execute = f'{start} {activation} && {cmd} && {end} {deactivation}'
 
     process = _run(execute, cwd, env=env, debugging=debugging)
     return process
