@@ -105,8 +105,6 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         logging(process.stdout)
         if process.stderr:
             logging_error(process.stderr)
-
-    __fix_environment(root)
     return SUCCESS
 
 
@@ -126,15 +124,6 @@ def patch_pip(root):
     replacement = 'for row in outrows:'
     content = file_read(to_patch).replace(template, replacement)
     file_replace(to_patch, content)
-
-
-def __fix_environment(root: str):
-    path = activation_path(root)
-    content = file_read(path)
-    content = content.split(':END')[0]  # remove content after :END
-
-    file_remove(path)
-    file_create(path, content=content)
 
 
 def run_target(
