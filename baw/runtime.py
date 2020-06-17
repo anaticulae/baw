@@ -300,16 +300,12 @@ def log_result(  # pylint:disable=R1260
 def activation_path(root: str):
     virtual = join(root, VIRTUAL_FOLDER)
     path = join(virtual, 'Scripts', 'activate')
-    if platform == 'win32':
-        path = join(virtual, 'Scripts', 'activate.bat')
     return path
 
 
 def deactivation_path(root: str):
     virtual = join(root, VIRTUAL_FOLDER)
     path = join(virtual, 'Scripts', 'deactivate')
-    if platform == 'win32':
-        path = join(virtual, 'Scripts', 'deactivate.bat')
     return path
 
 
@@ -333,7 +329,6 @@ def _run_virtual(
     Returns:
         CompletedProcess
     """
-    # TODO: Use source ..\virtualenv\Scripts\activate.
     activation = activation_path(root)
     deactivation = deactivation_path(root)
     if not exists(activation):
@@ -341,7 +336,9 @@ def _run_virtual(
                'Regenerate the virtual env') % activation
         raise RuntimeError(msg)
 
-    execute = '%s && %s && %s' % (activation, command, deactivation)
+    start = 'sh' if platform == 'win32' else 'source'
+    end = '' if platform == 'win32' else 'source'
+    execute = f'{start} {activation} && {command} && {end} {deactivation}'
 
     process = _run(execute, cwd, env=env, debugging=debugging)
     return process
