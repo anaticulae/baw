@@ -24,13 +24,17 @@ def upgrade(
         verbose: bool = False,
         virtual: bool = False,
         generate: bool = True,
+        packages: str = 'requirements',
 ) -> int:
-    """Upgrade requirements"""
+    """Upgrade requirements
+
+    force: upgrade dev requirements also
+    """
     with baw.git.git_stash(root, verbose=verbose, virtual=virtual):
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         failure = upgrade_requirements(root)
         requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
-        if not os.path.exists(requirements_dev):
+        if not os.path.exists(requirements_dev) or packages == 'requirements':
             requirements_dev = None
         failure_dev = REQUIREMENTS_UP_TO_DATE
         if requirements_dev:

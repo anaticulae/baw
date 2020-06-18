@@ -95,7 +95,19 @@ SYNC = Command(
             'requirements',
         ],
     })
-UPGRADE = Command(longcut='--upgrade', message='Upgrade requirements.txt')
+UPGRADE = Command(
+    longcut='--upgrade',
+    args={
+        'nargs': '?',
+        'const': 'requirements',
+        'choices': [
+            'dev',
+            'requirements',
+            'all',
+        ],
+    },
+    message='Upgrade requirements.txt',
+)
 TEST = Command(
     longcut='--test',
     message='Run tests and coverage',

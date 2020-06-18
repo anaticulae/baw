@@ -103,6 +103,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
                 verbose=verbose,
                 notests=args['notests'],
                 virtual=True,
+                packages=args['upgrade'],
             ),
         ),
     ])
