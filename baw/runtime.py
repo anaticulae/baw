@@ -21,9 +21,7 @@ from time import time
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import UTF8
-from baw.utils import file_create
 from baw.utils import file_read
-from baw.utils import file_remove
 from baw.utils import file_replace
 from baw.utils import logging
 from baw.utils import logging_error

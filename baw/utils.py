@@ -9,22 +9,14 @@
 
 import contextlib
 import os
+import shutil
+import stat
 import sys
+import time
 import webbrowser
-from os import chmod
-from os import environ
-from os import makedirs
-from os import remove
-from os.path import abspath
-from os.path import dirname
-from os.path import exists
-from os.path import isfile
-from os.path import join
-from shutil import rmtree
-from stat import S_IWRITE
-from time import time
 
-ROOT = abspath(join(dirname(__file__), '..'))  #  Path to installed baw-tool
+#  Path to installed baw-tool
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 BAW_EXT = '.baw'
 TMP = '.tmp'
@@ -92,7 +84,7 @@ SECOND_GUARD = 'OHMANIHAVETGOLEARNMOREPYTHONTHATS'
 
 def forward_slash(content: str, save_newline=True):
     # TODO: HACK
-    if PLAINOUTPUT in environ:
+    if PLAINOUTPUT in os.environ:
         return content
     content = str(content)
     if save_newline:
@@ -110,9 +102,9 @@ def forward_slash(content: str, save_newline=True):
 
 def get_setup():
     try:
-        adress = environ['HELPY_URL']
-        internal = int(environ['HELPY_INT_PORT'])
-        external = int(environ['HELPY_EXT_PORT'])
+        adress = os.environ['HELPY_URL']
+        internal = int(os.environ['HELPY_INT_PORT'])
+        external = int(os.environ['HELPY_EXT_PORT'])
         return (adress, internal, external)
     except KeyError as failure:
         logging_error(f'Missing global var {failure}')
@@ -121,8 +113,8 @@ def get_setup():
 
 def package_address():
     try:
-        internal = environ['HELPY_INT_DIRECT']
-        external = environ['HELPY_EXT_DIRECT']
+        internal = os.environ['HELPY_INT_DIRECT']
+        external = os.environ['HELPY_EXT_DIRECT']
         return (internal, external)
     except KeyError as failure:
         logging_error(f'Missing global var {failure}')
@@ -138,38 +130,38 @@ def tmp(root: str) -> str:
         path to temporary folder
     """
     assert root
-    path = join(root, TMP)
-    makedirs(path, exist_ok=True)
+    path = os.path.join(root, TMP)
+    os.makedirs(path, exist_ok=True)
     return path
 
 
 def check_root(root: str):
-    if not exists(root):
+    if not os.path.exists(root):
         raise ValueError('Project root does not exists' % root)
 
 
 def file_append(path: str, content: str):
-    assert exists(path), str(path)
+    assert os.path.exists(path), str(path)
     with open(path, mode='a', newline=NEWLINE) as fp:
         fp.write(content)
 
 
 def file_create(path: str, content: str = ''):
-    assert not exists(path), str(path)
+    assert not os.path.exists(path), str(path)
     with open(path, mode='w', newline=NEWLINE) as fp:
         fp.write(content)
 
 
 def file_read(path: str):
-    assert exists(path), str(path)
+    assert os.path.exists(path), str(path)
     with open(path, mode='r', newline=NEWLINE) as fp:
         return fp.read()
 
 
 def file_remove(path: str):
-    assert exists(path), str(path)
-    assert isfile(path), str(path)
-    remove(path)
+    assert os.path.exists(path), str(path)
+    assert os.path.isfile(path), str(path)
+    os.remove(path)
 
 
 def file_replace(path: str, content: str):
@@ -182,7 +174,7 @@ def file_replace(path: str, content: str):
         path(str): path to file
         content(str): content to write
     """
-    if not exists(path):
+    if not os.path.exists(path):
         file_create(path, content)
         return
     current_content = file_read(path)
@@ -200,14 +192,14 @@ def print_runtime(before: int):
     Args:
         before(int): time recorded some time before - use time.time()
     """
-    time_diff = time() - before
+    time_diff = time.time() - before
     logging('Runtime: %.2f secs\n' % time_diff)
 
 
 @contextlib.contextmanager
 def profile():
     """Print runtime to logger to monitore performance"""
-    start = time()
+    start = time.time()
     try:
         yield
     except Exception:
@@ -218,15 +210,15 @@ def profile():
 
 
 def remove_tree(path: str):
-    assert exists(path), path
+    assert os.path.exists(path), path
 
     def remove_readonly(func, path, _):  # pylint:disable=W0613
         """Clear the readonly bit and reattempt the removal."""
-        chmod(path, S_IWRITE)
+        os.chmod(path, stat.S_IWRITE)
         func(path)
 
     try:
-        rmtree(path, onerror=remove_readonly)
+        shutil.rmtree(path, onerror=remove_readonly)
     except PermissionError:
         logging_error('Could not remove %s' % path)
         exit(FAILURE)
