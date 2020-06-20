@@ -2,6 +2,47 @@
 
 Every noteable change is logged here.
 
+## v0.13.0
+
+### Feature
+
+* add some good words (ef74b5389e64)
+* do not automatically upgrade dev requirements (07cd6923a175)
+* fix handling virtual environment (71d05dfe24ed)
+* update outdated templates (76e36266b219)
+* add log file to separate folder (6b22334d0bd2)
+* simplify error and logging command (33bf6d3f9eb3)
+* write test log of every test to separate log file (b8c663665270)
+* include security checker to validate code (8d7d5c6d5f40)
+* adjust test location to avoid side effects with other project files (42c3bd1c9227)
+* skip test if test was done in long/nightly successful before (a47ddd3487d3)
+* mark successful tested commit hash's (13bc1d371d8d)
+* add method to determine hash value of current head (89ce61c5bd6c)
+* do not break imports (b46a92a4e114)
+* extend use of verbose flag (6ad8a55f2798)
+* add separate dev requirements file (2f09cebda2d4)
+* ensure that doc generator fails when rst contain warnings (82470c3022df)
+* inform that no features are committed (56decc7893b5)
+* increase logging of verbose flag (1dd2f2f6b30a)
+* publish releases as universal distribution (0a5edfe82ce9)
+* enable doctests in all source code folder (3d3018572c08)
+* support open ide up than project root (6522ee971bd2)
+* add option to generate partial workspace configuration (c6e778529e7f)
+
+### Fix
+
+* do not open result page if baw is tested itself (62bfd140471f)
+* separate hash's by newline character (1b4ddfc7ea88)
+* fix upgrading dev resources only (98edfec6384f)
+* fix upgrading default and dev requirements (55ab1ad81d90)
+* ensure that single path is handled correctly (a836bb814f0f)
+* check existence before using dev requirement file (24ec9e7e6639)
+* use current working director instead of project root (a245d767b1e2)
+* avoid invoking main when collecting due doctest (846147e9ba83)
+* rename template to avoid collecting by pytest (df02bf7f79db)
+* move pytest cache to tmp directory (db10b3e74a9d)
+* rename log steps (75b831e8ce73)
+
 ## v0.12.0
 
 ### Feature
