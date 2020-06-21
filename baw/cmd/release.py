@@ -113,8 +113,6 @@ def release(
         logging_error('while running semantic-release')
         return completed.returncode
 
-    logging("Update Changelog")
-
     return SUCCESS
 
 
