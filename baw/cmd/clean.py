@@ -39,6 +39,7 @@ def clean(root: str):
         'build',
         'dist',
         'doctrees',
+        'generated',
         'html',
         'nano.save',
     ]
