@@ -194,7 +194,8 @@ def create_test_cmd(  # pylint:disable=R0914
     cmd = (f'python -m pytest -c {PYTEST_INI} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} '
-           f'-o cache_dir={cachedir} {testdir} {doctests} | tee {testlog}')
+           f'-o cache_dir={cachedir} {testdir} {doctests} ')
+    #    | tee {testlog}
     return cmd
 
 
