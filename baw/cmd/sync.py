@@ -51,7 +51,6 @@ def sync(
     ret = 0
     logging()
     ret += update_gitignore(root, verbose=verbose)
-
     # NOTE: Should we use Enum?
     if virtual == 'BOTH':
         for item in [True, False]:
