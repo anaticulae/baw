@@ -307,7 +307,7 @@ def _run_virtual(
     Args:
         root(str): project root to locate `virtual`-folder
         cmd(str): command to execute
-        cwd(str): working directoy where command is executed
+        cwd(str): working directory where command is executed
         env(dict): replace enviroment variables
         debugging(bool): run pdb when error occurs
     Raises:
