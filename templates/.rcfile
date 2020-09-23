@@ -26,11 +26,13 @@ load-plugins=pylint.extensions.docparams,
 
 # Good variable names which should always be accepted, separated by a comma.
 good-names=fp,
-           item,
            _,
            __,
            ___,
            ____,
+           ip,
+           item,
+           no,
            x0,
            x1,
            x2,
@@ -43,7 +45,6 @@ good-names=fp,
            z1,
            z2,
            z3,
-           no,
 
 exclude-protected = __version,
 
