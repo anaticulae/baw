@@ -58,7 +58,7 @@ def upgrade(
             packages='dev',  # minimal requirements is required
             quiet=True,
             stash=False,
-            sync=True,  # install new packages
+            sync=not notests,  # install new packages
             test=not notests,
             testconfig=None,
             verbose=False,
