@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 from contextlib import contextmanager
 from functools import partial
 from os import unlink
@@ -17,6 +18,7 @@ from tempfile import TemporaryFile
 import baw.archive.test
 import baw.cmd
 import baw.cmd.test
+import baw.cmd.utils
 import baw.config
 from baw.config import shortcut
 from baw.git import git_checkout
@@ -77,7 +79,7 @@ def release(
 
     hashed = baw.git.git_headhash(root)
     if not hashed or not baw.archive.test.tested(root, hashed):
-        ret = baw.cmd.sync_and_test(
+        ret = baw.cmd.utils.sync_and_test(
             root,
             generate=True,
             longrun=True,

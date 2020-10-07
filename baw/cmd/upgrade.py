@@ -12,6 +12,7 @@ import os
 import re
 
 import baw.cmd.sync
+import baw.cmd.utils
 import baw.git
 import baw.requirements
 import baw.utils
@@ -51,8 +52,7 @@ def upgrade(
             baw.utils.logging_error('Error while upgrading requirements')
             return baw.utils.FAILURE
 
-        from baw.cmd import sync_and_test
-        failure = sync_and_test(
+        failure = baw.cmd.utils.sync_and_test(
             root,
             generate=generate,  # generate test data
             packages='dev',  # minimal requirements is required
