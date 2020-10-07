@@ -146,8 +146,11 @@ def installed_version(content: str):
     return searched.group('installed')
 
 
-def available_version(content: str):
-    searched = re.search(r'\w+\s\((?P<available>[\w|\d|\.]+)', content)
+def available_version(content: str, package: str = None):
+    pattern = r'\w+\s\((?P<available>[\w|\d|\.]+)'
+    if package:
+        pattern = package + r'[ ]\((?P<available>[\w|\d|\.]+)'
+    searched = re.search(pattern, content)
     if not searched:
         return None
     return searched.group('available')
@@ -204,7 +207,7 @@ def collect_new_packages(root, source, sink, virtual):
                 baw.utils.logging_error('could not reach package repository')
                 sync_error = True
             else:
-                available = available_version(dependency)
+                available = available_version(dependency, package=package)
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
     return sync_error

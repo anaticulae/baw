@@ -35,6 +35,13 @@ pdfminer.six (20181108)  - 20181108
   INSTALLED: 20181108 (latest)
 """
 
+AVAILABLE_MULTIPLE = """
+utilatest (0.1.5)  - 0.1.5
+  INSTALLED: 0.1.4
+  LATEST:    0.1.5
+utila (2.11.0)     - 2.11.0
+"""
+
 
 def test_complex():
     available = baw.cmd.upgrade.available_version(AVAILABLE_COMPLEX)
@@ -42,6 +49,14 @@ def test_complex():
 
     installed = baw.cmd.upgrade.installed_version(AVAILABLE_COMPLEX)
     assert installed == "20181108"
+
+
+def test_available_multiple():
+    available = baw.cmd.upgrade.available_version(
+        AVAILABLE_MULTIPLE,
+        package='utila',
+    )
+    assert available == "2.11.0"
 
 
 def test_up_to_date():
