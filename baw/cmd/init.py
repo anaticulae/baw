@@ -223,6 +223,8 @@ def utila_current() -> str:
     default = "1.11.0"
     try:
         import utila
-        return utila.__version__
+        # extend linter white list, cause __version__ is not available for
+        # linter if utila is not installed.
+        return utila.__version__  # pylint:disable=E1101
     except ImportError:
         return default

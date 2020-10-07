@@ -189,7 +189,7 @@ def create_test_cmd(  # pylint:disable=R0914
     # --basetemp define temp directory where the tests run
     cachedir = os.path.join(tmpdir, 'pytest_cache')
 
-    testlog = os.path.join(tmpdir, f'{logfolder}.log')
+    testlog = os.path.join(tmpdir, f'{logfolder}.log')  # pylint:disable=W0612
 
     cmd = (f'python -m pytest -c {PYTEST_INI} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
