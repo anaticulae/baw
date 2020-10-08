@@ -7,12 +7,6 @@ sys.path.insert(0, r'{%ROOT%}')
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.coverage',
-    'sphinx.ext.doctest',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
     'sphinx.ext.viewcode',
 
     # Used to write beautiful docstrings:
@@ -23,8 +17,6 @@ extensions = [
     'sphinx_autodoc_typehints',
     # Used to embed values from the source code into the docs:
     'added_value',
-    # Used to build graphs:
-    'sphinxcontrib.mermaid',
 ]
 
 source_suffix = ['.rst']
@@ -42,8 +34,6 @@ release = '{%VERSION%}'
 
 language = "en"
 pygments_style = 'sphinx'
-
-todo_include_todos = True
 
 html_theme = 'default'
 
