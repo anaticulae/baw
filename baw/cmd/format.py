@@ -34,7 +34,8 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
 
     # run in parallel if not testing with pytest
     testrun = os.environ.get('PYTEST_PLUGINS', False)
-    parallel = '-p' if not testrun else ''
+    # TODO: yapf does not run on virtual environment properly
+    parallel = '-p' if not testrun and not virtual else ''
     command = f'yapf -r -i --style=google {parallel}'
 
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
