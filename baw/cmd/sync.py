@@ -90,7 +90,7 @@ def check_dependency(
         raise RuntimeError(msg)
 
     for index in [pip_index, extra_url]:
-        pip = 'python -mpip search --retries 2 --index %s %s' % (index, package)
+        pip = 'python -mpip search --index %s %s' % (index, package)
         completed = run_target(
             root,
             pip,
