@@ -15,6 +15,7 @@ from os.path import join
 from baw.runtime import VIRTUAL_FOLDER
 from baw.utils import SUCCESS
 from tests import example  # pylint: disable=W0611
+from tests import nightly
 from tests import run
 from tests import skip_cmd
 from tests import skip_longrun
@@ -37,7 +38,7 @@ def test_create_venv(example):  # pylint: disable=W0621
 
 
 @skip_cmd
-@skip_longrun
+@nightly
 def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
     """Running test-example in virtual environment"""
     # install requirements first and run test later

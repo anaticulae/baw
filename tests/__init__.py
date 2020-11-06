@@ -31,6 +31,7 @@ LONGRUN = 'LONGRUN' in os.environ.keys()
 NO_LONGRUN_REASON = 'Takes to mutch time'
 
 FAST = 'FAST' in os.environ.keys()
+NIGHTLY = 'NIGHTLY' in os.environ.keys()
 VIRTUAL = 'VIRTUAL' in os.environ.keys()
 
 NO_BAW = FAST
@@ -41,6 +42,7 @@ FAST_TESTS = not LONGRUN or FAST
 # pylint: disable=invalid-name
 skip_cmd = pytest.mark.skipif(NO_BAW, reason='Decrease response time')
 skip_longrun = pytest.mark.skipif(FAST_TESTS, reason='Test requires long time')
+nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
 skip_missing_packages = pytest.mark.skip(reason='Required package(s) not available') # yapf:disable
 skip_nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No virtual environment') # yapf:disable
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in virtual environment') # yapf:disable
