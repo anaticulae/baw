@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import re
 import sys
 
 import baw.git
@@ -64,7 +65,11 @@ def bisect(
         verbose=verbose,
         virtual=virtual,
     )
-    baw.utils.log(completed.stdout)
+
+    important = collect_findings(completed.stdout)
+    baw.utils.log(baw.utils.NEWLINE.join(important))
+
+    # finish bisect
     baw.runtime.run_target(
         root,
         command='git bisect reset',
@@ -72,5 +77,22 @@ def bisect(
         verbose=verbose,
         virtual=virtual,
     )
+    return baw.utils.SUCCESS
 
-    return completed.returncode
+
+HASH = r'^\[{0,1}[a-z0-9]{40}\]{0,1}'
+
+
+def collect_findings(log) -> list:
+    """\
+    >>> collect_findings('95281ec351e36a45bc6b1ec39f7f8061a6db1851 is the first bad commit')
+    ['95281ec351e36a45bc6b1ec39f7f8061a6db1851 is the first bad commit']
+    >>> collect_findings('[b96f38e3e3ac2555477197bb51adb4d68a6d7281] test(debug): add more debugging information')
+    ['[b96f38e3e3ac2555477197bb51adb4d68a6d7281] test(debug): add more debugging information']
+    """
+    result = []
+    for line in log.splitlines():
+        if not re.search(HASH, line):
+            continue
+        result.append(line)
+    return result
