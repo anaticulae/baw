@@ -157,7 +157,7 @@ def run_target(
                   root is used.
         env(dict): environment variable, if nothing is passed, the global env
                    vars ared used
-        debugging(bool): run pdf if error occurs
+        debugging(bool): run pdb if error occurs
         runtimelog(bool): print the duration of execution in secs
         skip_error_code(set): set of codes which are assumed that
                               process works successfully
