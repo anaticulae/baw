@@ -39,6 +39,13 @@ IDE = Command(
         'dest': 'ide',
         'action': 'append',
     })
+BISECT = Command(
+    longcut='--bisect',
+    message='run git bisect',
+    args={
+        'nargs': '+',
+        'dest': 'commits',
+    })
 LINT = Command(
     longcut='--lint',
     message='Run statical code analysis.',
@@ -161,6 +168,7 @@ def create_parser():  # noqa: Z21
     parser = ArgumentParser(prog='baw')
     todo = (
         ALL,
+        BISECT,
         BUILD,
         CLEAN,
         CLEAN_VENV,

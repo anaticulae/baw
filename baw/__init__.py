@@ -14,6 +14,7 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+import baw.cmd.bisect
 import baw.cmd.lint
 import baw.cmd.upgrade
 from baw.cli import parse
@@ -85,6 +86,14 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
     root = determine_root(os.getcwd())
     if root is None:
         return FAILURE
+
+    if args['commits']:
+        return baw.cmd.bisect.cli(
+            root,
+            args['commits'],
+            verbose=verbose,
+            virtual=virtual,
+        )
 
     link = partial
 
