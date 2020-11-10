@@ -106,7 +106,7 @@ def check_dependency(
 
         if completed.stdout:
             return completed.stdout
-    raise ValueError('Could not check dependencies %s' % (package))
+    raise ValueError(f'Could not check dependencies {package}')
 
 
 def sync_dependencies(
