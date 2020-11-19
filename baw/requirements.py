@@ -55,6 +55,10 @@ class NewRequirements(Requirements):
 
 
 def parse(content: str) -> Requirements:
+    """\
+    >>> parse('Flask_Login==0.1.1')
+    Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
+    """
     assert isinstance(content, str), content
     equal = {}
     greater = {}
