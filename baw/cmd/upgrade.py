@@ -188,7 +188,8 @@ def determine_new_requirements(
 
 def collect_new_packages(root, source, sink, virtual):
     sync_error = False
-    with concurrent.futures.ThreadPoolExecutor(max_workers=18) as executor:
+    parallel_worker = os.environ.get('BAW_PARALLEL_PIP_CALLS', 10)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=parallel_worker) as executor: # yapf:disable
         todo = {
             executor.submit(
                 baw.cmd.sync.check_dependency,
