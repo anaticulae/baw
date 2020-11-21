@@ -90,6 +90,8 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
         cmd += '-d W0511'
     if scope == Scope.TODO:
         cmd += '--disable=all --enable=W0511'
+    # Wrong hanging indentation before block
+    cmd += ' -d C0330 '
     completed = run_target(
         root,
         cmd,
