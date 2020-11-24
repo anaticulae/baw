@@ -132,7 +132,7 @@ def sync_dependencies(
         verbose=verbose,
         virtual=virtual,
     )
-    if not required.equal:
+    if not required.equal and not required.greater:
         return baw.utils.SUCCESS
 
     logging(f'\nrequire update:\n{required}')
@@ -182,6 +182,7 @@ def required_installation(
     result = baw.requirements.Requirements()
     for item in missing:
         result.equal.update(item.equal)  # pylint:disable=E1101
+        result.greater.update(item.greater)  # pylint:disable=E1101
     return result
 
 

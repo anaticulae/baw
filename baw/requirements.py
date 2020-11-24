@@ -39,6 +39,11 @@ class Requirements:
         result = [
             f'{package}=={version}' for package, version in self.equal.items()  # pylint:disable=E1101
         ]
+        greater = [
+            f'{package}>={version}'
+            for package, version in self.greater.items()  # pylint:disable=E1101
+        ]
+        result.extend(greater)
         result = sorted(result)
         raw = '\n'.join(result)
         return raw
@@ -107,6 +112,12 @@ def diff(current: Requirements, requested: Requirements):
             if current.equal[key] == value:
                 continue
         result.equal[key] = value  # pylint:disable=E1137
+
+    for key, value in requested.greater.items():
+        with contextlib.suppress(KeyError):
+            if inside(current.equal[key], value):
+                continue
+        result.greater[key] = value  # pylint:disable=E1137
     return result
 
 
