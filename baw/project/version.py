@@ -36,11 +36,13 @@ def determine(root: str) -> str:
     return current
 
 
-def major(item: str) -> str:
+def major(item: str) -> int:
     result = item.split('.')[0]
+    result = int(result)
     return result
 
 
-def minor(item: str) -> str:
+def minor(item: str) -> int:
     result = item.split('.')[1]
+    result = int(result)
     return result

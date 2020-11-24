@@ -26,6 +26,7 @@ Example
 import contextlib
 import dataclasses
 
+import baw.project.version
 import baw.utils
 
 
@@ -128,3 +129,37 @@ def replace(requirements: str, update: NewRequirements) -> str:
         baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = requirements.replace(pattern, replacement)
     return requirements
+
+
+def inside(current: str, expected: str) -> bool:
+    """\
+    >>> inside('2.12.0', '2.14.0<3.0.0')
+    False
+    >>> inside('2.17.0', '2.14.0<2.16.0')
+    False
+    >>> inside('2.16.0', '2.14.0<2.16.0')
+    False
+    >>> inside('2.16.0', '2.14.0<=2.16.0')
+    True
+    """
+    split = expected.split('<=') if '<=' in expected else expected.split('<')
+    small, greater = split
+    major = baw.project.version.major
+    minor = baw.project.version.minor
+
+    if not (major(small) <= major(current) <= major(greater)):
+        return False
+
+    if major(small) == major(current):
+        if minor(current) < minor(small):
+            return False
+
+    if major(greater) == major(current):
+        if '<=' in expected:
+            if minor(current) > minor(greater):
+                return False
+        else:
+            if minor(current) >= minor(greater):
+                return False
+
+    return True
