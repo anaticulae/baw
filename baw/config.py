@@ -18,6 +18,7 @@ release
 * fail_on_finding: if True allow only todo-findings. The build must be
                    free of statical code errors.
 """
+
 import configparser
 import os
 import typing
@@ -171,6 +172,10 @@ def sources(root: str) -> list:
         source = cfg['project']['source'].splitlines()
     except KeyError:
         source = []
+    if any(',' in item for item in source):
+        baw.utils.logging_error(f'invalid {source} in {path}, remove collon')
+        exit(baw.utils.FAILURE)
+
     source.insert(0, cfg['project']['short'])
     return source
 
