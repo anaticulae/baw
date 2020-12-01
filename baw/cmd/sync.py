@@ -85,9 +85,9 @@ def check_dependency(
     pip_index = '%s:%d' % (adress, internal)
     extra_url = '%s:%d' % (adress, external)
 
-    if not connected(pip_index, extra_url):
-        msg = f"Could not reach index {pip_index} or {extra_url}"
-        raise RuntimeError(msg)
+    # if not connected(pip_index, extra_url):
+    #     msg = f"Could not reach index {pip_index} or {extra_url}"
+    #     raise RuntimeError(msg)
 
     for index in [pip_index, extra_url]:
         pip = f'python -mpip search --index {index} {package}'
