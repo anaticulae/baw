@@ -84,7 +84,10 @@ def parse(content: str) -> Requirements:
                 equal[package] = version.strip()
             elif '>=' in line:
                 package, version = line.split('>=')
-                greater[package] = version.strip()
+                version = version.strip()
+                if '<' in version:
+                    version = version.split('<')
+                greater[package] = version
             else:
                 # package without version
                 equal[line] = ''
@@ -134,9 +137,16 @@ def replace(requirements: str, update: NewRequirements) -> str:
         requirements = requirements.replace(pattern, replacement)
 
     for package, [old, new] in update.greater.items():
-        pattern = f'{package}>={old}'
-        replacement = f'{package}>={new}'
+        if isinstance(old, str):
+            pattern = f'{package}>={old}'
+            replacement = f'{package}>={new}'
+        else:
+            # TODO: first approach of greater equal replacement
+            pattern = f'{package}>={old[0]}<{old[1]}'
+            replacement = f'{package}>={new}<{old[1]}'
 
+        if pattern == replacement:
+            continue
         baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = requirements.replace(pattern, replacement)
     return requirements
@@ -153,6 +163,8 @@ def inside(current: str, expected: str) -> bool:
     >>> inside('2.16.0', '2.14.0<=2.16.0')
     True
     """
+    if not isinstance(expected, str):
+        expected = '<'.join(expected)
     split = expected.split('<=') if '<=' in expected else expected.split('<')
     small, greater = split
     major = baw.project.version.major
