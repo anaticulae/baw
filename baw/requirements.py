@@ -40,7 +40,8 @@ class Requirements:
             f'{package}=={version}' for package, version in self.equal.items()  # pylint:disable=E1101
         ]
         greater = [
-            f'{package}>={version}'
+            f'{package}>={version}' if isinstance(version, str) else
+            f'{package}>={version[0]}<{version[1]}'
             for package, version in self.greater.items()  # pylint:disable=E1101
         ]
         result.extend(greater)
