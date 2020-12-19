@@ -67,6 +67,7 @@ def parse(content: str) -> Requirements:
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
     """
     assert isinstance(content, str), content
+    content = content.replace('-', '_')
     equal = {}
     greater = {}
     error = False

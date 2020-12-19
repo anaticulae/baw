@@ -19,8 +19,8 @@ Sphinx==1.8.5
 
 #baw --test
 pytest==4.3.1
-pytest-cov==2.6.1
-pytest-xdist==1.26.1
+pytest_cov==2.6.1
+pytest_xdist==1.26.1
 
 # baw --release
-python-semantic-release==4.1.2 # TODO: Helmut's custom version. Replace with official release.
+python_semantic_release==4.1.2 # TODO: Helmut's custom version. Replace with official release.
