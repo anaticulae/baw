@@ -36,6 +36,7 @@ def determine(root: str) -> str:
     return current
 
 
+# TODO: IMPROVE THIS, USE EXTERNAL BIB
 def major(item: str) -> int:
     result = item.split('.')[0]
     result = int(result)
@@ -44,5 +45,11 @@ def major(item: str) -> int:
 
 def minor(item: str) -> int:
     result = item.split('.')[1]
+    result = int(result)
+    return result
+
+
+def patch(item: str) -> int:
+    result = item.split('.')[2]
     result = int(result)
     return result

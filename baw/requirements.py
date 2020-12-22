@@ -154,7 +154,7 @@ def replace(requirements: str, update: NewRequirements) -> str:
     return requirements
 
 
-def inside(current: str, expected: str) -> bool:
+def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
     """\
     >>> inside('2.12.0', '2.14.0<3.0.0')
     False
@@ -164,6 +164,10 @@ def inside(current: str, expected: str) -> bool:
     False
     >>> inside('2.16.0', '2.14.0<=2.16.0')
     True
+    >>> inside('0.1.2', ['0.1.3', '1.0.0'])
+    False
+    >>> inside('0.1.4', ['0.1.3', '1.0.0'])
+    True
     """
     if not isinstance(expected, str):
         expected = '<'.join(expected)
@@ -171,8 +175,9 @@ def inside(current: str, expected: str) -> bool:
     small, greater = split
     major = baw.project.version.major
     minor = baw.project.version.minor
+    patch = baw.project.version.patch
 
-    if not (major(small) <= major(current) <= major(greater)):
+    if not major(small) <= major(current) <= major(greater):
         return False
 
     if major(small) == major(current):
@@ -186,5 +191,9 @@ def inside(current: str, expected: str) -> bool:
         else:
             if minor(current) >= minor(greater):
                 return False
+
+    if major(small) == major(current) and minor(small) == minor(current):
+        if patch(small) > patch(current):
+            return False
 
     return True
