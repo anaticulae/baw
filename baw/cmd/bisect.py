@@ -30,8 +30,14 @@ def cli(
     else:
         bad, good = commits
         args.remove(commits[1])
-    args.remove(commits[0])
-    args.remove('--bisect')
+    try:
+        # --bisect HEAD~10
+        args.remove(commits[0])
+        args.remove('--bisect')
+    except ValueError:
+        # --bisect=HEAD~10
+        # TODO: CHECK GOOD BAD?
+        args.remove(f'--bisect={commits[0]}')
     args = args[1:]
     if not args:
         baw.utils.error('nothing to bisect')
