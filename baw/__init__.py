@@ -132,7 +132,8 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
          link(
              sync,
              root,
-             packages=args['sync'],
+             packages=args.get('packages'),
+             minimal=args.get('minimal', False),
              virtual=virtual,
              verbose=verbose,
          )),

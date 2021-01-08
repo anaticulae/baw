@@ -30,6 +30,7 @@ def sync(
         root: str,
         packages: str = 'dev',
         *,
+        minimal: bool = False,
         virtual: bool = False,
         verbose: bool = False,
 ) -> int:
@@ -40,6 +41,7 @@ def sync(
                         - dev/ minimal dev environment, formater, linter, test
                         - doc/ Sphinx
                         - all
+        minimal(bool): if True use minimal version in requirement file
         virtual(bool): if True sync the virtual environment
                        if BOTH sync virtual and local environment
                        if False sync local environment
@@ -57,6 +59,7 @@ def sync(
             ret += sync_dependencies(
                 root,
                 packages=packages,
+                minimal=minimal,
                 virtual=item,
                 verbose=verbose,
             )
@@ -67,6 +70,7 @@ def sync(
         ret += sync_dependencies(
             root,
             packages=packages,
+            minimal=minimal,
             virtual=virtual,
             verbose=verbose,
         )
@@ -113,6 +117,7 @@ def sync_dependencies(
         root: str,
         packages: str,
         *,
+        minimal: bool = False,
         verbose: bool = False,
         virtual: bool = False,
 ) -> int:
@@ -129,6 +134,7 @@ def sync_dependencies(
     required = required_installation(
         root,
         resources,
+        minimal=minimal,
         verbose=verbose,
         virtual=virtual,
     )
@@ -171,6 +177,7 @@ def sync_dependencies(
 def required_installation(
         root,
         txts: list,
+        minimal: bool = False,
         virtual: bool = False,
         verbose: bool = False,
 ):
@@ -178,11 +185,16 @@ def required_installation(
     requested = [
         baw.requirements.parse(baw.utils.file_read(item)) for item in txts
     ]
-    missing = [baw.requirements.diff(current, item) for item in requested]
+    missing = [
+        baw.requirements.diff(current, item, minimal) for item in requested
+    ]
     result = baw.requirements.Requirements()
     for item in missing:
         result.equal.update(item.equal)  # pylint:disable=E1101
-        result.greater.update(item.greater)  # pylint:disable=E1101
+        if minimal:
+            result.equal.update(item.greater)  # pylint:disable=E1101
+        else:
+            result.greater.update(item.greater)  # pylint:disable=E1101
     return result
 
 

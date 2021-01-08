@@ -33,7 +33,7 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
         1 if some errors occurs
     """
     if not is_sphinx_installed(root=root, virtual=virtual):
-        msg = 'sphinx is not installed, run baw --sync=all --virtual'
+        msg = 'sphinx is not installed, run baw sync=all --virtual'
         baw.utils.logging_error(msg)
         return baw.utils.FAILURE
 

@@ -109,7 +109,7 @@ def parse(content: str) -> Requirements:
     return result
 
 
-def diff(current: Requirements, requested: Requirements):
+def diff(current: Requirements, requested: Requirements, minimal: bool = False):
     # TODO: SUPPORT GREATER THAN
     result = Requirements()
     for key, value in requested.equal.items():
@@ -120,8 +120,12 @@ def diff(current: Requirements, requested: Requirements):
 
     for key, value in requested.greater.items():
         with contextlib.suppress(KeyError):
+            if minimal:
+                value = value[0], value[0]
             if inside(current.equal[key], value):
                 continue
+            if minimal:
+                value = value[0]
         result.greater[key] = value  # pylint:disable=E1137
     return result
 
@@ -168,9 +172,14 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
     False
     >>> inside('0.1.4', ['0.1.3', '1.0.0'])
     True
+    >>> inside('0.2.6', ['0.2.6', '0.2.6'])
+    True
     """
     if not isinstance(expected, str):
-        expected = '<'.join(expected)
+        if expected[0] != expected[1]:
+            expected = '<'.join(expected)
+        else:
+            expected = '<='.join(expected)
     split = expected.split('<=') if '<=' in expected else expected.split('<')
     small, greater = split
     major = baw.project.version.major

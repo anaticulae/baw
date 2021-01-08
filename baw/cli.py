@@ -8,6 +8,7 @@
 #==============================================================================
 """Define structure of command line interface."""
 
+import sys
 from argparse import REMAINDER
 from argparse import ArgumentParser
 from dataclasses import dataclass
@@ -87,20 +88,6 @@ RELEASE = Command(
 DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
-SYNC = Command(
-    longcut='--sync',
-    message='Sync dependencies. Choices: dev(minimal), doc(sphinx), '
-    'packages(requirements.txt only), all(dev, doc, packages)',
-    args={
-        'nargs': '?',
-        'const': 'dev',
-        'choices': [
-            'all',
-            'dev',
-            'doc',
-            'requirements',
-        ],
-    })
 UPGRADE = Command(
     longcut='--upgrade',
     args={
@@ -187,7 +174,6 @@ def create_parser():  # noqa: Z21
         RELEASE,
         REPORT,
         RUN,
-        SYNC,
         TEST,
         TEST_CONFIG,
         UPGRADE,
@@ -203,13 +189,36 @@ def create_parser():  # noqa: Z21
             add(*shortcuts, **args)
         else:
             add(*shortcuts, action='store_true', help=msg)
+
+    commands = parser.add_subparsers()
+    add_sync_options(commands)
     return parser
+
+
+def add_sync_options(parser):
+    sync = parser.add_parser('sync')
+    sync.add_argument(
+        '--minimal',
+        help='use minimal required requirements',
+        action='store_true',
+    )
+    sync.add_argument(
+        'packages',
+        help='Sync dependencies. Choices: dev(minimal), doc(sphinx), '
+        'packages(requirements.txt only), all(dev, doc, packages)',
+        nargs='?',
+        const='dev',
+        choices=['all', 'dev', 'doc', 'requirements'],
+    )
 
 
 def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
     args = vars(parser.parse_args())
+
+    args['sync'] = 'sync' in sys.argv
+
     need_help = not any(args.values())
     if need_help:
         parser.print_help()
