@@ -88,7 +88,7 @@ def init(
     #     linter=quality.rating,
     #     coverage=quality.coverage,
     # )
-    baw.cmd.plan.create(root)
+    # baw.cmd.plan.create(root)
 
     return baw.utils.SUCCESS
 
