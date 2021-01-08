@@ -10,35 +10,14 @@
 
 Initialize a new repository due init. Add content afterwards and stash it.
 """
-from os import makedirs
-from os.path import dirname
-from os.path import exists
-from os.path import join
+
+import os
 
 import baw.cmd.plan
 import baw.config
-from baw.git import git_add
-from baw.git import git_init
-from baw.git import update_gitignore
-from baw.resources import ENTRY_POINT
-from baw.resources import FILES
-from baw.resources import FOLDERS
-from baw.resources import INIT
-from baw.resources import INIT_CMD
-from baw.resources import MAIN_CMD
-from baw.resources import SETUP_PY
-from baw.resources import template_replace
-from baw.utils import BAW_EXT
-from baw.utils import FAILURE
-from baw.utils import INPUT_ERROR
-from baw.utils import NEWLINE
-from baw.utils import REQUIREMENTS_TXT
-from baw.utils import SUCCESS
-from baw.utils import file_append
-from baw.utils import file_create
-from baw.utils import logging
-from baw.utils import logging_error
-from baw.utils import skip
+import baw.git
+import baw.resources
+import baw.utils
 
 ADDITONAL_REQUIREMENTS = []
 
@@ -64,31 +43,31 @@ def init(
     Returns:
         SUCCESS or return code of failed process
     """
-    baw_path = join(root, BAW_EXT)
-    if exists(baw_path):
-        logging_error('Project %s already exists.' % baw_path)
-        raise ValueError(FAILURE)
+    baw_path = os.path.join(root, baw.utils.BAW_EXT)
+    if os.path.exists(baw_path):
+        baw.utils.logging_error('Project %s already exists.' % baw_path)
+        raise ValueError(baw.utils.FAILURE)
 
     # Escape ' to avoid errors in generated code
     name = name.replace("'", r'\'')
 
-    git_init(root)
+    baw.git.git_init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
     create_requirements(root)
 
-    update_gitignore(root)
+    baw.git.update_gitignore(root)
 
     from baw.cmd.format import format_repository
 
-    logging()  # write newline
+    baw.utils.logging()  # write newline
     completed = format_repository(root, verbose=verbose, virtual=False)
     if completed:
         return completed
 
-    git_add(root, '*')
+    baw.git.git_add(root, '*')
 
     from baw.cmd import release
     # Deactivate options to reach fast reaction
@@ -111,7 +90,7 @@ def init(
     # )
     baw.cmd.plan.create(root)
 
-    return SUCCESS
+    return baw.utils.SUCCESS
 
 
 def get_init_args(args):
@@ -125,8 +104,8 @@ def get_init_args(args):
         cmdline = True
     shortcut = init_args[0]
     if len(init_args) < 2:
-        logging_error('missing project name')
-        exit(INPUT_ERROR)
+        baw.utils.logging_error('missing project name')
+        exit(baw.utils.INPUT_ERROR)
     name = init_args[1]
 
     return shortcut, name, cmdline
@@ -138,12 +117,12 @@ def create_folder(root: str):
     Args:
         root(str): project root of generated project
     """
-    for item in FOLDERS:
-        create = join(root, item)
-        if exists(create):
+    for item in baw.resources.FOLDERS:
+        create = os.path.join(root, item)
+        if os.path.exists(create):
             continue
-        makedirs(create)
-        logging('Create folder %s' % item)
+        os.makedirs(create)
+        baw.utils.logging('Create folder %s' % item)
 
 
 def create_files(root: str):
@@ -152,19 +131,19 @@ def create_files(root: str):
     Args:
         root(str): generated project location
     """
-    for item, content in FILES:
-        create = join(root, item)
-        replaced = template_replace(root, content)
+    for item, content in baw.resources.FILES:
+        create = os.path.join(root, item)
+        replaced = baw.resources.template_replace(root, content)
 
         operation_type = 'template' if content != replaced else 'copy'
-        if exists(create):
-            skip('%s %s' % (operation_type, item))
+        if os.path.exists(create):
+            baw.utils.skip('%s %s' % (operation_type, item))
             continue
 
-        logging('%s %s' % (operation_type, item))
-        parent = dirname(create)
-        makedirs(parent, exist_ok=True)
-        file_create(create, content=replaced)
+        baw.utils.logging('%s %s' % (operation_type, item))
+        parent = os.path.dirname(create)
+        os.makedirs(parent, exist_ok=True)
+        baw.utils.file_create(create, content=replaced)
 
 
 def create_python(
@@ -182,40 +161,56 @@ def create_python(
         cmdline(bool): if True, create command line template
     """
     # TODO: DIRTY
-    python_project = join(root, shortcut)
-    makedirs(python_project, exist_ok=True)
-    file_create(join(python_project, '__init__.py'), INIT)
+    python_project = os.path.join(root, shortcut)
+    os.makedirs(python_project, exist_ok=True)
+    baw.utils.file_create(
+        os.path.join(python_project, '__init__.py'), baw.resources.INIT)
 
     entry_point = ''
     entry_point_package = ''
     if cmdline:
-        python_cmdline = join(python_project, 'cli')
-        makedirs(python_cmdline, exist_ok=True)
-        main_replaced = template_replace(root, MAIN_CMD)
-        init_replaced = template_replace(root, INIT_CMD)
-
-        file_create(join(python_project, '__main__.py'), main_replaced)
-        file_create(join(python_cmdline, '__init__.py'), init_replaced)
-
-        entry_point = template_replace(root, ENTRY_POINT)
+        python_cmdline = os.path.join(python_project, 'cli')
+        os.makedirs(python_cmdline, exist_ok=True)
+        main_replaced = baw.resources.template_replace(
+            root,
+            baw.resources.MAIN_CMD,
+        )
+        init_replaced = baw.resources.template_replace(
+            root,
+            baw.resources.INIT_CMD,
+        )
+        baw.utils.file_create(
+            os.path.join(python_project, '__main__.py'),
+            main_replaced,
+        )
+        baw.utils.file_create(
+            os.path.join(python_cmdline, '__init__.py'),
+            init_replaced,
+        )
+        entry_point = baw.resources.template_replace(
+            root,
+            baw.resources.ENTRY_POINT,
+        )
         entry_point_package = "'%s.cli'," % shortcut
 
         ADDITONAL_REQUIREMENTS.append(f'utila=={utila_current()}')
 
-    replaced = template_replace(root, SETUP_PY)
+    replaced = baw.resources.template_replace(root, baw.resources.SETUP_PY)
     replaced = replaced.replace("{%ENTRY_POINT%}", entry_point)
     replaced = replaced.replace("{%ENTRY_POINT_PACKAGE%}", entry_point_package)
 
-    file_create(join(root, 'setup.py'), replaced)
+    baw.utils.file_create(os.path.join(root, 'setup.py'), replaced)
 
 
 def create_requirements(root: str):
-    logging('add requirements')
+    baw.utils.logging('add requirements')
     content = ''
     for item in ADDITONAL_REQUIREMENTS:
-        content += item + NEWLINE
-
-    file_append(join(root, REQUIREMENTS_TXT), content)
+        content += item + baw.utils.NEWLINE
+    baw.utils.file_append(
+        os.path.join(root, baw.utils.REQUIREMENTS_TXT),
+        content,
+    )
 
 
 def utila_current() -> str:
