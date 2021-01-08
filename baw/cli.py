@@ -117,17 +117,6 @@ TEST = Command(
             'stash',
         ],
     })
-PLAN = Command(
-    longcut='--plan',
-    message='modify current release plan',
-    args={
-        'nargs': '?',
-        'const': 'auto',
-        'choices': [
-            'new',
-            'close',
-        ],
-    })
 NOTESTS = Command(
     longcut='--notests',
     message='Do not run test suite',
@@ -168,7 +157,6 @@ def create_parser():  # noqa: Z21
         LINT,
         NOTESTS,
         OPEN,
-        PLAN,
         PUSH,
         RAW,
         RELEASE,
@@ -192,6 +180,7 @@ def create_parser():  # noqa: Z21
 
     commands = parser.add_subparsers()
     add_sync_options(commands)
+    add_plan_options(commands)
     return parser
 
 
@@ -212,12 +201,22 @@ def add_sync_options(parser):
     )
 
 
+def add_plan_options(parser):
+    plan = parser.add_parser('plan')
+    plan.add_argument(
+        'plan_operation',
+        help='modify current release plan',
+        choices=['new', 'close'],
+    )
+
+
 def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
     args = vars(parser.parse_args())
 
     args['sync'] = 'sync' in sys.argv
+    args['plan'] = 'plan' in sys.argv
 
     need_help = not any(args.values())
     if need_help:

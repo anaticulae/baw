@@ -66,7 +66,7 @@ def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
 @tests.skip_longrun
 def test_cli_plan_close_current_plan(project_example_done, monkeypatch):  # pylint:disable=W0621
     workspace = project_example_done
-    tests.run_command('--plan=close', monkeypatch)
+    tests.run_command('plan close', monkeypatch)
     current_status = baw.cmd.plan.status(workspace)
     assert current_status == baw.cmd.plan.Status.CLOSED, current_status
 
@@ -78,10 +78,10 @@ def test_cli_plan_close_current_plan_and_open_new(
 ):
     workspace = project_example_done
 
-    tests.run_command('--plan=close', monkeypatch)
+    tests.run_command('plan close', monkeypatch)
     current_status = baw.cmd.plan.status(workspace)
     assert current_status == baw.cmd.plan.Status.CLOSED, current_status
 
-    tests.run_command('--plan=new', monkeypatch)
+    tests.run_command('plan new', monkeypatch)
     current_status = baw.cmd.plan.status(workspace)
     assert current_status == baw.cmd.plan.Status.OPEN, current_status

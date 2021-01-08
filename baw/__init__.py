@@ -152,7 +152,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
              verbose=verbose,
              virtual=virtual,
          )),
-        ('plan', link(action, root=root, plan=args['plan'])),
+        ('plan', link(action, root=root, plan=args.get('plan_operation'))),
     ])
 
     for argument, process in workmap.items():
