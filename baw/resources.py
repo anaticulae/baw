@@ -1,4 +1,13 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2021 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
 """Base for generating project. Templates have to be here."""
+
 from os.path import exists
 from os.path import join
 
@@ -120,7 +129,7 @@ COPYRIGHT = """\
 #==============================================================================
 # C O P Y R I G H T
 #------------------------------------------------------------------------------
-# Copyright (c) 2020-2021 by Helmut Konrad Fahrendholz. All rights reserved.
+# Copyright (c) 2021 by Helmut Konrad Fahrendholz. All rights reserved.
 # This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
