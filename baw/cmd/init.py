@@ -93,24 +93,6 @@ def init(
     return baw.utils.SUCCESS
 
 
-def get_init_args(args):
-    init_args = args['init']
-    cmdline = False
-    if len(init_args) > 3:
-        raise ValueError('To many inputs: %s' % args['init'])
-    if len(init_args) == 3:
-        if init_args[2] != '--with_cmd':
-            raise ValueError('--with_cmd allowed, not %s' % init_args[2])
-        cmdline = True
-    shortcut = init_args[0]
-    if len(init_args) < 2:
-        baw.utils.logging_error('missing project name')
-        exit(baw.utils.INPUT_ERROR)
-    name = init_args[1]
-
-    return shortcut, name, cmdline
-
-
 def create_folder(root: str):
     """Copy folder-structure into created project
 

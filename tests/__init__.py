@@ -112,7 +112,7 @@ def example(testdir):
     """Creating example project due console"""
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     root = str(testdir)
-    cmd = 'baw --init %s "Longtime project"' % EXAMPLE_PROJECT_NAME
+    cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with assert_run(cmd, cwd=root):
         assert os.path.exists(os.path.join(root, '.git'))
     return root

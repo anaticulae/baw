@@ -59,12 +59,6 @@ LINT = Command(
         ],
     })
 INSTALL = Command(longcut='--install', message='Run install task')
-INIT = Command(
-    longcut='--init',
-    message='Initialize .baw project - shortcut name [--with_cmd]',
-    args={
-        'nargs': REMAINDER,
-    })
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
@@ -152,7 +146,6 @@ def create_parser():  # noqa: Z21
         DROP_RELEASE,
         FORMAT,
         IDE,
-        INIT,
         INSTALL,
         LINT,
         NOTESTS,
@@ -181,11 +174,12 @@ def create_parser():  # noqa: Z21
     commands = parser.add_subparsers()
     add_sync_options(commands)
     add_plan_options(commands)
+    add_init_options(commands)
     return parser
 
 
 def add_sync_options(parser):
-    sync = parser.add_parser('sync')
+    sync = parser.add_parser('sync', help='Synchronize project requirements')
     sync.add_argument(
         '--minimal',
         help='use minimal required requirements',
@@ -202,12 +196,19 @@ def add_sync_options(parser):
 
 
 def add_plan_options(parser):
-    plan = parser.add_parser('plan')
+    plan = parser.add_parser('plan', help='Manage release plans')
     plan.add_argument(
         'plan_operation',
         help='modify current release plan',
         choices=['new', 'close'],
     )
+
+
+def add_init_options(parser):
+    init = parser.add_parser('init', help='Create .baw project')
+    init.add_argument('shortcut', help='Project name')
+    init.add_argument('description', help='Project description')
+    init.add_argument('--cmdline', action='store_true')
 
 
 def parse():
@@ -217,6 +218,7 @@ def parse():
 
     args['sync'] = 'sync' in sys.argv
     args['plan'] = 'plan' in sys.argv
+    args['init'] = 'init' in sys.argv
 
     need_help = not any(args.values())
     if need_help:

@@ -22,7 +22,7 @@ from tests.fixtures.project import project_example  # pylint:disable=W0611
 @skip_cmd
 @skip_longrun
 def test_init_project_in_empty_folder(project_example):  #pylint: disable=W0613,W0621
-    """Run --init in empty folder.
+    """Run init in empty folder.
 
     Intitialize project and check if documentation is generated."""
     assert exists('docs/pages/changelog.rst')
@@ -41,13 +41,13 @@ def test_doc_command(project_example, monkeypatch):  #pylint: disable=W0613,W062
 @skip_nonvirtual
 def test_escaping_single_collon(testdir, monkeypatch):  #pylint: disable=W0613
     """Generate project with ' in name and test install"""
-    tests.run_command(['--init', 'xcd', '"I\'ts magic"'], monkeypatch)
+    tests.run_command(['init', 'xcd', '"I\'ts magic"'], monkeypatch)
     assert_run('.', 'pip install --editable .')
 
 
 @mark.parametrize('command', [
-    ['--init', 'myroject', '"This is a beautyful project'],
-    ['--init', 'myroject', '"This is a beautyful project"', '--with_cmd'],
+    ['init', 'myroject', '"This is a beautyful project'],
+    ['init', 'myroject', '"This is a beautyful project"', '--cmdline'],
 ])
 @skip_longrun
 def test_run_complex_command(testdir, monkeypatch, command):  # pylint: disable=W0613

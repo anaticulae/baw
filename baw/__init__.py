@@ -29,7 +29,6 @@ from baw.cmd import install
 from baw.cmd import open_this
 from baw.cmd import release
 from baw.cmd import run_test
-from baw.cmd.init import get_init_args
 from baw.cmd.plan import action
 from baw.cmd.sync import sync
 from baw.execution import publish
@@ -50,7 +49,7 @@ from baw.utils import print_runtime
 __version__ = '0.13.0'
 
 
-def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
+def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     start = time()
     args = parse()
     if not any(args.values()):
@@ -74,8 +73,9 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches
 
     if args['init']:
         with handle_error(ValueError, code=FAILURE):  #  No GIT found, exit 1
-            init_args = get_init_args(args)
-            project_init(root, *init_args)
+            shortcut, description, cmdline = args['shortcut'], args[
+                'description'], args['cmdline']
+            project_init(root, shortcut, name=description, cmdline=cmdline)
 
     if args['ide']:
         packages = tuple(args['ide']) if args['ide'] != [None] else None

@@ -17,7 +17,7 @@ from tests import skip_longrun
 def test_creating_project(tmpdir):
     """Creating project without virtual environment"""
     completed = run(
-        'baw --init xkcd "Longtime project"',
+        'baw init xkcd "Longtime project"',
         cwd=tmpdir,
     )
     assert completed.returncode == SUCCESS, f'{completed.stderr}\n{completed.stdout}'

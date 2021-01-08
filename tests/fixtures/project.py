@@ -18,7 +18,7 @@ import tests
 
 @pytest.fixture
 def project_example(testdir, monkeypatch):
-    tests.run_command(['--init', 'xcd', '"I Like This Project"'], monkeypatch)
+    tests.run_command(['init', 'xcd', '"I Like This Project"'], monkeypatch)
     tests.run_command(['--virtual'], monkeypatch)
     return str(testdir)
 

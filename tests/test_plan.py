@@ -46,7 +46,7 @@ def test_plan_code_quality(project_example):  # pylint:disable=W0621
 
 @tests.skip_longrun
 def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
-    """Ensure that project --init generates first release plan"""
+    """Ensure that project init generates first release plan"""
     plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
     assert os.path.exists(plan), plan
 
