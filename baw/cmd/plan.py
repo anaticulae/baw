@@ -36,7 +36,7 @@ def action(root: str, plan: str):
     current_status = status(root)
     if plan == 'new':
         # TODO: DISTINCT BETWEEN NEW_MAJOR AND NEW_MINOR
-        if not current_status == Status.CLOSED:
+        if not current_status == Status.CLOSED and current_status != Status.EMPTY:
             baw.utils.logging_error(f'old plan is not closed: {current_status}')
             return baw.utils.FAILURE
         create(root)
