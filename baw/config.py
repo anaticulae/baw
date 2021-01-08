@@ -65,6 +65,7 @@ def create(root: str, shortname: str, longname: str):
     assert os.path.exists(root)
     cfg = configparser.ConfigParser()
     cfg['project'] = {'short': shortname, 'name': longname}
+    cfg['release'] = {'fail_on_finding': True}
     outpath = config_path(root)
     with open(
             outpath,
