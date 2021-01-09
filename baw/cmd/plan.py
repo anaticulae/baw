@@ -68,6 +68,17 @@ def create(
     baw.utils.file_create(outpath, replaced)
     baw.utils.logging(f'create new release plan: {outpath}')
 
+    overview = os.path.join(releases(root), 'releases.rst')
+    loaded = baw.utils.file_read(overview)
+    # TODO: REFACTOR THIS HACK
+    if major == 0 and minor == '1':
+        # first release plan
+        token = '  :maxdepth: 1\n'
+        replace = '  :maxdepth: 1\n\n  0.1.0\n'
+        loaded = loaded.replace(token, replace, 1)
+        baw.utils.file_replace(overview, loaded)
+        baw.git.add(root, pattern=overview)
+
     message = f'releases(plan): add draft of release plan {major}.{minor}.0'
     commit(root, message)
 
