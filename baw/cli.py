@@ -8,13 +8,12 @@
 #==============================================================================
 """Define structure of command line interface."""
 
+import argparse
+import dataclasses
 import sys
-from argparse import REMAINDER
-from argparse import ArgumentParser
-from dataclasses import dataclass
 
 
-@dataclass
+@dataclasses.dataclass
 class Command:
     shortcut: str = ''
     longcut: str = ''
@@ -134,7 +133,7 @@ def create_parser():  # noqa: Z21
 
     Returns created argparser
     """
-    parser = ArgumentParser(prog='baw')
+    parser = argparse.ArgumentParser(prog='baw')
     todo = (
         ALL,
         BISECT,
