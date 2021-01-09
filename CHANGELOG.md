@@ -2,6 +2,54 @@
 
 Every noteable change is logged here.
 
+## v0.14.0
+
+### Feature
+
+* add new sync command to downgrade to minimal version (c718116f1511)
+* add default release fail flag (d7c2f5b92557)
+* update date in header (cd67d7773085)
+* inform if using not wrong field in project config (fcab06f67eed)
+* add first approach of greaterequal and lowerthan (004abda0c475)
+* disable connection check (82af4cf52288)
+* sync ranged requirements definition (7da0dba1c42d)
+* add version range to requirements parser (7258743648d9)
+* introduce environmental var to control parallel pip workers (abff5fd54fa0)
+* add important line filter (1b161da4438c)
+* add --bisect option to ease git bisect (7fa3064a8078)
+* bandit: do not check python input (bc3e50b568a8)
+* disable to many ancestors check (e73fae2a3aa6)
+* increase number of tries to determine package version (55ca62ada20d)
+* do not sync upgraded resources (ebd82c685ff5)
+* extend and sort variable name white list (02300688b77a)
+* reduce startup time due skipping visiting huge generated folder (398c19239de2)
+* remove generated folder (71605acb362e)
+
+### Fix
+
+* add first release plan to releases list (3ed60460a87d)
+* fix test setup (9f3e7303e701)
+* adjust auto release message (7653a5ca4b11)
+* support two different commit types (dea8ac8eed5c)
+* handle patch version correctly (9c46d4c8bdbf)
+* use lower _ in requirements definition (a9fd329797aa)
+* fix upgrading ranged versions (c6e5d7f6a07c)
+* fail fast on broken config (070679f3961b)
+* extend pylint white list (d8f977c61837)
+* unify requirements (59d04b537dda)
+* fix yapf virtual bug (e74d1a5bc88d)
+* extend linter white list (0ced950d10a9)
+* upgrade multiple packages correctly (8d74caaa36c0)
+* revert patch d5ca8af94e9617d5e0d67a5e1c301cffdb1112af (0449ef58ccde)
+* tee overwrites error code, investigate later (8ce1ea246d84)
+* remove wrong update log (3360b5ebddc0)
+
+### Documentation
+
+* Happy New Year! (6c7c8ef2fe55)
+* fix docs (22a6f7af8240)
+* remove outdated todo reference (0915bd72255d)
+
 ## v0.13.0
 
 ### Feature
