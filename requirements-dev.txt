@@ -1,9 +1,19 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2021 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
 pylint==2.3.1
 
 # baw --test
 pytest==6.1.2
 pytest-cov==2.6.1
 pytest-xdist==2.1.0
+pytest-instafail==0.4.2
 
 # TODO: Helmut's custom version. Replace with official release.
 python-semantic-release==4.1.2
