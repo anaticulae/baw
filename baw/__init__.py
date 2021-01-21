@@ -156,7 +156,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     ])
 
     for argument, process in workmap.items():
-        if args[argument]:
+        if argument in args and args[argument]:
             try:
                 ret += process()
             except TypeError as error:
@@ -172,19 +172,22 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
 
 
 def testcommand(root: str, args, *, verbose: bool, virtual: bool):
-    if not args['test']:
+    if not 'test' in args:
         return None
+    testconfig = [f'-n={args["n"]}']
+    if args['testconfig']:
+        testconfig += args['testconfig']
     call = partial(
         run_test,
         root=root,
-        coverage='cov' in args['test'],
+        coverage=args['cov'],
         fast='fast' in args['test'],
         longrun='long' in args['test'],
         nightly='nightly' in args['test'],
-        pdb='pdb' in args['test'],
-        generate='generate' in args['test'],
-        stash='stash' in args['test'],
-        testconfig=args['testconfig'] if args['testconfig'] else [],
+        pdb=args['pdb'],
+        generate=args['generate'],
+        stash=args['stash'],
+        testconfig=testconfig,
         verbose=verbose,
         virtual=virtual,
     )

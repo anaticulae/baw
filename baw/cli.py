@@ -94,22 +94,6 @@ UPGRADE = Command(
     },
     message='Upgrade requirements.txt',
 )
-TEST = Command(
-    longcut='--test',
-    message='Run tests and coverage',
-    args={
-        'nargs': '?',
-        'action': 'append',
-        'choices': [
-            'cov',
-            'fast',
-            'long',
-            'nightly',
-            'pdb',
-            'generate',
-            'stash',
-        ],
-    })
 NOTESTS = Command(
     longcut='--notests',
     message='Do not run test suite',
@@ -154,7 +138,6 @@ def create_parser():  # noqa: Z21
         RELEASE,
         REPORT,
         RUN,
-        TEST,
         TEST_CONFIG,
         UPGRADE,
         VENV,
@@ -172,6 +155,7 @@ def create_parser():  # noqa: Z21
 
     commands = parser.add_subparsers()
     add_sync_options(commands)
+    add_test_options(commands)
     add_plan_options(commands)
     add_init_options(commands)
     return parser
@@ -208,6 +192,42 @@ def add_init_options(parser):
     init.add_argument('shortcut', help='Project name')
     init.add_argument('description', help='Project description')
     init.add_argument('--cmdline', action='store_true')
+
+
+def add_test_options(parser):
+    test = parser.add_parser('test', help='Run unit tests')
+    test.add_argument(
+        '--cov',
+        help='test coverage',
+        action='store_true',
+    )
+    test.add_argument(
+        '--generate',
+        help='test data generator',
+        action='store_true',
+    )
+    test.add_argument(
+        '--stash',
+        help='stash repository before running tests',
+        action='store_true',
+    )
+    test.add_argument(
+        '--pdb',
+        help='start interactive pdb after error occurs',
+        action='store_true',
+    )
+    test.add_argument(
+        '-n',
+        help='process count; use auto to select os.cpu_count',
+        default='auto',
+    )
+    test.add_argument(
+        'test',
+        help='',
+        nargs='?',
+        default='fast',
+        choices=['fast', 'long', 'nightly', 'skip'],
+    )
 
 
 def parse():
