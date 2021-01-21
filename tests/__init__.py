@@ -37,7 +37,7 @@ VIRTUAL = 'VIRTUAL' in os.environ.keys()
 NO_BAW = FAST
 NO_BAW_RESON = 'Installing baw takes long time'
 
-FAST_TESTS = not LONGRUN or FAST
+FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 
 # pylint: disable=invalid-name
 skip_cmd = pytest.mark.skipif(NO_BAW, reason='Decrease response time')
