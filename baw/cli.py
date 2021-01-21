@@ -202,6 +202,10 @@ def add_test_options(parser):
         default='auto',
     )
     test.add_argument(
+        '-k',
+        help='pattern to select tests to run',
+    )
+    test.add_argument(
         '--cov',
         help='test coverage',
         action='store_true',
