@@ -132,4 +132,4 @@ def run_command(command, monkeypatch):
         with pytest.raises(SystemExit) as result:
             baw.main()
         result = str(result)
-        assert 'SystemExit: 0' in result, result
+        assert 'SystemExit(0)' in result, result

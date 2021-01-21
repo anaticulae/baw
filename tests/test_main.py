@@ -32,9 +32,9 @@ def test_run_command(monkeypatch, command):
         with raises(SystemExit) as result:
             main()
         result = str(result)
-        assert 'SystemExit: 0' in result, result
+        assert 'SystemExit(0)' in result, result
 
 
 def assert_success(result):
     result = str(result)
-    assert 'SystemExit: 0' in result, result
+    assert 'SystemExit(0)' in result, result
