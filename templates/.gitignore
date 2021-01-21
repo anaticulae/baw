@@ -4,6 +4,7 @@
 **build**
 **generated**
 .eggs/**
+.pylint.d
 .requirements.txt
 .tmp
 .virtual
