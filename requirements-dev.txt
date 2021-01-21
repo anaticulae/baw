@@ -18,6 +18,9 @@ pytest-instafail==0.4.2
 # TODO: Helmut's custom version. Replace with official release.
 python-semantic-release==4.1.2
 
+# create virtual environment
+virtualenv==20.2.1
+
 rope==0.10.7
 
 yapf==0.26.0 # format source code
