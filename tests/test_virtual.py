@@ -42,7 +42,7 @@ def test_create_venv(example):  # pylint: disable=W0621
 def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
     """Running test-example in virtual environment"""
     # install requirements first and run test later
-    cmd = 'baw --virtual sync' + ' && baw --test'  #python -mpytest tests -v'
+    cmd = 'baw --virtual sync' + ' && baw test'  #python -mpytest tests -v'
     completed = run(cmd, project_with_test)
 
     assert completed.returncode == SUCCESS, completed.stderr

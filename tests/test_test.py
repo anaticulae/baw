@@ -51,7 +51,7 @@ def test_test_with_import(example):  # pylint: disable=W0621
     assert exists(empty_python)
 
     # install requirements first and run test later
-    cmd = 'baw --test'
+    cmd = 'baw test'
     completed = run(cmd, example)
 
     assert completed.returncode == 0, completed.stderr + completed.stdout
