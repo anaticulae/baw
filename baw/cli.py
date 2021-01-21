@@ -197,6 +197,11 @@ def add_init_options(parser):
 def add_test_options(parser):
     test = parser.add_parser('test', help='Run unit tests')
     test.add_argument(
+        '-n',
+        help='process count; use auto to select os.cpu_count',
+        default='auto',
+    )
+    test.add_argument(
         '--cov',
         help='test coverage',
         action='store_true',
@@ -217,9 +222,9 @@ def add_test_options(parser):
         action='store_true',
     )
     test.add_argument(
-        '-n',
-        help='process count; use auto to select os.cpu_count',
-        default='auto',
+        '--instafail',
+        help='print error while running pytest',
+        action='store_true',
     )
     test.add_argument(
         'test',

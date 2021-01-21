@@ -187,6 +187,7 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
         pdb=args['pdb'],
         generate=args['generate'],
         stash=args['stash'],
+        instafail=args['instafail'],
         testconfig=testconfig,
         verbose=verbose,
         virtual=virtual,
