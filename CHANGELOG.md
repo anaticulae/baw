@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v0.15.0
+
+### Feature
+
+* add option to select tests (ced3fa6e68fa)
+* enable instafail flag (34c393c20300)
+* test - use new command pattern (e32b43e04165)
+* add instafail option to print error early (09e227fabb5c)
+* fail on missing marker (89a6e68dc1a9)
+* skip pylint temp folder (fa24af1a4d8c)
+
+### Fix
+
+* fix nightly selector (697c639b0e5d)
+* use test invocation (c1bb7af4449e)
+* adjust test after upgrading pytest (d9ac31b841d1)
+* remove duplicated requirements (8e05d496be4f)
+
 ## v0.14.0
 
 ### Feature
