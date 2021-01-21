@@ -206,6 +206,12 @@ def update_gitignore(root: str, verbose: bool = False):
     return SUCCESS
 
 
+def update_userdata(username='supermario', email='test@test.com'):
+    cmd = f'git config --global user.email "{email}" user.name="{username}"'
+    process = run(cmd)
+    evaluate_git_error(process)
+
+
 def evaluate_git_error(process: CompletedProcess):
     """Raise exception depending on returncode of completed process
 
