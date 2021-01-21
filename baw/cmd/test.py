@@ -29,6 +29,7 @@ def run_test(  # pylint:disable=R0914
         coverage: bool = False,
         fast: bool = False,
         generate: bool = False,
+        instafail: bool = False,
         longrun: bool = False,
         nightly: bool = False,
         pdb: bool = False,
@@ -47,6 +48,7 @@ def run_test(  # pylint:disable=R0914
         coverage(bool): run python test coverage
         fast(bool): skip long running tests
         generate(bool): generate required test data
+        instafail(bool): print error while running pytest
         longrun(bool): run long running tests
         nightly(bool): run all tests
         pdb(bool): run debugger on error
@@ -73,11 +75,12 @@ def run_test(  # pylint:disable=R0914
     cmd = create_test_cmd(
         root,
         testdir,
-        pdb,
-        coverage,
-        quiet,
-        testconfig,
+        coverage=coverage,
         generate_only=generate_only,
+        instafail=instafail,
+        parameter=testconfig,
+        pdb=pdb,
+        quiet=quiet,
     )
 
     environment = baw.git.git_stash if stash else baw.utils.empty
@@ -152,6 +155,8 @@ PYTEST_INI = os.path.join(baw.utils.ROOT, 'templates/pytest.ini')
 def create_test_cmd(  # pylint:disable=R0914
         root,
         testdir,  # TODO: REMOVE?
+        *,
+        instafail,
         pdb,
         coverage,
         quiet,
@@ -195,6 +200,8 @@ def create_test_cmd(  # pylint:disable=R0914
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} '
            f'-o cache_dir={cachedir} {testdir} {doctests} ')
+    if instafail:
+        cmd += '--instafail '
     #    | tee {testlog}
     return cmd
 
