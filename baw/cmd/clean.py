@@ -24,25 +24,47 @@ from baw.utils import logging
 from baw.utils import logging_error
 
 
-def clean(root: str):
-    check_root(root)
+def clean(
+        root: str,
+        docs: bool = False,
+        resources: bool = False,
+        tests: bool = False,
+        tmp: bool = False,
+        venv: bool = False,
+        all_: bool = False,
+):
     logging('Start cleaning')
-    patterns = [
-        '*.egg',
-        '*.egg-info',
-        '*.swo',
-        '*.swp',
-        '.coverage',
-        '.pytest_cache',
-        '.tmp',
-        '__pycache__',
-        'build',
-        'dist',
-        'doctrees',
-        'generated',
-        'html',
-        'nano.save',
-    ]
+    if all_:
+        docs, resources, tests, tmp, venv = True, True, True, True, True
+    if venv:
+        clean_virtual(root)
+    check_root(root)
+    patterns = []
+    if resources:
+        patterns.append('generated')
+    if tmp:
+        patterns.extend([
+            '*.egg',
+            '*.egg-info',
+            '*.swo',
+            '*.swp',
+            '.coverage',
+            '.tmp',
+            '__pycache__',
+            'build',
+            'dist',
+            'nano.save',
+        ])
+    if tests:
+        patterns.extend([
+            '.pytest_cache',
+            'pytest_cache',
+        ])
+    if docs:
+        patterns.extend([
+            'docs/.tmp',
+            'html',
+        ])
 
     # problems while deleting recursive
     ret = 0
@@ -53,7 +75,7 @@ def clean(root: str):
             todo = glob(root + '**' + pattern, recursive=True)
         todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
-            logging('Remove %s' % item)
+            logging(f'remove {item}')
             try:
                 if isfile(item):
                     remove(item)
