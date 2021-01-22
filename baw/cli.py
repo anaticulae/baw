@@ -150,11 +150,22 @@ def create_parser():  # noqa: Z21
             add(*shortcuts, action='store_true', help=msg)
 
     commands = parser.add_subparsers()
+    add_clean_options(commands)
+    add_init_options(commands)
+    add_plan_options(commands)
     add_sync_options(commands)
     add_test_options(commands)
-    add_plan_options(commands)
-    add_init_options(commands)
     return parser
+
+
+def add_clean_options(parser):
+    plan = parser.add_parser('clean', help='remove generated content')
+    plan.add_argument(
+        'type',
+        help='remove different type of content',
+        default='tests',
+        choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv'],
+    )
 
 
 def add_sync_options(parser):
@@ -243,6 +254,7 @@ def parse():
     args['sync'] = 'sync' in sys.argv
     args['plan'] = 'plan' in sys.argv
     args['init'] = 'init' in sys.argv
+    args['clean'] = 'clean' in sys.argv
 
     need_help = not any(args.values())
     if need_help:

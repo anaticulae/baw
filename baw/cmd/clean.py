@@ -58,7 +58,7 @@ def clean(
     if tests:
         patterns.extend([
             '.pytest_cache',
-            'pytest_cache',
+            '.tmp/pytest_cache',
         ])
     if docs:
         patterns.extend([

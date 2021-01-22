@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 """Test clean command."""
+
 from os import listdir
 from os import makedirs
 from os.path import exists
@@ -43,7 +44,7 @@ def test_clean_files_and_dirs(tmpdir):
     file_create(nested_file)
     assert exists(nested_file)
 
-    completed = run('baw --clean', tmpdir)
+    completed = run('baw clean all', tmpdir)
     assert completed.returncode == 0, completed.stderr
 
     cleaned_project = set(listdir(tmpdir))
