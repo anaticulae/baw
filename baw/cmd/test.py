@@ -59,6 +59,9 @@ def run_test(  # pylint:disable=R0914
     Returns:
         returncode(int): 0 if successful else > 0
     """
+    if not any((generate, nightly, longrun, fast)):
+        baw.utils.log('skip tests...')
+        return baw.utils.SUCCESS
     baw.utils.check_root(root)
 
     baw.utils.logging('tests')
