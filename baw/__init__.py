@@ -97,11 +97,17 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
 
     link = partial
 
+    clean = args['clean'] if 'clean' in args else ''
     fmap = OrderedDict([
         ('format',
          link(format_repository, root=root, verbose=verbose, virtual=virtual)),
         ('virtual',
-         link(create_venv, root=root, clean=args['clean'], verbose=verbose)),
+         link(
+             create_venv,
+             root=root,
+             clean='venv' == clean or 'all' == clean,
+             verbose=verbose,
+         )),
         ('drop', link(drop, root=root)),
         (
             'upgrade',
@@ -126,7 +132,17 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     ret = 0
     workmap = OrderedDict([
         ('open', link(open_this, root=root)),
-        ('clean', link(clean_project, root=cwd)),
+        ('clean',
+         link(
+             clean_project,
+             docs='docs' == clean,
+             resources='resources' == clean,
+             tests='tests' == clean,
+             tmp='tmp' == clean,
+             venv='venv' == clean,
+             all_='all' == clean,
+             root=cwd,
+         )),
         ('sync',
          link(
              sync,

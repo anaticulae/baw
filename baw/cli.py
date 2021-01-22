@@ -161,10 +161,11 @@ def create_parser():  # noqa: Z21
 def add_clean_options(parser):
     plan = parser.add_parser('clean', help='remove generated content')
     plan.add_argument(
-        'type',
+        'clean',
         help='remove different type of content',
-        default='tests',
         choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv'],
+        nargs='?',
+        default='tests',
     )
 
 
@@ -254,7 +255,6 @@ def parse():
     args['sync'] = 'sync' in sys.argv
     args['plan'] = 'plan' in sys.argv
     args['init'] = 'init' in sys.argv
-    args['clean'] = 'clean' in sys.argv
 
     need_help = not any(args.values())
     if need_help:
