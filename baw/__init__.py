@@ -98,7 +98,6 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     link = partial
 
     fmap = OrderedDict([
-        ('clean_venv', link(clean_virtual, root=root)),
         ('format',
          link(format_repository, root=root, verbose=verbose, virtual=virtual)),
         ('virtual',

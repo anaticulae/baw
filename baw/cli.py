@@ -27,8 +27,6 @@ class Command:
 
 ALL = Command('-a', '--all', 'Clean and run all expect of publishing')
 BUILD = Command('-b', '--build', 'Run build tasks')
-CLEAN = Command('-c', '--clean', 'Delete build-, temp- and cache-folder')
-CLEAN_VENV = Command(longcut='--clean_venv', message='Clean virtual environment') # yapf:disable
 DOC = Command(longcut='--doc', message='Generate documentation with Sphinx')
 IDE = Command(
     longcut='--ide',
@@ -122,8 +120,6 @@ def create_parser():  # noqa: Z21
         ALL,
         BISECT,
         BUILD,
-        CLEAN,
-        CLEAN_VENV,
         DOC,
         DOCKER,
         DROP_RELEASE,
