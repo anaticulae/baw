@@ -27,22 +27,10 @@ from baw.runtime import run_target
 from baw.utils import logging
 
 
-class Scope:
+class Scope(enum.Enum):
     ALL = enum.auto()
     MINIMAL = enum.auto()
     TODO = enum.auto()
-
-    @staticmethod
-    def from_str(name):
-        # TODO: REPLACE WITH PYTHONIC WAY
-        name = name.upper()
-        if name == 'ALL':
-            return Scope.ALL
-        if name == 'MINIMAL':
-            return Scope.MINIMAL
-        if name == 'TODO':
-            return Scope.TODO
-        raise ValueError(name)
 
 
 def lint(
@@ -67,7 +55,7 @@ def lint(
         Returncode of linter process.
     """
     if isinstance(scope, str):
-        scope = Scope.from_str(scope)
+        scope = Scope[scope.upper()]
     code = ' '.join(sources(root))
 
     testpath = os.path.join(root, 'tests')
