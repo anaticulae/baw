@@ -84,6 +84,7 @@ def run_test(  # pylint:disable=R0914
         parameter=testconfig,
         pdb=pdb,
         quiet=quiet,
+        verbose=verbose,
     )
 
     environment = baw.git.git_stash if stash else baw.utils.empty
@@ -165,6 +166,7 @@ def create_test_cmd(  # pylint:disable=R0914
         quiet,
         parameter,
         generate_only,
+        verbose: bool = False,
 ):
     # using ROOT to get location from baw-tool
     assert os.path.exists(PYTEST_INI), 'No testconfig available %s' % PYTEST_INI
@@ -205,6 +207,8 @@ def create_test_cmd(  # pylint:disable=R0914
            f'-o cache_dir={cachedir} {testdir} {doctests} ')
     if instafail:
         cmd += '--instafail '
+    if verbose:
+        cmd += '-vv '
     #    | tee {testlog}
     return cmd
 
