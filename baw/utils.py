@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import concurrent.futures
 import contextlib
 import os
 import shutil
@@ -243,3 +244,50 @@ def openbrowser(url: str):
         # running with pytest do not open webbrowser
         return
     webbrowser.open_new(url)
+
+
+def fork(
+        *runnables,
+        worker: int = 6,
+        process: bool = False,
+        returncode: bool = False,
+) -> int:
+    """Run methods in parallel.
+
+    Args:
+        runnables(callable): callables to run
+        worker(int): number of worker
+        process(bool): if True use Process- instead of ThreadPool
+        returncode(bool): always return `returncode` instead of computed
+                          result
+    Returns:
+        returncode if error occurs or returncode=True
+        result of computation if no error occurs or returncode is not used
+    """
+    failure = 0
+    executor = concurrent.futures.ThreadPoolExecutor
+    if process:
+        executor = select_executor()
+    result = [None] * len(runnables)
+    with executor(max_workers=worker) as pool:
+        futures = {pool.submit(item): item for item in runnables}
+        for future in concurrent.futures.as_completed(futures):
+            index = runnables.index(futures[future])
+            try:
+                result[index] = future.result()
+            except Exception as failed:  # pylint:disable=broad-except
+                error(f'future number: {index}; {future} failed.')
+                error(failed)
+                failure += 1
+    if failure or returncode:
+        return failure
+    return result
+
+
+def select_executor():
+    # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
+    testrun = os.environ.get('PYTEST_PLUGINS', False)
+    executor = concurrent.futures.ProcessPoolExecutor
+    if testrun:
+        executor = concurrent.futures.ThreadPoolExecutor
+    return executor

@@ -17,8 +17,10 @@ minimal:
 * minimal: everything expect of todo is collected"""
 
 import enum
+import functools
 import os
 
+import baw.utils
 from baw.config import sources
 from baw.resources import RCFILE_PATH
 from baw.runtime import run_target
@@ -73,10 +75,11 @@ def lint(
     run_in = f'{code} {linttest} '
 
     # TODO: ADD TO RETURNCODE LATER
-    bandit(root, run_in, virtual, log_always, verbose)
-
-    returncode = pylint(root, scope, run_in, virtual, log_always, verbose)
-
+    bandit_ = functools.partial(bandit, root, run_in, virtual, log_always,
+                                verbose)
+    pylint_ = functools.partial(pylint, root, scope, run_in, virtual,
+                                log_always, verbose)
+    _, returncode = baw.utils.fork(*[bandit_, pylint_], process=True)
     return returncode
 
 
