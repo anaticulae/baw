@@ -26,7 +26,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = '{%NAME%}'
-copyright = '2019-2020, kiwi project'
+copyright = '2019-2021, kiwi project'
 author = 'Helmut Konrad Fahrendholz'
 
 version = '{%VERSION%}'
