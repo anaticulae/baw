@@ -108,8 +108,9 @@ def run_test(  # pylint:disable=R0914
         if coverage:
             open_report(root)
         # do not log partial long running tests as completed
-        complete = (not testconfig) or (testconfig == ['+n=auto'])
-        if complete and (longrun or nightly):
+        # TODO: ADJUST -n6!!!
+        # TODO: VERIFY THAT SELECTIVE TESTING WAS NOT USED
+        if all_tests(testconfig) and (longrun or nightly):
             head = baw.git.git_headhash(root)
             if head:
                 baw.archive.test.mark_tested(root, head)
@@ -117,6 +118,14 @@ def run_test(  # pylint:disable=R0914
         # override pytest error code
         return baw.utils.SUCCESS
     return completed.returncode
+
+
+def all_tests(testconfig) -> bool:
+    if not testconfig:
+        return True
+    if '-k' not in str(testconfig):
+        return True
+    return False
 
 
 def open_report(root: str):
