@@ -109,6 +109,11 @@ def check_dependency(
             logging_error(completed.stderr)
 
         if completed.stdout:
+            if f'{package} ' not in completed.stdout:
+                # nltk (3.5)  - 3.5
+                # INSTALLED: 3.5 (latest)
+                # skip finding nltk_data when searching for nltk
+                continue
             return completed.stdout
     raise ValueError(f'Could not check dependencies {package}')
 
