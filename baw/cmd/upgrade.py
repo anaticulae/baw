@@ -153,7 +153,9 @@ def available_version(content: str, package: str = None):
     searched = re.search(pattern, content)
     if not searched:
         return None
-    return searched.group('available')
+    detected = searched.group('available')
+    result = baw.requirements.fix_version(detected)
+    return result
 
 
 def next_version(content) -> str:

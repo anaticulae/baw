@@ -30,7 +30,7 @@ utila>=0.5.0
 """
 
 EXPECTED = {
-    'PyYAML': '5.1',
+    'PyYAML': '5.1.0',
     'iamraw': '0.1.2',
     'pdfminer.six': '20181108',
     'serializeraw': '0.1.0',

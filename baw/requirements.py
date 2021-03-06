@@ -65,6 +65,8 @@ def parse(content: str) -> Requirements:
     """\
     >>> parse('Flask_Login==0.1.1')
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
+    >>> parse('nltk==3.5')
+    Requirements(equal={'nltk': '3.5.0'}, greater={})
     """
     assert isinstance(content, str), content
     content = content.replace('-', '_')
@@ -83,13 +85,16 @@ def parse(content: str) -> Requirements:
         try:
             if '==' in line:
                 package, version = line.split('==')
-                equal[package] = version.strip()
+                equal[package] = fix_version(version)
             elif '>=' in line:
                 package, version = line.split('>=')
-                version = version.strip()
+                version = fix_version(version)
                 if '<' in version:
                     version = version.split('<')
-                greater[package] = version
+                if isinstance(version, str):
+                    greater[package] = fix_version(version)
+                else:
+                    greater[package] = [fix_version(item) for item in version]
             else:
                 # package without version
                 equal[line] = ''
@@ -107,6 +112,21 @@ def parse(content: str) -> Requirements:
 
     result = Requirements(equal=equal, greater=greater)
     return result
+
+
+def fix_version(item: str) -> str:
+    """\
+    >>> fix_version('3.5')
+    '3.5.0'
+    >>> fix_version('20181108')
+    '20181108'
+    """
+    if '.' not in item:
+        return item
+    item = item.strip()
+    if item.count('.') == 1:
+        item = f'{item}.0'
+    return item
 
 
 def diff(current: Requirements, requested: Requirements, minimal: bool = False):
