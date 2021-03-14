@@ -100,10 +100,14 @@ def check_dependency(
             pip,
             verbose=False,
             virtual=virtual,
-            skip_error_code=[23],  # package not found
+            skip_error_code=[23, 2],  # package not found
         )
         if completed.returncode == 23:
             # Package not available
+            continue
+        if completed.returncode == 2:
+            logging_error(f'not reachable: {index} for package {package}')
+            exit(completed.returncode)
             continue
         if completed.returncode and completed.stderr:
             logging_error(completed.stderr)
