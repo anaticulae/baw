@@ -17,6 +17,7 @@ import baw.requirements
 from baw.git import update_gitignore
 from baw.runtime import run_target
 from baw.utils import FAILURE
+from baw.utils import REQUIREMENTS_EXTRA
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import ROOT
 from baw.utils import check_root
@@ -40,6 +41,7 @@ def sync(
         packages(str): decide which packages should be synchronized:
                         - dev/ minimal dev environment, formater, linter, test
                         - doc/ Sphinx
+                        - extra
                         - all
         minimal(bool): if True use minimal version in requirement file
         virtual(bool): if True sync the virtual environment
@@ -240,6 +242,9 @@ def determine_resources(root: str, packages: str) -> list:
     if packages in ('dev', 'all'):
         if os.path.exists(os.path.join(root, 'requirements.dev')):
             resources.append(os.path.join(root, 'requirements.dev'))
+    if packages in ('extra', 'all'):
+        if os.path.exists(os.path.join(root, REQUIREMENTS_EXTRA)):
+            resources.append(os.path.join(root, REQUIREMENTS_EXTRA))
 
     # local project file
     local_requirement = join(root, REQUIREMENTS_TXT)

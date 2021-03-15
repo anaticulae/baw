@@ -40,9 +40,19 @@ def upgrade(
         failure_dev = REQUIREMENTS_UP_TO_DATE
         if requirements_dev:
             failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
+        requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
+        if not os.path.exists(requirements_extra) or packages not in ('extra', 'all'): # yapf:disable
+            requirements_extra = None
+        failure_extra = REQUIREMENTS_UP_TO_DATE
+        if requirements_extra:
+            failure_extra = upgrade_requirements(root, baw.utils.REQUIREMENTS_EXTRA) # yapf:disable
 
         # requirements.txt is uptodate, no update requireded
-        if failure == REQUIREMENTS_UP_TO_DATE and failure_dev == REQUIREMENTS_UP_TO_DATE:
+        if all((
+                failure == REQUIREMENTS_UP_TO_DATE,
+                failure_dev == REQUIREMENTS_UP_TO_DATE,
+                failure_extra == REQUIREMENTS_UP_TO_DATE,
+        )):
             return baw.utils.SUCCESS
         devupgade_failure = failure_dev not in (REQUIREMENTS_UP_TO_DATE,
                                                 baw.utils.SUCCESS)

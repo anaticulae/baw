@@ -24,6 +24,7 @@ TMP = '.tmp'
 
 REQUIREMENTS_TXT = 'requirements.txt'
 REQUIREMENTS_DEV = 'requirements.dev'
+REQUIREMENTS_EXTRA = 'requirements.ext'
 
 SUCCESS = 0
 FAILURE = 1

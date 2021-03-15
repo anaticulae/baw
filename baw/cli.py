@@ -87,10 +87,11 @@ UPGRADE = Command(
         'choices': [
             'dev',
             'requirements',
+            'extra',
             'all',
         ],
     },
-    message='Upgrade requirements.txt',
+    message='Upgrade requirements.txt/dev/ext',
 )
 NOTESTS = Command(
     longcut='--notests',
@@ -182,7 +183,7 @@ def add_sync_options(parser):
         'packages(requirements.txt only), all(dev, doc, packages)',
         nargs='?',
         const='dev',
-        choices=['all', 'dev', 'doc', 'requirements'],
+        choices=['all', 'dev', 'doc', 'extra', 'requirements'],
     )
 
 
