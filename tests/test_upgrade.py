@@ -97,7 +97,7 @@ def test_upgrading(tmpdir):
     baw.utils.file_create(requirements_path, TEST_UPGRADE)
 
     # use default requirements.txt
-    baw.cmd.upgrade.upgrade_requirements(tmpdir, virtual=True)
+    baw.cmd.upgrade.upgrade_requirements(tmpdir)
 
     loaded = baw.utils.file_read(requirements_path)
     assert loaded != TEST_UPGRADE
