@@ -72,7 +72,8 @@ def lint(
 
 
 def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
-    cmd = f'pylint {run_in}'
+    python = baw.config.python(root)
+    cmd = f'{python} -mpylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={RCFILE_PATH} '
     if scope == Scope.MINIMAL:
@@ -97,7 +98,8 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
 
 
 def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
-    cmd = f'bandit {run_in} -r '
+    python = baw.config.python(root)
+    cmd = f'{python} -mbandit {run_in} -r '
     cmd += '--skip B101,'  # skip assert is used
     cmd += 'B322 '  # skip python2 input check
 
