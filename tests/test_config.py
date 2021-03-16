@@ -69,7 +69,8 @@ def test_config_defined_subproject_with_source_parameter(configuration):  #pylin
     """Include further directories in the test cov report and unit testing."""
     # baw main project and `abc` and `defg` as subprojects
     expected_sources = ['baw', 'abc', 'defg']
-
+    for item in expected_sources:
+        os.makedirs(item)
     assert baw.config.sources(configuration) == expected_sources
 
 
