@@ -8,19 +8,13 @@
 # =============================================================================
 """Test clean command."""
 
-from os import listdir
-from os import makedirs
-from os.path import exists
-from os.path import join
+import os
 
-from baw.utils import TMP
-from baw.utils import file_create
-from tests import file_count
-from tests import run
-from tests import skip_cmd
+import baw.utils
+import tests
 
 
-@skip_cmd
+@tests.skip_cmd
 def test_clean_files_and_dirs(tmpdir):
     """Create some files and folder and clean them afterwards.
 
@@ -30,22 +24,22 @@ def test_clean_files_and_dirs(tmpdir):
     4. Run clean
     5. Check result
     """
-    assert file_count(tmpdir) == 0  # clean directory
+    assert tests.file_count(tmpdir) == 0  # clean directory
 
-    for item in ['.git', 'build', TMP]:
-        makedirs(join(tmpdir, item))
-    assert file_count(tmpdir) == 3
+    for item in ['.git', 'build', baw.utils.TMP]:
+        os.makedirs(os.path.join(tmpdir, item))
+    assert tests.file_count(tmpdir) == 3
 
     for item in ['.coverage', 'do_not_clean.txt']:
-        file_create(join(tmpdir, item))
-    assert file_count(tmpdir) == 5
+        baw.utils.file_create(os.path.join(tmpdir, item))
+    assert tests.file_count(tmpdir) == 5
 
-    nested_file = join(tmpdir, 'build', '.coverage')
-    file_create(nested_file)
-    assert exists(nested_file)
+    nested_file = os.path.join(tmpdir, 'build', '.coverage')
+    baw.utils.file_create(nested_file)
+    assert os.path.exists(nested_file)
 
-    completed = run('baw clean all', tmpdir)
+    completed = tests.run('baw clean all', tmpdir)
     assert completed.returncode == 0, completed.stderr
 
-    cleaned_project = set(listdir(tmpdir))
+    cleaned_project = set(os.listdir(tmpdir))
     assert cleaned_project == {'.git', 'do_not_clean.txt'}  # .gitdir remains
