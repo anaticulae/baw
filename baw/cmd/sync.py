@@ -85,6 +85,7 @@ def check_dependency(
         package: str,
         *,
         virtual: bool,
+        verbose: bool = False,
 ):
     """Check if packages need an upgrade."""
     (adress, internal, external) = get_setup()
@@ -102,7 +103,7 @@ def check_dependency(
         completed = run_target(
             root,
             pip,
-            verbose=False,
+            verbose=verbose,
             virtual=virtual,
             skip_error_code=[23, 2],  # package not found
         )
@@ -166,11 +167,13 @@ def sync_dependencies(
         pip_index,
         extra_url,
     )
+    if verbose:
+        logging(cmd)
     completed = run_target(
         root,
         cmd,
         cwd=root,
-        verbose=verbose,
+        verbose=False,
         virtual=virtual,
     )
 
@@ -280,12 +283,15 @@ def pip_list(
         verbose: bool = False,
         virtual: bool = False,
 ) -> baw.requirements.Requirements:
-    cmd = 'pip list --format=freeze'
+    python = baw.config.python(root)
+    cmd = f'{python} -mpip list --format=freeze'
+    if verbose:
+        logging(cmd)
     completed = run_target(
         root,
         cmd,
         cwd=root,
-        verbose=verbose,
+        verbose=False,
         virtual=virtual,
     )
     if completed.returncode and completed.stderr:

@@ -182,6 +182,9 @@ def run_target(
         logging_error(str(error))
         return FAILURE
 
+    if verbose:
+        logging(command)
+
     if virtual:
         try:
             completed = _run_virtual(
@@ -235,6 +238,8 @@ def setup_target(
         raise ValueError('cwd: %s is not a directory' % cwd)
     if not skip_error_code:
         skip_error_code = {}
+    if isinstance(skip_error_code, int):
+        skip_error_code = {skip_error_code}
     if not skip_error_message:
         skip_error_message = []
     return cwd, skip_error_code, skip_error_message
@@ -261,6 +266,8 @@ def log_result(  # pylint:disable=R1260
     """
     command = completed.args
     returncode = completed.returncode
+    if isinstance(skip_error_code, int):
+        skip_error_code = {skip_error_code}
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
         msg = f'Completed: `{command}` in `{cwd}` returncode: {returncode}\n'

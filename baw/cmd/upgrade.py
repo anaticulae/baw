@@ -71,7 +71,7 @@ def upgrade(
             sync=not notests,  # install new packages
             test=not notests,
             testconfig=None,
-            verbose=False,
+            verbose=verbose,
             virtual='BOTH',  # sync virtual and non virtual environment
         )
         if requirements_dev:
@@ -107,6 +107,7 @@ def upgrade_requirements(
         root: str,
         requirements: str = baw.utils.REQUIREMENTS_TXT,
         virtual: bool = False,
+        verbose: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
     available version on pip repository.
@@ -115,6 +116,7 @@ def upgrade_requirements(
         root(str): generated project
         requirements(str): relativ path to requirements
         virtual(bool): run in virtual environment
+        verbose(bool): increase logging
     Returns:
         SUCCESS if file was upgraded
     """
@@ -198,7 +200,7 @@ def determine_new_requirements(
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(root, source, sink, virtual):
+def collect_new_packages(root, source, sink, virtual, verbose=False):
     sync_error = False
     parallel_worker = os.environ.get('BAW_PARALLEL_PIP_CALLS', 10)
     with concurrent.futures.ThreadPoolExecutor(max_workers=parallel_worker) as executor: # yapf:disable
@@ -208,6 +210,7 @@ def collect_new_packages(root, source, sink, virtual):
                 root,
                 package,
                 virtual=virtual,
+                verbose=verbose,
             ): (package, version) for package, version in source.items()
         }
         for future in concurrent.futures.as_completed(todo):
