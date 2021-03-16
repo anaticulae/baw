@@ -7,8 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 """Run every function which is used by `baw`."""
+
 from os import environ
 
+import baw.config
 from baw.config import commands
 from baw.git import git_headtag
 from baw.runtime import run_target
@@ -40,7 +42,8 @@ def publish(root: str, verbose: bool = False):
     adress, internal_port, _ = get_setup()
     url = f'{adress}:{internal_port}'
     distribution = 'bdist_wheel --universal'
-    command = f'python setup.py {distribution} upload -r {url}'
+    python = baw.config.python(root)
+    command = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
         logging(f'build distribution: {command}')
     completed = run_target(

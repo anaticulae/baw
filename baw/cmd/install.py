@@ -7,13 +7,15 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import baw.config
 from baw.runtime import run_target
 from baw.utils import logging
 
 
 def install(root: str, virtual: bool, verbose: bool = False):
     # -f always install newest one
-    command = 'python setup.py install -f'
+    python = baw.config.python(root)
+    command = f'{python} setup.py install -f'
 
     completed = run_target(
         root, command, root, verbose=verbose, virtual=virtual)

@@ -10,6 +10,7 @@
 import os
 import subprocess
 
+import baw.config
 import baw.runtime
 import baw.utils
 
@@ -30,8 +31,9 @@ if not 'PYTEST_XDIST_WORKER' in os.environ:
             )
             return result
 
+        PYTHON = baw.config.python(baw.utils.ROOT)
         # ensure that baw is installed
-        COMPLETED = run('python setup.py install')
+        COMPLETED = run(f'{PYTHON} setup.py install')
         assert COMPLETED.returncode == baw.utils.SUCCESS, COMPLETED
 
         COMPLETED = run('where baw')

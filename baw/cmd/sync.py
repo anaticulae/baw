@@ -13,6 +13,7 @@ from os.path import join
 from urllib.request import URLError
 from urllib.request import urlopen
 
+import baw.config
 import baw.requirements
 from baw.git import update_gitignore
 from baw.runtime import run_target
@@ -95,8 +96,9 @@ def check_dependency(
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
 
+    python = baw.config.python(root)
     for index in [pip_index, extra_url]:
-        pip = f'python -mpip search --index {index} {package}'
+        pip = f'{python} -mpip search --index {index} {package}'
         completed = run_target(
             root,
             pip,
@@ -157,8 +159,13 @@ def sync_dependencies(
     requirements = os.path.join(root, '.baw/.requirements.txt')
     baw.utils.file_replace(requirements, str(required))
 
-    cmd, pip = get_install_cmd(requirements, verbose, pip_index, extra_url)
-
+    cmd, pip = get_install_cmd(
+        root,
+        requirements,
+        verbose,
+        pip_index,
+        extra_url,
+    )
     completed = run_target(
         root,
         cmd,
@@ -253,12 +260,13 @@ def determine_resources(root: str, packages: str) -> list:
     return resources
 
 
-def get_install_cmd(to_install, verbose, pip_index, extra_url):
+def get_install_cmd(root, to_install, verbose, pip_index, extra_url):
     warning = '' if verbose else '--no-warn-conflicts'
     pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
     config = '--retries 2 --disable-pip-version-check'
-
-    cmd = 'python -mpip install %s %s -U %s -r %s' % (
+    python = baw.config.python(root)
+    cmd = '%s -mpip install %s %s -U %s -r %s' % (
+        python,
         warning,
         pip,
         config,
