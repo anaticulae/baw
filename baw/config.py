@@ -20,6 +20,8 @@ release
 """
 
 import configparser
+import contextlib
+import functools
 import os
 import typing
 
@@ -29,6 +31,8 @@ PROJECT_PATH = [
     '.baw/project.cfg',
     '.baw/project.config',  # legacy
 ]
+
+PYTHON_DEFAULT = 'python'
 
 
 def name(root: str):
@@ -199,3 +203,17 @@ def config_path(root: str) -> str:
             return expected
     # if no path exists, return default one
     return os.path.join(root, PROJECT_PATH[0])
+
+
+@functools.lru_cache()
+def python(root: str) -> str:
+    if os.path.isfile(root):
+        path = root
+    else:
+        path = config_path(root)
+    if not os.path.exists(path):
+        return PYTHON_DEFAULT
+    cfg = load(path)
+    with contextlib.suppress(KeyError):
+        return cfg['project']['python']
+    return PYTHON_DEFAULT
