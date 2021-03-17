@@ -209,16 +209,12 @@ def config_path(root: str) -> str:
 
 @functools.lru_cache()
 def python(root: str) -> str:
-    if os.path.isfile(root):
-        path = root
-    else:
-        path = config_path(root)
-    if not os.path.exists(path):
-        return PYTHON_DEFAULT
-    cfg = load(path)
-    with contextlib.suppress(KeyError):
-        return cfg['project']['python']
-    return PYTHON_DEFAULT
+    result = default_config(
+        root,
+        lambda x: x['project']['python'],
+        default=PYTHON_DEFAULT,
+    )
+    return result
 
 
 def spelling(root: str) -> bool:
