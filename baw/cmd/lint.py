@@ -73,6 +73,7 @@ def lint(
 
 def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
     python = baw.config.python(root)
+    spelling = baw.config.spelling(root)
     cmd = f'{python} -mpylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={RCFILE_PATH} '
@@ -84,6 +85,14 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
         cmd += '--disable=all --enable=W0511'
     # Wrong hanging indentation before block
     cmd += ' -d C0330 '
+    if spelling:
+        cmd += '--spelling-dict=en_US '
+        try:
+            path = os.environ['PYLINT_SPELLING']
+        except KeyError:
+            baw.utils.logging_error('require global env: `PYLINT_SPELLING`')
+            exit(baw.utils.FAILURE)
+        cmd += f'--spelling-private-dict-file={path} '
     completed = run_target(
         root,
         cmd,
