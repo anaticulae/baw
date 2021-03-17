@@ -35,7 +35,7 @@ def test_test_with_import(example):  # pylint: disable=W0621
         If baw --test is not runned in root, the sys path contains only
         projectname/tests but we need projectname.
     """
-    # EXAMPLE_PROJECT_NAME is eqaul to package name
+    # EXAMPLE_PROJECT_NAME is equal to package name
     python_file = 'samba'
     test_me = dedent("""\
         def test_me():
