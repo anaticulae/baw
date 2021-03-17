@@ -8,9 +8,11 @@
 # =============================================================================
 """Base for generating project. Templates have to be here."""
 
+import os
 from os.path import exists
 from os.path import join
 
+import baw
 import baw.project.version
 from baw.config import name
 from baw.config import shortcut
@@ -18,7 +20,6 @@ from baw.config import sources
 from baw.git import GIT_REPO_EXCLUDE
 from baw.utils import BAW_EXT
 from baw.utils import REQUIREMENTS_TXT
-from baw.utils import ROOT
 from baw.utils import file_read
 from baw.utils import forward_slash
 
@@ -29,7 +30,7 @@ FOLDERS = [
     'docs/releases',
 ]
 
-TEMPLATES = join(ROOT, 'templates')
+TEMPLATES = join(baw.ROOT, 'templates')
 assert exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
 
 WORKSPACE_TEMPLATE = join(TEMPLATES, '..code-workspace')

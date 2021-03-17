@@ -20,7 +20,6 @@ from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_EXTRA
 from baw.utils import REQUIREMENTS_TXT
-from baw.utils import ROOT
 from baw.utils import check_root
 from baw.utils import get_setup
 from baw.utils import logging
@@ -248,7 +247,7 @@ def determine_resources(root: str, packages: str) -> list:
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
     # make path absolute in project
-    resources = [join(ROOT, to_install) for to_install in resources]
+    resources = [join(baw.ROOT, to_install) for to_install in resources]
     if packages in ('dev', 'all'):
         if os.path.exists(os.path.join(root, 'requirements.dev')):
             resources.append(os.path.join(root, 'requirements.dev'))

@@ -78,7 +78,7 @@ def test_out_of_date():
 @tests.skip_longrun
 def test_new_requirements():
     result = baw.cmd.upgrade.determine_new_requirements(
-        baw.utils.ROOT,
+        baw.ROOT,
         tests.fixtures.requirements.REQUIREMENTS,
     )
     # utila should allways be new than 0.5.0

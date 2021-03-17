@@ -23,7 +23,7 @@ if not 'PYTEST_XDIST_WORKER' in os.environ:
         def run(cmd):
             result = subprocess.run(
                 cmd,
-                cwd=baw.utils.ROOT,
+                cwd=baw.ROOT,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 universal_newlines=True,
@@ -31,7 +31,7 @@ if not 'PYTEST_XDIST_WORKER' in os.environ:
             )
             return result
 
-        PYTHON = baw.config.python(baw.utils.ROOT)
+        PYTHON = baw.config.python(baw.ROOT)
         # ensure that baw is installed
         COMPLETED = run(f'{PYTHON} setup.py install')
         assert COMPLETED.returncode == baw.utils.SUCCESS, COMPLETED

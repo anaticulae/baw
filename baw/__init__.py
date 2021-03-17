@@ -7,6 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+ROOT = None
+
+# pylint:disable=wrong-import-position
+
 import os
 from collections import OrderedDict
 from functools import partial
@@ -14,6 +18,7 @@ from sys import exc_info
 from time import time
 from traceback import format_exc
 
+import baw.__root__
 import baw.cmd.bisect
 import baw.cmd.lint
 import baw.cmd.upgrade

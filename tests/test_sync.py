@@ -6,18 +6,19 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import pytest
 
+import baw
 import baw.cmd.sync
 from baw.cmd.sync import sync
-from baw.utils import ROOT
 
 
 @pytest.mark.parametrize('virtual', [False, True])
 def test_sync(virtual):
-    sync(ROOT, virtual=virtual, verbose=False)
+    sync(baw.ROOT, virtual=virtual, verbose=False)
 
 
 def test_pip_list():
-    parsed = baw.cmd.sync.pip_list(ROOT, virtual=False)
+    parsed = baw.cmd.sync.pip_list(baw.ROOT, virtual=False)
     assert len(parsed.equal) >= 10, parsed.equal

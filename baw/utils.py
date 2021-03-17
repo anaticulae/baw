@@ -16,9 +16,6 @@ import sys
 import time
 import webbrowser
 
-#  Path to installed baw-tool
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
 BAW_EXT = '.baw'
 TMP = '.tmp'
 

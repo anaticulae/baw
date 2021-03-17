@@ -17,7 +17,7 @@ import tests
 from tests.fixtures.project import project_example
 from tests.fixtures.project import project_example_done
 
-ROOT = baw.utils.ROOT
+ROOT = baw.ROOT
 
 
 def test_plan_releases():
