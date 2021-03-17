@@ -136,6 +136,7 @@ def fail_on_finding(root: str) -> bool:
         return False
 
 
+@functools.lru_cache()
 def load(path: str):
     if not os.path.exists(path):
         raise ValueError('Configuration %s does not exists' % path)
