@@ -33,6 +33,7 @@ PROJECT_PATH = [
 ]
 
 PYTHON_DEFAULT = 'python'
+SPELLING_DEFAULT = False
 
 
 def name(root: str):
@@ -217,3 +218,29 @@ def python(root: str) -> str:
     with contextlib.suppress(KeyError):
         return cfg['project']['python']
     return PYTHON_DEFAULT
+
+
+def spelling(root: str) -> bool:
+    """\
+    >>> spelling(baw.ROOT)
+    False
+    """
+    result = default_config(
+        root,
+        lambda x: x['project']['spelling'],
+        default=SPELLING_DEFAULT,
+    )
+    return result
+
+
+def default_config(root: str, access: callable, default=None) -> bool:
+    if os.path.isfile(root):
+        path = root
+    else:
+        path = config_path(root)
+    if not os.path.exists(path):
+        return default
+    cfg = load(path)
+    with contextlib.suppress(KeyError):
+        return access(cfg)
+    return default
