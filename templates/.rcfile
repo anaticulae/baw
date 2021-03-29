@@ -48,12 +48,18 @@ good-names=fp,
            y3,
            y4,
            yy,
+           h1,
+           h2,
+           h3,
+           h4,
            z,
            z0,
            z1,
            z2,
            z3,
            zz,
+           X,
+           X_train
 
 exclude-protected = __version,
 
