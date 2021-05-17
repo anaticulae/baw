@@ -8,11 +8,11 @@
 # =============================================================================
 
 # baw --format
-yapf==0.26.0 # format source code
+yapf==0.31.0 # format source code
 isort==4.3.15 # format imports
 
 # baw --lint
-pylint==2.3.1
+pylint==2.8.2
 
 # baw --doc
 Sphinx==1.8.5
