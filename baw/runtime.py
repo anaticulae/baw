@@ -18,6 +18,7 @@ from shutil import rmtree
 from sys import platform
 from time import time
 
+import baw.config
 import baw.utils
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
@@ -78,8 +79,9 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         logging(f'virtual: {virtual}')
         return SUCCESS
 
+    python = baw.config.python(root)
     venv_command = [
-        "python",
+        python,
         "-m",
         "venv",
         '.',
