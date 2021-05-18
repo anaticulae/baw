@@ -32,8 +32,6 @@ VERSION_FILE = open(
 
 VERSION = re.search(r'__version__ = \'(.*?)\'', VERSION_FILE).group(1)
 
-TEMPLATES = os.path.join(THIS, 'templates')
-
 if __name__ == "__main__":
     setuptools.setup(
         author='Helmut Konrad Fahrendholz',
@@ -57,5 +55,6 @@ if __name__ == "__main__":
             'baw.archive',
             'baw.cmd',
             'baw.project',
+            'baw.templates',
         ],
     )

@@ -30,7 +30,7 @@ FOLDERS = [
     'docs/releases',
 ]
 
-TEMPLATES = join(baw.ROOT, 'templates')
+TEMPLATES = join(baw.ROOT, 'baw/templates')
 assert exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
 
 WORKSPACE_TEMPLATE = join(TEMPLATES, '..code-workspace')

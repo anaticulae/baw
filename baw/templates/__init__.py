@@ -6,8 +6,3 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-
-include requirements-dev.txt
-include requirements-doc.txt
-
-graft baw/templates

@@ -174,7 +174,7 @@ def create_test_cmd(  # pylint:disable=R0914
         generate_only,
         verbose: bool = False,
 ):
-    pytest_ini = os.path.join(baw.ROOT, 'templates/pytest.ini')
+    pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
     # using ROOT to get location from baw-tool
     assert os.path.exists(pytest_ini), 'No testconfig available %s' % pytest_ini
 
@@ -232,7 +232,7 @@ def cov_args(root: str, *, pdb: bool) -> str:
         args for coverage command
     """
     output = os.path.join(baw.utils.tmp(root), 'report')
-    cov_config = os.path.join(baw.ROOT, 'templates', '.coveragerc')
+    cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')
     assert os.path.exists(cov_config)
 
     #   --no-cov  Disable coverage report completely (useful for
