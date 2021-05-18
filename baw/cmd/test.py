@@ -235,7 +235,7 @@ def cov_args(root: str, *, pdb: bool) -> str:
     """
     output = os.path.join(baw.utils.tmp(root), 'report')
     cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')
-    assert os.path.exists(cov_config)
+    assert os.path.exists(cov_config), str(cov_config)
 
     #   --no-cov  Disable coverage report completely (useful for
     #             debuggers) default: False
