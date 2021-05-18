@@ -18,7 +18,7 @@ pytest_timeout==1.4.2
 python-semantic-release==4.1.2
 
 # create virtual environment
-virtualenv==20.2.1
+virtualenv==20.4.6
 
 rope==0.10.7
 
