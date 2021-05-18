@@ -81,9 +81,9 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
     if scope == Scope.MINIMAL:
         # :fixme (W0511):
         # Used when a warning note as fixme, todo or xxx is detected.
-        cmd += '-d W0511'
+        cmd += '-d W0511 '
     if scope == Scope.TODO:
-        cmd += '--disable=all --enable=W0511'
+        cmd += '--disable=all --enable=W0511 '
     # Wrong hanging indentation before block
     cmd += ' -d C0330 '
     if spelling:
