@@ -234,8 +234,8 @@ def determine_resources(root: str, packages: str) -> list:
         - requirements: only install project requirements.txt
     """
     resources = []
-    requirements_dev = 'requirements-dev.txt'
-    requirements_doc = 'requirements-doc.txt'
+    requirements_dev = 'baw/requires/requirements-dev.txt'
+    requirements_doc = 'baw/requires/requirements-doc.txt'
     if packages == 'dev':
         resources.append(requirements_dev)
     if packages == 'doc':

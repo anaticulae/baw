@@ -55,6 +55,7 @@ if __name__ == "__main__":
             'baw.archive',
             'baw.cmd',
             'baw.project',
+            'baw.requires',
             'baw.templates',
         ],
     )
