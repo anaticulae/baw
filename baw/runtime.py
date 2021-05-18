@@ -79,11 +79,11 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         logging(f'virtual: {virtual}')
         return SUCCESS
 
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=False)
     venv_command = [
         python,
         "-m",
-        "venv",
+        "virtualenv",
         '.',
         '--copies',  # , '--system-site-packages'
     ]

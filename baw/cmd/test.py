@@ -85,6 +85,7 @@ def run_test(  # pylint:disable=R0914
         pdb=pdb,
         quiet=quiet,
         verbose=verbose,
+        virtual=virtual,
     )
 
     environment = baw.git.git_stash if stash else baw.utils.empty
@@ -173,6 +174,7 @@ def create_test_cmd(  # pylint:disable=R0914
         parameter,
         generate_only,
         verbose: bool = False,
+        virtual: bool = False,
 ):
     pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
     # using ROOT to get location from baw-tool
@@ -208,7 +210,7 @@ def create_test_cmd(  # pylint:disable=R0914
 
     testlog = os.path.join(tmpdir, f'{logfolder}.log')  # pylint:disable=W0612
 
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} '

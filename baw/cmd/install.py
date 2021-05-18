@@ -14,7 +14,7 @@ from baw.utils import logging
 
 def install(root: str, virtual: bool, verbose: bool = False):
     # -f always install newest one
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     command = f'{python} setup.py install -f'
 
     completed = run_target(

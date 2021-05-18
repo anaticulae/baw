@@ -96,7 +96,7 @@ def check_dependency(
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
 
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     for index in [pip_index, extra_url]:
         pip = f'{python} -mpip search --index {index} {package}'
         completed = run_target(
@@ -165,6 +165,7 @@ def sync_dependencies(
         verbose,
         pip_index,
         extra_url,
+        virtual=virtual,
     )
     if verbose:
         logging(cmd)
@@ -262,11 +263,11 @@ def determine_resources(root: str, packages: str) -> list:
     return resources
 
 
-def get_install_cmd(root, to_install, verbose, pip_index, extra_url):
+def get_install_cmd(root, to_install, verbose, pip_index, extra_url, virtual):
     warning = '' if verbose else '--no-warn-conflicts'
     pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
     config = '--retries 2 --disable-pip-version-check'
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     cmd = '%s -mpip install %s %s -U %s -r %s' % (
         python,
         warning,
@@ -282,7 +283,7 @@ def pip_list(
         verbose: bool = False,
         virtual: bool = False,
 ) -> baw.requirements.Requirements:
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
         logging(cmd)

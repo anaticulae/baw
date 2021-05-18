@@ -72,7 +72,7 @@ def lint(
 
 
 def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     spelling = baw.config.spelling(root)
     cmd = f'{python} -mpylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
@@ -107,7 +107,7 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
 
 
 def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
-    python = baw.config.python(root)
+    python = baw.config.python(root, virtual=virtual)
     cmd = f'{python} -mbandit {run_in} -r '
     cmd += '--skip B101,'  # skip assert is used
     cmd += 'B322 '  # skip python2 input check
