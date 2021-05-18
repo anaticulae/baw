@@ -16,19 +16,22 @@ import re
 
 import setuptools
 
-THIS = os.path.dirname(__file__)
+ROOT = os.path.abspath(os.path.dirname(__file__))
 
 README = open(
-    os.path.join(THIS, 'README.md'),
+    os.path.join(ROOT, 'README.md'),
     mode='r',
     newline='\n',
 ).read()
 
 VERSION_FILE = open(
-    os.path.join(THIS, 'baw/__init__.py'),
+    os.path.join(ROOT, 'baw/__init__.py'),
     mode='r',
     newline='\n',
 ).read()
+
+with open(os.path.join(ROOT, "requirements.txt"), encoding='utf8') as fp:
+    REQUIRES = [line for line in fp.readlines() if line and '#' not in line]
 
 VERSION = re.search(r'__version__ = \'(.*?)\'', VERSION_FILE).group(1)
 
@@ -38,6 +41,7 @@ if __name__ == "__main__":
         author_email='helmi3000@outlook.com',
         description='A simple console-application to manage project complexity.',
         include_package_data=True,
+        install_requires=REQUIRES,
         long_description=README,
         name='baw',
         platforms='any',
