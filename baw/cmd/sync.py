@@ -111,6 +111,7 @@ def check_dependency(
             continue
         if completed.returncode == 2:
             logging_error(f'not reachable: {index} for package {package}')
+            logging_error(completed.stderr)
             exit(completed.returncode)
             continue
         if completed.returncode and completed.stderr:

@@ -96,7 +96,8 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     patch_env(root)
 
     if process.returncode:
-        logging_error('While creating virutal environment')
+        logging_error(' '.join(venv_command))
+        logging_error('While creating virutal environment:')
 
         logging(process.stdout)
         logging_error(process.stderr)
