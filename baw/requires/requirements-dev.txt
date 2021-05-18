@@ -22,7 +22,9 @@ virtualenv==20.2.1
 
 rope==0.10.7
 
-yapf==0.26.0 # format source code
+yapf==0.31.0 # format source code
 isort==4.3.15 # format imports
+
+pylint==2.8.2
 
 bandit==1.7.0 # show secury issues
