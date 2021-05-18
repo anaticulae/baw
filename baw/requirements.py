@@ -25,6 +25,7 @@ Example
 
 import contextlib
 import dataclasses
+import difflib
 
 import baw.project.version
 import baw.utils
@@ -160,7 +161,7 @@ def replace(requirements: str, update: NewRequirements) -> str:
         replacement = f'{package}=={new}'
 
         baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
-        requirements = requirements.replace(pattern, replacement)
+        requirements = smart_replace(requirements, pattern, replacement)
 
     for package, [old, new] in update.greater.items():
         if isinstance(old, str):
@@ -174,8 +175,22 @@ def replace(requirements: str, update: NewRequirements) -> str:
         if pattern == replacement:
             continue
         baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
-        requirements = requirements.replace(pattern, replacement)
+        requirements = smart_replace(requirements, pattern, replacement)
     return requirements
+
+
+def smart_replace(requirements: str, old: str, new: str):
+    """Ensure that `PyYAML==5.1.0` matches with `PyYAML==5.1` as `old`
+    requirement line."""
+    result = requirements
+    result = [
+        line
+        if not difflib.get_close_matches(line, [old], n=1, cutoff=0.9) else new
+        for line in result.splitlines()
+    ]
+    result = baw.utils.NEWLINE.join(result) + baw.utils.NEWLINE
+    assert requirements != result, f'replacement does not work: {old}; {new}; {requirements}'
+    return result
 
 
 def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
