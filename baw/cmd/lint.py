@@ -109,8 +109,7 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
 def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
     python = baw.config.python(root, virtual=virtual)
     cmd = f'{python} -mbandit {run_in} -r '
-    cmd += '--skip B101,'  # skip assert is used
-    cmd += 'B322 '  # skip python2 input check
+    cmd += '--skip B101'  # skip assert is used
 
     completed = run_target(
         root,
