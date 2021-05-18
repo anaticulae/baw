@@ -215,8 +215,13 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
             expected = '<'.join(expected)
         else:
             expected = '<='.join(expected)
-    split = expected.split('<=') if '<=' in expected else expected.split('<')
-    small, greater = split
+    if '<' in expected:
+        split = expected.split('<=') if '<=' in expected else expected.split(
+            '<')
+        small, greater = split
+    else:
+        small, greater = expected, expected
+
     major = baw.project.version.major
     minor = baw.project.version.minor
     patch = baw.project.version.patch
