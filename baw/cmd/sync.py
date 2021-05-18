@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import contextlib
 import os
 from os.path import exists
 from os.path import join
@@ -217,6 +218,13 @@ def required_installation(
             result.equal.update(item.greater)  # pylint:disable=E1101
         else:
             result.greater.update(item.greater)  # pylint:disable=E1101
+    # TODO: REMOVE DUPLICATED
+    for key in result.greater:
+        with contextlib.suppress(KeyError):
+            # remove duplicated requirement out of `equal requirement`
+            result.equal.pop(key)
+            continue
+        baw.utils.log(f'duplicated requirement: {key}')
     return result
 
 
