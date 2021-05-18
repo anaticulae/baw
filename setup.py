@@ -34,38 +34,10 @@ VERSION = re.search(r'__version__ = \'(.*?)\'', VERSION_FILE).group(1)
 
 TEMPLATES = os.path.join(THIS, 'templates')
 
-
-def data_files():
-    collector = collections.defaultdict(list)
-    for to_copy in [TEMPLATES]:
-        result = []
-        for root, _, files in os.walk(to_copy):
-            for item in files:
-                # if any([test in root + item for test in filter]):
-                #     continue
-                absolut = os.path.join(root, item)
-                common = os.path.commonpath([THIS, to_copy])
-                current = absolut.replace(common, '').replace('\\', '/')
-                current = current.lstrip('/')
-                base, _ = os.path.split(current)
-                collector[base].append(current)
-
-    result = [(prefix, current) for prefix, current in collector.items()]
-
-    result.append(('.', [
-        'CHANGELOG.md',
-        'README.md',
-        'requirements-dev.txt',
-        'requirements-doc.txt',
-    ]))
-    return result
-
-
 if __name__ == "__main__":
     setuptools.setup(
         author='Helmut Konrad Fahrendholz',
         author_email='helmi3000@outlook.com',
-        data_files=data_files(),
         description='A simple console-application to manage project complexity.',
         include_package_data=True,
         long_description=README,
