@@ -78,6 +78,7 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={RCFILE_PATH} '
     cmd += '-d R0801 '  # disable duplicated code check
+    cmd += '-d R0902 '  # too many instance attributes
     if scope == Scope.MINIMAL:
         # :fixme (W0511):
         # Used when a warning note as fixme, todo or xxx is detected.
