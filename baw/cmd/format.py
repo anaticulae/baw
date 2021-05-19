@@ -36,7 +36,7 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
     testrun = os.environ.get('PYTEST_PLUGINS', False)
     # TODO: yapf does not run on virtual environment properly
     parallel = '-p' if not testrun and not virtual else ''
-    command = f'yapf -r -i --style=google {parallel}'
+    command = f'yapf -r -i --style=google {parallel} --no-local-style'
 
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
