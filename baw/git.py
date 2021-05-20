@@ -134,6 +134,8 @@ def git_stash(
     completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
 
     if completed.returncode:
+        logging_error(completed.stdout)
+        logging_error(completed.stderr)
         # Stashing an repository with not commit, produces an error
         exit(completed.returncode)
 
