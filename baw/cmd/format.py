@@ -10,6 +10,7 @@
 import concurrent.futures
 import os
 
+import baw.config
 from baw.config import sources
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -36,8 +37,8 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
     testrun = os.environ.get('PYTEST_PLUGINS', False)
     # TODO: yapf does not run on virtual environment properly
     parallel = '-p' if not testrun and not virtual else ''
-    command = f'yapf -r -i --style=google {parallel} --no-local-style'
-
+    python = baw.config.python(root, virtual=False)
+    command = f'{python} -myapf -r -i --style=google {parallel} --no-local-style'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
 
@@ -59,7 +60,9 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
         "-rc",  # recursive
         "--line-width 999",  # do not break imports
     ]
-    cmd = 'isort %s' % (' '.join(isort))
+    isort: str = ' '.join(isort)
+    python = baw.config.python(root, virtual=False)
+    cmd = f'{python} -misort {isort}'
     return format_(
         root,
         cmd=cmd,
