@@ -8,6 +8,7 @@
 #==============================================================================
 
 import subprocess
+import sys
 from os import environ
 from os import makedirs
 from os import scandir
@@ -93,6 +94,9 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     process = _run(command=cmd, cwd=virtual)
 
     patch_pip(root)
+    if sys.version_info.major == 3 and sys.version_info.minor == 7:
+        # python 3.7
+        patch_env(root)
 
     if process.returncode:
         logging_error(' '.join(venv_command))
@@ -126,6 +130,15 @@ def patch_pip(root):
     replacement = 'for row in outrows:'
     content = file_read(to_patch).replace(template, replacement)
     file_replace(to_patch, content)
+
+
+def patch_env(root):
+    path = join(root, '.virtual/Scripts/activate.bat')
+    content = file_read(path)
+    content = content.split(':END')[0]  # remove content after :END
+
+    baw.utils.file_remove(path)
+    baw.utils.file_create(path, content=content)
 
 
 def run_target(
