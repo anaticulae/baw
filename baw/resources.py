@@ -168,8 +168,7 @@ def main():
         ),
     )
     args = utila.parse(parser)
-    inputpath, output, _ = utila.sources(args)  # pylint:disable=W0612
-
+    inputpath, output, _ = utila.sources(args)  # pylint:disable=W0612,W0632
     return utila.SUCCESS
 """
 
