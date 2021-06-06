@@ -6,12 +6,15 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-from os.path import exists
-from os.path import join
-from re import search
 
-from baw.config import shortcut
-from baw.utils import file_read
+import os
+import re
+
+import baw.config
+import baw.utils
+
+# support __version__ = "1.0.0" and __version__ = '1.0.0'
+VERSION = r'__version__ = [\'\"](.*?)[\'\"]'
 
 
 def determine(root: str) -> str:
@@ -24,13 +27,12 @@ def determine(root: str) -> str:
     Raises:
         ValueError: if no __version__ can be located
     """
-    assert exists(root)
-    short = shortcut(root)
+    assert os.path.exists(root)
+    short = baw.config.shortcut(root)
 
-    path = join(root, '%s/__init__.py' % short)
-    content = file_read(path)
-    # support __version__ = "1.0.0" and __version__ = '1.0.0'
-    current = search(r'__version__ = [\'\"](.*?)[\'\"]', content).group(1)
+    path = os.path.join(root, '%s/__init__.py' % short)
+    content = baw.utils.file_read(path)
+    current = re.search(VERSION, content).group(1)
     if not current:
         raise ValueError('Could not locate __version__ in %s' % path)
     return current
