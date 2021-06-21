@@ -167,9 +167,15 @@ def replace(requirements: str, update: NewRequirements) -> str:
 
     for package, [old, new] in update.greater.items():
         if isinstance(old, str):
+            if lower(old, new):
+                # skip lower version
+                continue
             pattern = f'{package}>={old}'
             replacement = f'{package}>={new}'
         else:
+            if lower(old[0], new):
+                # skip lower version
+                continue
             # TODO: first approach of greater equal replacement
             pattern = f'{package}>={old[0]}<{old[1]}'
             replacement = f'{package}>={new}<{old[1]}'
