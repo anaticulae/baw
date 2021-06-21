@@ -27,6 +27,8 @@ import contextlib
 import dataclasses
 import difflib
 
+import semver
+
 import baw.project.version
 import baw.utils
 
@@ -246,3 +248,13 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
             return False
 
     return True
+
+
+def lower(current, new):
+    """\
+    >>> lower('1.26.2', '1.26.1')
+    True
+    """
+    current = semver.VersionInfo.parse(current)
+    new = semver.VersionInfo.parse(new)
+    return new < current
