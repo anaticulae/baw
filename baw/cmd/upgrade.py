@@ -37,26 +37,26 @@ def upgrade(
         requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
         if not os.path.exists(requirements_dev) or packages == 'requirements':
             requirements_dev = None
-        failure_dev = REQUIREMENTS_UP_TO_DATE
+        failure_dev = REQUIREMENTS_UPTODATE
         if requirements_dev:
             failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
         requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
         if not os.path.exists(requirements_extra) or packages not in ('extra', 'all'): # yapf:disable
             requirements_extra = None
-        failure_extra = REQUIREMENTS_UP_TO_DATE
+        failure_extra = REQUIREMENTS_UPTODATE
         if requirements_extra:
             failure_extra = upgrade_requirements(root, baw.utils.REQUIREMENTS_EXTRA) # yapf:disable
 
         # requirements.txt is uptodate, no update requireded
         if all((
-                failure == REQUIREMENTS_UP_TO_DATE,
-                failure_dev == REQUIREMENTS_UP_TO_DATE,
-                failure_extra == REQUIREMENTS_UP_TO_DATE,
+                failure == REQUIREMENTS_UPTODATE,
+                failure_dev == REQUIREMENTS_UPTODATE,
+                failure_extra == REQUIREMENTS_UPTODATE,
         )):
             return baw.utils.SUCCESS
-        devupgade_failure = failure_dev not in (REQUIREMENTS_UP_TO_DATE,
+        devupgade_failure = failure_dev not in (REQUIREMENTS_UPTODATE,
                                                 baw.utils.SUCCESS)
-        upgrade_failure = failure not in (REQUIREMENTS_UP_TO_DATE,
+        upgrade_failure = failure not in (REQUIREMENTS_UPTODATE,
                                           baw.utils.SUCCESS)
         if upgrade_failure or devupgade_failure:
             baw.utils.logging_error('Error while upgrading requirements')
@@ -100,7 +100,7 @@ def upgrade(
     return baw.utils.SUCCESS
 
 
-REQUIREMENTS_UP_TO_DATE = 100
+REQUIREMENTS_UPTODATE = 100
 
 
 def upgrade_requirements(
@@ -133,7 +133,7 @@ def upgrade_requirements(
     if not content.strip():
         baw.utils.logging(f'Empty: {requirements_path}. Skipping replacement.')
         # stop further synchonizing process and quit with SUCCESS
-        return REQUIREMENTS_UP_TO_DATE
+        return REQUIREMENTS_UPTODATE
 
     upgraded = determine_new_requirements(root, content, virtual=virtual)
     if upgraded is None:
@@ -142,7 +142,7 @@ def upgrade_requirements(
 
     if replaced == content:
         baw.utils.logging('Requirements are up to date.\n')
-        return REQUIREMENTS_UP_TO_DATE
+        return REQUIREMENTS_UPTODATE
 
     baw.utils.file_replace(requirements_path, replaced)
 
