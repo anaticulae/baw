@@ -6,3 +6,5 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
+semver>=2.13.0<3.0.0
