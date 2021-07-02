@@ -240,6 +240,11 @@ def add_test_options(parser):
         action='store_true',
     )
     test.add_argument(
+        '-x',
+        help='fail fast after first error',
+        action='store_true',
+    )
+    test.add_argument(
         'test',
         help='',
         nargs='?',

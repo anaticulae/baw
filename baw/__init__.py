@@ -199,6 +199,8 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
         testconfig += [f'-n={args["n"]}']
     if args['k']:
         testconfig += [f'-k {args["k"]}']
+    if args['x']:
+        testconfig += [f'-x ']
     if args['testconfig']:
         testconfig += args['testconfig']
     call = partial(
