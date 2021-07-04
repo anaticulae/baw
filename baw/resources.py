@@ -122,8 +122,6 @@ Indices and tables
 
 """
 
-REQUIREMENTS = ""
-
 COPYRIGHT = """\
 #==============================================================================
 # C O P Y R I G H T
@@ -135,7 +133,9 @@ COPYRIGHT = """\
 #==============================================================================
 """
 
-INIT = COPYRIGHT + """\
+REQUIREMENTS = COPYRIGHT
+
+INIT = COPYRIGHT + """
 import os
 
 __version__ = '0.0.0'
