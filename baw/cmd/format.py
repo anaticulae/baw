@@ -38,7 +38,7 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
     # TODO: yapf does not run on virtual environment properly
     parallel = '-p' if not testrun and not virtual else ''
     python = baw.config.python(root, virtual=False)
-    command = f'{python} -myapf -r -i --style=google {parallel} --no-local-style'
+    command = f'yapf -r -i --style=google {parallel} --no-local-style'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
 
@@ -62,7 +62,7 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
     ]
     isort: str = ' '.join(isort)
     python = baw.config.python(root, virtual=False)
-    cmd = f'{python} -misort {isort}'
+    cmd = f'isort {isort}'
     return format_(
         root,
         cmd=cmd,
