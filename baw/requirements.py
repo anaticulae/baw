@@ -26,6 +26,7 @@ Example
 import contextlib
 import dataclasses
 import difflib
+import re
 
 import semver
 
@@ -70,6 +71,8 @@ def parse(content: str) -> Requirements:
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
     >>> parse('nltk==3.5')
     Requirements(equal={'nltk': '3.5.0'}, greater={})
+    >>> parse('camelot_py[cv]>=0.8.2<0.9.0').greater
+    {'camelot_py': ['0.8.2', '0.9.0']}
     """
     assert isinstance(content, str), content
     content = content.replace('-', '_')
@@ -85,6 +88,7 @@ def parse(content: str) -> Requirements:
             line = line.split('#')[0]
             # remove whitespace between comment and version sign
             line = line.strip()
+        line = re.sub(r'\[\w{2,}\]', '', line)
         try:
             if '==' in line:
                 package, version = line.split('==')
