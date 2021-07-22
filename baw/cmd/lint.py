@@ -98,6 +98,7 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
         cmd += f'--spelling-private-dict-file={path} '
     if pylint_:
         cmd += f'{pylint_} '
+    cmd = cmd.strip()
     completed = run_target(
         root,
         cmd,
