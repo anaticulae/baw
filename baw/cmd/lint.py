@@ -74,6 +74,7 @@ def lint(
 def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
     python = baw.config.python(root, virtual=virtual)
     spelling = baw.config.spelling(root)
+    pylint_ = baw.config.pylint(root)
     cmd = f'{python} -mpylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={RCFILE_PATH} '
@@ -95,6 +96,8 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
             baw.utils.logging_error('require global env: `PYLINT_SPELLING`')
             exit(baw.utils.FAILURE)
         cmd += f'--spelling-private-dict-file={path} '
+    if pylint_:
+        cmd += f'{pylint_} '
     completed = run_target(
         root,
         cmd,
