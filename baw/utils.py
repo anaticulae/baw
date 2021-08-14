@@ -9,6 +9,7 @@
 
 import concurrent.futures
 import contextlib
+import functools
 import os
 import shutil
 import stat
@@ -120,6 +121,16 @@ def package_address():
         exit(FAILURE)
 
 
+def tmpdir():
+    try:
+        tmpdir = os.environ['TMPDIR']
+    except KeyError as failure:
+        logging_error(f'Missing global var `TMPDIR`')
+        exit(FAILURE)
+    return tmpdir
+
+
+@functools.lru_cache(maxsize=16)
 def tmp(root: str) -> str:
     """Return path to temporary folder. Create folder if required.
 
@@ -129,7 +140,8 @@ def tmp(root: str) -> str:
         path to temporary folder
     """
     assert root
-    path = os.path.join(root, TMP)
+    _, projectname = os.path.split(root)
+    path = os.path.join(tmpdir(), 'kiwi', projectname, TMP)
     os.makedirs(path, exist_ok=True)
     return path
 
