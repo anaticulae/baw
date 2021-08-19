@@ -16,10 +16,13 @@ def install(root: str, virtual: bool, verbose: bool = False):
     # -f always install newest one
     python = baw.config.python(root, virtual=virtual)
     command = f'{python} setup.py install -f'
-
+    # run target
     completed = run_target(
-        root, command, root, verbose=verbose, virtual=virtual)
-
+        root,
+        command,
+        root,
+        verbose=verbose,
+        virtual=virtual,
+    )
     logging(completed.stdout)
-
     return completed.returncode

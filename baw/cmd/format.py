@@ -73,12 +73,12 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
 
 
 def format_(
-        root: str,
-        cmd: str,
-        info: str = 'format source',
-        *,
-        verbose: bool = False,
-        virtual: bool = False,
+    root: str,
+    cmd: str,
+    info: str = 'format source',
+    *,
+    verbose: bool = False,
+    virtual: bool = False,
 ):
     logging(info)
     folder = sources(root)

@@ -23,12 +23,12 @@ ADDITONAL_REQUIREMENTS = []
 
 
 def init(
-        root: str,
-        shortcut: str,
-        name: str,
-        cmdline: bool = False,
-        *,
-        verbose: bool = False,
+    root: str,
+    shortcut: str,
+    name: str,
+    cmdline: bool = False,
+    *,
+    verbose: bool = False,
 ) -> int:
     """Init project due generatig file and folder
 
@@ -129,10 +129,10 @@ def create_files(root: str):
 
 
 def create_python(
-        root: str,
-        shortcut: str,
-        *,
-        cmdline: bool = False,
+    root: str,
+    shortcut: str,
+    *,
+    cmdline: bool = False,
 ):
     """Create __init__.py with containing __version__-tag
 
@@ -146,7 +146,9 @@ def create_python(
     python_project = os.path.join(root, shortcut)
     os.makedirs(python_project, exist_ok=True)
     baw.utils.file_create(
-        os.path.join(python_project, '__init__.py'), baw.resources.INIT)
+        os.path.join(python_project, '__init__.py'),
+        baw.resources.INIT,
+    )
 
     entry_point = ''
     entry_point_package = ''

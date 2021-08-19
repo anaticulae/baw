@@ -82,11 +82,11 @@ def is_clean(root):
 
 
 def git_checkout(
-        root: str,
-        files: str,
-        *,
-        verbose: bool = False,
-        virtual: bool = False,
+    root: str,
+    files: str,
+    *,
+    verbose: bool = False,
+    virtual: bool = False,
 ) -> int:
     """Checkout files from git repository
 
@@ -111,10 +111,10 @@ def git_checkout(
 
 @contextmanager
 def git_stash(
-        root: str,
-        *,
-        verbose: bool = False,
-        virtual: bool = False,
+    root: str,
+    *,
+    verbose: bool = False,
+    virtual: bool = False,
 ) -> int:
     """Save uncommited/not versonied content to improve testability
 

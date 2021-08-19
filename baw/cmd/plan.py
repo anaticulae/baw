@@ -49,10 +49,10 @@ def action(root: str, plan: str):
 
 
 def create(
-        root: str,
-        upgrade_major: bool = False,
-        linter: float = 10.0,
-        coverage: float = 100.0,
+    root: str,
+    upgrade_major: bool = False,
+    linter: float = 10.0,
+    coverage: float = 100.0,
 ):
     major, minor = next_version(root, upgrade_major=upgrade_major)
 
@@ -113,8 +113,8 @@ def commit(root: str, message: str, verbose: bool = False):
 
 
 def next_version(
-        root: str,
-        upgrade_major: bool = False,
+    root: str,
+    upgrade_major: bool = False,
 ):
     version = current(root)
     if version is None:

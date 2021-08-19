@@ -14,18 +14,18 @@ from baw.utils import logging_error
 
 
 def sync_and_test(
-        root: str,
-        packages: str = 'all',
-        testconfig=None,
-        *,
-        longrun: bool = False,
-        quiet: bool = False,
-        generate: bool = False,
-        stash: bool = False,
-        sync: bool = False,
-        test: bool = True,
-        verbose: bool = False,
-        virtual: bool = False,
+    root: str,
+    packages: str = 'all',
+    testconfig=None,
+    *,
+    longrun: bool = False,
+    quiet: bool = False,
+    generate: bool = False,
+    stash: bool = False,
+    sync: bool = False,
+    test: bool = True,
+    verbose: bool = False,
+    virtual: bool = False,
 ):
     verbose = False if quiet else verbose
     if sync:

@@ -142,17 +142,17 @@ def patch_env(root):
 
 
 def run_target(
-        root: str,
-        command: str,
-        cwd: str = None,
-        env=None,
-        *,
-        debugging: bool = False,
-        runtimelog: bool = True,
-        skip_error_code: set = None,
-        skip_error_message: list = None,
-        verbose: bool = True,
-        virtual: bool = False,
+    root: str,
+    command: str,
+    cwd: str = None,
+    env=None,
+    *,
+    debugging: bool = False,
+    runtimelog: bool = True,
+    skip_error_code: set = None,
+    skip_error_message: list = None,
+    verbose: bool = True,
+    virtual: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run target
 
@@ -231,10 +231,10 @@ def run_target(
 
 
 def setup_target(
-        root: str,
-        cwd: str,
-        skip_error_code,
-        skip_error_message,
+    root: str,
+    cwd: str,
+    skip_error_code,
+    skip_error_message,
 ):
     if not cwd:
         cwd = root
@@ -252,12 +252,12 @@ def setup_target(
 
 
 def log_result(  # pylint:disable=R1260
-        completed: subprocess.CompletedProcess,
-        cwd: str,
-        skip_error_code: set,
-        skip_error_message: list,
-        start: int,
-        verbose: int,
+    completed: subprocess.CompletedProcess,
+    cwd: str,
+    skip_error_code: set,
+    skip_error_message: list,
+    start: int,
+    verbose: int,
 ):
     """Log result to console.
 
@@ -309,11 +309,11 @@ def log_result(  # pylint:disable=R1260
 
 
 def _run_virtual(
-        root: str,
-        cmd: str,
-        cwd: str,
-        env: dict = None,
-        debugging: bool = False,
+    root: str,
+    cmd: str,
+    cwd: str,
+    env: dict = None,
+    debugging: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run command with virtual environment
 

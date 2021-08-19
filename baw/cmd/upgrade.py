@@ -19,13 +19,13 @@ import baw.utils
 
 
 def upgrade(
-        root: str,
-        *,
-        notests: bool = False,
-        verbose: bool = False,
-        virtual: bool = False,
-        generate: bool = True,
-        packages: str = 'requirements',
+    root: str,
+    *,
+    notests: bool = False,
+    verbose: bool = False,
+    virtual: bool = False,
+    generate: bool = True,
+    packages: str = 'requirements',
 ) -> int:
     """Upgrade requirements
 
@@ -104,10 +104,10 @@ REQUIREMENTS_UPTODATE = 100
 
 
 def upgrade_requirements(
-        root: str,
-        requirements: str = baw.utils.REQUIREMENTS_TXT,
-        virtual: bool = False,
-        verbose: bool = False,
+    root: str,
+    requirements: str = baw.utils.REQUIREMENTS_TXT,
+    virtual: bool = False,
+    verbose: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
     available version on pip repository.
@@ -180,10 +180,10 @@ def next_version(content) -> str:
 
 
 def determine_new_requirements(
-        root: str,
-        requirements: str,
-        *,
-        virtual: bool = False,
+    root: str,
+    requirements: str,
+    *,
+    virtual: bool = False,
 ) -> baw.requirements.NewRequirements:
     parsed = baw.requirements.parse(requirements)
     if parsed is None:

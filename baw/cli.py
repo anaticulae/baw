@@ -35,14 +35,16 @@ IDE = Command(
         'nargs': '?',
         'dest': 'ide',
         'action': 'append',
-    })
+    },
+)
 BISECT = Command(
     longcut='--bisect',
     message='run git bisect',
     args={
         'nargs': '+',
         'dest': 'commits',
-    })
+    },
+)
 LINT = Command(
     longcut='--lint',
     message='Run statical code analysis.',
@@ -54,7 +56,8 @@ LINT = Command(
             'minimal',
             'todo',
         ],
-    })
+    },
+)
 INSTALL = Command(longcut='--install', message='Run install task')
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
@@ -75,7 +78,8 @@ RELEASE = Command(
             'noop',
             'auto',
         ],
-    })
+    },
+)
 DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
@@ -103,7 +107,8 @@ TEST_CONFIG = Command(
     args={
         'dest': 'testconfig',
         'nargs': '+'
-    })
+    },
+)
 
 VENV = Command(longcut='--virtual', message='Run commands in venv')
 # TODO count V to determine verbosity. -VVV

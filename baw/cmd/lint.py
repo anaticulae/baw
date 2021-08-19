@@ -34,11 +34,11 @@ class Scope(enum.Enum):
 
 
 def lint(
-        root: str,
-        scope: Scope = Scope.ALL,
-        verbose: bool = False,
-        virtual: bool = False,
-        log_always: bool = True,
+    root: str,
+    scope: Scope = Scope.ALL,
+    verbose: bool = False,
+    virtual: bool = False,
+    log_always: bool = True,
 ) -> int:
     """Run statical code analysis on `root`.
 

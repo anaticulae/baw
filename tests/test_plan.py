@@ -73,8 +73,8 @@ def test_cli_plan_close_current_plan(project_example_done, monkeypatch):  # pyli
 
 @tests.skip_longrun
 def test_cli_plan_close_current_plan_and_open_new(
-        project_example_done,  # pylint:disable=W0621
-        monkeypatch,
+    project_example_done,  # pylint:disable=W0621
+    monkeypatch,
 ):
     workspace = project_example_done
 

@@ -36,14 +36,14 @@ NO_RELEASE_MESSAGE = 'No release will be made.'
 
 
 def release(
-        root: str,
-        *,
-        release_type: str = 'auto',
-        stash: bool = True,
-        sync: bool = True,
-        test: bool = True,
-        verbose: bool = False,
-        virtual: bool = True,
+    root: str,
+    *,
+    release_type: str = 'auto',
+    stash: bool = True,
+    sync: bool = True,
+    test: bool = True,
+    verbose: bool = False,
+    virtual: bool = True,
 ) -> int:
     """Running release. Running test, commit and tag.
 
@@ -140,9 +140,9 @@ DEFAULT_RELEASE = 'v0.0.0'
 
 
 def drop(
-        root: str,
-        virtual: bool = False,
-        verbose: bool = False,
+    root: str,
+    virtual: bool = False,
+    verbose: bool = False,
 ):
     """Remove the last release tag and commit
 
@@ -194,9 +194,9 @@ def drop(
 
 
 def reset_resources(
-        root: str,
-        virtual: bool = False,
-        verbose: bool = False,
+    root: str,
+    virtual: bool = False,
+    verbose: bool = False,
 ):
     short = shortcut(root)
     initpath = join(short, '__init__.py')

@@ -257,10 +257,10 @@ def openbrowser(url: str):
 
 
 def fork(
-        *runnables,
-        worker: int = 6,
-        process: bool = False,
-        returncode: bool = False,
+    *runnables,
+    worker: int = 6,
+    process: bool = False,
+    returncode: bool = False,
 ) -> int:
     """Run methods in parallel.
 

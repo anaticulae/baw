@@ -25,13 +25,13 @@ from baw.utils import logging_error
 
 
 def clean(
-        root: str,
-        docs: bool = False,
-        resources: bool = False,
-        tests: bool = False,
-        tmp: bool = False,
-        venv: bool = False,
-        all_: bool = False,
+    root: str,
+    docs: bool = False,
+    resources: bool = False,
+    tests: bool = False,
+    tmp: bool = False,
+    venv: bool = False,
+    all_: bool = False,
 ):
     logging('Start cleaning')
     if all_:

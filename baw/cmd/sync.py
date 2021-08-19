@@ -29,12 +29,12 @@ from baw.utils import package_address
 
 
 def sync(
-        root: str,
-        packages: str = 'dev',
-        *,
-        minimal: bool = False,
-        virtual: bool = False,
-        verbose: bool = False,
+    root: str,
+    packages: str = 'dev',
+    *,
+    minimal: bool = False,
+    virtual: bool = False,
+    verbose: bool = False,
 ) -> int:
     """Sync packages which are defined in requirements.txt
     Args:
@@ -81,11 +81,11 @@ def sync(
 
 
 def check_dependency(
-        root: str,
-        package: str,
-        *,
-        virtual: bool,
-        verbose: bool = False,
+    root: str,
+    package: str,
+    *,
+    virtual: bool,
+    verbose: bool = False,
 ):
     """Check if packages need an upgrade."""
     (adress, internal, external) = get_setup()
@@ -129,12 +129,12 @@ def check_dependency(
 
 
 def sync_dependencies(
-        root: str,
-        packages: str,
-        *,
-        minimal: bool = False,
-        verbose: bool = False,
-        virtual: bool = False,
+    root: str,
+    packages: str,
+    *,
+    minimal: bool = False,
+    verbose: bool = False,
+    virtual: bool = False,
 ) -> int:
     check_root(root)
 
@@ -198,11 +198,11 @@ def sync_dependencies(
 
 
 def required_installation(
-        root,
-        txts: list,
-        minimal: bool = False,
-        virtual: bool = False,
-        verbose: bool = False,
+    root,
+    txts: list,
+    minimal: bool = False,
+    virtual: bool = False,
+    verbose: bool = False,
 ):
     current = pip_list(root, verbose=verbose, virtual=virtual)
     requested = [
@@ -288,9 +288,9 @@ def get_install_cmd(root, to_install, verbose, pip_index, extra_url, virtual):
 
 
 def pip_list(
-        root,
-        verbose: bool = False,
-        virtual: bool = False,
+    root,
+    verbose: bool = False,
+    virtual: bool = False,
 ) -> baw.requirements.Requirements:
     python = baw.config.python(root, virtual=virtual)
     cmd = f'{python} -mpip list --format=freeze'

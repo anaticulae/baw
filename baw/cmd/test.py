@@ -23,20 +23,20 @@ NO_TEST_TO_RUN = 5
 
 
 def run_test(  # pylint:disable=R0914
-        root: str,
-        testconfig: list = None,
-        *,
-        coverage: bool = False,
-        fast: bool = False,
-        generate: bool = False,
-        instafail: bool = False,
-        longrun: bool = False,
-        nightly: bool = False,
-        pdb: bool = False,
-        quiet: bool = False,
-        stash: bool = False,
-        verbose: bool = False,
-        virtual: bool = False,
+    root: str,
+    testconfig: list = None,
+    *,
+    coverage: bool = False,
+    fast: bool = False,
+    generate: bool = False,
+    instafail: bool = False,
+    longrun: bool = False,
+    nightly: bool = False,
+    pdb: bool = False,
+    quiet: bool = False,
+    stash: bool = False,
+    verbose: bool = False,
+    virtual: bool = False,
 ) -> int:
     """Running test-step in root/tests
 
@@ -136,11 +136,11 @@ def open_report(root: str):
 
 
 def setup_testenvironment(
-        root: str,
-        fast: bool,
-        longrun: bool,
-        nightly: bool,
-        generate: bool,
+    root: str,
+    fast: bool,
+    longrun: bool,
+    nightly: bool,
+    generate: bool,
 ):
     testdir = os.path.join(root, 'tests')
     if not os.path.exists(testdir):
@@ -164,17 +164,17 @@ def setup_testenvironment(
 
 
 def create_test_cmd(  # pylint:disable=R0914
-        root,
-        testdir,  # TODO: REMOVE?
-        *,
-        instafail,
-        pdb,
-        coverage,
-        quiet,
-        parameter,
-        generate_only,
-        verbose: bool = False,
-        virtual: bool = False,
+    root,
+    testdir,  # TODO: REMOVE?
+    *,
+    instafail,
+    pdb,
+    coverage,
+    quiet,
+    parameter,
+    generate_only,
+    verbose: bool = False,
+    virtual: bool = False,
 ):
     pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
     # using ROOT to get location from baw-tool

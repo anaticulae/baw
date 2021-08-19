@@ -16,10 +16,10 @@ import baw.utils
 
 
 def cli(
-        root: str,
-        commits: list,
-        virtual: bool = False,
-        verbose: bool = False,
+    root: str,
+    commits: list,
+    virtual: bool = False,
+    verbose: bool = False,
 ):
     args = list(sys.argv)
     if not len(commits) in (1, 2):
@@ -56,12 +56,12 @@ def cli(
 
 
 def bisect(
-        root: str,
-        verify: str,
-        bad: str,
-        good: str,
-        virtual: bool = False,
-        verbose: bool = False,
+    root: str,
+    verify: str,
+    bad: str,
+    good: str,
+    virtual: bool = False,
+    verbose: bool = False,
 ) -> int:
     cmd = f'git bisect start {bad} {good} && git bisect run sh -c "baw {verify}"'
     completed = baw.runtime.run_target(
