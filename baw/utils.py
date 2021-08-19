@@ -124,7 +124,7 @@ def package_address():
 def tmpdir():
     try:
         selected = os.environ['TMPDIR']
-    except KeyError as failure:
+    except KeyError:
         logging_error(f'Missing global var `TMPDIR`')
         sys.exit(FAILURE)
     return selected
