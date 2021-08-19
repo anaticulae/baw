@@ -66,7 +66,7 @@ def run_test(  # pylint:disable=R0914
     baw.utils.check_root(root)
 
     baw.utils.logging('tests')
-    testdir, testenv = setup_testenvironment(
+    _, testenv = setup_testenvironment(
         root,
         fast=fast,
         longrun=longrun,
@@ -78,7 +78,6 @@ def run_test(  # pylint:disable=R0914
 
     cmd = create_test_cmd(
         root,
-        testdir,
         coverage=coverage,
         generate_only=generate_only,
         instafail=instafail,
@@ -147,7 +146,6 @@ def setup_testenvironment(
     if not os.path.exists(testdir):
         baw.utils.logging_error('No testdirectory %s available' % testdir)
         sys.exit(baw.utils.FAILURE)
-
     env = dict(os.environ.items())
     if longrun:
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
@@ -157,16 +155,13 @@ def setup_testenvironment(
         env['NIGHTLY'] = 'True'  # Very long running test
     if generate:
         env['GENERATE'] = 'True'  # Generate test resources
-
     # comma-separated plugins to load during startup
     env['PYTEST_PLUGINS'] = 'pytester'
-
     return testdir, env
 
 
 def create_test_cmd(  # pylint:disable=R0914
     root,
-    testdir,  # TODO: REMOVE?
     *,
     instafail,
     pdb,
@@ -179,38 +174,32 @@ def create_test_cmd(  # pylint:disable=R0914
 ):
     pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
     # using ROOT to get location from baw-tool
-    assert os.path.exists(pytest_ini), 'No testconfig available %s' % pytest_ini
-
+    assert os.path.exists(pytest_ini), f'no testconfig available {pytest_ini}'
+    # configure test run
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
-
+    # create test directory
     tmpdir = baw.utils.tmp(root)
-    testfolder = 'test_%s' % baw.datetime.current(seconds=True, separator='_')
+    testtime = baw.datetime.current(seconds=True, separator='_')
+    testfolder = f'test_{testtime}'
     logfolder = os.path.join(tmpdir, 'log')
     os.makedirs(logfolder, exist_ok=True)
-    logfolder = os.path.join(logfolder, testfolder)
-
     tmp_testpath = os.path.join(tmpdir, testfolder)
     if os.path.exists(tmp_testpath):
         # remove test folder if exists
         shutil.rmtree(tmp_testpath)
+    # config
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
-
     manual_parameter = ' '.join(parameter) if parameter else ''
     manual_parameter = manual_parameter.replace('+', '-')
-
     generate_only = '--collect-only' if generate_only else ''
-
     # set to root to run doctests for all subproject's
-    testdir = str(os.path.join(root, 'tests'))
-
+    testdir = os.path.join(root, 'tests')
     doctests = ' '.join(baw.config.sources(root))
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     cachedir = os.path.join(tmpdir, 'pytest_cache')
-
-    testlog = os.path.join(tmpdir, f'{logfolder}.log')  # pylint:disable=W0612
-
+    # run pytest
     python = baw.config.python(root, virtual=virtual)
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
@@ -220,7 +209,6 @@ def create_test_cmd(  # pylint:disable=R0914
         cmd += '--instafail '
     if verbose:
         cmd += '-vv '
-    #    | tee {testlog}
     return cmd
 
 
@@ -230,22 +218,16 @@ def cov_args(root: str, *, pdb: bool) -> str:
     Args:
         root(str): project root
         pdb(bool): using debugger on running tests
-
     Returns:
         args for coverage command
     """
     output = os.path.join(baw.utils.tmp(root), 'report')
     cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')
     assert os.path.exists(cov_config), str(cov_config)
-
-    #   --no-cov  Disable coverage report completely (useful for
-    #             debuggers) default: False
     no_cov = '--no-cov ' if pdb else ''
     if no_cov:
         baw.utils.logging('Disable coverage report')
-
     min_cov = baw.config.minimal_coverage(root)
-
     cov_sources = collect_cov_sources(root)
     cov = (f'--cov-config={cov_config} {cov_sources} '
            f'--cov-report=html:{output} --cov-branch {no_cov} '
@@ -267,11 +249,11 @@ def collect_cov_sources(root: str) -> str:
     for item in project_sources:
         code_path = os.path.join(root, item)
         if not os.path.exists(code_path):
-            msg = 'Path %s from `project.cfg` does not exist' % code_path
+            msg = f'path {code_path} from `project.cfg` does not exist'
             baw.utils.logging_error(msg)
             ret += 1
             continue
-        cov_sources += '--cov=%s ' % code_path
+        cov_sources += f'--cov={code_path} '
     if ret:
         sys.exit(ret)
     return cov_sources
