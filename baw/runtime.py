@@ -245,13 +245,13 @@ def setup_target(
     if not skip_error_code:
         skip_error_code = {}
     if isinstance(skip_error_code, int):
-        skip_error_code = {skip_error_code}
+        skip_error_code: set = {skip_error_code}
     if not skip_error_message:
         skip_error_message = []
     return cwd, skip_error_code, skip_error_message
 
 
-def log_result(  # pylint:disable=R1260
+def log_result(  # pylint:disable=R1260,R0912
     completed: subprocess.CompletedProcess,
     cwd: str,
     skip_error_code: set,
@@ -328,8 +328,8 @@ def _run_virtual(
     Returns:
         CompletedProcess
     """
-    activate = join(root, VIRTUAL_FOLDER, 'Scripts', f'activate')
-    deactivate = join(root, VIRTUAL_FOLDER, 'Scripts', f'deactivate')
+    activate = join(root, VIRTUAL_FOLDER, 'Scripts', 'activate')
+    deactivate = join(root, VIRTUAL_FOLDER, 'Scripts', 'deactivate')
     if not exists(activate):
         msg = (f'Path `{activate}` does not exists.\n'
                'Regenerate the virtual env')
@@ -357,13 +357,11 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
     """
     if not isinstance(command, str):
         command = ' '.join(command)
-
     if env is None:  # None: Empty dict is allowed.
         env = dict(environ.items())
-
     # Capturering stdout and stderr reuqires PIPE in completed process.
     # Debugging with pdb due console requires no PIPE.
-    process = subprocess.run(
+    process = subprocess.run(  # pylint:disable=W1510
         command,
         cwd=cwd,
         encoding=UTF8,

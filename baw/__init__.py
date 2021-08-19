@@ -193,7 +193,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
 
 
 def testcommand(root: str, args, *, verbose: bool, virtual: bool):
-    if not 'test' in args:
+    if 'test' not in args:
         return None
     testconfig = []
     if args["n"] != '1':
