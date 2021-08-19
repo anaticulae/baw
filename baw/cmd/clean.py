@@ -7,12 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import glob
 import os
 import shutil
 import stat
 import sys
 
+import baw.config
 import baw.runtime
 
 
@@ -26,20 +28,23 @@ def clean(  # pylint:disable=R1260
     all_: bool = False,
 ):
     baw.utils.check_root(root)
-    baw.utils.log('Start cleaning')
+    baw.utils.log('start cleaning')
     if all_:
         docs, resources, tests, tmp, venv = True, True, True, True, True
     if venv:
         clean_virtual(root)
-    patterns = create_pattern(resources, tmp, tests, docs)
+    patterns = create_pattern(root, resources, tmp, tests, docs)
     # problems while deleting recursive
     ret = 0
     for pattern in patterns:
-        try:
-            todo = glob.glob(root + '/**/' + pattern, recursive=True)
-        except NotADirectoryError:
-            todo = glob.glob(root + '**' + pattern, recursive=True)
-        todo = sorted(todo, reverse=True)  # longtest path first, to avoid
+        if isinstance(pattern, ResourceDir):
+            todo = [pattern.path]
+        else:
+            try:
+                todo = glob.glob(root + '/**/' + pattern, recursive=True)
+            except NotADirectoryError:
+                todo = glob.glob(root + '**' + pattern, recursive=True)
+            todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
             baw.utils.log(f'remove {item}')
             try:
@@ -56,10 +61,21 @@ def clean(  # pylint:disable=R1260
     return baw.utils.SUCCESS
 
 
-def create_pattern(resources: bool, tmp: bool, tests: bool, docs: bool) -> list:
+def create_pattern(
+    root,
+    resources: bool,
+    tmp: bool,
+    tests: bool,
+    docs: bool,
+) -> list:
     selected = []
     if resources:
-        selected.append('generated')
+        tmpdir = os.environ['TMPDIR']
+        name = baw.config.shortcut(root)
+        #TODO: AUTOMATE .tmp!
+        path = os.path.join(tmpdir, f'.tmp/{name}/resources')
+        if os.path.exists(path):
+            selected.append(ResourceDir(path))
     if tmp:
         selected.extend(TMP)
     if tests:
@@ -90,6 +106,8 @@ build
 dist
 nano.save
 """.strip().splitlines()
+
+ResourceDir = collections.namedtuple('ResourceDir', 'path')
 
 
 def clean_virtual(root: str):
