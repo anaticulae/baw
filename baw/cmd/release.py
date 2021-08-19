@@ -121,7 +121,7 @@ def release(
 @contextmanager
 def temp_semantic_config(root: str):
     short = shortcut(root)
-    replaced = SETUP_CFG.replace('{%SHORT%}', short)
+    replaced = SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == SETUP_CFG:
         logging_error('while replacing template')
         exit(FAILURE)
@@ -177,7 +177,7 @@ def drop(
         logging_error('while removing the last commit: %s' % str(completed))
         return completed.returncode
 
-    # git checkout CHANGELOG.md, {%NAME%}/__init__..py
+    # git checkout CHANGELOG.md, {{NAME}}/__init__..py
     completed = reset_resources(root, virtual=virtual, verbose=verbose)
     if completed:
         return completed

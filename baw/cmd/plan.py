@@ -88,8 +88,8 @@ def close(root: str, verbose: bool = False):
     current_status = status(root)
     assert current_status == Status.DONE, current_status
     quality = code_quality(root, verbose=verbose)
-    filled = AFTER.replace('{%LINTER%}', str(quality.rating))
-    filled = filled.replace('{%COVERAGE%}', str(quality.coverage))
+    filled = AFTER.replace('{{LINTER}}', str(quality.rating))
+    filled = filled.replace('{{COVERAGE}}', str(quality.coverage))
     plan = current_plan(root)
     baw.utils.file_append(plan, filled)
 
@@ -172,8 +172,8 @@ AFTER = """
 after
 ~~~~~
 
-* Total coverage: {%COVERAGE%}%
-* Your code has been rated: {%LINTER%}/10
+* Total coverage: {{COVERAGE}}%
+* Your code has been rated: {{LINTER}}/10
 """
 
 

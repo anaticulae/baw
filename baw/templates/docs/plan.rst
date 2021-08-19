@@ -1,6 +1,6 @@
-.. _{%MAJOR%}_{%MINOR%}_0:
+.. _{{MAJOR}}_{{MINOR}}_0:
 
-RP {%MAJOR%}.{%MINOR%}.0
+RP {{MAJOR}}.{{MINOR}}.0
 =========
 
 code quality
@@ -9,5 +9,5 @@ code quality
 before
 ~~~~~~
 
-* Total coverage: {%COVERAGE%}%
-* Your code has been rated: {%LINTER%}/10
+* Total coverage: {{COVERAGE}}%
+* Your code has been rated: {{LINTER}}/10

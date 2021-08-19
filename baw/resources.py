@@ -48,7 +48,7 @@ assert exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
 CONFTEST_PATH = join(TEMPLATES, 'conftest.tpy')
 assert exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
 
-README = """# {%SHORT%}
+README = """# {{SHORT}}
 """
 
 CHANGELOG = """# changelog
@@ -93,7 +93,7 @@ completed
 
 """
 
-INDEX_RST = """Welcome to {%NAME%}
+INDEX_RST = """Welcome to {{NAME}}
 =================================
 
 Progress
@@ -145,7 +145,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 ENTRY_POINT = """\
 entry_points={
-            'console_scripts': ['{%SHORT%} = {%SHORT%}.cli:main'],
+            'console_scripts': ['{{SHORT}} = {{SHORT}}.cli:main'],
 },
 """
 
@@ -153,7 +153,7 @@ INIT_CMD = COPYRIGHT + """\
 import utila
 import utila.cli
 
-from {%SHORT%} import __version__
+from {{SHORT}} import __version__
 
 COMMANDS = [] # add additional commands here
 
@@ -173,7 +173,7 @@ def main():
 """
 
 MAIN_CMD = COPYRIGHT + """\
-from {%SHORT%}.cli import main
+from {{SHORT}}.cli import main
 
 if __name__ == "__main__":
     main()
@@ -212,12 +212,12 @@ def template_replace(root: str, template: str, **kwargs) -> str:
 
     Args:
         root(str): project root
-        template(str): which contains the {%VARS%}
+        template(str): which contains the {{VARS}}
         kwargs(str): list of variables to replace in template
     Returns:
         content of template with replaced vars
     Hint:
-        Vars are defined as {%VARNAME%}.
+        Vars are defined as {{VARNAME}}.
     """
     root = forward_slash(root, save_newline=False)
     short = shortcut(root)
@@ -225,14 +225,14 @@ def template_replace(root: str, template: str, **kwargs) -> str:
     name_ = name(root)
     version_tag = baw.project.version.determine(root)
 
-    template = template.replace('{%SHORT%}', short)
-    template = template.replace('{%SOURCES%}', ', '.join(source))
-    template = template.replace('{%NAME%}', name_)
-    template = template.replace('{%VERSION%}', version_tag)
-    template = template.replace('{%ROOT%}', root)
+    template = template.replace('{{SHORT}}', short)
+    template = template.replace('{{SOURCES}}', ', '.join(source))
+    template = template.replace('{{NAME}}', name_)
+    template = template.replace('{{VERSION}}', version_tag)
+    template = template.replace('{{ROOT}}', root)
 
     for key, value in kwargs.items():
         value = str(value)  # ensure to repace str
-        template = template.replace('{%' + key.upper() + '%}', value)
+        template = template.replace('{{' + key.upper() + '}}', value)
 
     return template

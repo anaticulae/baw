@@ -1,8 +1,8 @@
 import sys
 
 # put to the start to avoid overwriting by other modules/packages.
-sys.path.insert(0, r'{%ROOT%}/tests')
-sys.path.insert(0, r'{%ROOT%}')
+sys.path.insert(0, r'{{ROOT}}/tests')
+sys.path.insert(0, r'{{ROOT}}')
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -25,19 +25,19 @@ source_suffix = ['.rst']
 master_doc = 'index'
 
 # General information about the project.
-project = '{%NAME%}'
+project = '{{NAME}}'
 copyright = '2019-2021, kiwi project'
 author = 'Helmut Konrad Fahrendholz'
 
-version = '{%VERSION%}'
-release = '{%VERSION%}'
+version = '{{VERSION}}'
+release = '{{VERSION}}'
 
 language = "en"
 pygments_style = 'sphinx'
 
 html_theme = 'default'
 
-htmlhelp_basename = '{%SHORT%}'
+htmlhelp_basename = '{{SHORT}}'
 
 # Napoleon settings
 napoleon_google_docstring = True

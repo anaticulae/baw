@@ -1,6 +1,6 @@
 {
     "folders": [
-        {%FOLDERS%}
+        {{FOLDERS}}
     ],
     "settings": {
         "files.exclude": {
@@ -32,12 +32,12 @@
         ],
         "python.linting.pylintArgs": [
             "--rcfile",
-            "{%RCFILE%}",
+            "{{RCFILE}}",
             "--exit-zero",
         ],
         "python.sortImports.args": [
             "-sp",
-            "{%ISORT%}"
+            "{{ISORT}}"
         ],
     }
 }

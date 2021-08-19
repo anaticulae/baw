@@ -180,8 +180,8 @@ def create_python(
         ADDITONAL_REQUIREMENTS.append(f'utila=={utila_current()}')
 
     replaced = baw.resources.template_replace(root, baw.resources.SETUP_PY)
-    replaced = replaced.replace("{%ENTRY_POINT%}", entry_point)
-    replaced = replaced.replace("{%ENTRY_POINT_PACKAGE%}", entry_point_package)
+    replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
+    replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
     baw.utils.file_create(os.path.join(root, 'setup.py'), replaced)
 
