@@ -9,6 +9,7 @@
 
 import os
 import shutil
+import sys
 
 import baw.archive.test
 import baw.config
@@ -145,7 +146,7 @@ def setup_testenvironment(
     testdir = os.path.join(root, 'tests')
     if not os.path.exists(testdir):
         baw.utils.logging_error('No testdirectory %s available' % testdir)
-        exit(baw.utils.FAILURE)
+        sys.exit(baw.utils.FAILURE)
 
     env = dict(os.environ.items())
     if longrun:
@@ -272,5 +273,5 @@ def collect_cov_sources(root: str) -> str:
             continue
         cov_sources += '--cov=%s ' % code_path
     if ret:
-        exit(ret)
+        sys.exit(ret)
     return cov_sources

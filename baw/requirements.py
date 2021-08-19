@@ -27,6 +27,7 @@ import contextlib
 import dataclasses
 import difflib
 import re
+import sys
 
 import semver
 
@@ -115,7 +116,7 @@ def parse(content: str) -> Requirements:
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
         baw.utils.logging_error('duplicated package definition')
         baw.utils.logging_error(content)
-        exit(baw.utils.FAILURE)
+        sys.exit(baw.utils.FAILURE)
 
     result = Requirements(equal=equal, greater=greater)
     return result

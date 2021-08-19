@@ -9,6 +9,7 @@
 
 import contextlib
 import os
+import sys
 from os.path import exists
 from os.path import join
 from urllib.request import URLError
@@ -113,7 +114,7 @@ def check_dependency(
         if completed.returncode == 2:
             logging_error(f'not reachable: {index} for package {package}')
             logging_error(completed.stderr)
-            exit(completed.returncode)
+            sys.exit(completed.returncode)
             continue
         if completed.returncode and completed.stderr:
             logging_error(completed.stderr)
@@ -305,7 +306,7 @@ def pip_list(
     )
     if completed.returncode and completed.stderr:
         logging_error(completed.stderr)
-        exit(completed.returncode)
+        sys.exit(completed.returncode)
     content = completed.stdout
     parsed = baw.requirements.parse(content)
     return parsed

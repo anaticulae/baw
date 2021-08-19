@@ -8,6 +8,7 @@
 # =============================================================================
 
 import os
+import sys
 
 import baw.runtime
 import baw.utils
@@ -27,4 +28,4 @@ def open_this(root: str):
     # dont know why windows returns 1
     assert completed.returncode == 1, completed
     # avoid printing runtime error
-    exit(baw.utils.SUCCESS)
+    sys.exit(baw.utils.SUCCESS)

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import sys
 from contextlib import contextmanager
 from functools import partial
 from os import unlink
@@ -124,7 +125,7 @@ def temp_semantic_config(root: str):
     replaced = SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == SETUP_CFG:
         logging_error('while replacing template')
-        exit(FAILURE)
+        sys.exit(FAILURE)
     with TemporaryFile(mode='w', delete=False) as fp:
         fp.write(replaced)
         fp.seek(0)

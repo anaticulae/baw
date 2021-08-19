@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import sys
 from glob import glob
 from os import chmod
 from os import remove
@@ -88,7 +89,7 @@ def clean(
                 ret += 1
                 logging_error(error)
     if ret:
-        exit(ret)
+        sys.exit(ret)
     logging()  # Newline
     return SUCCESS
 
@@ -112,7 +113,7 @@ def clean_virtual(root: str):
         rmtree(virtual_path)
     except OSError as error:
         logging_error(error)
-        exit(FAILURE)
+        sys.exit(FAILURE)
     logging('Finished')
 
 

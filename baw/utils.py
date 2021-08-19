@@ -50,7 +50,7 @@ def handle_error(*exceptions: list, code: int = 1):
         yield
     except exceptions as failure:
         error(failure)
-        exit(code)
+        sys.exit(code)
 
 
 def log(msg: str = '', end: str = NEWLINE):
@@ -108,7 +108,7 @@ def get_setup():
         return (adress, internal, external)
     except KeyError as failure:
         logging_error(f'Missing global var {failure}')
-        exit(FAILURE)
+        sys.exit(FAILURE)
 
 
 def package_address():
@@ -118,7 +118,7 @@ def package_address():
         return (internal, external)
     except KeyError as failure:
         logging_error(f'Missing global var {failure}')
-        exit(FAILURE)
+        sys.exit(FAILURE)
 
 
 def tmpdir():
@@ -126,7 +126,7 @@ def tmpdir():
         tmpdir = os.environ['TMPDIR']
     except KeyError as failure:
         logging_error(f'Missing global var `TMPDIR`')
-        exit(FAILURE)
+        sys.exit(FAILURE)
     return tmpdir
 
 
@@ -232,7 +232,7 @@ def remove_tree(path: str):
         shutil.rmtree(path, onerror=remove_readonly)
     except PermissionError:
         logging_error('Could not remove %s' % path)
-        exit(FAILURE)
+        sys.exit(FAILURE)
 
 
 def skip(msg: str):

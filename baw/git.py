@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import sys
 from contextlib import contextmanager
 from functools import partial
 from os.path import exists
@@ -137,7 +138,7 @@ def git_stash(
         logging_error(completed.stdout)
         logging_error(completed.stderr)
         # Stashing an repository with not commit, produces an error
-        exit(completed.returncode)
+        sys.exit(completed.returncode)
 
     nostash = (completed.returncode == 0 and
                'No local changes to save' in completed.stdout)

@@ -12,6 +12,7 @@ ROOT = None
 # pylint:disable=wrong-import-position
 
 import os
+import sys
 from collections import OrderedDict
 from functools import partial
 from sys import exc_info
@@ -244,11 +245,11 @@ def setup_environment(upgrade, release, raw, virtual):  # pylint: disable=W0621
 def main():
     """Entry point of script"""
     try:
-        exit(run_main())
+        sys.exit(run_main())
     except KeyboardInterrupt:
         logging('\nOperation cancelled by user')
     except Exception as error:  # pylint: disable=broad-except
         logging_error(error)
         stack_trace = format_exc()
         logging(forward_slash(stack_trace))
-    exit(FAILURE)
+    sys.exit(FAILURE)

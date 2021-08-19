@@ -23,6 +23,7 @@ import configparser
 import contextlib
 import functools
 import os
+import sys
 import typing
 
 import baw.utils
@@ -182,7 +183,7 @@ def sources(root: str) -> list:
         source = []
     if any(',' in item for item in source):
         baw.utils.logging_error(f'invalid {source} in {path}, remove collon')
-        exit(baw.utils.FAILURE)
+        sys.exit(baw.utils.FAILURE)
     failure = 0
     for subproject in source:
         if os.path.exists(os.path.join(root, subproject)):
@@ -190,7 +191,7 @@ def sources(root: str) -> list:
         failure += 1
         baw.utils.logging(f'subproject does not exists: {subproject}')
     if failure:
-        exit(baw.utils.FAILURE)
+        sys.exit(baw.utils.FAILURE)
 
     source.insert(0, cfg['project']['short'])
     return source

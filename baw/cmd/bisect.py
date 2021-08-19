@@ -24,7 +24,7 @@ def cli(
     args = list(sys.argv)
     if not len(commits) in (1, 2):
         baw.utils.error(f'invalid commit definition {commits}')
-        exit(baw.utils.INPUT_ERROR)
+        sys.exit(baw.utils.INPUT_ERROR)
     if len(commits) == 1:
         bad, good = 'HEAD', commits[0]
     else:
@@ -41,7 +41,7 @@ def cli(
     args = args[1:]
     if not args:
         baw.utils.error('nothing to bisect')
-        exit(baw.utils.INPUT_ERROR)
+        sys.exit(baw.utils.INPUT_ERROR)
     verify = ' '.join(args)
 
     completed = bisect(
