@@ -25,7 +25,7 @@ from baw.utils import logging
 from baw.utils import logging_error
 
 
-def clean(
+def clean(  # pylint:disable=R1260
     root: str,
     docs: bool = False,
     resources: bool = False,
@@ -34,42 +34,13 @@ def clean(
     venv: bool = False,
     all_: bool = False,
 ):
+    check_root(root)
     logging('Start cleaning')
     if all_:
         docs, resources, tests, tmp, venv = True, True, True, True, True
     if venv:
         clean_virtual(root)
-    check_root(root)
-    patterns = []
-    if resources:
-        patterns.append('generated')
-    if tmp:
-        patterns.extend([
-            '*.egg',
-            '*.egg-info',
-            '*.swo',
-            '*.swp',
-            '.coverage',
-            '.swo',
-            '.swp',
-            '.tmp',
-            '.vscode',
-            '__pycache__',
-            'build',
-            'dist',
-            'nano.save',
-        ])
-    if tests:
-        patterns.extend([
-            '.pytest_cache',
-            '.tmp/pytest_cache',
-        ])
-    if docs:
-        patterns.extend([
-            'docs/.tmp',
-            'html',
-        ])
-
+    patterns = create_pattern(resources, tmp, tests, docs)
     # problems while deleting recursive
     ret = 0
     for pattern in patterns:
@@ -92,6 +63,42 @@ def clean(
         sys.exit(ret)
     logging()  # Newline
     return SUCCESS
+
+
+def create_pattern(resources: bool, tmp: bool, tests: bool, docs: bool) -> list:
+    selected = []
+    if resources:
+        selected.append('generated')
+    if tmp:
+        selected.extend(TMP)
+    if tests:
+        selected.extend([
+            '.pytest_cache',
+            '.tmp/pytest_cache',
+        ])
+    if docs:
+        selected.extend([
+            'docs/.tmp',
+            'html',
+        ])
+    return selected
+
+
+TMP = """
+*.egg
+*.egg-info
+*.swo
+*.swp
+.coverage
+.swo
+.swp
+.tmp
+.vscode
+__pycache__
+build
+dist
+nano.save
+""".strip().splitlines()
 
 
 def clean_virtual(root: str):
