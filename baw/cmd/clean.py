@@ -7,22 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import glob
+import os
+import shutil
+import stat
 import sys
-from glob import glob
-from os import chmod
-from os import remove
-from os.path import exists
-from os.path import isfile
-from os.path import join
-from shutil import rmtree
-from stat import S_IWRITE
 
-from baw.runtime import VIRTUAL_FOLDER
-from baw.utils import FAILURE
-from baw.utils import SUCCESS
-from baw.utils import check_root
-from baw.utils import logging
-from baw.utils import logging_error
+import baw.runtime
 
 
 def clean(  # pylint:disable=R1260
@@ -34,8 +25,8 @@ def clean(  # pylint:disable=R1260
     venv: bool = False,
     all_: bool = False,
 ):
-    check_root(root)
-    logging('Start cleaning')
+    baw.utils.check_root(root)
+    baw.utils.log('Start cleaning')
     if all_:
         docs, resources, tests, tmp, venv = True, True, True, True, True
     if venv:
@@ -45,24 +36,24 @@ def clean(  # pylint:disable=R1260
     ret = 0
     for pattern in patterns:
         try:
-            todo = glob(root + '/**/' + pattern, recursive=True)
+            todo = glob.glob(root + '/**/' + pattern, recursive=True)
         except NotADirectoryError:
-            todo = glob(root + '**' + pattern, recursive=True)
+            todo = glob.glob(root + '**' + pattern, recursive=True)
         todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
-            logging(f'remove {item}')
+            baw.utils.log(f'remove {item}')
             try:
-                if isfile(item):
-                    remove(item)
+                if os.path.isfile(item):
+                    os.remove(item)
                 else:
-                    rmtree(item, onerror=remove_readonly)
+                    shutil.rmtree(item, onerror=remove_readonly)
             except OSError as error:
                 ret += 1
-                logging_error(error)
+                baw.utils.error(error)
     if ret:
         sys.exit(ret)
-    logging()  # Newline
-    return SUCCESS
+    baw.utils.log()  # Newline
+    return baw.utils.SUCCESS
 
 
 def create_pattern(resources: bool, tmp: bool, tests: bool, docs: bool) -> list:
@@ -111,20 +102,20 @@ def clean_virtual(root: str):
     Raises:
         SystemExit if cleaning not work
     """
-    virtual_path = join(root, VIRTUAL_FOLDER)
-    if not exists(virtual_path):
-        logging('Virtual environment does not exist %s' % virtual_path)
+    virtual_path = os.path.join(root, baw.runtime.VIRTUAL_FOLDER)
+    if not os.path.exists(virtual_path):
+        baw.utils.log(f'Virtual environment does not exist {virtual_path}')
         return
-    logging('Try to clean virtual environment %s' % virtual_path)
+    baw.utils.log(f'Try to clean virtual environment {virtual_path}')
     try:
-        rmtree(virtual_path)
+        shutil.rmtree(virtual_path)
     except OSError as error:
-        logging_error(error)
-        sys.exit(FAILURE)
-    logging('Finished')
+        baw.utils.error(error)
+        sys.exit(baw.utils.FAILURE)
+    baw.utils.log('Finished')
 
 
 def remove_readonly(func, path, _):  # pylint:disable=W0613
     """Clear the readonly bit and reattempt the removal"""
-    chmod(path, S_IWRITE)
+    os.chmod(path, stat.S_IWRITE)
     func(path)
