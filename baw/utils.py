@@ -73,10 +73,6 @@ def error(msg: str):
     print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
 
 
-# backward compatibility
-logging = log  # pylint:disable=C0103
-logging_error = error  # pylint:disable=C0103
-
 PLAINOUTPUT = 'PLAINOUTPUT'
 SAVEGUARD = 'IAMTHESAVEGUARDXYXYXYXYXYXYXYXYXYXYXY'
 SECOND_GUARD = 'OHMANIHAVETGOLEARNMOREPYTHONTHATS'
@@ -107,7 +103,7 @@ def get_setup():
         external = int(os.environ['HELPY_EXT_PORT'])
         return (adress, internal, external)
     except KeyError as failure:
-        logging_error(f'Missing global var {failure}')
+        error(f'Missing global var {failure}')
         sys.exit(FAILURE)
 
 
@@ -117,7 +113,7 @@ def package_address():
         external = os.environ['HELPY_EXT_DIRECT']
         return (internal, external)
     except KeyError as failure:
-        logging_error(f'Missing global var {failure}')
+        error(f'Missing global var {failure}')
         sys.exit(FAILURE)
 
 
@@ -125,7 +121,7 @@ def tmpdir():
     try:
         selected = os.environ['TMPDIR']
     except KeyError:
-        logging_error(f'Missing global var `TMPDIR`')
+        error(f'Missing global var `TMPDIR`')
         sys.exit(FAILURE)
     return selected
 
@@ -204,7 +200,7 @@ def print_runtime(before: int):
         before(int): time recorded some time before - use time.time()
     """
     time_diff = time.time() - before
-    logging('Runtime: %.2f secs\n' % time_diff)
+    log('Runtime: %.2f secs\n' % time_diff)
 
 
 @contextlib.contextmanager
@@ -231,7 +227,7 @@ def remove_tree(path: str):
     try:
         shutil.rmtree(path, onerror=remove_readonly)
     except PermissionError:
-        logging_error('Could not remove %s' % path)
+        error('Could not remove %s' % path)
         sys.exit(FAILURE)
 
 
@@ -241,7 +237,7 @@ def skip(msg: str):
     Args:
         msg(str): message to skip
     """
-    logging('Skip: %s' % msg)
+    log('Skip: %s' % msg)
 
 
 @contextlib.contextmanager

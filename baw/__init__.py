@@ -46,10 +46,10 @@ from baw.runtime import create as create_venv
 from baw.utils import FAILURE
 from baw.utils import PLAINOUTPUT
 from baw.utils import SUCCESS
+from baw.utils import error
 from baw.utils import forward_slash
 from baw.utils import handle_error
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import log
 from baw.utils import print_runtime
 
 __version__ = '0.15.0'
@@ -63,7 +63,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     cwd = os.getcwd()
 
     if args['version']:
-        logging(__version__)
+        log(__version__)
         return SUCCESS
     verbose, virtual = args['verbose'], args['virtual']
     root = setup_environment(
@@ -181,8 +181,8 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
             try:
                 ret += process()
             except TypeError as error:
-                logging_error(f'{process} does not return exitcode')
-                logging_error(error)
+                error(f'{process} does not return exitcode')
+                error(error)
                 ret += FAILURE
 
     if not args['ide']:
@@ -247,9 +247,9 @@ def main():
     try:
         sys.exit(run_main())
     except KeyboardInterrupt:
-        logging('\nOperation cancelled by user')
+        log('\nOperation cancelled by user')
     except Exception as error:  # pylint: disable=broad-except
-        logging_error(error)
+        error(error)
         stack_trace = format_exc()
-        logging(forward_slash(stack_trace))
+        log(forward_slash(stack_trace))
     sys.exit(FAILURE)

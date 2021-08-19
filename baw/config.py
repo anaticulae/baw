@@ -182,14 +182,14 @@ def sources(root: str) -> list:
     except KeyError:
         source = []
     if any(',' in item for item in source):
-        baw.utils.logging_error(f'invalid {source} in {path}, remove collon')
+        baw.utils.error(f'invalid {source} in {path}, remove collon')
         sys.exit(baw.utils.FAILURE)
     failure = 0
     for subproject in source:
         if os.path.exists(os.path.join(root, subproject)):
             continue
         failure += 1
-        baw.utils.logging(f'subproject does not exists: {subproject}')
+        baw.utils.log(f'subproject does not exists: {subproject}')
     if failure:
         sys.exit(baw.utils.FAILURE)
 

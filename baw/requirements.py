@@ -107,15 +107,15 @@ def parse(content: str) -> Requirements:
                 # package without version
                 equal[line] = ''
         except ValueError:
-            baw.utils.logging_error(f'could not parse: "{line}"')
+            baw.utils.error(f'could not parse: "{line}"')
             error = True
     if error:
         return None
 
     common_keys = set(equal.keys()) | set(greater.keys())
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
-        baw.utils.logging_error('duplicated package definition')
-        baw.utils.logging_error(content)
+        baw.utils.error('duplicated package definition')
+        baw.utils.error(content)
         sys.exit(baw.utils.FAILURE)
 
     result = Requirements(equal=equal, greater=greater)
@@ -167,7 +167,7 @@ def replace(requirements: str, update: NewRequirements) -> str:
             pattern = f'{package}'
         replacement = f'{package}=={new}'
 
-        baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
+        baw.utils.log(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
 
     for package, [old, new] in update.greater.items():
@@ -187,7 +187,7 @@ def replace(requirements: str, update: NewRequirements) -> str:
 
         if pattern == replacement:
             continue
-        baw.utils.logging(f'replace requirement:\n{pattern}\n{replacement}')
+        baw.utils.log(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
     return requirements
 

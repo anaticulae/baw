@@ -17,9 +17,9 @@ from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import check_root
+from baw.utils import error
 from baw.utils import get_setup
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import log
 
 # TODO: Use twine for uploading packages
 SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
@@ -33,10 +33,10 @@ def publish(root: str, verbose: bool = False):
     Hint:
         publish run's always in virtual environment
     """
-    logging('publish start')
+    log('publish start')
     tag = git_headtag(root, virtual=False, verbose=verbose)
     if not tag:
-        logging_error('Could not find release-git-tag. Aborting publishing.')
+        error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
 
     adress, internal_port, _ = get_setup()
@@ -45,7 +45,7 @@ def publish(root: str, verbose: bool = False):
     python = baw.config.python(root)
     command = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
-        logging(f'build distribution: {command}')
+        log(f'build distribution: {command}')
     completed = run_target(
         root,
         command,
@@ -56,7 +56,7 @@ def publish(root: str, verbose: bool = False):
     )
 
     if completed.returncode == SUCCESS:
-        logging('publish completed')
+        log('publish completed')
     return completed.returncode
 
 
@@ -74,19 +74,19 @@ def run(root: str, virtual: bool = False) -> int:
         0 if all sequences run succesfull else not 0
     """
     check_root(root)
-    logging('Run')
+    log('Run')
 
     cmds = commands(root)
     if not cmds:
-        logging_error('No commands available')
+        error('No commands available')
         return FAILURE
 
     env = {} if virtual else dict(environ.items())
     ret = SUCCESS
     for command, executable in cmds.items():
-        logging('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
+        log('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
         completed = run_target(root, executable, env=env, virtual=virtual)
-        logging('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
+        log('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
 
         ret += completed.returncode
     return ret

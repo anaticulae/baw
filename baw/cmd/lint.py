@@ -25,7 +25,7 @@ import baw.utils
 from baw.config import sources
 from baw.resources import RCFILE_PATH
 from baw.runtime import run_target
-from baw.utils import logging
+from baw.utils import log
 
 
 class Scope(enum.Enum):
@@ -94,7 +94,7 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
         try:
             path = os.environ['PYLINT_SPELLING']
         except KeyError:
-            baw.utils.logging_error('require global env: `PYLINT_SPELLING`')
+            baw.utils.error('require global env: `PYLINT_SPELLING`')
             sys.exit(baw.utils.FAILURE)
         cmd += f'--spelling-private-dict-file={path} '
     if pylint_:
@@ -108,8 +108,8 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
         verbose=verbose,
     )
     if log_always or completed.returncode:
-        logging(completed.stderr)
-        logging(completed.stdout)
+        log(completed.stderr)
+        log(completed.stdout)
     return completed.returncode
 
 
@@ -126,9 +126,9 @@ def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
         verbose=verbose,
     )
     if completed.returncode:
-        logging(completed.stderr)
-        logging(completed.stdout)
+        log(completed.stderr)
+        log(completed.stdout)
     else:
         if log_always:
-            logging('bandit complete')
+            log('bandit complete')
     return completed.returncode

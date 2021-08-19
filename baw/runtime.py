@@ -24,10 +24,10 @@ import baw.utils
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import UTF8
+from baw.utils import error
 from baw.utils import file_read
 from baw.utils import file_replace
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import log
 from baw.utils import print_runtime
 
 VIRTUAL_FOLDER = '.virtual'
@@ -38,17 +38,17 @@ NO_EXECUTABLE = 127
 def destroy(path: str):
     """Remove virtual path recursive if path exists, do nothing."""
     if not exists(path):
-        logging('Nothing to clean, path does not exists %s' % path)
+        log('Nothing to clean, path does not exists %s' % path)
         return True
-    logging('Removing virtual environment %s' % path)
+    log('Removing virtual environment %s' % path)
     try:
         rmtree(path)
     except PermissionError as error:
         # This error occurs, if an ide e.g. vscode uses the virtual environment
         # so removing .virtual folder is not possible.
         msg = 'Could not remove %s. Path is locked by an other application.'
-        logging_error(error)
-        logging_error(msg % path)
+        error(error)
+        error(msg % path)
         return False
     return True
 
@@ -73,11 +73,11 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     virtual = join(root, VIRTUAL_FOLDER)
 
     if not exists(virtual):
-        logging(f'create virtual: {virtual}')
+        log(f'create virtual: {virtual}')
         makedirs(virtual)
 
     if exists(virtual) and list(scandir(virtual)):
-        logging(f'virtual: {virtual}')
+        log(f'virtual: {virtual}')
         return SUCCESS
 
     python = baw.config.python(root, virtual=False)
@@ -99,18 +99,18 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         patch_env(root)
 
     if process.returncode:
-        logging_error(' '.join(venv_command))
-        logging_error('While creating virutal environment:')
+        error(' '.join(venv_command))
+        error('While creating virutal environment:')
 
-        logging(process.stdout)
-        logging_error(process.stderr)
+        log(process.stdout)
+        error(process.stderr)
 
         return FAILURE
 
     if verbose:
-        logging(process.stdout)
+        log(process.stdout)
         if process.stderr:
-            logging_error(process.stderr)
+            error(process.stderr)
     return SUCCESS
 
 
@@ -121,7 +121,7 @@ def patch_pip(root):
 
     TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
     """
-    logging('Patching the wheel')
+    log('Patching the wheel')
 
     to_patch = join(root, '.virtual/Lib/site-packages/pip/_internal/wheel.py')
     if not exists(to_patch):
@@ -185,11 +185,11 @@ def run_target(
             skip_error_message,
         )
     except ValueError as error:
-        logging_error(str(error))
+        error(str(error))
         return FAILURE
 
     if verbose:
-        logging(command)
+        log(command)
 
     if virtual:
         try:
@@ -277,17 +277,17 @@ def log_result(  # pylint:disable=R1260,R0912
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
         msg = f'Completed: `{command}` in `{cwd}` returncode: {returncode}\n'
-        logging_error(msg)
+        error(msg)
 
     if completed.stdout and verbose:
-        logging(completed.stdout)
+        log(completed.stdout)
 
     if verbose:
         if not reporting:
             # Inform, not writing to stderr
-            logging(f'Completed: `{command}` in `{cwd}`\n')
+            log(f'Completed: `{command}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
-            logging('Env: %s' % environ)
+            log('Env: %s' % environ)
 
     error_message = completed.stderr
     # catch stderr is None when running baw --test=pdb because the std-out/err
@@ -298,12 +298,12 @@ def log_result(  # pylint:disable=R1260,R0912
         error_message = error_message.replace(remove_skip, '')
 
     if reporting and error_message.strip():
-        logging_error('%s' % error_message.strip())
+        error('%s' % error_message.strip())
     if verbose:
         if completed.stderr:
-            logging_error(completed.stderr)
+            error(completed.stderr)
         if completed.stdout:
-            logging(completed.stdout)
+            log(completed.stdout)
         if start is not None:
             print_runtime(start)
 

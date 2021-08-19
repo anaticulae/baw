@@ -23,9 +23,9 @@ from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_EXTRA
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import check_root
+from baw.utils import error
 from baw.utils import get_setup
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import log
 from baw.utils import package_address
 
 
@@ -55,7 +55,7 @@ def sync(
     """
     check_root(root)
     ret = 0
-    logging()
+    log()
     ret += update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
     if virtual == 'BOTH':
@@ -112,12 +112,12 @@ def check_dependency(
             # Package not available
             continue
         if completed.returncode == 2:
-            logging_error(f'not reachable: {index} for package {package}')
-            logging_error(completed.stderr)
+            error(f'not reachable: {index} for package {package}')
+            error(completed.stderr)
             sys.exit(completed.returncode)
             continue
         if completed.returncode and completed.stderr:
-            logging_error(completed.stderr)
+            error(completed.stderr)
 
         if completed.stdout:
             if f'{package} ' not in completed.stdout:
@@ -139,7 +139,7 @@ def sync_dependencies(
 ) -> int:
     check_root(root)
 
-    logging('sync virtual' if virtual else 'sync local')
+    log('sync virtual' if virtual else 'sync local')
 
     resources = determine_resources(root, packages)
 
@@ -157,7 +157,7 @@ def sync_dependencies(
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
 
-    logging(f'\nrequire update:\n{required}')
+    log(f'\nrequire update:\n{required}')
 
     requirements = os.path.join(root, '.baw/.requirements.txt')
     baw.utils.file_replace(requirements, str(required))
@@ -171,7 +171,7 @@ def sync_dependencies(
         virtual=virtual,
     )
     if verbose:
-        logging(cmd)
+        log(cmd)
     completed = run_target(
         root,
         cmd,
@@ -182,7 +182,7 @@ def sync_dependencies(
 
     baw.utils.file_remove(requirements)
     if 'NewConnectionError' in completed.stdout:
-        logging_error('Could not reach server: %s' % pip)
+        error('Could not reach server: %s' % pip)
         return completed.returncode
 
     if completed.stdout:
@@ -190,11 +190,11 @@ def sync_dependencies(
             if should_skip(message, verbose=verbose):
                 continue
             if verbose:
-                logging(message)
+                log(message)
     if completed.returncode and completed.stderr:
-        logging_error(completed.stderr)
+        error(completed.stderr)
 
-    logging()
+    log()
     return completed.returncode
 
 
@@ -296,7 +296,7 @@ def pip_list(
     python = baw.config.python(root, virtual=virtual)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
-        logging(cmd)
+        log(cmd)
     completed = run_target(
         root,
         cmd,
@@ -305,7 +305,7 @@ def pip_list(
         virtual=virtual,
     )
     if completed.returncode and completed.stderr:
-        logging_error(completed.stderr)
+        error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
     parsed = baw.requirements.parse(content)
@@ -331,12 +331,12 @@ def connected(internal: str, external: str) -> bool:
                 response.read()
         except URLError:
             result = False
-            logging_error('Could not reach %s' % item)
+            error('Could not reach %s' % item)
     return result
 
 
 def should_skip(msg: str, verbose: bool = False):
     if not verbose and 'Requirement already' in msg:
-        logging('.', end='')
+        log('.', end='')
         return True
     return False

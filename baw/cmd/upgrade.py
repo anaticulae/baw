@@ -59,7 +59,7 @@ def upgrade(
         upgrade_failure = failure not in (REQUIREMENTS_UPTODATE,
                                           baw.utils.SUCCESS)
         if upgrade_failure or devupgade_failure:
-            baw.utils.logging_error('Error while upgrading requirements')
+            baw.utils.error('Error while upgrading requirements')
             return baw.utils.FAILURE
 
         failure = baw.cmd.utils.sync_and_test(
@@ -85,7 +85,7 @@ def upgrade(
                 verbose=verbose,
                 virtual=virtual,
             )
-            baw.utils.logging_error('Upgrading failed')
+            baw.utils.error('Upgrading failed')
             assert not completed
             return failure
 
@@ -125,13 +125,13 @@ def upgrade_requirements(
 
     if not os.path.exists(requirements_path):
         msg = 'Could not locate any requirements: %s' % requirements_path
-        baw.utils.logging_error(msg)
+        baw.utils.error(msg)
         return baw.utils.FAILURE
-    baw.utils.logging('\nStart upgrading requirements: %s' % requirements_path)
+    baw.utils.log('\nStart upgrading requirements: %s' % requirements_path)
 
     content = baw.utils.file_read(requirements_path)
     if not content.strip():
-        baw.utils.logging(f'Empty: {requirements_path}. Skipping replacement.')
+        baw.utils.log(f'Empty: {requirements_path}. Skipping replacement.')
         # stop further synchonizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
 
@@ -141,12 +141,12 @@ def upgrade_requirements(
     replaced = baw.requirements.replace(content, upgraded)
 
     if replaced == content:
-        baw.utils.logging('Requirements are up to date.\n')
+        baw.utils.log('Requirements are up to date.\n')
         return REQUIREMENTS_UPTODATE
 
     baw.utils.file_replace(requirements_path, replaced)
 
-    baw.utils.logging('Upgrading finished')
+    baw.utils.log('Upgrading finished')
 
     return baw.utils.SUCCESS
 
@@ -187,7 +187,7 @@ def determine_new_requirements(
 ) -> baw.requirements.NewRequirements:
     parsed = baw.requirements.parse(requirements)
     if parsed is None:
-        baw.utils.logging_error('could not parse requirements')
+        baw.utils.error('could not parse requirements')
         return None
 
     sync_error = False
@@ -218,9 +218,9 @@ def collect_new_packages(root, source, sink, virtual, verbose=False):
             try:
                 dependency = future.result()
             except ValueError:
-                baw.utils.logging_error(f'package: {package} is not available')
+                baw.utils.error(f'package: {package} is not available')
             except RuntimeError:
-                baw.utils.logging_error('could not reach package repository')
+                baw.utils.error('could not reach package repository')
                 sync_error = True
             else:
                 available = available_version(dependency, package=package)

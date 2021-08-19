@@ -10,7 +10,7 @@
 from baw.cmd.sync import sync as run_sync
 from baw.cmd.test import run_test
 from baw.utils import SUCCESS
-from baw.utils import logging_error
+from baw.utils import error
 
 
 def sync_and_test(
@@ -36,7 +36,7 @@ def sync_and_test(
             virtual=virtual,
         )
         if ret:
-            logging_error('\nSync failed, could not release.\n')
+            error('\nSync failed, could not release.\n')
             return ret
 
     if not test:
@@ -54,6 +54,6 @@ def sync_and_test(
     )
     if ret:
         if not quiet:
-            logging_error('Tests failed.')
+            error('Tests failed.')
         return ret
     return SUCCESS

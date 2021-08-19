@@ -28,8 +28,8 @@ from baw.resources import SETUP_CFG
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import error
+from baw.utils import log
 
 # semantic release returns this message if no new release is provided, cause
 # of the absent of new features/bugfixes.
@@ -71,7 +71,7 @@ def release(
     """
     current_head = git_headtag(root, virtual=virtual)
     if current_head:
-        logging('No release is required, head is already: %s' % current_head)
+        log('No release is required, head is already: %s' % current_head)
         return SUCCESS
 
     ret = check_findings(root, verbose, virtual)
@@ -95,9 +95,9 @@ def release(
         if ret:
             return ret
     else:
-        logging('release was already tested successfully')
+        log('release was already tested successfully')
 
-    logging("Update version tag")
+    log("Update version tag")
     with temp_semantic_config(root) as config:
         # Only release with type if user select one. If the user does select
         # a release-type let semantic release decide.
@@ -105,15 +105,15 @@ def release(
         cmd = 'semantic-release version %s --config="%s"'
         cmd = cmd % (release_type, config)
         completed = run_target(root, cmd, verbose=verbose)
-        logging(completed.stdout)
+        log(completed.stdout)
         if NO_RELEASE_MESSAGE in completed.stdout:
-            logging_error('abort release')
-            logging('ensure that some (feat) are commited')
-            logging('use: `baw --release=minor` to force release')
+            error('abort release')
+            log('ensure that some (feat) are commited')
+            log('use: `baw --release=minor` to force release')
             return FAILURE
 
     if completed.returncode:
-        logging_error('while running semantic-release')
+        error('while running semantic-release')
         return completed.returncode
 
     return SUCCESS
@@ -124,7 +124,7 @@ def temp_semantic_config(root: str):
     short = shortcut(root)
     replaced = SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == SETUP_CFG:
-        logging_error('while replacing template')
+        error('while replacing template')
         sys.exit(FAILURE)
     with TemporaryFile(mode='w', delete=False) as fp:
         fp.write(replaced)
@@ -152,30 +152,30 @@ def drop(
     3. Checkout CHANGELOG and __init__.py
     4. Remove tag
     """
-    logging('Start dropping release')
+    log('Start dropping release')
 
     # git tag --contains HEAD -> Answer the last commit
-    logging('Detect current release:')
+    log('Detect current release:')
     runner = partial(run_target, verbose=verbose, virtual=virtual)
     completed = runner(root, 'git tag --contains HEAD')
     matched = match(RELEASE_PATTERN, completed.stdout)
     if not matched:
-        logging_error('No release tag detected')
+        error('No release tag detected')
         return FAILURE
     current_release = matched['release']
 
     # do not remove the first commit/release in the repository
     if current_release == DEFAULT_RELEASE:
-        logging_error('Could not remove %s release' % DEFAULT_RELEASE)
+        error('Could not remove %s release' % DEFAULT_RELEASE)
         return FAILURE
-    logging(current_release)
+    log(current_release)
 
     # remove the last release commit
     # git reset HEAD~1
-    logging('Remove last commit')
+    log('Remove last commit')
     completed = runner(root, 'git reset HEAD~1')
     if completed.returncode:
-        logging_error('while removing the last commit: %s' % str(completed))
+        error('while removing the last commit: %s' % str(completed))
         return completed.returncode
 
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
@@ -184,10 +184,10 @@ def drop(
         return completed
 
     # git tag -d HEAD
-    logging('Remove release tag')
+    log('Remove release tag')
     completed = runner(root, 'git tag -d %s' % current_release)
     if completed.returncode:
-        logging_error('while remove tag: %s' % str(completed))
+        error('while remove tag: %s' % str(completed))
         return completed.returncode
 
     # TODO: ? remove upstream ? or just overwrite ?
@@ -208,7 +208,7 @@ def reset_resources(
     for item in [initpath, changelog]:
         if not exists(join(root, item)):
             msg = 'Item %s does not exists' % item
-            logging_error(msg)
+            error(msg)
             ret += 1
             continue
         to_reset.append(item)
@@ -232,7 +232,7 @@ def check_findings(root: str, verbose: bool, virtual: bool) -> int:
             log_always=False,
         )
         if ret:
-            logging_error('could not release, solve this errors first.')
-            logging_error('turn `fail_on_finding` off to release with errors')
+            error('could not release, solve this errors first.')
+            error('turn `fail_on_finding` off to release with errors')
             return ret
     return baw.utils.SUCCESS

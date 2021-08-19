@@ -65,7 +65,7 @@ def run_test(  # pylint:disable=R0914
         return baw.utils.SUCCESS
     baw.utils.check_root(root)
 
-    baw.utils.logging('tests')
+    baw.utils.log('tests')
     _, testenv = setup_testenvironment(
         root,
         fast=fast,
@@ -105,7 +105,7 @@ def run_test(  # pylint:disable=R0914
     if completed.returncode == baw.utils.SUCCESS:
         if generate_only:
             # do not write log of collect tests
-            baw.utils.logging('test data generated')
+            baw.utils.log('test data generated')
         if coverage:
             open_report(root)
         # do not log partial long running tests as completed
@@ -144,7 +144,7 @@ def setup_testenvironment(
 ):
     testdir = os.path.join(root, 'tests')
     if not os.path.exists(testdir):
-        baw.utils.logging_error('No testdirectory %s available' % testdir)
+        baw.utils.error('No testdirectory %s available' % testdir)
         sys.exit(baw.utils.FAILURE)
     env = dict(os.environ.items())
     if longrun:
@@ -226,7 +226,7 @@ def cov_args(root: str, *, pdb: bool) -> str:
     assert os.path.exists(cov_config), str(cov_config)
     no_cov = '--no-cov ' if pdb else ''
     if no_cov:
-        baw.utils.logging('Disable coverage report')
+        baw.utils.log('Disable coverage report')
     min_cov = baw.config.minimal_coverage(root)
     cov_sources = collect_cov_sources(root)
     cov = (f'--cov-config={cov_config} {cov_sources} '
@@ -250,7 +250,7 @@ def collect_cov_sources(root: str) -> str:
         code_path = os.path.join(root, item)
         if not os.path.exists(code_path):
             msg = f'path {code_path} from `project.cfg` does not exist'
-            baw.utils.logging_error(msg)
+            baw.utils.error(msg)
             ret += 1
             continue
         cov_sources += f'--cov={code_path} '

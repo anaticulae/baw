@@ -15,8 +15,8 @@ from baw.config import sources
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import error
+from baw.utils import log
 
 
 def format_repository(root: str, verbose: bool = False, virtual: bool = False):
@@ -80,7 +80,7 @@ def format_(
     verbose: bool = False,
     virtual: bool = False,
 ):
-    logging(info)
+    log(info)
     folder = sources(root)
 
     # check that `tests` path exists
@@ -94,7 +94,7 @@ def format_(
             source = os.path.join(root, item)
             command = f'{cmd} {source}'
             if verbose:
-                logging(command)
+                log(command)
             waitfor.append(
                 executor.submit(
                     run_target,
@@ -107,7 +107,7 @@ def format_(
         for future in concurrent.futures.as_completed(waitfor):
             completed = future.result()
             if completed.returncode:
-                logging_error(f'error while formatting {completed.stderr}')
+                error(f'error while formatting {completed.stderr}')
                 return FAILURE
-    logging(f'{info}: complete\n')
+    log(f'{info}: complete\n')
     return SUCCESS

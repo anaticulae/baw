@@ -24,16 +24,16 @@ def ide_open(root: str, packages: tuple = None) -> int:
     """Generate vscode workspace and run afterwards."""
     detected = baw.project.determine_root(root)
     if detected is None:
-        baw.utils.logging_error(f'could not locate .baw project in: {root}')
+        baw.utils.error(f'could not locate .baw project in: {root}')
         return baw.utils.FAILURE
     root = detected
 
-    baw.utils.logging('generate')
+    baw.utils.log('generate')
     generate_workspace(root, packages=packages)
     generate_sort_config(root)
     generate_conftest(root)
 
-    baw.utils.logging('open')
+    baw.utils.log('open')
     returncode = start(root)
     return returncode
 
@@ -74,7 +74,7 @@ def generate_workspace(root: str, packages: tuple = None):
         folders = []
         for (name, path) in todo:
             if not os.path.exists(path):
-                baw.utils.logging_error(f'{path} does not exists')
+                baw.utils.error(f'{path} does not exists')
                 continue
             folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))
         folders = baw.utils.NEWLINE.join(folders)  # pylint:disable=R0204

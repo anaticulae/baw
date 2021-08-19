@@ -9,7 +9,7 @@
 
 import baw.config
 from baw.runtime import run_target
-from baw.utils import logging
+from baw.utils import log
 
 
 def install(root: str, virtual: bool, verbose: bool = False):
@@ -24,5 +24,5 @@ def install(root: str, virtual: bool, verbose: bool = False):
         verbose=verbose,
         virtual=virtual,
     )
-    logging(completed.stdout)
+    log(completed.stdout)
     return completed.returncode

@@ -15,7 +15,7 @@ from baw.resources import template_replace
 from baw.runtime import run_target
 from baw.utils import TMP
 from baw.utils import file_replace
-from baw.utils import logging
+from baw.utils import log
 
 
 def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
@@ -34,7 +34,7 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     """
     if not is_sphinx_installed(root=root, virtual=virtual):
         msg = 'sphinx is not installed, run baw sync=all --virtual'
-        baw.utils.logging_error(msg)
+        baw.utils.error(msg)
         return baw.utils.FAILURE
 
     update_template(root)
@@ -58,9 +58,9 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     command = 'sphinx-apidoc %s -o %s %s %s'
     command = command % (configuration, tmp, sources, ignore)
 
-    logging('generate docs')
+    log('generate docs')
     if verbose:
-        logging(command)
+        log(command)
 
     completed = run_target(
         root,
@@ -85,9 +85,9 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     htmloutput = os.path.join(docs, 'html')
     command = f'sphinx-build {docs} {htmloutput} {build_options}'
 
-    logging('make html')
+    log('make html')
     if verbose:
-        logging(command)
+        log(command)
 
     result = run_target(
         root,

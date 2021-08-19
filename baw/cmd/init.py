@@ -45,7 +45,7 @@ def init(
     """
     baw_path = os.path.join(root, baw.utils.BAW_EXT)
     if os.path.exists(baw_path):
-        baw.utils.logging_error('Project %s already exists.' % baw_path)
+        baw.utils.error('Project %s already exists.' % baw_path)
         raise ValueError(baw.utils.FAILURE)
 
     # Escape ' to avoid errors in generated code
@@ -62,7 +62,7 @@ def init(
 
     from baw.cmd.format import format_repository
 
-    baw.utils.logging()  # write newline
+    baw.utils.log()  # write newline
     completed = format_repository(root, verbose=verbose, virtual=False)
     if completed:
         return completed
@@ -104,7 +104,7 @@ def create_folder(root: str):
         if os.path.exists(create):
             continue
         os.makedirs(create)
-        baw.utils.logging('Create folder %s' % item)
+        baw.utils.log('Create folder %s' % item)
 
 
 def create_files(root: str):
@@ -122,7 +122,7 @@ def create_files(root: str):
             baw.utils.skip('%s %s' % (operation_type, item))
             continue
 
-        baw.utils.logging('%s %s' % (operation_type, item))
+        baw.utils.log('%s %s' % (operation_type, item))
         parent = os.path.dirname(create)
         os.makedirs(parent, exist_ok=True)
         baw.utils.file_create(create, content=replaced)
@@ -187,7 +187,7 @@ def create_python(
 
 
 def create_requirements(root: str):
-    baw.utils.logging('add requirements')
+    baw.utils.log('add requirements')
     content = ''
     for item in ADDITONAL_REQUIREMENTS:
         content += item + baw.utils.NEWLINE

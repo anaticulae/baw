@@ -17,9 +17,9 @@ from subprocess import run
 from baw.runtime import NO_EXECUTABLE
 from baw.runtime import run_target
 from baw.utils import SUCCESS
+from baw.utils import error
 from baw.utils import file_replace
-from baw.utils import logging
-from baw.utils import logging_error
+from baw.utils import log
 from baw.utils import skip
 
 GIT_EXT = '.git'
@@ -35,7 +35,7 @@ def git_init(root: str):
     if exists(git_dir):
         skip('git init')
         return
-    logging('git init')
+    log('git init')
     command = run(['git', 'init'])
     evaluate_git_error(command)
 
@@ -47,7 +47,7 @@ def git_add(root: str, pattern: str):
         root(str): root of generated project
         pattern(str): pattern in linux-style"""
     assert exists(root)
-    logging('git add')
+    log('git add')
     cmd = run_target(root, 'git add %s' % pattern, verbose=False)
     evaluate_git_error(cmd)
 
@@ -60,7 +60,7 @@ def git_commit(root, source, message, verbose: int = 0):
     assert exists(root)
     message = '"%s"' % message
     if verbose:
-        logging('git commit')
+        log('git commit')
     # support multiple files
     if not isinstance(source, str):
         source = ' '.join(source)
@@ -101,12 +101,12 @@ def git_checkout(
     """
     runner = partial(run_target, verbose=verbose, virtual=virtual)
     to_reset = ' '.join(files) if not isinstance(files, str) else files
-    logging('Reset %s' % to_reset)
+    log('Reset %s' % to_reset)
     completed = runner(root, 'git checkout -q %s' % to_reset)
 
     if completed.returncode:
         msg = 'while checkout out %s\n%s' % (to_reset, str(completed))
-        logging_error(msg)
+        error(msg)
     return completed.returncode
 
 
@@ -130,20 +130,20 @@ def git_stash(
     Raises:
         Reraises all user execeptions
     """
-    logging('Stash environment')
+    log('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
 
     if completed.returncode:
-        logging_error(completed.stdout)
-        logging_error(completed.stderr)
+        error(completed.stdout)
+        error(completed.stderr)
         # Stashing an repository with not commit, produces an error
         sys.exit(completed.returncode)
 
     nostash = (completed.returncode == 0 and
                'No local changes to save' in completed.stdout)
     if nostash:
-        logging('No stash is required. Environment is already clean.')
+        log('No stash is required. Environment is already clean.')
 
     error = None
     try:
@@ -167,7 +167,7 @@ def git_stash(
         virtual=virtual,
     )
     if completed.returncode:
-        logging_error(completed.stderr)
+        error(completed.stderr)
     # reraise except from user code
     if error:
         raise error
@@ -204,7 +204,7 @@ def git_headhash(root: str) -> str:
 def update_gitignore(root: str, verbose: bool = False):
     from baw.resources import GITIGNORE
     if verbose:
-        logging('sync gitexclude')
+        log('sync gitexclude')
     file_replace(join(root, GIT_REPO_EXCLUDE), GITIGNORE)
     return SUCCESS
 
