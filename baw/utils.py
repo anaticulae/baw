@@ -123,11 +123,11 @@ def package_address():
 
 def tmpdir():
     try:
-        tmpdir = os.environ['TMPDIR']
+        selected = os.environ['TMPDIR']
     except KeyError as failure:
         logging_error(f'Missing global var `TMPDIR`')
         sys.exit(FAILURE)
-    return tmpdir
+    return selected
 
 
 @functools.lru_cache(maxsize=16)
