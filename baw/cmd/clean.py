@@ -70,10 +70,8 @@ def create_pattern(
 ) -> list:
     selected = []
     if resources:
-        tmpdir = os.environ['TMPDIR']
-        name = baw.config.shortcut(root)
-        #TODO: AUTOMATE .tmp!
-        path = os.path.join(tmpdir, f'.tmp/{name}/resources')
+        tmpdir = baw.config.project_tmpdir(root)
+        path = os.path.join(tmpdir, 'resources')
         if os.path.exists(path):
             selected.append(ResourceDir(path))
     if tmp:

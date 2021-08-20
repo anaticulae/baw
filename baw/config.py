@@ -82,6 +82,15 @@ def create(root: str, shortname: str, longname: str):
         cfg.write(fp)
 
 
+def project_tmpdir(root: str, ensure: bool = True) -> str:
+    tmpdir = os.environ['TMPDIR']
+    shortname = shortcut(root)
+    path = os.path.join(tmpdir, baw.utils.TMP, shortname)
+    if ensure:
+        os.makedirs(path, exist_ok=True)
+    return path
+
+
 def commands(root: str) -> dict:
     """Determine commands to run out of project config.
 
