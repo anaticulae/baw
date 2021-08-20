@@ -9,11 +9,13 @@
 
 import os
 
+import baw.config
 import baw.utils
 
 
 def test_archive_path(root: str) -> str:
-    return os.path.join(root, '.baw/tested.tmp')
+    tmpdir = baw.config.project_tmpdir(root)
+    return os.path.join(tmpdir, 'tested')
 
 
 def tested(root: str, hashed: str) -> bool:
