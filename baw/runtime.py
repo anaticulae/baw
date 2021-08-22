@@ -43,11 +43,11 @@ def destroy(path: str):
     log('Removing virtual environment %s' % path)
     try:
         rmtree(path)
-    except PermissionError as error:
+    except PermissionError as fail:
         # This error occurs, if an ide e.g. vscode uses the virtual environment
         # so removing .virtual folder is not possible.
         msg = 'Could not remove %s. Path is locked by an other application.'
-        error(error)
+        error(fail)
         error(msg % path)
         return False
     return True
@@ -184,8 +184,8 @@ def run_target(
             skip_error_code,
             skip_error_message,
         )
-    except ValueError as error:
-        error(str(error))
+    except ValueError as fail:
+        error(str(fail))
         return FAILURE
 
     if verbose:
@@ -200,8 +200,8 @@ def run_target(
                 debugging=debugging,
                 env=env,
             )
-        except RuntimeError as error:
-            message = str(error)
+        except RuntimeError as fail:
+            message = str(fail)
             process = subprocess.CompletedProcess(
                 command,
                 NO_EXECUTABLE,

@@ -180,9 +180,9 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
         if argument in args and args[argument]:
             try:
                 ret += process()
-            except TypeError as error:
+            except TypeError as msg:
                 error(f'{process} does not return exitcode')
-                error(error)
+                error(msg)
                 ret += FAILURE
 
     if not args['ide']:

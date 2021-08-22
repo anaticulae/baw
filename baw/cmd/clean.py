@@ -52,9 +52,9 @@ def clean(  # pylint:disable=R1260
                     os.remove(item)
                 else:
                     shutil.rmtree(item, onerror=remove_readonly)
-            except OSError as error:
+            except OSError as fail:
                 ret += 1
-                baw.utils.error(error)
+                baw.utils.error(fail)
     if ret:
         sys.exit(ret)
     baw.utils.log()  # Newline
@@ -125,8 +125,8 @@ def clean_virtual(root: str):
     baw.utils.log(f'Try to clean virtual environment {virtual_path}')
     try:
         shutil.rmtree(virtual_path)
-    except OSError as error:
-        baw.utils.error(error)
+    except OSError as fail:
+        baw.utils.error(fail)
         sys.exit(baw.utils.FAILURE)
     baw.utils.log('Finished')
 
