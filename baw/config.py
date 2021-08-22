@@ -29,7 +29,8 @@ import typing
 import baw.utils
 
 PROJECT_PATH = [
-    '.baw/project.cfg',
+    '.baw',
+    '.baw/project.cfg',  # legacy
     '.baw/project.config',  # legacy
 ]
 
@@ -207,11 +208,14 @@ def sources(root: str) -> list:
 
 
 def config_path(root: str) -> str:
-    """Select configuration path based on project `root`. If no paths
-    exists return prefered expected path."""
+    """Select configuration path based on project `root`.
+
+    If no paths exists return prefered expected path.
+    """
     for item in PROJECT_PATH:
         expected = os.path.join(root, item)
-        if os.path.exists(expected):
+        if os.path.exists(expected) and os.path.isfile(expected):
+            # isfile: to skip .baw-folder
             return expected
     # if no path exists, return default one
     return os.path.join(root, PROJECT_PATH[0])

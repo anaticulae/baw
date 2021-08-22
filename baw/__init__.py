@@ -248,8 +248,8 @@ def main():
         sys.exit(run_main())
     except KeyboardInterrupt:
         log('\nOperation cancelled by user')
-    except Exception as error:  # pylint: disable=broad-except
-        error(error)
+    except Exception as msg:  # pylint: disable=broad-except
+        error(msg)
         stack_trace = format_exc()
         log(forward_slash(stack_trace))
     sys.exit(FAILURE)

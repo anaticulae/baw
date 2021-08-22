@@ -16,7 +16,7 @@ import baw.config
 import baw.utils
 import tests
 
-PROJECT = os.path.join(tests.DATA, 'project.cfg')
+PROJECT = os.path.join(tests.DATA, '.baw')
 assert os.path.exists(PROJECT), str(PROJECT)
 
 
@@ -35,32 +35,22 @@ def configuration(testdir):
     fail_on_finding = True
     """
     config = textwrap.dedent(config)
-
-    configpath = os.path.join(root, '.baw')
-    os.makedirs(configpath)
-
-    path = os.path.join(configpath, 'project.cfg')
+    path = os.path.join(root, '.baw')
     baw.utils.file_create(path, config)
     return root
 
 
 def test_config_load():
     short, name = baw.config.project(PROJECT)
-
     assert short == 'baw'
     assert name == 'Black and White'
 
 
 def test_config_create_and_load(tmpdir):
-    os.makedirs(os.path.join(tmpdir, baw.utils.BAW_EXT))
-
     expected_short = 'xesey'
     expected_description = 'this is sparta'
-
     baw.config.create(tmpdir, expected_short, expected_description)
-
     short, description = baw.config.project(baw.config.config_path(tmpdir))
-
     assert short == expected_short
     assert description == expected_description
 

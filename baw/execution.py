@@ -75,18 +75,15 @@ def run(root: str, virtual: bool = False) -> int:
     """
     check_root(root)
     log('Run')
-
     cmds = commands(root)
     if not cmds:
         error('No commands available')
         return FAILURE
-
     env = {} if virtual else dict(environ.items())
     ret = SUCCESS
     for command, executable in cmds.items():
         log('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
         completed = run_target(root, executable, env=env, virtual=virtual)
         log('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
-
         ret += completed.returncode
     return ret

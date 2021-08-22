@@ -159,7 +159,7 @@ def sync_dependencies(
 
     log(f'\nrequire update:\n{required}')
 
-    requirements = os.path.join(root, '.baw/.requirements.txt')
+    requirements = os.path.join(root, '.requirements.txt')
     baw.utils.file_replace(requirements, str(required))
 
     cmd, pip = get_install_cmd(

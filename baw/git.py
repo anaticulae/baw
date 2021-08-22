@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import sys
 from contextlib import contextmanager
 from functools import partial
@@ -145,19 +146,17 @@ def git_stash(
     if nostash:
         log('No stash is required. Environment is already clean.')
 
-    error = None
+    err = None
     try:
         yield  # let user do there job
-    except Exception as error_:  # pylint: disable=broad-except
+    except Exception as msg:  # pylint: disable=broad-except
         # exception is reraised after unstash
-        error = error_
-
+        err = msg
     if nostash:
         # reraise exception from user code
-        if error:
-            raise error
+        if err:
+            raise err
         return SUCCESS
-
     # unstash to recreate dirty environment
     cmd = 'git stash pop'
     completed = run_target(

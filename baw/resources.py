@@ -18,13 +18,11 @@ from baw.config import name
 from baw.config import shortcut
 from baw.config import sources
 from baw.git import GIT_REPO_EXCLUDE
-from baw.utils import BAW_EXT
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import file_read
 from baw.utils import forward_slash
 
 FOLDERS = [
-    BAW_EXT,
     'tests',
     'docs',
     'docs/releases',

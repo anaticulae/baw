@@ -38,8 +38,17 @@ def test_clean_files_and_dirs(tmpdir):
     baw.utils.file_create(nested_file)
     assert os.path.exists(nested_file)
 
+    # yapf:disable
+    baw.utils.file_create(os.path.join(tmpdir, '.baw'), """
+    [project]
+    short = test
+    name = this is just a test
+    """)
+    # yapf:enable
+
     completed = tests.run('baw clean all', tmpdir)
     assert completed.returncode == 0, completed.stderr
 
     cleaned_project = set(os.listdir(tmpdir))
-    assert cleaned_project == {'.git', 'do_not_clean.txt'}  # .gitdir remains
+    # .gitdir remains
+    assert cleaned_project == {'.git', 'do_not_clean.txt', '.baw'}

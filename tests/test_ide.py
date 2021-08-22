@@ -16,7 +16,6 @@ import baw.utils
 def test_ide_open(testdir, monkeypatch):
     workspace = str(testdir)
 
-    testdir.mkdir('.baw')
     name = 'short'
 
     baw.config.create(workspace, name, 'description')
