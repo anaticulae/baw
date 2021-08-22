@@ -91,6 +91,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
 
     root = determine_root(os.getcwd())
     if root is None:
+        error('require .baw file')
         return FAILURE
 
     if args['commits']:
