@@ -16,8 +16,7 @@ from subprocess import CompletedProcess
 from subprocess import run
 
 import baw.resources
-from baw.runtime import NO_EXECUTABLE
-from baw.runtime import run_target
+import baw.runtime
 from baw.utils import SUCCESS
 from baw.utils import error
 from baw.utils import file_replace
@@ -50,7 +49,7 @@ def git_add(root: str, pattern: str):
         pattern(str): pattern in linux-style"""
     assert exists(root)
     log('git add')
-    cmd = run_target(root, 'git add %s' % pattern, verbose=False)
+    cmd = baw.runtime.run_target(root, 'git add %s' % pattern, verbose=False)
     evaluate_git_error(cmd)
 
 
@@ -66,7 +65,7 @@ def git_commit(root, source, message, verbose: int = 0):
     # support multiple files
     if not isinstance(source, str):
         source = ' '.join(source)
-    process = run_target(
+    process = baw.runtime.run_target(
         root,
         'git commit %s -m %s' % (source, message),
         verbose=verbose,
@@ -79,7 +78,7 @@ def commit(root, source, message, verbose: int = 0):
 
 
 def is_clean(root):
-    process = run_target(root, 'git status')
+    process = baw.runtime.run_target(root, 'git status')
     assert process.returncode == 0
     return 'nothing to commit, working tree clean' in process.stdout
 
@@ -101,7 +100,7 @@ def git_checkout(
     Returns:
         0 if SUCCESS else FAILURE
     """
-    runner = partial(run_target, verbose=verbose, virtual=virtual)
+    runner = partial(baw.runtime.run_target, verbose=verbose, virtual=virtual)
     to_reset = ' '.join(files) if not isinstance(files, str) else files
     log('Reset %s' % to_reset)
     completed = runner(root, 'git checkout -q %s' % to_reset)
@@ -134,8 +133,12 @@ def git_stash(
     """
     log('Stash environment')
     cmd = 'git stash --include-untracked'
-    completed = run_target(root, cmd, verbose=verbose, virtual=virtual)
-
+    completed = baw.runtime.run_target(
+        root,
+        cmd,
+        verbose=verbose,
+        virtual=virtual,
+    )
     if completed.returncode:
         error(completed.stdout)
         error(completed.stderr)
@@ -160,7 +163,7 @@ def git_stash(
         return SUCCESS
     # unstash to recreate dirty environment
     cmd = 'git stash pop'
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         cmd,
         verbose=verbose,
@@ -177,7 +180,7 @@ def git_stash(
 def git_headtag(root: str, virtual: bool, verbose: bool = False):
     command = 'git tag --points-at HEAD'
 
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         command,
         root,
@@ -195,7 +198,7 @@ def git_headtag(root: str, virtual: bool, verbose: bool = False):
 
 def git_headhash(root: str) -> str:
     cmd = 'git rev-parse --verify HEAD'
-    completed = run_target(root, cmd, verbose=False)
+    completed = baw.runtime.run_target(root, cmd, verbose=False)
     if completed.returncode:
         return None
     return completed.stdout.strip()
@@ -224,7 +227,7 @@ def evaluate_git_error(process: CompletedProcess):
         ChildProcessError: when git is not installed problems while
                            initializing git repository.
     """
-    if process.returncode == NO_EXECUTABLE:
+    if process.returncode == baw.runtime.NO_EXECUTABLE:
         raise ChildProcessError('Git is not installed')
     if process.returncode:
         raise ChildProcessError(f'Could not run git: {process}')

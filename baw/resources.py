@@ -11,11 +11,11 @@
 import os
 
 import baw
+import baw.git
 import baw.project.version
 from baw.config import name
 from baw.config import shortcut
 from baw.config import sources
-from baw.git import GIT_REPO_EXCLUDE
 from baw.utils import REQUIREMENTS_TXT
 from baw.utils import file_read
 from baw.utils import forward_slash
@@ -189,7 +189,7 @@ CONFTEST_TEMPLATE = file_read(CONFTEST_PATH)
 # None copies files
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
-    (GIT_REPO_EXCLUDE, GITIGNORE),
+    ('.git/info/exclude', GITIGNORE),
     ('CHANGELOG.md', CHANGELOG),
     ('README.md', README),
     ('docs/index.rst', INDEX_RST),

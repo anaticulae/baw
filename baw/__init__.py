@@ -22,9 +22,18 @@ import baw.__root__
 import baw.cli
 import baw.cmd
 import baw.cmd.bisect
+import baw.cmd.clean
+import baw.cmd.doc
+import baw.cmd.format
+import baw.cmd.ide
+import baw.cmd.init
+import baw.cmd.install
 import baw.cmd.lint
+import baw.cmd.open
 import baw.cmd.plan
+import baw.cmd.release
 import baw.cmd.sync
+import baw.cmd.test
 import baw.cmd.upgrade
 import baw.execution
 import baw.project
@@ -61,11 +70,11 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
                 ValueError, code=baw.utils.FAILURE):  #  No GIT found, exit 1
             shortcut, description, cmdline = args['shortcut'], args[
                 'description'], args['cmdline']
-            baw.cmd.init(root, shortcut, name=description, cmdline=cmdline)
+            baw.cmd.init.init(root, shortcut, name=description, cmdline=cmdline)
 
     if args['ide']:
         packages = tuple(args['ide']) if args['ide'] != [None] else None
-        returncode = baw.cmd.ide_open(root=root, packages=packages)
+        returncode = baw.cmd.ide.ide_open(root=root, packages=packages)
         if returncode:
             return returncode
 
@@ -87,7 +96,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     clean = args['clean'] if 'clean' in args else ''
     fmap = collections.OrderedDict([
         ('format',
-         link(baw.cmd.format_repository,
+         link(baw.cmd.format.format_repository,
               root=root,
               verbose=verbose,
               virtual=virtual)),
@@ -98,7 +107,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
              clean=clean in ('venv', 'all'),
              verbose=verbose,
          )),
-        ('drop', link(baw.cmd.drop, root=root)),
+        ('drop', link(baw.cmd.release.drop, root=root)),
         (
             'upgrade',
             link(
@@ -121,10 +130,10 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
 
     ret = 0
     workmap = collections.OrderedDict([
-        ('open', link(baw.cmd.open_this, root=root)),
+        ('open', link(baw.cmd.open.open_this, root=root)),
         ('clean',
          link(
-             baw.cmd.clean_project,
+             baw.cmd.clean.clean,
              docs=clean == 'docs',
              resources=clean == 'resources',
              tests=clean == 'tests',
@@ -144,10 +153,20 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
          )),
         ('test',
          testcommand(root=root, args=args, verbose=verbose, virtual=virtual)),
-        ('doc', link(baw.cmd.doc, root=root, virtual=virtual, verbose=verbose)),
-        ('install', link(baw.cmd.install, root=root, virtual=virtual)),
+        ('doc',
+         link(
+             baw.cmd.doc.doc,
+             root=root,
+             virtual=virtual,
+             verbose=verbose,
+         )),
+        ('install', link(baw.cmd.install.install, root=root, virtual=virtual)),
         ('release',
-         link(baw.cmd.release, root=root, release_type=args['release'])),
+         link(
+             baw.cmd.release.release,
+             root=root,
+             release_type=args['release'],
+         )),
         ('publish', link(baw.execution.publish, root=root, verbose=verbose)),
         ('run', link(baw.execution.run, root=root, virtual=virtual)),
         ('lint',
@@ -191,7 +210,7 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
     if args['testconfig']:
         testconfig += args['testconfig']
     call = functools.partial(
-        baw.cmd.run_test,
+        baw.cmd.test.run_test,
         root=root,
         coverage=args['cov'],
         fast='fast' in args['test'],

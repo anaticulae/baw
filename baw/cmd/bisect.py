@@ -10,7 +10,6 @@
 import re
 import sys
 
-import baw.git
 import baw.runtime
 import baw.utils
 

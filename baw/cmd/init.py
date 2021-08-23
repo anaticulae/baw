@@ -16,6 +16,7 @@ import os
 import baw.cmd
 import baw.cmd.format
 import baw.cmd.plan
+import baw.cmd.release
 import baw.config
 import baw.git
 import baw.resources
@@ -74,7 +75,7 @@ def init(
     baw.git.git_add(root, '*')
 
     # Deactivate options to reach fast reaction
-    baw.cmd.release(
+    baw.cmd.release.release(
         root,
         stash=False,  # Nothing to stash at the first time
         sync=False,  # No sync for first time needed
