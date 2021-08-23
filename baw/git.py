@@ -15,6 +15,7 @@ from os.path import join
 from subprocess import CompletedProcess
 from subprocess import run
 
+import baw.resources
 from baw.runtime import NO_EXECUTABLE
 from baw.runtime import run_target
 from baw.utils import SUCCESS
@@ -37,7 +38,7 @@ def git_init(root: str):
         skip('git init')
         return
     log('git init')
-    command = run(['git', 'init'])
+    command = run(['git', 'init'], check=False)
     evaluate_git_error(command)
 
 
@@ -168,8 +169,8 @@ def git_stash(
     if completed.returncode:
         error(completed.stderr)
     # reraise except from user code
-    if error:
-        raise error
+    if err:
+        raise err
     return completed.returncode
 
 
@@ -201,16 +202,15 @@ def git_headhash(root: str) -> str:
 
 
 def update_gitignore(root: str, verbose: bool = False):
-    from baw.resources import GITIGNORE
     if verbose:
         log('sync gitexclude')
-    file_replace(join(root, GIT_REPO_EXCLUDE), GITIGNORE)
+    file_replace(join(root, GIT_REPO_EXCLUDE), baw.resources.GITIGNORE)
     return SUCCESS
 
 
 def update_userdata(username='supermario', email='test@test.com'):
     cmd = f'git config --global user.email "{email}" user.name="{username}"'
-    process = run(cmd)
+    process = run(cmd, check=False)
     evaluate_git_error(process)
 
 

@@ -9,8 +9,6 @@
 """Base for generating project. Templates have to be here."""
 
 import os
-from os.path import exists
-from os.path import join
 
 import baw
 import baw.project.version
@@ -28,23 +26,23 @@ FOLDERS = [
     'docs/releases',
 ]
 
-TEMPLATES = join(baw.ROOT, 'baw/templates')
-assert exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
+TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
+assert os.path.exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
 
-WORKSPACE_TEMPLATE = join(TEMPLATES, '..code-workspace')
-assert exists(WORKSPACE_TEMPLATE), 'No template %s' % WORKSPACE_TEMPLATE
+WORKSPACE_TEMPLATE = os.path.join(TEMPLATES, '..code-workspace')
+assert os.path.exists(WORKSPACE_TEMPLATE), f'No template {WORKSPACE_TEMPLATE}'
 
-GIT_IGNORE_TEMPLATE = join(TEMPLATES, '.gitignore')
-assert exists(GIT_IGNORE_TEMPLATE), 'No gitignore %s' % GIT_IGNORE_TEMPLATE
+GIT_IGNORE_TEMPLATE = os.path.join(TEMPLATES, '.gitignore')
+assert os.path.exists(GIT_IGNORE_TEMPLATE), f'No gitignore {GIT_IGNORE_TEMPLATE}'  # yapf:disable
 
-RCFILE_PATH = join(TEMPLATES, '.rcfile')
-assert exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
+RCFILE_PATH = os.path.join(TEMPLATES, '.rcfile')
+assert os.path.exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
 
-ISORT_PATH = join(TEMPLATES, '.isort.cfg')
-assert exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
+ISORT_PATH = os.path.join(TEMPLATES, '.isort.cfg')
+assert os.path.exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
 
-CONFTEST_PATH = join(TEMPLATES, 'conftest.tpy')
-assert exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
+CONFTEST_PATH = os.path.join(TEMPLATES, 'conftest.tpy')
+assert os.path.exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
 
 README = """# {{SHORT}}
 """
@@ -178,12 +176,12 @@ if __name__ == "__main__":
 """
 
 CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
-GITIGNORE = file_read(join(TEMPLATES, '.gitignore'))
-SETUP_PY = file_read(join(TEMPLATES, 'setup.tpy'))
-SETUP_CFG = file_read(join(TEMPLATES, 'setup.cfg'))
-RELEASE_PLAN = file_read(join(TEMPLATES, 'docs/plan.rst'))
+GITIGNORE = file_read(os.path.join(TEMPLATES, '.gitignore'))
+SETUP_PY = file_read(os.path.join(TEMPLATES, 'setup.tpy'))
+SETUP_CFG = file_read(os.path.join(TEMPLATES, 'setup.cfg'))
+RELEASE_PLAN = file_read(os.path.join(TEMPLATES, 'docs/plan.rst'))
 
-DOC_CONF = file_read(join(TEMPLATES, 'conf.py'))
+DOC_CONF = file_read(os.path.join(TEMPLATES, 'conf.py'))
 
 ISORT_TEMPLATE = file_read(ISORT_PATH)
 CONFTEST_TEMPLATE = file_read(CONFTEST_PATH)

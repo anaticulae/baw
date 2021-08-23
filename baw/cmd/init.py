@@ -13,6 +13,8 @@ Initialize a new repository due init. Add content afterwards and stash it.
 
 import os
 
+import baw.cmd
+import baw.cmd.format
 import baw.cmd.plan
 import baw.config
 import baw.git
@@ -60,18 +62,19 @@ def init(
 
     baw.git.update_gitignore(root)
 
-    from baw.cmd.format import format_repository
-
     baw.utils.log()  # write newline
-    completed = format_repository(root, verbose=verbose, virtual=False)
+    completed = baw.cmd.format.format_repository(
+        root,
+        verbose=verbose,
+        virtual=False,
+    )
     if completed:
         return completed
 
     baw.git.git_add(root, '*')
 
-    from baw.cmd import release
     # Deactivate options to reach fast reaction
-    release(
+    baw.cmd.release(
         root,
         stash=False,  # Nothing to stash at the first time
         sync=False,  # No sync for first time needed
@@ -201,7 +204,7 @@ def utila_current() -> str:
     """Determine current version of `utila` package."""
     default = "1.11.0"
     try:
-        import utila
+        import utila  # pylint:disable=C0415
         # extend linter white list, cause __version__ is not available for
         # linter if utila is not installed.
         return utila.__version__  # pylint:disable=E1101

@@ -103,7 +103,7 @@ def upgrade(
 REQUIREMENTS_UPTODATE = 100
 
 
-def upgrade_requirements(
+def upgrade_requirements(  # pylint:disable=W0612,W0613
     root: str,
     requirements: str = baw.utils.REQUIREMENTS_TXT,
     virtual: bool = False,

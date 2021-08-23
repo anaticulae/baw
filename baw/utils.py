@@ -121,7 +121,7 @@ def tmpdir():
     try:
         selected = os.environ['TMPDIR']
     except KeyError:
-        error(f'Missing global var `TMPDIR`')
+        error('Missing global var `TMPDIR`')
         sys.exit(FAILURE)
     return selected
 

@@ -96,7 +96,7 @@ def close(root: str, verbose: bool = False):
     current_status = status(root)
     assert current_status == Status.CLOSED, current_status
 
-    message = f'releases(plan): close current release plan'
+    message = 'releases(plan): close current release plan'
     commit(root, message, verbose=verbose)
 
 

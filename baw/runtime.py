@@ -371,5 +371,6 @@ def _run(command: str, cwd: str, env=None, debugging: bool = False):
         stdout=None if debugging else subprocess.PIPE,
         errors='ignore',
         universal_newlines=True,
+        check=False,
     )
     return process

@@ -83,6 +83,7 @@ def run(command: str, cwd: str = None):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         universal_newlines=True,
+        check=False,
     )
     return completed
 

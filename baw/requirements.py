@@ -66,7 +66,7 @@ class NewRequirements(Requirements):
         raise IndexError(f'{index} not supported')
 
 
-def parse(content: str) -> Requirements:
+def parse(content: str) -> Requirements:  # pylint:disable=R1260,R0912
     """\
     >>> parse('Flask_Login==0.1.1')
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
@@ -206,7 +206,7 @@ def smart_replace(requirements: str, old: str, new: str):
     return result
 
 
-def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
+def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0912
     """\
     >>> inside('2.12.0', '2.14.0<3.0.0')
     False
@@ -261,7 +261,7 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260
     return True
 
 
-def lower(current, new):
+def lower(current: str, new: str) -> bool:
     """\
     >>> lower('1.26.2', '1.26.1')
     True

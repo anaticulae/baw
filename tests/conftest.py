@@ -28,6 +28,7 @@ if not 'PYTEST_XDIST_WORKER' in os.environ:
                 stdout=subprocess.PIPE,
                 universal_newlines=True,
                 timeout=5.0,
+                check=False,
             )
             return result
 
