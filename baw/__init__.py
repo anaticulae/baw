@@ -52,7 +52,7 @@ from baw.utils import handle_error
 from baw.utils import log
 from baw.utils import print_runtime
 
-__version__ = '0.15.0'
+__version__ = '0.16.0'
 
 
 def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911

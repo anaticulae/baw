@@ -2,6 +2,74 @@
 
 Every noteable change is logged here.
 
+## v0.16.0
+
+### Feature
+
+* enable config collector to find .baw config file (73584df11b5e)
+* move tested path outside of project root (244ff7431b8d)
+* add method to determine project tmpdir (be4f4e6fb2b9)
+* clean generated resources outside project root (fd711b026693)
+* use improved template syntax (775c107afef0)
+* move tmp dir to TMPDIR (056183c3a085)
+* strip white spaces in linter command (d741dce9410e)
+* add option to change linter (ac95149409f6)
+* extend cleaning pattern (36e73140d3c0)
+* enable parsing requirements with variant information (789959ea7432)
+* add option to quit after first error (6d02b99a238d)
+* add method to order two versions (1716de9fd9af)
+* use local python version if defined (8f66e489049e)
+* do no search for local config (158023fd40c2)
+* disable too many instance attributes (6bb4d2760c96)
+* do not look for duplicated code (7e00ed5711a4)
+* increase debugging information (12593e27da23)
+* makes requirements replacement more robust (36e62f61f8dc)
+* make error message more verbose (e7fd2e668c80)
+* use current python version to create virtual env (4a5b4a65a98d)
+* extend valid variable name list (bf76de1ef672)
+* add spelling option to linter run (b6e73e132c33)
+* load config only once (bd22b5e55bd8)
+* add spelling variable to config (94072cf74bd4)
+* run linter with selected python version (c77b4de3950d)
+* add verbose flag to increase logging (0f5607f379b9)
+* use configured python version (dddda86b6616)
+* add project.python entry to specify python version (e098b7408db3)
+* add extra option (6d9b854113e4)
+* handle server not reachable error (88786b3c78a2)
+* ensure that all subprojects exists (9620d3b4e4c2)
+* extend linter white list (dee63f995055)
+* add x, y, z as valid names (4b96b8217c7a)
+* adjust doc template (86b70c0e94fe)
+* extend pytest ignore list (f0589c8d7db9)
+* add verbose flag to display more test result information (3e1d0f6a128c)
+* fork linter code (04bcdb051a35)
+* disable xdist on single cpu selection (ac4fb95e4963)
+* enable new clean command (b7ab98b51369)
+* add new clean call (0362042ff0f4)
+* add options to specialize delete call (2991e8721f29)
+
+### Fix
+
+* add missing project file message (a34ef680859a)
+* fix method renaming (68aaaf66ed1a)
+* use pytest test invocation (987abdc65e01)
+* run application separately to avoid import errors (672155b94c79)
+* add copyright header to requirements and adjust newline (4632aed11c31)
+* do not upgrade with lower version number (e212429b8872)
+* adjust to upgraded linter (f17920f90afb)
+* introduce old patch to ensure backward compatibility (1ef54614c088)
+* ensure that upgrading is possible without virtual env (e081d1a36752)
+* add missing spaces (886c8ce28f4c)
+* remove outdated python2 check (e369a85b9a72)
+* solve duplicated requirement definition (b95844fbdf1b)
+* handle lower bound requirement (50a2cfb2cd8a)
+* remove outdated patch (1a673057342d)
+* use virtual to use correct runtime (1a5b9ac5e1fc)
+* fill version number without patch (aafd2e61ffa7)
+* do not detect nltk_data as nltk package (dc8397bd7076)
+* adjust already tested mechanism (f69150b2323e)
+* do not run test when using skip (4df8c8c92e8a)
+
 ## v0.15.0
 
 ### Feature
