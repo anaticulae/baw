@@ -207,6 +207,7 @@ def sources(root: str) -> list:
     return source
 
 
+@functools.lru_cache()
 def config_path(root: str) -> str:
     """Select configuration path based on project `root`.
 
