@@ -237,7 +237,7 @@ def skip(msg: str):
     Args:
         msg(str): message to skip
     """
-    log('Skip: %s' % msg)
+    log(f'skip: {msg}')
 
 
 @contextlib.contextmanager

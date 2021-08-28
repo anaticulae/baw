@@ -108,7 +108,7 @@ def create_folder(root: str):
         if os.path.exists(create):
             continue
         os.makedirs(create)
-        baw.utils.log('Create folder %s' % item)
+        baw.utils.log(f'create folder {item}')
 
 
 def create_files(root: str):
