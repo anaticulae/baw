@@ -20,7 +20,14 @@ load-plugins=pylint.extensions.docparams,
              pylint.extensions.docstyle,
              pylint.extensions.mccabe,
              pylint.extensions.overlapping_exceptions,
-             pylint.extensions.redefined_variable_type
+             pylint.extensions.redefined_variable_type,
+             pylint.extensions.bad_builtin,
+             pylint.extensions.check_elif,
+             pylint.extensions.comparetozero,
+             pylint.extensions.confusing_elif,
+             pylint.extensions.typing,
+             pylint.extensions.empty_comment,
+             pylint.extensions.emptystring,
 
 [BASIC]
 
