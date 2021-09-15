@@ -22,6 +22,7 @@ release
 import configparser
 import contextlib
 import functools
+import io
 import os
 import sys
 import typing
@@ -74,13 +75,13 @@ def create(root: str, shortname: str, longname: str):
     cfg['project'] = {'short': shortname, 'name': longname}
     cfg['release'] = {'fail_on_finding': True}
     outpath = config_path(root)
-    with open(
-            outpath,
-            mode='w',
-            encoding=baw.utils.UTF8,
-            newline=baw.utils.NEWLINE,
-    ) as fp:
-        cfg.write(fp)
+    # write to buffer
+    output = io.StringIO()
+    cfg.write(output)
+    output.seek(0)
+    content = output.getvalue()
+    # create config
+    baw.utils.file_replace(outpath, content)
 
 
 def project_tmpdir(root: str, ensure: bool = True) -> str:

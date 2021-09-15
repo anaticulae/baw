@@ -230,5 +230,5 @@ def template_replace(root: str, template: str, **kwargs) -> str:
     for key, value in kwargs.items():
         value = str(value)  # ensure to repace str
         template = template.replace('{{' + key.upper() + '}}', value)
-
+    template = template.strip()
     return template

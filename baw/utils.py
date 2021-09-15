@@ -155,6 +155,7 @@ def file_append(path: str, content: str):
 
 def file_create(path: str, content: str = ''):
     assert not os.path.exists(path), str(path)
+    content = normalize_final(content)
     with open(path, mode='w', newline=NEWLINE) as fp:
         fp.write(content)
 
@@ -162,13 +163,19 @@ def file_create(path: str, content: str = ''):
 def file_read(path: str):
     assert os.path.exists(path), str(path)
     with open(path, mode='r', newline=NEWLINE) as fp:
-        return fp.read()
+        return normalize_final(fp.read())
 
 
 def file_remove(path: str):
     assert os.path.exists(path), str(path)
     assert os.path.isfile(path), str(path)
     os.remove(path)
+
+
+def normalize_final(content: str):
+    content = content.rstrip()
+    content = f'{content}\n'
+    return content
 
 
 def file_replace(path: str, content: str):
@@ -181,6 +188,7 @@ def file_replace(path: str, content: str):
         path(str): path to file
         content(str): content to write
     """
+    content = normalize_final(content)
     if not os.path.exists(path):
         file_create(path, content)
         return
