@@ -44,21 +44,26 @@ assert os.path.exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
 CONFTEST_PATH = os.path.join(TEMPLATES, 'conftest.tpy')
 assert os.path.exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
 
-README = """# {{SHORT}}
+README = """\
+# {{SHORT}}
 """
 
-CHANGELOG = """# changelog
+CHANGELOG = """\
+# changelog
 
 Every noteable change is logged here.
 """
 
-LICENCE = """# Licence
+LICENCE = """\
+# Licence
 """
 
-CHANGELOG_RST = """.. mdinclude:: ../../CHANGELOG.md
+CHANGELOG_RST = """\
+.. mdinclude:: ../../CHANGELOG.md
 """
 
-README_RST = """.. mdinclude:: ../../README.md
+README_RST = """\
+.. mdinclude:: ../../README.md
 """
 
 BACKLOG_RST = """\
@@ -89,8 +94,9 @@ completed
 
 """
 
-INDEX_RST = """Welcome to {{NAME}}
-=================================
+INDEX_RST = """\
+Welcome to {{NAME}}
+===================
 
 Progress
 --------
