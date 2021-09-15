@@ -78,24 +78,27 @@ def release(
     if ret:
         return ret
 
-    hashed = baw.git.git_headhash(root)
-    if not hashed or not baw.archive.test.tested(root, hashed):
-        ret = baw.cmd.utils.sync_and_test(
-            root,
-            generate=True,
-            longrun=True,
-            packages='dev',
-            stash=stash,
-            sync=sync,
-            test=test,
-            testconfig=['-n', 'auto'],
-            verbose=verbose,
-            virtual=virtual,
-        )
-        if ret:
-            return ret
-    else:
-        log('release was already tested successfully')
+    if sync or test:
+        # do not run hashed on first release, cause there is no any tagged
+        # version.
+        hashed = baw.git.git_headhash(root)
+        if not hashed or not baw.archive.test.tested(root, hashed):
+            ret = baw.cmd.utils.sync_and_test(
+                root,
+                generate=True,
+                longrun=True,
+                packages='dev',
+                stash=stash,
+                sync=sync,
+                test=test,
+                testconfig=['-n', 'auto'],
+                verbose=verbose,
+                virtual=virtual,
+            )
+            if ret:
+                return ret
+        else:
+            log('release was already tested successfully')
 
     log("Update version tag")
     with temp_semantic_config(root) as config:
