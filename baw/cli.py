@@ -165,10 +165,10 @@ def create_parser():  # noqa: Z21
 
 
 def add_clean_options(parser):
-    plan = parser.add_parser('clean', help='remove generated content')
+    plan = parser.add_parser('clean', help='Remove generated content')
     plan.add_argument(
         'clean',
-        help='remove different type of content',
+        help='Remove different type of content',
         choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv'],
         nargs='?',
         default='tests',

@@ -49,7 +49,6 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     if not any(args.values()):
         return baw.utils.SUCCESS
     cwd = os.getcwd()
-
     if args['version']:
         baw.utils.log(__version__)
         return baw.utils.SUCCESS
@@ -66,10 +65,13 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
         args['publish'] = True
 
     if args['init']:
-        with baw.utils.handle_error(
-                ValueError, code=baw.utils.FAILURE):  #  No GIT found, exit 1
-            shortcut, description, cmdline = args['shortcut'], args[
-                'description'], args['cmdline']
+        #  No GIT found, exit 1
+        with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
+            shortcut, description, cmdline = (
+                args['shortcut'],
+                args['description'],
+                args['cmdline'],
+            )
             baw.cmd.init.init(root, shortcut, name=description, cmdline=cmdline)
 
     if args['ide']:
