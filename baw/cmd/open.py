@@ -10,22 +10,52 @@
 import os
 import sys
 
+import baw.project
 import baw.runtime
 import baw.utils
 
 
-def open_this(root: str):
-    path = os.getcwd()
+def openme(root: str, path: str = None):
+    if path == 'this':
+        open_this()
+    elif path == 'tests':
+        open_tests(root)
+    elif path == 'generated':
+        open_generated(root)
+    elif path == 'project':
+        root = baw.project.determine_root(os.getcwd())
+        open_this(root)
 
+
+def open_generated(root: str):
+    try:
+        import power  # pylint:disable=C0415
+    except ImportError:
+        baw.utils.error('require power')
+        sys.exit(baw.utils.FAILURE)
+    name = os.path.split(root)[1]
+    generated = power.generated(project=name)
+    if not os.path.exists(generated):
+        baw.utils.error(f'resource: {generated} not generated')
+        sys.exit(baw.utils.FAILURE)
+    open_this(generated)
+
+
+def open_tests(root: str):
+    tests = os.path.join(root, 'tests')
+    open_this(tests)
+
+
+def open_this(path=None):
+    if path is None:
+        path = os.getcwd()
+    path = str(path)
+    # convert for windows
+    path = path.replace('/', '\\')
     cmd = f'explorer {path}'
-    completed = baw.runtime.run_target(
-        root,
+    completed = baw.runtime.run(
         cmd,
         cwd=path,
-        skip_error_code={1},
-        verbose=False,
     )
     # dont know why windows returns 1
     assert completed.returncode == 1, completed
-    # avoid printing runtime error
-    sys.exit(baw.utils.SUCCESS)

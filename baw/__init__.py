@@ -59,7 +59,9 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
         args['raw'],
         virtual,
     )
-
+    if args['open']:
+        baw.cmd.open.openme(root, args['path'])
+        return baw.utils.SUCCESS
     if args['release']:
         # always publish after release
         args['publish'] = True
@@ -132,7 +134,6 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
 
     ret = 0
     workmap = collections.OrderedDict([
-        ('open', link(baw.cmd.open.open_this, root=root)),
         ('clean',
          link(
              baw.cmd.clean.clean,

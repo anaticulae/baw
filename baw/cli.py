@@ -64,7 +64,6 @@ DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
 PUSH = Command(longcut='--publish', message='Push release to repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
-OPEN = Command(longcut='--open', message='Open current folder in explorer')
 RELEASE = Command(
     longcut='--release',
     message='Test, commit and tag as new release.',
@@ -134,7 +133,6 @@ def create_parser():  # noqa: Z21
         INSTALL,
         LINT,
         NOTESTS,
-        OPEN,
         PUSH,
         RAW,
         RELEASE,
@@ -156,6 +154,7 @@ def create_parser():  # noqa: Z21
             add(*shortcuts, action='store_true', help=msg)
 
     commands = parser.add_subparsers()
+    add_open_options(commands)
     add_clean_options(commands)
     add_init_options(commands)
     add_plan_options(commands)
@@ -172,6 +171,17 @@ def add_clean_options(parser):
         choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv'],
         nargs='?',
         default='tests',
+    )
+
+
+def add_open_options(parser):
+    plan = parser.add_parser('open', help='Open directory')
+    plan.add_argument(
+        'path',
+        help='Goal',
+        choices='this project generated tests'.split(),
+        nargs='?',
+        default='project',
     )
 
 
@@ -266,6 +276,7 @@ def parse():
     args['sync'] = 'sync' in sys.argv
     args['plan'] = 'plan' in sys.argv
     args['init'] = 'init' in sys.argv
+    args['open'] = 'open' in sys.argv
 
     need_help = not any(args.values())
     if need_help:
