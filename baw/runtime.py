@@ -91,7 +91,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     if clean:
         venv_command.append('--clear')
     cmd = ' '.join(venv_command)  # TODO: Is this required?
-    process = _run(command=cmd, cwd=virtual)
+    process = run(command=cmd, cwd=virtual)
 
     patch_pip(root)
     if sys.version_info.major == 3 and sys.version_info.minor == 7:
@@ -211,7 +211,7 @@ def run_target(
             return process
     else:
         # run local
-        completed = _run(
+        completed = run(
             command=command,
             cwd=cwd,
             debugging=debugging,
@@ -343,12 +343,12 @@ def _run_virtual(
         deactivate = f'source {deactivate}'
 
     execute = f'{activate} && {cmd} && {deactivate}'
-    process = _run(execute, cwd, env=env, debugging=debugging)
+    process = run(execute, cwd, env=env, debugging=debugging)
 
     return process
 
 
-def _run(command: str, cwd: str, env=None, debugging: bool = False):
+def run(command: str, cwd: str, env=None, debugging: bool = False):
     """Run process.
 
     Hint:
