@@ -95,10 +95,12 @@ TMP = """
 *.swo
 *.swp
 .coverage
+.pytest_cache
 .swo
 .swp
 .tmp
 .vscode
+..code-workspace
 __pycache__
 build
 dist
