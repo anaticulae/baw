@@ -70,10 +70,11 @@ def create_pattern(
 ) -> list:
     selected = []
     if resources:
-        tmpdir = baw.config.project_tmpdir(root)
-        path = os.path.join(tmpdir, 'resources')
-        if os.path.exists(path):
-            selected.append(ResourceDir(path))
+        # TODO: HACK
+        import power  # pylint:disable=import-outside-toplevel
+        tmpdir = power.generated(project=os.path.split(root)[1])
+        if os.path.exists(tmpdir):
+            selected.append(ResourceDir(tmpdir))
     if tmp:
         selected.extend(TMP)
     if tests:
