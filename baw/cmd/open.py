@@ -20,6 +20,8 @@ def openme(root: str, path: str = None):
         open_this()
     elif path == 'tests':
         open_tests(root)
+    elif path == 'tmp':
+        open_tmp(root)
     elif path == 'generated':
         open_generated(root)
     elif path == 'project':
@@ -39,6 +41,14 @@ def open_generated(root: str):
         baw.utils.error(f'resource: {generated} not generated')
         sys.exit(baw.utils.FAILURE)
     open_this(generated)
+
+
+def open_tmp(root: str):
+    name = os.path.split(root)[1]
+    # C:\tmp\tmp\kiwi\rawmaker\.tmp
+    # TODO: REMOVE HARD CODED PATH
+    tests = os.path.join('C:/tmp/tmp/kiwi', name, '.tmp')
+    open_this(tests)
 
 
 def open_tests(root: str):
