@@ -192,6 +192,8 @@ def create_test_cmd(  # pylint:disable=R0914
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
     manual_parameter = ' '.join(parameter) if parameter else ''
     manual_parameter = manual_parameter.replace('+', '-')
+    if '-n' in manual_parameter:
+        manual_parameter = f'-p xdist {manual_parameter}'
     generate_only = '--collect-only' if generate_only else ''
     # set to root to run doctests for all subproject's
     testdir = os.path.join(root, 'tests')
