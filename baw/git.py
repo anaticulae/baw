@@ -179,7 +179,6 @@ def git_stash(
 
 def git_headtag(root: str, virtual: bool, verbose: bool = False):
     command = 'git tag --points-at HEAD'
-
     completed = baw.runtime.run_target(
         root,
         command,
@@ -202,6 +201,16 @@ def git_headhash(root: str) -> str:
     if completed.returncode:
         return None
     return completed.stdout.strip()
+
+
+def git_modified(root: str) -> bool:
+    cmd = 'git status -z'
+    completed = baw.runtime.run_target(root, cmd, verbose=False)
+    if completed.returncode:
+        return True
+    if completed.stdout.strip():
+        return True
+    return False
 
 
 def update_gitignore(root: str, verbose: bool = False):
