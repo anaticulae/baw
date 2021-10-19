@@ -77,7 +77,10 @@ def release(
     ret = check_findings(root, verbose, virtual)
     if ret:
         return ret
-
+    # do not release modified repository
+    if baw.git.git_modified(root=root):
+        error('repository is not clean')
+        return FAILURE
     if sync or test:
         # do not run hashed on first release, cause there is no any tagged
         # version.
