@@ -181,15 +181,7 @@ def create_test_cmd(  # pylint:disable=R0914
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
     # create test directory
-    tmpdir = baw.utils.tmp(root)
-    testtime = baw.datetime.current(seconds=True, separator='_')
-    testfolder = f'test_{testtime}'
-    logfolder = os.path.join(tmpdir, 'log')
-    os.makedirs(logfolder, exist_ok=True)
-    tmp_testpath = os.path.join(tmpdir, testfolder)
-    if os.path.exists(tmp_testpath):
-        # remove test folder if exists
-        shutil.rmtree(tmp_testpath)
+    tmp_testpath, cachedir = create_testdir(root)
     # config
     override_testconfig = '--quiet' if quiet else '--verbose --durations=10'
     manual_parameter = ' '.join(parameter) if parameter else ''
@@ -200,7 +192,6 @@ def create_test_cmd(  # pylint:disable=R0914
     sources = tests_sources(root, parameter)
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
-    cachedir = os.path.join(tmpdir, 'pytest_cache')
     # run pytest
     python = baw.config.python(root, virtual=virtual)
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
@@ -212,6 +203,20 @@ def create_test_cmd(  # pylint:disable=R0914
     if verbose:
         cmd += '-vv '
     return cmd
+
+
+def create_testdir(root):
+    tmpdir = baw.utils.tmp(root)
+    testtime = baw.datetime.current(seconds=True, separator='_')
+    testfolder = f'test_{testtime}'
+    logfolder = os.path.join(tmpdir, 'log')
+    os.makedirs(logfolder, exist_ok=True)
+    tmp_testpath = os.path.join(tmpdir, testfolder)
+    if os.path.exists(tmp_testpath):
+        # remove test folder if exists
+        shutil.rmtree(tmp_testpath)
+    cachedir = os.path.join(tmpdir, 'pytest_cache')
+    return tmp_testpath, cachedir
 
 
 def tests_sources(root, parameter) -> str:
