@@ -124,6 +124,8 @@ def run_test(  # pylint:disable=R0914
 def all_tests(testconfig) -> bool:
     if not testconfig:
         return True
+    if 'pyargs' in str(testconfig):
+        return False
     if '-k' not in str(testconfig):
         return True
     return False
@@ -195,9 +197,7 @@ def create_test_cmd(  # pylint:disable=R0914
     if '-n' in manual_parameter:
         manual_parameter = f'-p xdist {manual_parameter}'
     generate_only = '--collect-only' if generate_only else ''
-    # set to root to run doctests for all subproject's
-    testdir = os.path.join(root, 'tests')
-    doctests = ' '.join(baw.config.sources(root))
+    sources = tests_sources(root, parameter)
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     cachedir = os.path.join(tmpdir, 'pytest_cache')
@@ -206,12 +206,23 @@ def create_test_cmd(  # pylint:disable=R0914
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} '
-           f'-o cache_dir={cachedir} {testdir} {doctests} ')
+           f'-o cache_dir={cachedir} {sources}')
     if instafail:
         cmd += '--instafail '
     if verbose:
         cmd += '-vv '
     return cmd
+
+
+def tests_sources(root, parameter) -> str:
+    # set to root to run doctests for all subproject's
+    testdir = os.path.join(root, 'tests')
+    doctests = ' '.join(baw.config.sources(root))
+    if 'pyargs' in str(parameter):
+        # select tests by --pyargs
+        testdir, doctests = '', ''
+    result = f'{testdir} {doctests} '
+    return result
 
 
 def cov_args(root: str, *, pdb: bool) -> str:

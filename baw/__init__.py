@@ -207,7 +207,11 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
     if args['n'] != '1':
         testconfig += [f'-n={args["n"]}']
     if args['k']:
-        testconfig += [f'-k {args["k"]}']
+        kselected = args["k"]
+        if '.' in kselected:
+            testconfig += [f'--pyargs {kselected}']
+        else:
+            testconfig += [f'-k {kselected}']
     if args['x']:
         testconfig += ['-x ']
     if args['testconfig']:
