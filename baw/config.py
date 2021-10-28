@@ -257,6 +257,15 @@ def pylint(root: str) -> bool:
     return result
 
 
+def plugins(root: str) -> bool:
+    result = default_config(
+        root,
+        lambda x: x['test']['plugins'],
+        default='',
+    )
+    return result
+
+
 def default_config(root: str, access: callable, default=None) -> bool:
     if os.path.isfile(root):
         path = root
