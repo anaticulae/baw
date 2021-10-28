@@ -194,9 +194,10 @@ def create_test_cmd(  # pylint:disable=R0914
     # --basetemp define temp directory where the tests run
     # run pytest
     python = baw.config.python(root, virtual=virtual)
+    plugins = determine_plugins(root)
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
-           f'--basetemp={tmp_testpath} '
+           f'--basetemp={tmp_testpath} {plugins} '
            f'-o cache_dir={cachedir} {sources}')
     if instafail:
         cmd += '--instafail '
@@ -227,6 +228,15 @@ def tests_sources(root, parameter) -> str:
         # select tests by --pyargs
         testdir, doctests = '', ''
     result = f'{testdir} {doctests} '
+    return result
+
+
+def determine_plugins(root) -> str:
+    plugins = baw.config.plugins(root)
+    if not plugins:
+        return ''
+    plugins = [f'-p {item}' for item in plugins.split()]
+    result = ' '.join(plugins)
     return result
 
 
