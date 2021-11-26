@@ -82,6 +82,7 @@ def init(
         test=False,  # No testing for the first time needed
         verbose=verbose,
         virtual=False,  # No virtual for first time needed
+        require_clean=False,
     )
 
     # TODO: Think aboud activating later? Add test flag?

@@ -45,6 +45,7 @@ def release(
     test: bool = True,
     verbose: bool = False,
     virtual: bool = True,
+    require_clean: bool = True,
 ) -> int:
     """Running release. Running test, commit and tag.
 
@@ -61,6 +62,7 @@ def release(
                     0.0.0 does not require any testing.
         verbose(bool): log additional output
         virtual(bool): run in virtual environment
+        require_clean(bool): check that repository is clean
     Return:
         0 if success else > 0
 
@@ -78,7 +80,7 @@ def release(
     if ret:
         return ret
     # do not release modified repository
-    if baw.git.git_modified(root=root):
+    if require_clean and baw.git.git_modified(root=root):
         error('repository is not clean')
         return FAILURE
     if sync or test:
