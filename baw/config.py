@@ -189,6 +189,7 @@ def sources(root: str) -> list:
     cfg = load(path)
     try:
         assert 'sources' not in cfg['project'], 'use `source` instead of `sources`' # yapf:disable
+        assert 'tests' not in cfg, 'use `test` instead of `tests`'
         source = cfg['project']['source'].splitlines()
     except KeyError:
         source = []
