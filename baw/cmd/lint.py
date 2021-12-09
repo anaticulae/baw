@@ -129,7 +129,6 @@ def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
     if completed.returncode:
         log(completed.stderr)
         log(completed.stdout)
-    else:
-        if log_always:
-            log('bandit complete')
+    elif log_always:
+        log('bandit complete')
     return completed.returncode
