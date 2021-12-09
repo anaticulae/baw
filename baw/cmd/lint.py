@@ -117,6 +117,7 @@ def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
     python = baw.config.python(root, virtual=virtual)
     cmd = f'{python} -mbandit {run_in} -r '
     cmd += '--skip B101'  # skip assert is used
+    cmd += ',B404'  # import subprocess
 
     completed = run_target(
         root,
