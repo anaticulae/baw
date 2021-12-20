@@ -160,6 +160,7 @@ def create_parser():  # noqa: Z21
     add_plan_options(commands)
     add_sync_options(commands)
     add_test_options(commands)
+    add_release_options(commands)
     return parser
 
 
@@ -172,6 +173,21 @@ def add_clean_options(parser):
         nargs='?',
         default='tests',
     )
+
+
+def add_release_options(parser):
+    # TODO: MOVE TO release.py
+    release = parser.add_parser('release', help='Test, commit, tag and publish')
+    release.add_argument(
+        'release',
+        help='Test, commit, tag and publsih',
+        nargs='?',
+        choices='major minor patch noop auto'.split(),
+        default='auto',
+    )
+    release.add_argument('--no_install', action='store_true')
+    release.add_argument('--no_test', action='store_true')
+    release.add_argument('--no_venv', action='store_true')
 
 
 def add_open_options(parser):
