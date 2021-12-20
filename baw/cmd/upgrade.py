@@ -11,8 +11,8 @@ import concurrent.futures
 import os
 import re
 
+import baw.cmd.complex
 import baw.cmd.sync
-import baw.cmd.utils
 import baw.git
 import baw.requirements
 import baw.utils
@@ -62,7 +62,7 @@ def upgrade(
             baw.utils.error('Error while upgrading requirements')
             return baw.utils.FAILURE
 
-        failure = baw.cmd.utils.sync_and_test(
+        failure = baw.cmd.complex.sync_and_test(
             root,
             generate=generate,  # generate test data
             packages='dev',  # minimal requirements is required

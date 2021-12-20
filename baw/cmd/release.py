@@ -19,7 +19,7 @@ from tempfile import TemporaryFile
 import baw.archive.test
 import baw.cmd
 import baw.cmd.test
-import baw.cmd.utils
+import baw.cmd.complex
 import baw.config
 from baw.config import shortcut
 from baw.git import git_checkout
@@ -88,7 +88,7 @@ def release(
         # version.
         hashed = baw.git.git_headhash(root)
         if not hashed or not baw.archive.test.tested(root, hashed):
-            ret = baw.cmd.utils.sync_and_test(
+            ret = baw.cmd.complex.sync_and_test(
                 root,
                 generate=True,
                 longrun=True,
