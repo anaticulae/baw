@@ -79,7 +79,7 @@ def commit(root, source, message, verbose: int = 0):
 
 def is_clean(root):
     process = baw.runtime.run_target(root, 'git status')
-    assert process.returncode == 0
+    assert not process.returncode
     return 'nothing to commit, working tree clean' in process.stdout
 
 
@@ -145,7 +145,7 @@ def git_stash(
         # Stashing an repository with not commit, produces an error
         sys.exit(completed.returncode)
 
-    nostash = (completed.returncode == 0 and
+    nostash = (not completed.returncode and
                'No local changes to save' in completed.stdout)
     if nostash:
         log('No stash is required. Environment is already clean.')

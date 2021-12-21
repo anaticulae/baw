@@ -59,7 +59,7 @@ class Requirements:
 class NewRequirements(Requirements):
 
     def __getitem__(self, index):
-        if index == 0:
+        if not index:
             return self.equal
         if index == 1:
             return self.greater
@@ -251,7 +251,7 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0912
             if minor(current) > minor(greater):
                 return False
         else:
-            if minor(current) >= minor(greater):
+            if minor(current) >= minor(greater):  # pylint:disable=R5601,R5501
                 return False
 
     if major(small) == major(current) and minor(small) == minor(current):

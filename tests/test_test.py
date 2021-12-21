@@ -63,7 +63,7 @@ def test_test_with_import(example):  # pylint: disable=W0621
     cmd = 'baw test'
     completed = run(cmd, example)
 
-    assert completed.returncode == 0, completed.stderr + completed.stdout
+    assert not completed.returncode, completed.stderr + completed.stdout
 
 
 @pytest.fixture

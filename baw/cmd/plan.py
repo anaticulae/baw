@@ -71,7 +71,7 @@ def create(
     overview = os.path.join(releases(root), 'releases.rst')
     loaded = baw.utils.file_read(overview)
     # TODO: REFACTOR THIS HACK
-    if major == 0 and minor == '1':
+    if major == 0 and minor == '1':  # pylint:disable=C2001
         # first release plan
         token = '  :maxdepth: 1\n'
         replace = '  :maxdepth: 1\n\n  0.1.0\n'

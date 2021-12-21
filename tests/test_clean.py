@@ -24,7 +24,7 @@ def test_clean_files_and_dirs(tmpdir):
     4. Run clean
     5. Check result
     """
-    assert tests.file_count(tmpdir) == 0  # clean directory
+    assert not tests.file_count(tmpdir)  # clean directory
 
     for item in ['.git', 'build', baw.utils.TMP]:
         os.makedirs(os.path.join(tmpdir, item))
@@ -47,7 +47,7 @@ def test_clean_files_and_dirs(tmpdir):
     # yapf:enable
 
     completed = tests.run('baw clean all', tmpdir)
-    assert completed.returncode == 0, completed.stderr
+    assert not completed.returncode, completed.stderr
 
     cleaned_project = set(os.listdir(tmpdir))
     # .gitdir remains
