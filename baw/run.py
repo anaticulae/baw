@@ -50,40 +50,15 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     if args['release']:
         # always publish after release
         args['publish'] = True
-
-    if args['init']:
-        #  No GIT found, exit 1
-        with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
-            shortcut, description, cmdline = (
-                args['shortcut'],
-                args['description'],
-                args['cmdline'],
-            )
-            baw.cmd.init.init(
-                directory,
-                shortcut,
-                name=description,
-                cmdline=cmdline,
-            )
-
-    if args['ide']:
-        packages = tuple(args['ide']) if args['ide'] != [None] else None
-        returncode = baw.cmd.ide.ide_open(root=root=directory, packages=packages,)
-        if returncode:
-            return returncode
-
-    root = baw.project.determine_root(os.getcwd())
-    if root is None:
-        baw.utils.error('require .baw file')
+    # create a new git repository with template code
+    run_init_project(directory, args)
+    # open vscode
+    if returncode := run_ide(directory, args):
+        return returncode
+    if not (root := determine_root(directory)):
         return baw.utils.FAILURE
-
-    if args['commits']:
-        return baw.cmd.bisect.cli(
-            root,
-            args['commits'],
-            verbose=verbose,
-            virtual=virtual,
-        )
+    if returncode := run_bisect(root, args):
+        return returncode
 
     link = functools.partial
 
@@ -214,6 +189,55 @@ def run_open(directory, args):
         return False
     baw.cmd.open.openme(directory, args['path'])
     return True
+
+
+def run_init_project(directory, args):
+    if not args.get('init', False):
+        return
+    #  No GIT found, exit 1
+    with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
+        shortcut, description, cmdline = (
+            args['shortcut'],
+            args['description'],
+            args['cmdline'],
+        )
+        baw.cmd.init.init(
+            directory,
+            shortcut,
+            name=description,
+            cmdline=cmdline,
+        )
+
+
+def run_ide(directory, args):
+    if not args.get('ide', False):
+        return baw.utils.SUCCESS
+    packages = tuple(args['ide']) if args['ide'] != [None] else None
+    if returncode := baw.cmd.ide.ide_open(
+            root=directory,
+            packages=packages,
+    ):
+        return returncode
+    return baw.utils.SUCCESS
+
+
+def determine_root(directory):
+    root = baw.project.determine_root(directory)
+    if not root:
+        baw.utils.error('require .baw file')
+        return None
+    return root
+
+
+def run_bisect(root, args):
+    if not args.get('commits', False):
+        return baw.utils.SUCCESS
+    return baw.cmd.bisect.cli(
+        root,
+        args['commits'],
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
+    )
 
 
 def testcommand(root: str, args, *, verbose: bool, virtual: bool):
