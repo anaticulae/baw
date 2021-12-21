@@ -13,6 +13,7 @@ import subprocess
 import baw.config
 import baw.runtime
 import baw.utils
+from tests.fixtures.project import project_example  # pylint:disable=W0611
 
 pytest_plugins = 'pytester'  # pylint: disable=invalid-name
 

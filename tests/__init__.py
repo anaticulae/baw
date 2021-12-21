@@ -124,8 +124,7 @@ def file_count(path: str):
 
 
 def run_command(command, monkeypatch):
-    with contextlib.suppress(AttributeError):
-        command = command.split()
+    command = cmd_split(command)
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
@@ -134,3 +133,34 @@ def run_command(command, monkeypatch):
             baw.run.main()
         result = str(result)
         assert 'SystemExit(0)' in result, result
+
+
+def cmd_split(cmd: str) -> list:
+    """\
+    >>> cmd_split('baw init project "long description" --withcmd')
+    ['baw', 'init', 'project', '"long description"', '--withcmd']
+    >>> cmd_split('baw init project "long description"')
+    ['baw', 'init', 'project', '"long description"']
+    >>> cmd_split('"baw" init project "long description"')
+    ['"baw"', 'init', 'project', '"long description"']
+    >>> cmd_split('plan new')
+    ['plan', 'new']
+    """
+    # TODO: REPLACE WITH STDLIB?
+    # import shlex
+    # return list(shlex.shlex(cmd))
+    if isinstance(cmd, (list, tuple)):
+        return cmd
+    cmd = cmd.split('"')
+    if len(cmd) == 1:
+        return cmd[0].split()
+    result = []
+    for item in cmd:
+        if not item:
+            continue
+        withquotation = item[0].strip() and item[-1].strip()
+        if withquotation:
+            result.append(f'"{item}"')
+        else:
+            result.extend(item.split())
+    return result
