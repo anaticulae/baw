@@ -87,7 +87,7 @@ def run_version(args) -> bool:
 def run_environment(args):
     root = setup_environment(
         args['upgrade'],
-        args['release'],
+        args.get('release', ''),
         args['raw'],
         args.get('virtual', False),
     )

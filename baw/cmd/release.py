@@ -156,7 +156,7 @@ def publish(root, verbose, release_type):
         if NO_RELEASE_MESSAGE in completed.stdout:
             baw.utils.error('abort release')
             baw.utils.log('ensure that some (feat) are commited')
-            baw.utils.log('use: `baw --release=minor` to force release')
+            baw.utils.log('use: `baw release minor` to force release')
             return baw.utils.FAILURE
     if completed.returncode:
         baw.utils.error('while running semantic-release')

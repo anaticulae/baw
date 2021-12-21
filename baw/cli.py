@@ -64,21 +64,6 @@ DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
 PUSH = Command(longcut='--publish', message='Push release to repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
-RELEASE = Command(
-    longcut='--release',
-    message='Test, commit and tag as new release.',
-    args={
-        'nargs': '?',
-        'const': 'auto',
-        'choices': [
-            'major',
-            'minor',
-            'patch',
-            'noop',
-            'auto',
-        ],
-    },
-)
 DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
@@ -135,7 +120,6 @@ def create_parser():  # noqa: Z21
         NOTESTS,
         PUSH,
         RAW,
-        RELEASE,
         REPORT,
         RUN,
         TEST_CONFIG,
