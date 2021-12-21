@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import collections
-import functools
 import os
 import sys
 import time
@@ -37,19 +35,16 @@ import baw.runtime
 import baw.utils
 
 
-def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
+def run_main():  # pylint:disable=R0911
     start = time.time()
     args = baw.cli.parse()
     if not any(args.values()):
         return baw.utils.SUCCESS
     if run_version(args):
         return baw.utils.SUCCESS
-    directory, verbose, virtual = run_environment(args)
+    directory = run_environment(args)
     if run_open(directory, args):
         return baw.utils.SUCCESS
-    if args['release']:
-        # always publish after release
-        args['publish'] = True
     # create a new git repository with template code
     run_init_project(directory, args)
     # open vscode
@@ -63,79 +58,23 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
             run_venv,
             run_drop,
             run_upgrade,
+            run_clean,
+            run_sync,
+            run_test,
+            run_doc,
+            run_install,
+            run_release,
+            run_publish,
+            run_lint,
+            run_plan,
     ):
         if returncode := method(root=root, args=args):
             return returncode
-
-    link = functools.partial
-    clean = args.get('clean', False)
-    cwd = os.getcwd()
-    ret = 0
-    workmap = collections.OrderedDict([
-        ('clean',
-         link(
-             baw.cmd.clean.clean,
-             docs=clean == 'docs',
-             resources=clean == 'resources',
-             tests=clean == 'tests',
-             tmp=clean == 'tmp',
-             venv=clean == 'venv',
-             all_=clean == 'all',
-             root=cwd,
-         )),
-        ('sync',
-         link(
-             baw.cmd.sync.sync,
-             root,
-             packages=args.get('packages'),
-             minimal=args.get('minimal', False),
-             virtual=virtual,
-             verbose=verbose,
-         )),
-        ('test',
-         testcommand(root=root, args=args, verbose=verbose, virtual=virtual)),
-        ('doc',
-         link(
-             baw.cmd.doc.doc,
-             root=root,
-             virtual=virtual,
-             verbose=verbose,
-         )),
-        ('install', link(baw.cmd.install.install, root=root, virtual=virtual)),
-        ('release',
-         link(
-             baw.cmd.release.release,
-             root=root,
-             release_type=args['release'],
-         )),
-        ('publish', link(baw.execution.publish, root=root, verbose=verbose)),
-        ('run', link(baw.execution.run, root=root, virtual=virtual)),
-        ('lint',
-         link(
-             baw.cmd.lint.lint,
-             root=root,
-             scope=args['lint'],
-             verbose=verbose,
-             virtual=virtual,
-         )),
-        ('plan',
-         link(baw.cmd.plan.action, root=root, plan=args.get('plan_operation'))),
-    ])
-
-    for argument, process in workmap.items():
-        if argument in args and args[argument]:
-            try:
-                ret += process()
-            except TypeError as msg:
-                baw.utils.error(f'{process} does not return exitcode')
-                baw.utils.error(msg)
-                ret += baw.utils.FAILURE
-
-    if not args['ide']:
+    if not args.get('ide', False):
         # --ide is a very long running task, sometimes 'endless'.
         # Therefore it is senseless to measure the runtime.
         baw.utils.print_runtime(start)
-    return ret
+    return baw.utils.SUCCESS
 
 
 def run_version(args) -> bool:
@@ -146,14 +85,13 @@ def run_version(args) -> bool:
 
 
 def run_environment(args):
-    verbose, virtual = args.get('verbose', False), args.get('virtual', False)
     root = setup_environment(
         args['upgrade'],
         args['release'],
         args['raw'],
-        virtual,
+        args.get('virtual', False),
     )
-    return root, verbose, virtual
+    return root
 
 
 def run_open(directory, args):
@@ -258,9 +196,38 @@ def run_upgrade(root, args):
     return result
 
 
-def testcommand(root: str, args, *, verbose: bool, virtual: bool):
-    if 'test' not in args:
-        return None
+def run_clean(root, args):
+    clean = args.get('clean', '')
+    if not clean:
+        return baw.utils.SUCCESS
+    result = baw.cmd.clean.clean(
+        docs=clean == 'docs',
+        resources=clean == 'resources',
+        tests=clean == 'tests',
+        tmp=clean == 'tmp',
+        venv=clean == 'venv',
+        all_=clean == 'all',
+        root=root,
+    )
+    return result
+
+
+def run_sync(root, args):
+    if not args.get('sync', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.sync.sync(
+        root=root,
+        packages=args.get('packages'),
+        minimal=args.get('minimal', False),
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
+    )
+    return result
+
+
+def run_test(root: str, args):
+    if not args.get('test', False):
+        return baw.utils.SUCCESS
     testconfig = []
     if args['n'] != '1':
         testconfig += [f'-n={args["n"]}']
@@ -274,8 +241,7 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
         testconfig += ['-x ']
     if args['testconfig']:
         testconfig += args['testconfig']
-    call = functools.partial(
-        baw.cmd.test.run_test,
+    result = baw.cmd.test.run_test(
         root=root,
         coverage=args['cov'],
         fast='fast' in args['test'],
@@ -286,10 +252,75 @@ def testcommand(root: str, args, *, verbose: bool, virtual: bool):
         stash=args['stash'],
         instafail=args['instafail'],
         testconfig=testconfig,
-        verbose=verbose,
-        virtual=virtual,
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
     )
-    return call
+    return result
+
+
+def run_doc(root: str, args: dict):
+    if not args.get('doc', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.doc.doc(
+        root=root,
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
+    )
+    return result
+
+
+def run_install(root: str, args: dict):
+    if not args.get('install', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.install.install(
+        root=root,
+        virtual=args.get('virtual', False),
+    )
+    return result
+
+
+def run_release(root: str, args: dict):
+    if not args.get('release', False):
+        return baw.utils.SUCCESS
+    # always publish after release
+    args['publish'] = True
+    result = baw.cmd.release.release(
+        root=root,
+        release_type=args['release'],
+    )
+    return result
+
+
+def run_publish(root: str, args: dict):
+    if not args.get('publish', False):
+        return baw.utils.SUCCESS
+    result = baw.execution.publish(
+        root=root,
+        verbose=args.get('verbose', False),
+    )
+    return result
+
+
+def run_lint(root: str, args: dict):
+    if not args.get('lint', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.lint.lint(
+        root=root,
+        scope=args['lint'],
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
+    )
+    return result
+
+
+def run_plan(root: str, args: dict):
+    if not args.get('plan', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.plan.action(
+        root=root,
+        plan=args.get('plan_operation'),
+    )
+    return result
 
 
 # TODO: add matrix with excluding cmds, eg. --init --drop_release
