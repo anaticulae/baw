@@ -57,46 +57,18 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
         return returncode
     if not (root := determine_root(directory)):
         return baw.utils.FAILURE
-    if returncode := run_bisect(root, args):
-        return returncode
+    for method in (
+            run_bisect,
+            run_format,
+            run_venv,
+            run_drop,
+            run_upgrade,
+    ):
+        if returncode := method(root=root, args=args):
+            return returncode
 
     link = functools.partial
-
-    clean = args['clean'] if 'clean' in args else ''
-    fmap = collections.OrderedDict([
-        ('format',
-         link(baw.cmd.format.format_repository,
-              root=root,
-              verbose=verbose,
-              virtual=virtual)),
-        ('virtual',
-         link(
-             baw.runtime.create,
-             root=root,
-             clean=clean in ('venv', 'all'),
-             verbose=verbose,
-         )),
-        ('drop', link(baw.cmd.release.drop, root=root)),
-        (
-            'upgrade',
-            link(
-                baw.cmd.upgrade.upgrade,
-                root=root,
-                verbose=verbose,
-                notests=args['notests'],
-                virtual=False,
-                packages=args['upgrade'],
-            ),
-        ),
-    ])
-
-    for argument, process in fmap.items():
-        if not args[argument]:
-            continue
-        failure = process()
-        if failure:
-            return failure
-
+    clean = args.get('clean', False)
     cwd = os.getcwd()
     ret = 0
     workmap = collections.OrderedDict([
@@ -238,6 +210,52 @@ def run_bisect(root, args):
         verbose=args.get('verbose', False),
         virtual=args.get('virtual', False),
     )
+
+
+def run_format(root, args):
+    if not args.get('format', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.format.format_repository(
+        root,
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
+    )
+    return result
+
+
+def run_venv(root, args):
+    if not args.get('virtual', False):
+        return baw.utils.SUCCESS
+    result = baw.runtime.create(
+        root,
+        clean=args.get('clean', '') in 'venv all',
+        verbose=args.get('verbose', False),
+    )
+    return result
+
+
+def run_drop(root, args):
+    if not args.get('drop', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.release.drop(
+        root,
+        verbose=args.get('verbose', False),
+        virtual=args.get('virtual', False),
+    )
+    return result
+
+
+def run_upgrade(root, args):
+    if not args.get('upgrade', False):
+        return baw.utils.SUCCESS
+    result = baw.cmd.upgrade.upgrade(
+        root=root,
+        verbose=args.get('verbose', False),
+        notests=args['notests'],
+        virtual=False,
+        packages=args['upgrade'],
+    )
+    return result
 
 
 def testcommand(root: str, args, *, verbose: bool, virtual: bool):
