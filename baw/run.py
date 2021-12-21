@@ -308,9 +308,16 @@ def run_release(root: str, args: dict):
 def run_publish(root: str, args: dict):
     if not args.get('publish', False):
         return baw.utils.SUCCESS
+    virtual = True
+    # overwrite virtual flag if given
+    novenv = args.get('no_venv', False)
+    if novenv:
+        baw.utils.log('do not use venv')
+        virtual = False
     result = baw.execution.publish(
         root=root,
         verbose=args.get('verbose', False),
+        virtual=virtual,
     )
     return result
 

@@ -62,7 +62,6 @@ INSTALL = Command(longcut='--install', message='Run install task')
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
-PUSH = Command(longcut='--publish', message='Push release to repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
@@ -118,7 +117,6 @@ def create_parser():  # noqa: Z21
         INSTALL,
         LINT,
         NOTESTS,
-        PUSH,
         RAW,
         REPORT,
         RUN,
@@ -145,6 +143,7 @@ def create_parser():  # noqa: Z21
     add_sync_options(commands)
     add_test_options(commands)
     add_release_options(commands)
+    add_publish_options(commands)
     return parser
 
 
@@ -172,6 +171,17 @@ def add_release_options(parser):
     release.add_argument('--no_install', action='store_true')
     release.add_argument('--no_test', action='store_true')
     release.add_argument('--no_venv', action='store_true')
+
+
+def add_publish_options(parser):
+    publish = parser.add_parser('publish', help='Push release to repository')
+    publish.add_argument(
+        'publish',
+        nargs='?',
+        default='dest',
+        help='Push release to this repository',
+    )
+    publish.add_argument('--no_venv', action='store_true')
 
 
 def add_open_options(parser):

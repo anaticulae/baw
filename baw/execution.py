@@ -27,7 +27,7 @@ SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
                         '(https://pypi.org/p/twine/)')
 
 
-def publish(root: str, verbose: bool = False):
+def publish(root: str, verbose: bool = False, virtual:bool=True):
     """Push release to defined repository
 
     Hint:
@@ -51,7 +51,7 @@ def publish(root: str, verbose: bool = False):
         root,
         verbose=verbose,
         skip_error_message=[SDIST_UPLOAD_WARNING],
-        virtual=True,
+        virtual=virtual,
     )
     if completed.returncode == SUCCESS:
         log('publish completed')
