@@ -38,7 +38,6 @@ def publish(root: str, verbose: bool = False):
     if not tag:
         error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
-
     adress, internal_port, _ = get_setup()
     url = f'{adress}:{internal_port}'
     distribution = 'bdist_wheel --universal'
@@ -54,9 +53,11 @@ def publish(root: str, verbose: bool = False):
         skip_error_message=[SDIST_UPLOAD_WARNING],
         virtual=True,
     )
-
     if completed.returncode == SUCCESS:
         log('publish completed')
+    else:
+        error(completed.stderr)
+        error('publish failed')
     return completed.returncode
 
 
