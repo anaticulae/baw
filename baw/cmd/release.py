@@ -18,16 +18,14 @@ from tempfile import TemporaryFile
 
 import baw.archive.test
 import baw.cmd
-import baw.cmd.test
 import baw.cmd.complex
+import baw.cmd.test
 import baw.config
 from baw.config import shortcut
 from baw.git import git_checkout
 from baw.git import git_headtag
 from baw.resources import SETUP_CFG
 from baw.runtime import run_target
-from baw.utils import FAILURE
-from baw.utils import SUCCESS
 from baw.utils import error
 from baw.utils import log
 
@@ -71,40 +69,87 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
+    if returncode := require_release(root, virtual):
+        return returncode
+    if returncode := check_repository(root, require_clean):
+        return returncode
+    if returncode := run_linter(root, verbose, virtual):
+        return returncode
+    if returncode := run_test(root, sync, test, stash, verbose, virtual):
+        return returncode
+    if returncode := publish(root, verbose, release_type):
+        return returncode
+    return baw.utils.SUCCESS
+
+
+def require_release(root, virtual):
     current_head = git_headtag(root, virtual=virtual)
-    if current_head:
-        log('No release is required, head is already: %s' % current_head)
-        return SUCCESS
+    if not current_head:
+        return baw.utils.SUCCESS
+    log(f'No release is required, head is already: {current_head}')
+    return baw.utils.FAILURE
 
-    ret = check_findings(root, verbose, virtual)
-    if ret:
-        return ret
+
+def check_repository(root, require_clean: bool):
+    if not require_clean:
+        return baw.utils.SUCCESS
     # do not release modified repository
-    if require_clean and baw.git.git_modified(root=root):
+    if baw.git.git_modified(root=root):
         error('repository is not clean')
-        return FAILURE
-    if sync or test:
-        # do not run hashed on first release, cause there is no any tagged
-        # version.
-        hashed = baw.git.git_headhash(root)
-        if not hashed or not baw.archive.test.tested(root, hashed):
-            ret = baw.cmd.complex.sync_and_test(
-                root,
-                generate=True,
-                longrun=True,
-                packages='dev',
-                stash=stash,
-                sync=sync,
-                test=test,
-                testconfig=['-n', 'auto'],
-                verbose=verbose,
-                virtual=virtual,
-            )
-            if ret:
-                return ret
-        else:
-            log('release was already tested successfully')
+        return baw.utils.FAILURE
+    return baw.utils.SUCCESS
 
+
+def run_linter(root: str, verbose: bool, virtual: bool) -> int:
+    if not baw.config.fail_on_finding(root):
+        return baw.utils.SUCCESS
+    # run linter step before running test and release
+    if returncode := baw.cmd.lint.lint(
+            root,
+            baw.cmd.lint.Scope.MINIMAL,
+            verbose=verbose,
+            virtual=virtual,
+            log_always=False,
+    ):
+        error('could not release, solve this errors first.')
+        error('turn `fail_on_finding` off to release with errors')
+        return returncode
+    return baw.utils.SUCCESS
+
+
+def run_test(
+    root: str,
+    sync: bool,
+    test: bool,
+    stash: bool,
+    verbose: bool,
+    virtual: bool,
+):
+    if not sync and not test:
+        return baw.utils.SUCCESS
+    # do not run hashed on first release, cause there is no any tagged
+    # version.
+    hashed = baw.git.git_headhash(root)
+    require_test = not hashed or not baw.archive.test.tested(root, hashed)
+    if require_test:
+        ret = baw.cmd.complex.sync_and_test(
+            root,
+            generate=True,
+            longrun=True,
+            packages='dev',
+            stash=stash,
+            sync=sync,
+            test=test,
+            testconfig=['-n', 'auto'],
+            verbose=verbose,
+            virtual=virtual,
+        )
+        return ret
+    log('release was already tested successfully')
+    return baw.utils.SUCCESS
+
+
+def publish(root, verbose, release_type):
     log("Update version tag")
     with temp_semantic_config(root) as config:
         # Only release with type if user select one. If the user does select
@@ -118,13 +163,11 @@ def release(
             error('abort release')
             log('ensure that some (feat) are commited')
             log('use: `baw --release=minor` to force release')
-            return FAILURE
-
+            return baw.utils.FAILURE
     if completed.returncode:
         error('while running semantic-release')
         return completed.returncode
-
-    return SUCCESS
+    return baw.utils.SUCCESS
 
 
 @contextmanager
@@ -133,7 +176,7 @@ def temp_semantic_config(root: str):
     replaced = SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == SETUP_CFG:
         error('while replacing template')
-        sys.exit(FAILURE)
+        sys.exit(baw.utils.FAILURE)
     with TemporaryFile(mode='w', delete=False) as fp:
         fp.write(replaced)
         fp.seek(0)
@@ -169,13 +212,13 @@ def drop(
     matched = match(RELEASE_PATTERN, completed.stdout)
     if not matched:
         error('No release tag detected')
-        return FAILURE
+        return baw.utils.FAILURE
     current_release = matched['release']
 
     # do not remove the first commit/release in the repository
     if current_release == DEFAULT_RELEASE:
         error('Could not remove %s release' % DEFAULT_RELEASE)
-        return FAILURE
+        return baw.utils.FAILURE
     log(current_release)
 
     # remove the last release commit
@@ -199,7 +242,7 @@ def drop(
         return completed.returncode
 
     # TODO: ? remove upstream ? or just overwrite ?
-    return SUCCESS
+    return baw.utils.SUCCESS
 
 
 def reset_resources(
@@ -221,26 +264,9 @@ def reset_resources(
             continue
         to_reset.append(item)
     if ret:
-        return FAILURE  # at least one path does not exist.
+        return baw.utils.FAILURE  # at least one path does not exist.
     if not to_reset:
-        return FAILURE
+        return baw.utils.FAILURE
 
     completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
     return completed
-
-
-def check_findings(root: str, verbose: bool, virtual: bool) -> int:
-    if baw.config.fail_on_finding(root):
-        # run linter step before running test and release
-        ret = baw.cmd.lint.lint(
-            root,
-            baw.cmd.lint.Scope.MINIMAL,
-            verbose=verbose,
-            virtual=virtual,
-            log_always=False,
-        )
-        if ret:
-            error('could not release, solve this errors first.')
-            error('turn `fail_on_finding` off to release with errors')
-            return ret
-    return baw.utils.SUCCESS
