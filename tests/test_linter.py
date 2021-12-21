@@ -19,32 +19,33 @@ from tests import example  # pylint:disable=W0611
 def test_linter_run_with_scope(example, capsys):  # pylint:disable=W0621
     root = str(example)
     returncode = baw.cmd.lint.lint(root)
-
-    assert returncode == baw.utils.SUCCESS, f'{returncode} capsys.readouterr()'
+    assert returncode == baw.utils.SUCCESS, f'{returncode} {capsys.readouterr()}'
 
     # create error file
     todofile = os.path.join(root, 'xkcd/todo.py')
     baw.utils.file_create(todofile, '# TODO: Hello\n')
 
     returncode = baw.cmd.lint.lint(root)
-    assert returncode >= baw.utils.FAILURE, f'{returncode} capsys.readouterr()'
+    assert returncode >= baw.utils.FAILURE, f'{returncode} {capsys.readouterr()}'
     error = capsys.readouterr().out
     assert 'W0511: TODO: Hello (fixme)' in error, error
 
     returncode = baw.cmd.lint.lint(root, scope=baw.cmd.lint.Scope.MINIMAL)
-    assert returncode == baw.utils.SUCCESS, f'{returncode} capsys.readouterr()'
+    assert returncode == baw.utils.SUCCESS, f'{returncode} {capsys.readouterr()}'
 
     returncode = baw.cmd.lint.lint(root, scope=baw.cmd.lint.Scope.TODO)
-    assert returncode >= baw.utils.FAILURE, f'{returncode} capsys.readouterr()'
+    assert returncode >= baw.utils.FAILURE, f'{returncode} {capsys.readouterr()}'
 
+    returncode = baw.cmd.lint.lint(root, scope=baw.cmd.lint.Scope.ALL)
+    assert returncode >= baw.utils.FAILURE, f'{returncode} {capsys.readouterr()}'
     # replace todo error with "normal" error. todo must find nothing and
     # all or minimal detect it.
     baw.utils.file_replace(todofile, '# I am a newline error')
     returncode = baw.cmd.lint.lint(root, scope=baw.cmd.lint.Scope.TODO)
-    assert returncode == baw.utils.SUCCESS, f'{returncode} capsys.readouterr()'
-
+    assert returncode == baw.utils.SUCCESS, f'{returncode} {capsys.readouterr()}'
+    # no failure cause W0511 was removed/ code was replaced
     returncode = baw.cmd.lint.lint(root, scope=baw.cmd.lint.Scope.ALL)
-    assert returncode >= baw.utils.FAILURE, f'{returncode} capsys.readouterr()'
+    assert returncode == baw.utils.SUCCESS, f'{returncode} {capsys.readouterr()}'
 
 
 @tests.skip_longrun
