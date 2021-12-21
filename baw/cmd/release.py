@@ -7,27 +7,21 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import contextlib
+import functools
+import os
+import re
 import sys
-from contextlib import contextmanager
-from functools import partial
-from os import unlink
-from os.path import exists
-from os.path import join
-from re import match
-from tempfile import TemporaryFile
+import tempfile
 
 import baw.archive.test
-import baw.cmd
 import baw.cmd.complex
-import baw.cmd.test
+import baw.cmd.lint
 import baw.config
-from baw.config import shortcut
-from baw.git import git_checkout
-from baw.git import git_headtag
-from baw.resources import SETUP_CFG
-from baw.runtime import run_target
-from baw.utils import error
-from baw.utils import log
+import baw.git
+import baw.resources
+import baw.runtime
+import baw.utils
 
 # semantic release returns this message if no new release is provided, cause
 # of the absent of new features/bugfixes.
@@ -83,10 +77,10 @@ def release(
 
 
 def require_release(root, virtual):
-    current_head = git_headtag(root, virtual=virtual)
+    current_head = baw.git.git_headtag(root, virtual=virtual)
     if not current_head:
         return baw.utils.SUCCESS
-    log(f'No release is required, head is already: {current_head}')
+    baw.utils.log(f'No release is required, head is already: {current_head}')
     return baw.utils.FAILURE
 
 
@@ -95,7 +89,7 @@ def check_repository(root, require_clean: bool):
         return baw.utils.SUCCESS
     # do not release modified repository
     if baw.git.git_modified(root=root):
-        error('repository is not clean')
+        baw.utils.error('repository is not clean')
         return baw.utils.FAILURE
     return baw.utils.SUCCESS
 
@@ -111,8 +105,8 @@ def run_linter(root: str, verbose: bool, virtual: bool) -> int:
             virtual=virtual,
             log_always=False,
     ):
-        error('could not release, solve this errors first.')
-        error('turn `fail_on_finding` off to release with errors')
+        baw.utils.error('could not release, solve this errors first.')
+        baw.utils.error('turn `fail_on_finding` off to release with errors')
         return returncode
     return baw.utils.SUCCESS
 
@@ -145,45 +139,45 @@ def run_test(
             virtual=virtual,
         )
         return ret
-    log('release was already tested successfully')
+    baw.utils.log('release was already tested successfully')
     return baw.utils.SUCCESS
 
 
 def publish(root, verbose, release_type):
-    log("Update version tag")
+    baw.utils.log("Update version tag")
     with temp_semantic_config(root) as config:
         # Only release with type if user select one. If the user does select
         # a release-type let semantic release decide.
         release_type = '' if release_type == 'auto' else '--%s' % release_type
         cmd = 'semantic-release version %s --config="%s"'
         cmd = cmd % (release_type, config)
-        completed = run_target(root, cmd, verbose=verbose)
-        log(completed.stdout)
+        completed = baw.runtime.run_target(root, cmd, verbose=verbose)
+        baw.utils.log(completed.stdout)
         if NO_RELEASE_MESSAGE in completed.stdout:
-            error('abort release')
-            log('ensure that some (feat) are commited')
-            log('use: `baw --release=minor` to force release')
+            baw.utils.error('abort release')
+            baw.utils.log('ensure that some (feat) are commited')
+            baw.utils.log('use: `baw --release=minor` to force release')
             return baw.utils.FAILURE
     if completed.returncode:
-        error('while running semantic-release')
+        baw.utils.error('while running semantic-release')
         return completed.returncode
     return baw.utils.SUCCESS
 
 
-@contextmanager
+@contextlib.contextmanager
 def temp_semantic_config(root: str):
-    short = shortcut(root)
-    replaced = SETUP_CFG.replace('{{SHORT}}', short)
-    if replaced == SETUP_CFG:
-        error('while replacing template')
+    short = baw.config.shortcut(root)
+    replaced = baw.resources.SETUP_CFG.replace('{{SHORT}}', short)
+    if replaced == baw.resources.SETUP_CFG:
+        baw.utils.error('while replacing template')
         sys.exit(baw.utils.FAILURE)
-    with TemporaryFile(mode='w', delete=False) as fp:
+    with tempfile.TemporaryFile(mode='w', delete=False) as fp:
         fp.write(replaced)
         fp.seek(0)
     yield fp.name
 
     # remove file
-    unlink(fp.name)
+    os.unlink(fp.name)
 
 
 RELEASE_PATTERN = r'(?P<release>v\d+\.\d+\.\d+)'
@@ -203,30 +197,34 @@ def drop(
     3. Checkout CHANGELOG and __init__.py
     4. Remove tag
     """
-    log('Start dropping release')
+    baw.utils.log('Start dropping release')
 
     # git tag --contains HEAD -> Answer the last commit
-    log('Detect current release:')
-    runner = partial(run_target, verbose=verbose, virtual=virtual)
+    baw.utils.log('Detect current release:')
+    runner = functools.partial(
+        baw.runtime.run_target,
+        verbose=verbose,
+        virtual=virtual,
+    )
     completed = runner(root, 'git tag --contains HEAD')
-    matched = match(RELEASE_PATTERN, completed.stdout)
+    matched = re.match(RELEASE_PATTERN, completed.stdout)
     if not matched:
-        error('No release tag detected')
+        baw.utils.error('No release tag detected')
         return baw.utils.FAILURE
     current_release = matched['release']
 
     # do not remove the first commit/release in the repository
     if current_release == DEFAULT_RELEASE:
-        error('Could not remove %s release' % DEFAULT_RELEASE)
+        baw.utils.error('Could not remove %s release' % DEFAULT_RELEASE)
         return baw.utils.FAILURE
-    log(current_release)
+    baw.utils.log(current_release)
 
     # remove the last release commit
     # git reset HEAD~1
-    log('Remove last commit')
+    baw.utils.log('Remove last commit')
     completed = runner(root, 'git reset HEAD~1')
     if completed.returncode:
-        error('while removing the last commit: %s' % str(completed))
+        baw.utils.error('while removing the last commit: %s' % str(completed))
         return completed.returncode
 
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
@@ -235,10 +233,10 @@ def drop(
         return completed
 
     # git tag -d HEAD
-    log('Remove release tag')
+    baw.utils.log('Remove release tag')
     completed = runner(root, 'git tag -d %s' % current_release)
     if completed.returncode:
-        error('while remove tag: %s' % str(completed))
+        baw.utils.error('while remove tag: %s' % str(completed))
         return completed.returncode
 
     # TODO: ? remove upstream ? or just overwrite ?
@@ -250,16 +248,16 @@ def reset_resources(
     virtual: bool = False,
     verbose: bool = False,
 ):
-    short = shortcut(root)
-    initpath = join(short, '__init__.py')
+    short = baw.config.shortcut(root)
+    initpath = os.path.join(short, '__init__.py')
     changelog = 'CHANGELOG.md'
 
     to_reset = []
     ret = 0
     for item in [initpath, changelog]:
-        if not exists(join(root, item)):
+        if not os.path.exists(os.path.join(root, item)):
             msg = 'Item %s does not exists' % item
-            error(msg)
+            baw.utils.error(msg)
             ret += 1
             continue
         to_reset.append(item)
@@ -267,6 +265,10 @@ def reset_resources(
         return baw.utils.FAILURE  # at least one path does not exist.
     if not to_reset:
         return baw.utils.FAILURE
-
-    completed = git_checkout(root, to_reset, virtual=virtual, verbose=verbose)
+    completed = baw.git.git_checkout(
+        root,
+        to_reset,
+        virtual=virtual,
+        verbose=verbose,
+    )
     return completed
