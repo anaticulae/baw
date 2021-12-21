@@ -2,6 +2,40 @@
 
 Every noteable change is logged here.
 
+## v0.17.0
+
+### Feature
+
+* use new release mechanism (e8768b0cf04c)
+* enable no release and no test flag (089f0c2b0729)
+* add complex release command (b9bd514d4c02)
+* inform user about pour config (5ed00d00205e)
+* add option to define additional test plugins (a6dd31aa79fe)
+* add plugins option (dcb587467fe6)
+* add option to select tests by package (a5c988ad4c16)
+* skip outside import (7fde07abbc69)
+* ignore global warning (0ec497d648cd)
+* do not release dirty repositories (fabf17610e1c)
+* add method to check if repository is clean (595c844f4e88)
+* add option to open tmp path (90ded095b717)
+* clean pytest directory (787b2c8f1ad5)
+* add modern method to open root, project, tests and generated (978112139576)
+* skip cyclic import warning (cc63342a2a7a)
+* enable more checker (c0ac5c25e5e9)
+* reduce required linter time (3dc4a4f90dde)
+* extend valid linter names (ef33bd3cc529)
+* use caching (430d219ae953)
+
+### Fix
+
+* cleanness of init is not checked (1f8108a302b7)
+* add cov package if coverage is executed (d9bf38e37c5a)
+* ensure to load xdist if using test worker count (d7a193fee277)
+* fix clean generated resource (71f8be955009)
+* normalize newlines (11527c4d7ddf)
+* skip hash determining for first release (eb781c1dc949)
+* change to lower case logging (7c9f66d6c983)
+
 ## v0.16.0
 
 ### Feature
