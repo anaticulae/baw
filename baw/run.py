@@ -284,9 +284,23 @@ def run_release(root: str, args: dict):
         return baw.utils.SUCCESS
     # always publish after release
     args['publish'] = True
+    virtual = args.get('virtual', True)
+    # overwrite virtual flag if given
+    novenv = args.get('no_venv', False)
+    if novenv:
+        baw.utils.log('do not use venv')
+        virtual = False
+    test = True
+    # do not test before releasing
+    notest = args.get('no_test', False)
+    if notest:
+        test = False
+    # run release
     result = baw.cmd.release.release(
         root=root,
         release_type=args['release'],
+        test=test,
+        virtual=virtual,
     )
     return result
 
