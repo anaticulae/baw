@@ -8,7 +8,7 @@
 #==============================================================================
 """Evaluate cmd-args and execute commands"""
 
-import baw
+import baw.run
 
 if __name__ == "__main__":
-    baw.main()
+    baw.run.main()

@@ -15,7 +15,7 @@ import sys
 
 import pytest
 
-import baw
+import baw.run
 import baw.utils
 
 MAX_NUMBER = 20
@@ -131,6 +131,6 @@ def run_command(command, monkeypatch):
         # baw is removed as first arg
         context.setattr(sys, 'argv', ['baw'] + command)
         with pytest.raises(SystemExit) as result:
-            baw.main()
+            baw.run.main()
         result = str(result)
         assert 'SystemExit(0)' in result, result

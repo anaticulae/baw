@@ -9,18 +9,17 @@
 
 import sys
 
-from pytest import mark
-from pytest import raises
+import pytest
 
-from baw import main
+import baw.run
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'command',
     [
-        [],
-        ['-h'],
-        ['-v'],
+        '',
+        '-h',
+        '-v',
         # ['--format'], problem with multiprocessing tests/xdist
     ])
 def test_run_command(monkeypatch, command):
@@ -28,9 +27,9 @@ def test_run_command(monkeypatch, command):
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
-        context.setattr(sys, 'argv', ['baw'] + command)
-        with raises(SystemExit) as result:
-            main()
+        context.setattr(sys, 'argv', ['baw'] + command.split())
+        with pytest.raises(SystemExit) as result:
+            baw.run.main()
         result = str(result)
         assert 'SystemExit(0)' in result, result
 
