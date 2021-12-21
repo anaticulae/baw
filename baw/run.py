@@ -42,19 +42,10 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
     args = baw.cli.parse()
     if not any(args.values()):
         return baw.utils.SUCCESS
-    cwd = os.getcwd()
-    if args['version']:
-        baw.utils.log(baw.__version__)
+    if run_version(args):
         return baw.utils.SUCCESS
-    verbose, virtual = args['verbose'], args['virtual']
-    root = setup_environment(
-        args['upgrade'],
-        args['release'],
-        args['raw'],
-        virtual,
-    )
-    if args['open']:
-        baw.cmd.open.openme(root, args['path'])
+    directory, verbose, virtual = run_environment(args)
+    if run_open(directory, args):
         return baw.utils.SUCCESS
     if args['release']:
         # always publish after release
@@ -68,11 +59,16 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
                 args['description'],
                 args['cmdline'],
             )
-            baw.cmd.init.init(root, shortcut, name=description, cmdline=cmdline)
+            baw.cmd.init.init(
+                directory,
+                shortcut,
+                name=description,
+                cmdline=cmdline,
+            )
 
     if args['ide']:
         packages = tuple(args['ide']) if args['ide'] != [None] else None
-        returncode = baw.cmd.ide.ide_open(root=root, packages=packages)
+        returncode = baw.cmd.ide.ide_open(root=root=directory, packages=packages,)
         if returncode:
             return returncode
 
@@ -126,6 +122,7 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
         if failure:
             return failure
 
+    cwd = os.getcwd()
     ret = 0
     workmap = collections.OrderedDict([
         ('clean',
@@ -192,6 +189,31 @@ def run_main():  # pylint:disable=R1260,too-many-locals,too-many-branches,R0911
         # Therefore it is senseless to measure the runtime.
         baw.utils.print_runtime(start)
     return ret
+
+
+def run_version(args) -> bool:
+    if not args['version']:
+        return False
+    baw.utils.log(baw.__version__)
+    return True
+
+
+def run_environment(args):
+    verbose, virtual = args.get('verbose', False), args.get('virtual', False)
+    root = setup_environment(
+        args['upgrade'],
+        args['release'],
+        args['raw'],
+        virtual,
+    )
+    return root, verbose, virtual
+
+
+def run_open(directory, args):
+    if not args.get('open', False):
+        return False
+    baw.cmd.open.openme(directory, args['path'])
+    return True
 
 
 def testcommand(root: str, args, *, verbose: bool, virtual: bool):
