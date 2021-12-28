@@ -265,6 +265,11 @@ def add_test_options(parser):
         action='store_true',
     )
     test.add_argument(
+        '--no_install',
+        help='do not run setup before testing',
+        action='store_true',
+    )
+    test.add_argument(
         '-x',
         help='fail fast after first error',
         action='store_true',

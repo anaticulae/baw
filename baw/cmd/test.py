@@ -36,6 +36,7 @@ def run_test(  # pylint:disable=R0914
     pdb: bool = False,
     quiet: bool = False,
     stash: bool = False,
+    noinstall: bool = False,
     verbose: bool = False,
     virtual: bool = False,
 ) -> int:
@@ -55,6 +56,7 @@ def run_test(  # pylint:disable=R0914
         pdb(bool): run debugger on error
         quiet(bool): pytest - use minimal logging
         stash(bool): stash all changes to test commited-change in repository
+        noinstall(bool): do not run install step before testing
         verbose(bool): extend logging
         virtual(bool): run command in virtual environment
     Returns:
@@ -66,12 +68,13 @@ def run_test(  # pylint:disable=R0914
     baw.utils.check_root(root)
 
     baw.utils.log('tests')
-    _, testenv = setup_testenvironment(
+    testenv = setup_testenvironment(
         root,
         fast=fast,
         longrun=longrun,
         nightly=nightly,
         generate=generate,
+        noinstall=noinstall,
     )
 
     generate_only = generate and not (fast or longrun or nightly)
@@ -143,6 +146,7 @@ def setup_testenvironment(
     longrun: bool,
     nightly: bool,
     generate: bool,
+    noinstall: bool = False,
 ):
     testdir = os.path.join(root, 'tests')
     if not os.path.exists(testdir):
@@ -157,9 +161,11 @@ def setup_testenvironment(
         env['NIGHTLY'] = 'True'  # Very long running test
     if generate:
         env['GENERATE'] = 'True'  # Generate test resources
+    if noinstall:
+        env['NOINSTALL'] = 'True'  # do not run setup process
     # comma-separated plugins to load during startup
     env['PYTEST_PLUGINS'] = 'pytester'
-    return testdir, env
+    return env
 
 
 def create_test_cmd(  # pylint:disable=R0914

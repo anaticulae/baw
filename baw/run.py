@@ -252,6 +252,7 @@ def run_test(root: str, args):
         stash=args['stash'],
         instafail=args['instafail'],
         testconfig=testconfig,
+        noinstall=args.get('no_install', False),
         verbose=args.get('verbose', False),
         virtual=args.get('virtual', False),
     )
