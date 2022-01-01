@@ -80,6 +80,9 @@ def require_release(root, virtual):
     current_head = baw.git.git_headtag(root, virtual=virtual)
     if not current_head:
         return baw.utils.SUCCESS
+    if current_head.isnumeric():
+        # may a year: 2022
+        return baw.utils.SUCCESS
     baw.utils.log(f'No release is required, head is already: {current_head}')
     return baw.utils.FAILURE
 
