@@ -81,42 +81,28 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         SUCCESS if creating was was succesfull else FAILURE
     """
     virtual = venv(root)
-
     if not exists(virtual):
         log(f'create virtual: {virtual}')
         makedirs(virtual, exist_ok=True)
-
     if exists(virtual) and list(scandir(virtual)):
         log(f'virtual: {virtual}')
         return SUCCESS
-
     python = baw.config.python(root, virtual=False)
-    venv_command = [
-        python,
-        "-m",
-        "virtualenv",
-        '.',
-        '--copies',  # , '--system-site-packages'
-    ]
+    # '--system-site-packages'
+    cmd = f'{python} -m virtualenv . --copies '
     if clean:
-        venv_command.append('--clear')
-    cmd = ' '.join(venv_command)  # TODO: Is this required?
+        cmd = f'{cmd} --clear'
     process = run(command=cmd, cwd=virtual)
-
     patch_pip(root)
     if sys.version_info.major == 3 and sys.version_info.minor == 7:
         # python 3.7
         patch_env(root)
-
     if process.returncode:
-        error(' '.join(venv_command))
+        error(cmd)
         error('While creating virutal environment:')
-
         log(process.stdout)
         error(process.stderr)
-
         return FAILURE
-
     if verbose:
         log(process.stdout)
         if process.stderr:
