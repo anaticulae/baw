@@ -278,3 +278,14 @@ def default_config(root: str, access: callable, default=None) -> bool:
     with contextlib.suppress(KeyError):
         return access(cfg)
     return default
+
+
+@functools.lru_cache(maxsize=1)
+def bawtmp():
+    try:
+        path = os.environ['BAW']
+    except KeyError:
+        baw.utils.error('DEFINE $BAW ENV VAR')
+        sys.exit(baw.utils.FAILURE)
+    os.makedirs(path, exist_ok=True)
+    return path
