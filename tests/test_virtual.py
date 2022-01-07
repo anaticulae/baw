@@ -31,7 +31,7 @@ def test_create_venv(example):  # pylint: disable=W0621
         cwd=example,
     )
     assert completed.returncode == SUCCESS, completed.stderr
-
+    # TODO: ADJUST THIS TEST LATER, TODO: PATH BAWTMP FOR THIS TEST?
     virtual = join(example, VIRTUAL_FOLDER)
     msg = 'Virtual folder does not exists: %s' % virtual
     assert exists(virtual), msg

@@ -121,7 +121,7 @@ def clean_virtual(root: str):
     Raises:
         SystemExit if cleaning not work
     """
-    virtual_path = os.path.join(root, baw.runtime.VIRTUAL_FOLDER)
+    virtual_path = baw.runtime.venv(root)
     if not os.path.exists(virtual_path):
         baw.utils.log(f'Virtual environment does not exist {virtual_path}')
         return

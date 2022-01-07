@@ -118,8 +118,10 @@ def patch_pip(root):
     TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
     """
     log('Patching the wheel')
-
-    to_patch = join(root, '.virtual/Lib/site-packages/pip/_internal/wheel.py')
+    to_patch = os.path.join(
+        venv(root),
+        'Lib/site-packages/pip/_internal/wheel.py',
+    )
     if not exists(to_patch):
         return
     template = 'for row in sorted(outrows):'
@@ -129,10 +131,9 @@ def patch_pip(root):
 
 
 def patch_env(root):
-    path = join(root, '.virtual/Scripts/activate.bat')
+    path = os.path.join(venv(root), 'Scripts/activate.bat')
     content = file_read(path)
     content = content.split(':END')[0]  # remove content after :END
-
     baw.utils.file_remove(path)
     baw.utils.file_create(path, content=content)
 
@@ -324,8 +325,8 @@ def _run_virtual(
     Returns:
         CompletedProcess
     """
-    activate = join(root, VIRTUAL_FOLDER, 'Scripts', 'activate')
-    deactivate = join(root, VIRTUAL_FOLDER, 'Scripts', 'deactivate')
+    activate = os.path.join(venv(root), 'Scripts', 'activate')
+    deactivate = os.path.join(venv(root), 'Scripts', 'deactivate')
     if not exists(activate):
         msg = (f'Path `{activate}` does not exists.\n'
                'Regenerate the virtual env')
