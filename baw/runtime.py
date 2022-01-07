@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 import subprocess
 import sys
 from os import environ
@@ -55,7 +56,16 @@ def destroy(path: str):
 
 def venv(root: str) -> str:
     assert root
-    return join(root, VIRTUAL_FOLDER)
+    name = baw.config.shortcut(root)
+    virtual = os.path.join(baw.config.bawtmp(), 'venv', name)
+    if os.path.exists(virtual):
+        return virtual
+    outdated = join(root, VIRTUAL_FOLDER)
+    if os.path.exists(outdated):
+        baw.utils.error(f'use outdated virtual: {outdated}')
+        return outdated
+    os.makedirs(virtual, exist_ok=True)
+    return virtual
 
 
 def create(root: str, clean: bool = False, verbose: bool = False) -> int:
@@ -70,11 +80,11 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     Returns:
         SUCCESS if creating was was succesfull else FAILURE
     """
-    virtual = join(root, VIRTUAL_FOLDER)
+    virtual = venv(root)
 
     if not exists(virtual):
         log(f'create virtual: {virtual}')
-        makedirs(virtual)
+        makedirs(virtual, exist_ok=True)
 
     if exists(virtual) and list(scandir(virtual)):
         log(f'virtual: {virtual}')
