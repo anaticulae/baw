@@ -133,5 +133,6 @@ def sort_configuration(root: str) -> str:
 
 
 def workspace_configuration(root: str):
-    """Path to generated workspace configuration"""
-    return baw.utils.forward_slash(os.path.join(root, '..code-workspace'))
+    """Path to generated workspace configuration."""
+    config = os.path.join(baw.utils.tmp(root), '..code-workspace')
+    return baw.utils.forward_slash(config)
