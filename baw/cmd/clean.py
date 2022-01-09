@@ -101,7 +101,6 @@ TMP = """
 .swp
 .tmp
 .vscode
-..code-workspace
 __pycache__
 build
 dist
