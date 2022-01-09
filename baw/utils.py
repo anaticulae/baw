@@ -17,6 +17,8 @@ import sys
 import time
 import webbrowser
 
+import baw.config
+
 BAW_EXT = '.baw'
 TMP = '.tmp'
 
@@ -117,15 +119,6 @@ def package_address():
         sys.exit(FAILURE)
 
 
-def tmpdir():
-    try:
-        selected = os.environ['TMPDIR']
-    except KeyError:
-        error('Missing global var `TMPDIR`')
-        sys.exit(FAILURE)
-    return selected
-
-
 @functools.lru_cache(maxsize=16)
 def tmp(root: str) -> str:
     """Return path to temporary folder. Create folder if required.
@@ -136,8 +129,9 @@ def tmp(root: str) -> str:
         path to temporary folder
     """
     assert root
-    _, projectname = os.path.split(root)
-    path = os.path.join(tmpdir(), 'kiwi', projectname, TMP)
+    # queuemo-1.17.2-py3.8.egg
+    projectname = os.path.split(root)[1].split('-')[0]
+    path = os.path.join(baw.config.bawtmp(), 'tmp', projectname)
     os.makedirs(path, exist_ok=True)
     return path
 

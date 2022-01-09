@@ -87,9 +87,9 @@ def create(root: str, shortname: str, longname: str):
 
 
 def project_tmpdir(root: str, ensure: bool = True) -> str:
-    tmpdir = os.environ['TMPDIR']
+    tmpdir = os.path.join(bawtmp(), 'tmp')
     shortname = shortcut(root)
-    path = os.path.join(tmpdir, baw.utils.TMP, shortname)
+    path = os.path.join(tmpdir, shortname)
     if ensure:
         os.makedirs(path, exist_ok=True)
     return path
