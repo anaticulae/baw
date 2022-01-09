@@ -39,6 +39,7 @@ PYTHON_DEFAULT = 'python'
 SPELLING_DEFAULT = False
 
 
+@functools.lru_cache()
 def name(root: str):
     assert os.path.exists(root)
     path = config_path(root)
@@ -48,6 +49,7 @@ def name(root: str):
     return name_
 
 
+@functools.lru_cache()
 def shortcut(root: str) -> str:
     """Read short project name out of project config.
 
@@ -158,6 +160,7 @@ def load(path: str):
     return cfg
 
 
+@functools.lru_cache()
 def project(path: str) -> typing.Tuple[str, str]:
     """Determine tuple of `shortcut` and `project name` current `path`
     project.
