@@ -55,14 +55,13 @@ def generate_workspace(root: str, packages: tuple = None):
     output = workspace_configuration(root)
     rcfile = baw.utils.forward_slash(baw.resources.RCFILE_PATH)
     isortfile = sort_configuration(root)
-
     if packages is None:
         folders = """\
             {
                 "name": "%s",
-                "path": "."
+                "path": "%s"
             }
-        """ % name
+        """ % (name, baw.utils.forward_slash(root))
     else:
         packages = sorted(packages)
         todo = []
@@ -78,7 +77,7 @@ def generate_workspace(root: str, packages: tuple = None):
                 continue
             folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))
         folders = baw.utils.NEWLINE.join(folders)  # pylint:disable=R0204
-
+    # write template
     replaced = baw.resources.template_replace(
         root,
         baw.resources.CODE_WORKSPACE,
