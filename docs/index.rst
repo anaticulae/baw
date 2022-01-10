@@ -7,6 +7,7 @@ General
 .. toctree::
   :maxdepth: 1
 
+  pages/readme
   bugs
 
 Progress
