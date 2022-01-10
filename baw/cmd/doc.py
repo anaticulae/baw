@@ -8,14 +8,12 @@
 #==============================================================================
 
 import os
+import shutil
 
+import baw.config
+import baw.resources
+import baw.runtime
 import baw.utils
-from baw.resources import DOC_CONF
-from baw.resources import template_replace
-from baw.runtime import run_target
-from baw.utils import TMP
-from baw.utils import file_replace
-from baw.utils import log
 
 
 def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
@@ -36,19 +34,22 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
         msg = 'sphinx is not installed, run baw sync=all --virtual'
         baw.utils.error(msg)
         return baw.utils.FAILURE
+    if returnvalue := generate_docs(root, verbose, virtual):
+        return returnvalue
+    if returnvalue := build_html(root, verbose, virtual):
+        return returnvalue
+    open_docs(root)
+    return baw.utils.SUCCESS
 
-    update_template(root)
 
-    docs = os.path.join(root, 'docs')
-    tmp = os.path.join(docs, TMP)
-
+def generate_docs(root: str, verbose: bool, virtual: bool) -> int:
+    doctmp = baw.config.docpath(root)
     sources = root  # include test and package
     ignore = ' '.join([
         'templates',
         'setup.py',
         'conf.py',
     ])
-
     # Create files out of source
     # -d maxdepth
     # -M modules first
@@ -56,13 +57,11 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     # -e put each module on its own page
     configuration = '-d 10 -M -f -e'
     command = 'sphinx-apidoc %s -o %s %s %s'
-    command = command % (configuration, tmp, sources, ignore)
-
-    log('generate docs')
+    command = command % (configuration, doctmp, sources, ignore)
+    baw.utils.log('generate docs')
     if verbose:
-        log(command)
-
-    completed = run_target(
+        baw.utils.log(command)
+    completed = baw.runtime.run_target(
         root,
         command=command,
         cwd=root,
@@ -71,7 +70,31 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
     )
     if completed.returncode:
         return completed.returncode
+    path = os.path.join(baw.config.docpath(root), 'conf.py')
+    replaced = baw.resources.template_replace(root, baw.resources.DOC_CONF)
+    baw.utils.file_replace(path, replaced)
+    doctmp = baw.config.docpath(root)
+    # copy docs
+    baw.utils.log('sync docs')
+    source = os.path.join(root, 'docs')
+    shutil.copytree(source, doctmp, dirs_exist_ok=True)
+    for filename in 'README.md CHANGELOG.md'.split():
+        path = os.path.join(root, filename)
+        if not os.path.exists(path):
+            continue
+        loaded = baw.utils.file_read(path)
+        baw.utils.file_replace(os.path.join(doctmp, filename), loaded)
+    for filename in 'readme.rst changelog.rst'.split():
+        path = os.path.join(doctmp, 'pages', filename)
+        if not os.path.exists(path):
+            continue
+        loaded = baw.utils.file_read(path)
+        loaded = loaded.replace('../../', '../')
+        baw.utils.file_replace(path, loaded)
+    return baw.utils.SUCCESS
 
+
+def build_html(root: str, verbose: bool, virtual: bool) -> int:
     # Create html result
     build_options = ' '.join([
         # '-vvvv ',
@@ -81,38 +104,39 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
         # '-b coverage',  # TODO: Check autodoc package
         '-j 8'
     ])
-
-    htmloutput = os.path.join(docs, 'html')
-    command = f'sphinx-build {docs} {htmloutput} {build_options}'
-
-    log('make html')
+    doctmp = baw.config.docpath(root)
+    htmloutput = os.path.join(doctmp, 'html')
+    command = f'sphinx-build {doctmp} {htmloutput} {build_options}'
+    baw.utils.log('make html')
     if verbose:
-        log(command)
-
-    result = run_target(
+        baw.utils.log(command)
+    result = baw.runtime.run_target(
         root,
         command=command,
         cwd=root,
         virtual=virtual,
         verbose=verbose,
     )
-    if result.returncode == baw.utils.SUCCESS:
-        url = os.path.join(htmloutput, 'index.html')
-        baw.utils.openbrowser(url)
     return result.returncode
 
 
 def update_template(root: str):
-    path = os.path.join(root, 'docs/conf.py')
-    replaced = template_replace(root, DOC_CONF)
+    path = os.path.join(baw.config.docpath(root), 'conf.py')
+    replaced = baw.resources.template_replace(root, baw.resources.DOC_CONF)
+    baw.utils.file_replace(path, replaced)
 
-    file_replace(path, replaced)
+
+def open_docs(root: str):
+    doctmp = baw.config.docpath(root)
+    htmloutput = os.path.join(doctmp, 'html')
+    url = os.path.join(htmloutput, 'index.html')
+    baw.utils.openbrowser(url)
 
 
 def is_sphinx_installed(root: str, virtual: bool) -> bool:
     """Use `pip` to verify that documentation tool `sphinx` is installed."""
     command = 'pip show sphinx'
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         command=command,
         cwd=root,

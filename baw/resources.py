@@ -114,7 +114,7 @@ Modules
 .. toctree::
    :maxdepth: 4
 
-   .tmp/modules
+   modules
 
 Indices and tables
 ==================

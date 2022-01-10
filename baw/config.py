@@ -291,3 +291,11 @@ def bawtmp():
         sys.exit(baw.utils.FAILURE)
     os.makedirs(path, exist_ok=True)
     return path
+
+
+def docpath(root: str) -> str:
+    projectname = os.path.split(root)[1]
+    projectname = projectname.split('-')[0]
+    tmpdoc = os.path.join(bawtmp(), 'docs', projectname)
+    os.makedirs(tmpdoc, exist_ok=True)
+    return tmpdoc
