@@ -143,11 +143,10 @@ def fail_on_finding(root: str) -> bool:
     """Let release fail when build contain statical code errors."""
     assert os.path.exists(root), root
     config = load(config_path(root))
-    try:
+    with contextlib.suppress(KeyError):
         return bool(config['release']['fail_on_finding'])
-    except KeyError:
-        # TODO: TURN ON AS DEFAULT, LATER
-        return False
+    # TODO: TURN ON AS DEFAULT, LATER
+    return False
 
 
 @functools.lru_cache()
