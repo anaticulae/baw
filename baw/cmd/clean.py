@@ -71,10 +71,13 @@ def create_pattern(
     selected = []
     if resources:
         # TODO: HACK
-        import power  # pylint:disable=import-outside-toplevel
-        tmpdir = power.generated(project=os.path.split(root)[1])
-        if os.path.exists(tmpdir):
-            selected.append(ResourceDir(tmpdir))
+        try:
+            import power  # pylint:disable=import-outside-toplevel
+            tmpdir = power.generated(project=os.path.split(root)[1])
+            if os.path.exists(tmpdir):
+                selected.append(ResourceDir(tmpdir))
+        except ModuleNotFoundError:
+            baw.utils.error('install power to clean resources')
     if tmp:
         selected.extend(TMP)
     if tests:
