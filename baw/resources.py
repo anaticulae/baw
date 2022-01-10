@@ -9,6 +9,7 @@
 """Base for generating project. Templates have to be here."""
 
 import os
+import time
 
 import baw
 import baw.git
@@ -226,12 +227,14 @@ def template_replace(root: str, template: str, **kwargs) -> str:
     source = sources(root)
     name_ = name(root)
     version_tag = baw.project.version.determine(root)
+    year = str(time.localtime(time.time()).tm_year)
 
     template = template.replace('{{SHORT}}', short)
     template = template.replace('{{SOURCES}}', ', '.join(source))
     template = template.replace('{{NAME}}', name_)
     template = template.replace('{{VERSION}}', version_tag)
     template = template.replace('{{ROOT}}', root)
+    template = template.replace('{{YEAR}}', year)
 
     for key, value in kwargs.items():
         value = str(value)  # ensure to repace str
