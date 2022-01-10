@@ -154,12 +154,10 @@ def sync_dependencies(
     )
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
-
     log(f'\nrequire update:\n{required}')
-
-    requirements = os.path.join(root, '.requirements.txt')
+    # create temporary requirements file
+    requirements = os.path.join(baw.utils.tmp(root), 'requirements.txt')
     baw.utils.file_replace(requirements, str(required))
-
     cmd, pip = get_install_cmd(
         root,
         requirements,
@@ -177,12 +175,10 @@ def sync_dependencies(
         verbose=False,
         virtual=virtual,
     )
-
     baw.utils.file_remove(requirements)
     if 'NewConnectionError' in completed.stdout:
         error('Could not reach server: %s' % pip)
         return completed.returncode
-
     if completed.stdout:
         for message in completed.stdout.splitlines():
             if should_skip(message, verbose=verbose):
@@ -191,7 +187,6 @@ def sync_dependencies(
                 log(message)
     if completed.returncode and completed.stderr:
         error(completed.stderr)
-
     log()
     return completed.returncode
 
