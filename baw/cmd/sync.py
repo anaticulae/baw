@@ -17,6 +17,7 @@ from urllib.request import urlopen
 
 import baw.config
 import baw.requirements
+import baw.utils
 from baw.git import update_gitignore
 from baw.runtime import run_target
 from baw.utils import FAILURE
@@ -138,15 +139,12 @@ def sync_dependencies(
     virtual: bool = False,
 ) -> int:
     check_root(root)
-
     log('sync virtual' if virtual else 'sync local')
-
     resources = determine_resources(root, packages)
-
     pip_index, extra_url = package_address()
     if not connected(pip_index, extra_url):
+        baw.utils.error('could not reach package index')
         return FAILURE
-
     required = required_installation(
         root,
         resources,
