@@ -59,6 +59,9 @@ def open_this(path=None):
     if path is None:
         path = os.getcwd()
     path = str(path)
+    if not os.path.exists(path):
+        baw.utils.error(f'path does not exists: {path}')
+        sys.exit(baw.utils.FAILURE)
     # convert for windows
     path = path.replace('/', '\\')
     cmd = f'explorer {path}'
