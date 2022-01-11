@@ -10,6 +10,7 @@
 import os
 import sys
 
+import baw.config
 import baw.project
 import baw.runtime
 import baw.utils
@@ -45,10 +46,8 @@ def open_generated(root: str):
 
 def open_tmp(root: str):
     name = os.path.split(root)[1]
-    # C:\tmp\tmp\kiwi\rawmaker\.tmp
-    # TODO: REMOVE HARD CODED PATH
-    tests = os.path.join('C:/tmp/tmp/kiwi', name, '.tmp')
-    open_this(tests)
+    tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
+    open_this(tmpdir)
 
 
 def open_tests(root: str):
