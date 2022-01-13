@@ -96,6 +96,7 @@ def create_pattern(
 TMP = """
 *.egg
 *.egg-info
+*.stackdump
 *.swo
 *.swp
 .coverage
