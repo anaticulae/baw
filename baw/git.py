@@ -77,8 +77,8 @@ def commit(root, source, message, verbose: int = 0):
     return git_commit(root, source, message, verbose)
 
 
-def is_clean(root):
-    process = baw.runtime.run_target(root, 'git status')
+def is_clean(root, verbose: bool = True):
+    process = baw.runtime.run_target(root, 'git status', verbose=verbose)
     assert not process.returncode
     return 'nothing to commit, working tree clean' in process.stdout
 
@@ -100,6 +100,7 @@ def git_checkout(
     Returns:
         0 if SUCCESS else FAILURE
     """
+    # TODO: RENAME TO GIT_RESET
     runner = partial(baw.runtime.run_target, verbose=verbose, virtual=virtual)
     to_reset = ' '.join(files) if not isinstance(files, str) else files
     log('Reset %s' % to_reset)
