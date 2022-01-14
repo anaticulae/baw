@@ -33,8 +33,9 @@ def profile(root, cmd, ranges) -> list:
     todo = git_commits(root, ranges)
     timed = []
     states = []
-    for index, commit in enumerate(todo, start=1):
-        baw.utils.log(f'{index}|{len(todo)}')
+    for index, (commit, headline) in enumerate(todo, start=1):
+        baw.utils.log(f'\n{index}|{len(todo)}')
+        baw.utils.log(f'>>> {headline}')
         baw.utils.log(f'git checkout {commit} in {root}')
         if git_checkout(root, commit):
             sys.exit(baw.utils.FAILURE)
@@ -52,7 +53,8 @@ def profile(root, cmd, ranges) -> list:
     baw.utils.log('\n\nDONE:\n========================')
     for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
         state = 'X' if state else ' '
-        baw.utils.log(f'{commit[0:15]}:{state}:   {int(timed)}')
+        baw.utils.log(f'{commit[0][0:15]}:{state}:   {int(timed)}      '
+                      f'{commit[1][0:30]}')
     # git_checkout(root, commit=todo[0])
     git_checkout(root, commit='master')
     return timed
@@ -63,17 +65,20 @@ def git_commits(root, ranges) -> list:
     >>> len(git_commits('.', list(range(5))))
     5
     """
-    result = []
-    current = baw.git.git_headhash(root)
-    for index in ranges:
-        cmd = f'git rev-parse --verify {current}~{index}'
-        completed = baw.runtime.run_target(
-            root,
-            command=cmd,
-            cwd=root,
-            verbose=False,
-        )
-        result.append(completed.stdout.strip())
+    count = len(ranges)
+    cmd = ("git log  --pretty=format:\"%H %s\" | "
+           rf'grep -E "(feat|fix|test|refactor)\(" | head -n {count}')
+    completed = baw.runtime.run_target(
+        root,
+        command=cmd,
+        cwd=root,
+        verbose=False,
+    )
+    stdout = completed.stdout.strip()
+    if completed.returncode:
+        baw.utils.error(completed)
+        sys.exit(baw.utils.FAILURE)
+    result = [line.split(maxsplit=1) for line in stdout.splitlines()]
     return result
 
 
