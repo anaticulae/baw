@@ -40,7 +40,10 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.8',
         ],
         entry_points={
-            'console_scripts': ['baw = baw.run:main'],
+            'console_scripts': [
+                'baw = baw.run:main',
+                'baw_profile = baw.small.profile:main',
+            ],
         },
         packages=[
             'baw',
@@ -48,6 +51,7 @@ if __name__ == "__main__":
             'baw.cmd',
             'baw.project',
             'baw.requires',
+            'baw.small',
             'baw.templates',
         ],
     )

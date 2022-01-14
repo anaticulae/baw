@@ -1,0 +1,118 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2022 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import argparse
+import os
+import sys
+import time
+
+import baw.git
+import baw.run
+import baw.runtime
+import baw.utils
+
+
+def main():
+    root = baw.run.determine_root(os.getcwd())
+    if not baw.git.is_clean(root, verbose=False):
+        baw.utils.error(f'not clean, abort: {root}')
+        sys.exit(baw.utils.FAILURE)
+    parser = create_parser()
+    args = parse_args(parser)
+    profile(root, args[0], args[1])
+    return baw.utils.SUCCESS
+
+
+def profile(root, cmd, ranges) -> list:
+    todo = git_commits(root, ranges)
+    timed = []
+    states = []
+    for index, commit in enumerate(todo, start=1):
+        baw.utils.log(f'{index}|{len(todo)}')
+        baw.utils.log(f'git checkout {commit} in {root}')
+        if git_checkout(root, commit):
+            sys.exit(baw.utils.FAILURE)
+        current = time.time()
+        baw.utils.log(f'run: {cmd}')
+        processed = baw.runtime.run(cmd, cwd=root)
+        if processed.returncode:
+            baw.utils.error(processed.stdout[0:2000])
+            baw.utils.error(processed.stderr[0:2000])
+        #     sys.exit(baw.utils.FAILURE)
+        states.append(processed.returncode)
+        diff = time.time() - current
+        baw.utils.log(f'done: {int(diff)}')
+        timed.append(diff)
+    baw.utils.log('\n\nDONE:\n========================')
+    for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
+        state = 'X' if state else ' '
+        baw.utils.log(f'{commit[0:15]}:{state}:   {int(timed)}')
+    # git_checkout(root, commit=todo[0])
+    git_checkout(root, commit='master')
+    return timed
+
+
+def git_commits(root, ranges) -> list:
+    """\
+    >>> len(git_commits('.', list(range(5))))
+    5
+    """
+    result = []
+    current = baw.git.git_headhash(root)
+    for index in ranges:
+        cmd = f'git rev-parse --verify {current}~{index}'
+        completed = baw.runtime.run_target(
+            root,
+            command=cmd,
+            cwd=root,
+            verbose=False,
+        )
+        result.append(completed.stdout.strip())
+    return result
+
+
+def git_checkout(
+    root: str,
+    commit: str,
+) -> int:
+    """Checkout he from git repository
+
+    Args:
+        root(str): root to generated project
+        commit(str): state to reach
+    Returns:
+        0 if SUCCESS else FAILURE
+    """
+    cmd = f'git checkout {commit}'
+    completed = baw.runtime.run(cmd, cwd=root)
+    if completed.returncode:
+        msg = f'while checkout {commit}'
+        baw.utils.error(msg)
+    return completed.returncode
+
+
+def parse_args(parser) -> tuple:
+    args = vars(parser.parse_args())
+    cmd = args.get('cmd', 'ls -R | wc - l')
+    ranges = int(args.get('range', 1))
+    ranges: list = list(range(ranges))
+    return cmd, ranges
+
+
+def create_parser():
+    parser = argparse.ArgumentParser(prog='baw_profile')
+    # TODO: ADD VERBOSE AND FAIL FAST FLAG
+    parser.add_argument('cmd', help='command to profile')
+    parser.add_argument(
+        'range',
+        help='commit to verify',
+        nargs='?',
+        default='1',
+    )
+    return parser
