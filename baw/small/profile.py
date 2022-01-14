@@ -43,8 +43,8 @@ def profile(root, cmd, ranges) -> list:
         baw.utils.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
         if processed.returncode:
-            baw.utils.error(processed.stdout[0:2000])
-            baw.utils.error(processed.stderr[0:2000])
+            baw.utils.error(processed.stdout[0:20000])
+            baw.utils.error(processed.stderr[0:20000])
         #     sys.exit(baw.utils.FAILURE)
         states.append(processed.returncode)
         diff = time.time() - current
