@@ -42,6 +42,9 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         current = time.time()
         baw.utils.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
+        if processed.returncode == 127:
+            baw.utils.error(f'invalid command: {cmd}')
+            sys.exit(baw.utils.FAILURE)
         if processed.returncode:
             # the head is not important, we what to see the tail
             baw.utils.error(processed.stdout[-lookback:])
