@@ -29,7 +29,7 @@ def main():
     return baw.utils.SUCCESS
 
 
-def profile(root, cmd, ranges) -> list:
+def profile(root, cmd, ranges, lookback: int = 20000) -> list:
     todo = git_commits(root, ranges)
     timed = []
     states = []
@@ -43,8 +43,9 @@ def profile(root, cmd, ranges) -> list:
         baw.utils.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
         if processed.returncode:
-            baw.utils.error(processed.stdout[0:20000])
-            baw.utils.error(processed.stderr[0:20000])
+            # the head is not important, we what to see the tail
+            baw.utils.error(processed.stdout[-lookback:])
+            baw.utils.error(processed.stderr[-lookback:])
         #     sys.exit(baw.utils.FAILURE)
         states.append(processed.returncode)
         diff = time.time() - current
