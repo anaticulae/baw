@@ -50,7 +50,7 @@ class Requirements:
             for package, version in self.greater.items()  # pylint:disable=E1101
         ]
         result.extend(greater)
-        result = sorted(result)
+        result = sorted(result, key=lambda x: x.lower())
         raw = '\n'.join(result)
         return raw
 
