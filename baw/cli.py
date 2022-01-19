@@ -58,7 +58,6 @@ LINT = Command(
         ],
     },
 )
-INSTALL = Command(longcut='--install', message='Run install task')
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
@@ -114,7 +113,6 @@ def create_parser():  # noqa: Z21
         DROP_RELEASE,
         FORMAT,
         IDE,
-        INSTALL,
         LINT,
         NOTESTS,
         RAW,
@@ -134,7 +132,6 @@ def create_parser():  # noqa: Z21
             add(*shortcuts, **args)
         else:
             add(*shortcuts, action='store_true', help=msg)
-
     commands = parser.add_subparsers()
     add_open_options(commands)
     add_clean_options(commands)
@@ -144,6 +141,7 @@ def create_parser():  # noqa: Z21
     add_test_options(commands)
     add_release_options(commands)
     add_publish_options(commands)
+    add_install_option(commands)
     return parser
 
 
@@ -283,6 +281,20 @@ def add_test_options(parser):
     )
 
 
+def add_install_option(parser):
+    test = parser.add_parser('install', help='Run install task')
+    test.add_argument(
+        '--remove',
+        help='remove current version before',
+        action='store_true',
+    )
+    test.add_argument(
+        '--dev',
+        help='install in development mode',
+        action='store_true',
+    )
+
+
 def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
@@ -292,6 +304,7 @@ def parse():
     args['plan'] = 'plan' in sys.argv
     args['init'] = 'init' in sys.argv
     args['open'] = 'open' in sys.argv
+    args['install'] = 'install' in sys.argv
 
     need_help = not any(args.values())
     if need_help:
