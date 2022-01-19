@@ -9,13 +9,27 @@
 
 import baw.config
 from baw.runtime import run_target
+from baw.utils import error
 from baw.utils import log
 
 
-def install(root: str, virtual: bool, verbose: bool = False):
+def install(
+    root: str,
+    *,
+    dev: bool = False,
+    remove: bool = False,
+    virtual: bool = False,
+    verbose: bool = False,
+):
+    if remove:
+        remove_current(root, virtual=virtual, verbose=verbose)
     # -f always install newest one
     python = baw.config.python(root, virtual=virtual)
-    command = f'{python} setup.py install -f'
+    if dev:
+        # TODO: USE PIP FOR BOTH?
+        command = f'{python} -mpip install -e .'
+    else:
+        command = f'{python} setup.py install -f'
     # run target
     completed = run_target(
         root,
@@ -24,5 +38,23 @@ def install(root: str, virtual: bool, verbose: bool = False):
         verbose=verbose,
         virtual=virtual,
     )
-    log(completed.stdout)
+    if completed.returncode:
+        log(completed.stdout)
+        error(completed.stderr)
+    if not verbose:
+        log('done')
     return completed.returncode
+
+
+def remove_current(root: str, virtual: bool = False, verbose: bool = False):
+    package = baw.config.shortcut(root)
+    while range(10):
+        cmd = f'pip uninstall {package} --yes'
+        completed = run_target(
+            root,
+            command=cmd,
+            verbose=verbose,
+            virtual=virtual,
+        )
+        if completed.stderr:
+            break

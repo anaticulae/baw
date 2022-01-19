@@ -276,6 +276,9 @@ def run_install(root: str, args: dict):
     result = baw.cmd.install.install(
         root=root,
         virtual=args.get('virtual', False),
+        verbose=args.get('verbose', False),
+        dev=args.get('dev', False),
+        remove=args.get('remove', False),
     )
     return result
 
