@@ -8,9 +8,8 @@
 # =============================================================================
 
 import baw.config
-from baw.runtime import run_target
-from baw.utils import error
-from baw.utils import log
+import baw.runtime
+import baw.utils
 
 
 def install(
@@ -31,7 +30,7 @@ def install(
     else:
         command = f'{python} setup.py install -f'
     # run target
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         command,
         root,
@@ -39,10 +38,10 @@ def install(
         virtual=virtual,
     )
     if completed.returncode:
-        log(completed.stdout)
-        error(completed.stderr)
+        baw.utils.log(completed.stdout)
+        baw.utils.error(completed.stderr)
     if not verbose:
-        log('done')
+        baw.utils.log('done')
     return completed.returncode
 
 
@@ -50,7 +49,7 @@ def remove_current(root: str, virtual: bool = False, verbose: bool = False):
     package = baw.config.shortcut(root)
     while range(10):
         cmd = f'pip uninstall {package} --yes'
-        completed = run_target(
+        completed = baw.runtime.run_target(
             root,
             command=cmd,
             verbose=verbose,
