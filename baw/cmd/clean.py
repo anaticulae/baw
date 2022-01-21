@@ -96,9 +96,11 @@ def create_pattern(
 TMP = """
 *.egg
 *.egg-info
+*.log
 *.stackdump
 *.swo
 *.swp
+..code-workspace
 .coverage
 .pytest_cache
 .swo
