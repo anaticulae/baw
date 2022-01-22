@@ -16,6 +16,8 @@ pytest_timeout==1.4.2
 
 # TODO: Helmut's custom version. Replace with official release.
 python-semantic-release==4.1.2
+# TODO: HELMUT ALSO
+setuptools==50.3.2
 
 # create virtual environment
 virtualenv==20.4.6
