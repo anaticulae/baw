@@ -37,6 +37,7 @@ PROJECT_PATH = [
 
 PYTHON_DEFAULT = 'python'
 SPELLING_DEFAULT = False
+FAIL_ON_FINDING_DEFAULT = True
 
 
 @functools.lru_cache()
@@ -141,11 +142,12 @@ def minimal_coverage(root: str) -> int:
 
 def fail_on_finding(root: str) -> bool:
     """Let release fail when build contain statical code errors."""
-    assert os.path.exists(root), root
-    config = load(config_path(root))
-    with contextlib.suppress(KeyError):
-        return bool(config['release']['fail_on_finding'])
-    return True
+    result = default_config(
+        root,
+        lambda x: x['release']['fail_on_finding'],
+        default=FAIL_ON_FINDING_DEFAULT,
+    )
+    return result
 
 
 @functools.lru_cache()
