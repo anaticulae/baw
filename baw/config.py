@@ -145,8 +145,7 @@ def fail_on_finding(root: str) -> bool:
     config = load(config_path(root))
     with contextlib.suppress(KeyError):
         return bool(config['release']['fail_on_finding'])
-    # TODO: TURN ON AS DEFAULT, LATER
-    return False
+    return True
 
 
 @functools.lru_cache()
