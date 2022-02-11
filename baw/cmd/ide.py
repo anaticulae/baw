@@ -61,7 +61,7 @@ def generate_workspace(root: str, packages: tuple = None):
                 "name": "%s",
                 "path": "%s"
             }
-        """ % (name, baw.utils.forward_slash(root))
+        """ % (name, baw.utils.forward_slash(root, save_newline=False))
     else:
         packages = sorted(packages)
         todo = []
@@ -72,6 +72,7 @@ def generate_workspace(root: str, packages: tuple = None):
         todo.append(('resources', 'tests/resources'))
         folders = []
         for (name, path) in todo:
+            path = baw.utils.forward_slash(path, save_newline=False)
             if not os.path.exists(path):
                 baw.utils.error(f'{path} does not exists')
                 continue
