@@ -120,34 +120,28 @@ def upgrade_requirements(  # pylint:disable=W0612,W0613
     Returns:
         SUCCESS if file was upgraded
     """
-    requirements_path = os.path.join(root, requirements)
-    msg = 'Path does not exists %s' % requirements_path
-
-    if not os.path.exists(requirements_path):
-        msg = 'Could not locate any requirements: %s' % requirements_path
+    req_path = os.path.join(root, requirements)
+    msg = f'Path does not exists {req_path}'
+    if not os.path.exists(req_path):
+        msg = f'Could not locate any requirements: {req_path}'
         baw.utils.error(msg)
         return baw.utils.FAILURE
-    baw.utils.log('\nStart upgrading requirements: %s' % requirements_path)
-
-    content = baw.utils.file_read(requirements_path)
+    baw.utils.log(f'\nStart upgrading requirements: {req_path}')
+    content = baw.utils.file_read(req_path)
     if not content.strip():
-        baw.utils.log(f'Empty: {requirements_path}. Skipping replacement.')
+        baw.utils.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchonizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
-
     upgraded = determine_new_requirements(root, content, virtual=virtual)
     if upgraded is None:
         return baw.utils.FAILURE
     replaced = baw.requirements.replace(content, upgraded)
-
     if replaced == content:
         baw.utils.log('Requirements are up to date.\n')
         return REQUIREMENTS_UPTODATE
-
-    baw.utils.file_replace(requirements_path, replaced)
-
+    # write new requirements
+    baw.utils.file_replace(req_path, replaced)
     baw.utils.log('Upgrading finished')
-
     return baw.utils.SUCCESS
 
 
