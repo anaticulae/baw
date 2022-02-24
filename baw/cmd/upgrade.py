@@ -32,36 +32,10 @@ def upgrade(
     force: upgrade dev requirements also
     """
     with baw.git.git_stash(root, verbose=verbose, virtual=virtual):
-        requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
-        failure = upgrade_requirements(root)
-        requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
-        if not os.path.exists(requirements_dev) or packages == 'requirements':
-            requirements_dev = None
-        failure_dev = REQUIREMENTS_UPTODATE
-        if requirements_dev:
-            failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
-        requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
-        if not os.path.exists(requirements_extra) or packages not in ('extra', 'all'): # yapf:disable
-            requirements_extra = None
-        failure_extra = REQUIREMENTS_UPTODATE
-        if requirements_extra:
-            failure_extra = upgrade_requirements(root, baw.utils.REQUIREMENTS_EXTRA) # yapf:disable
-
-        # requirements.txt is uptodate, no update requireded
-        if all((
-                failure == REQUIREMENTS_UPTODATE,
-                failure_dev == REQUIREMENTS_UPTODATE,
-                failure_extra == REQUIREMENTS_UPTODATE,
-        )):
-            return baw.utils.SUCCESS
-        devupgade_failure = failure_dev not in (REQUIREMENTS_UPTODATE,
-                                                baw.utils.SUCCESS)
-        upgrade_failure = failure not in (REQUIREMENTS_UPTODATE,
-                                          baw.utils.SUCCESS)
-        if upgrade_failure or devupgade_failure:
-            baw.utils.error('Error while upgrading requirements')
-            return baw.utils.FAILURE
-
+        returnvalue = check_upgrade(root, packages=packages)
+        if returnvalue in (baw.utils.SUCCESS, baw.utils.FAILURE):
+            return returnvalue
+        requirements_dev = returnvalue
         failure = baw.cmd.complex.sync_and_test(
             root,
             generate=generate,  # generate test data
@@ -74,9 +48,9 @@ def upgrade(
             verbose=verbose,
             virtual='BOTH',  # sync virtual and non virtual environment
         )
+        requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
             requirements = (requirements, requirements_dev)
-
         if failure:
             # reset requirement
             completed = baw.git.git_checkout(
@@ -88,7 +62,6 @@ def upgrade(
             baw.utils.error('Upgrading failed')
             assert not completed
             return failure
-
         failure = baw.git.git_commit(
             root,
             source=requirements,
@@ -98,6 +71,36 @@ def upgrade(
         if failure:
             return failure
     return baw.utils.SUCCESS
+
+
+def check_upgrade(root, packages):
+    failure = upgrade_requirements(root)
+    requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
+    if not os.path.exists(requirements_dev) or packages == 'requirements':
+        requirements_dev = None
+    failure_dev = REQUIREMENTS_UPTODATE
+    if requirements_dev:
+        failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
+    requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
+    if not os.path.exists(requirements_extra) or packages not in 'extra all':
+        requirements_extra = None
+    failure_extra = REQUIREMENTS_UPTODATE
+    if requirements_extra:
+        failure_extra = upgrade_requirements(root, baw.utils.REQUIREMENTS_EXTRA)
+    # requirements.txt is uptodate, no update requireded
+    if all((
+            failure == REQUIREMENTS_UPTODATE,
+            failure_dev == REQUIREMENTS_UPTODATE,
+            failure_extra == REQUIREMENTS_UPTODATE,
+    )):
+        return baw.utils.SUCCESS
+    if failure not in (REQUIREMENTS_UPTODATE, baw.utils.SUCCESS):
+        baw.utils.error('Error while upgrading requirements')
+        return baw.utils.FAILURE
+    if failure_dev not in (REQUIREMENTS_UPTODATE, baw.utils.SUCCESS):
+        baw.utils.error('Error while upgrading dev requirements')
+        return failure_dev
+    return requirements_dev
 
 
 REQUIREMENTS_UPTODATE = 100
