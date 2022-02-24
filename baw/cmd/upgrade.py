@@ -103,11 +103,10 @@ def upgrade(
 REQUIREMENTS_UPTODATE = 100
 
 
-def upgrade_requirements(  # pylint:disable=W0612,W0613
+def upgrade_requirements(
     root: str,
     requirements: str = baw.utils.REQUIREMENTS_TXT,
     virtual: bool = False,
-    verbose: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
     available version on pip repository.
@@ -116,7 +115,6 @@ def upgrade_requirements(  # pylint:disable=W0612,W0613
         root(str): generated project
         requirements(str): relativ path to requirements
         virtual(bool): run in virtual environment
-        verbose(bool): increase logging
     Returns:
         SUCCESS if file was upgraded
     """
