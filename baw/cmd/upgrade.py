@@ -156,7 +156,8 @@ def installed_version(content: str):
 def available_version(content: str, package: str = None):
     pattern = r'\w+\s\((?P<available>[\w|\d|\.]+)'
     if package:
-        pattern = package + r'[ ]\((?P<available>[\w|\d|\.]+)'
+        package = re.escape(package)
+        pattern = rf'\b{package}[ ]\((?P<available>[\w|\d|\.]+)'
     searched = re.search(pattern, content)
     if not searched:
         return None

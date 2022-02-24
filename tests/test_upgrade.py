@@ -59,6 +59,21 @@ def test_available_multiple():
     assert available == "2.11.0"
 
 
+MULTIPLE = """
+data_sections (0.1.0)  - 0.1.0
+sections (1.18.0)      - 1.18.0
+  INSTALLED: 1.18.0 (latest)
+"""
+
+
+def test_available_multiple_second():
+    available = baw.cmd.upgrade.available_version(
+        MULTIPLE,
+        package='sections',
+    )
+    assert available == '1.18.0'
+
+
 def test_up_to_date():
     available = baw.cmd.upgrade.available_version(AVAILABLE_INSTALLED)
     assert available == "0.5.4"
