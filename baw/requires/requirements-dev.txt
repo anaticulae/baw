@@ -9,10 +9,11 @@
 
 # baw --test
 pytest==6.2.4
-pytest-cov==2.11.1
-pytest-xdist==2.1.0
-pytest-instafail==0.4.2
+pytest_cov==2.11.1
+pytest_instafail==0.4.2
+pytest_localserver==0.5.0
 pytest_timeout==1.4.2
+pytest_xdist==2.1.0
 
 # TODO: Helmut's custom version. Replace with official release.
 python-semantic-release==4.1.2
