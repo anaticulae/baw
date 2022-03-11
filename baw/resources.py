@@ -59,14 +59,6 @@ LICENCE = """\
 # Licence
 """
 
-CHANGELOG_RST = """\
-.. mdinclude:: ../../CHANGELOG.md
-"""
-
-README_RST = """\
-.. mdinclude:: ../../README.md
-"""
-
 BACKLOG_RST = """\
 .. _backlog:
 
@@ -107,7 +99,7 @@ Progress
 
   releases/releases
   releases/backlog
-  pages/changelog
+  CHANGELOG
 
 Modules
 -------
@@ -201,7 +193,6 @@ FILES = [
     ('CHANGELOG.md', CHANGELOG),
     ('README.md', README),
     ('docs/index.rst', INDEX_RST),
-    ('docs/pages/changelog.rst', CHANGELOG_RST),
     ('docs/releases/backlog.rst', BACKLOG_RST),
     ('docs/releases/releases.rst', RELEASE_RST),
     ('tests/__init__.py', COPYRIGHT),
