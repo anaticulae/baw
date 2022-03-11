@@ -24,17 +24,17 @@ NO_EXECUTABLE = 127
 def destroy(path: str):
     """Remove virtual path recursive if path exists, do nothing."""
     if not os.path.exists(path):
-        baw.utils.log('Nothing to clean, path does not exists %s' % path)
+        baw.utils.log(f'Nothing to clean, path does not exists {path}')
         return True
-    baw.utils.log('Removing virtual environment %s' % path)
+    baw.utils.log(f'Removing virtual environment {path}')
     try:
         shutil.rmtree(path)
     except PermissionError as fail:
         # This error occurs, if an ide e.g. vscode uses the virtual environment
         # so removing .virtual folder is not possible.
-        msg = 'Could not remove %s. Path is locked by an other application.'
         baw.utils.error(fail)
-        baw.utils.error(msg % path)
+        msg = f'Could not remove {path}. Path is locked by an other application.'
+        baw.utils.error(msg)
         return False
     return True
 
