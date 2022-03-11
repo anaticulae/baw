@@ -65,20 +65,6 @@ RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
-UPGRADE = Command(
-    longcut='--upgrade',
-    args={
-        'nargs': '?',
-        'const': 'requirements',
-        'choices': [
-            'dev',
-            'requirements',
-            'extra',
-            'all',
-        ],
-    },
-    message='Upgrade requirements.txt/dev/ext',
-)
 NOTESTS = Command(
     longcut='--notests',
     message='Do not run test suite',
@@ -119,7 +105,6 @@ def create_parser():  # noqa: Z21
         REPORT,
         RUN,
         TEST_CONFIG,
-        UPGRADE,
         VENV,
         VERBOSE,
         VERSION,
@@ -135,6 +120,7 @@ def create_parser():  # noqa: Z21
     commands = parser.add_subparsers()
     add_open_options(commands)
     add_clean_options(commands)
+    add_upgrade_option(commands)
     add_init_options(commands)
     add_plan_options(commands)
     add_sync_options(commands)
@@ -143,6 +129,22 @@ def create_parser():  # noqa: Z21
     add_publish_options(commands)
     add_install_option(commands)
     return parser
+
+
+def add_upgrade_option(parser):
+    plan = parser.add_parser('upgrade', help='Upgrade requirements.txt/dev/ext')
+    plan.add_argument(
+        'upgrade',
+        help='Select packages to upgrade',
+        choices=[
+            'dev',
+            'requirements',
+            'extra',
+            'all',
+        ],
+        nargs='?',
+        default='requirements',
+    )
 
 
 def add_clean_options(parser):
@@ -305,6 +307,7 @@ def parse():
     args['init'] = 'init' in sys.argv
     args['open'] = 'open' in sys.argv
     args['install'] = 'install' in sys.argv
+    args['upgrade'] = 'upgrade' in sys.argv
 
     need_help = not any(args.values())
     if need_help:
