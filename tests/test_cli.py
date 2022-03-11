@@ -19,9 +19,9 @@ def test_run_commands_with_ls(project_with_command):
 
 
 @tests.longrun
-def test_run_without_commands_in_project(project_without_command):
+def test_run_without_commands_in_project(example):
     """Running --run without any registered command in project."""
     tests.assert_run_fail(
         'baw --run',
-        cwd=project_without_command,
+        cwd=example,
     )

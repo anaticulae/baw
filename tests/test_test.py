@@ -7,35 +7,30 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from os.path import exists
-from os.path import join
-from textwrap import dedent
+import os
+import textwrap
 
 import pytest
 
-from baw.utils import SUCCESS
-from baw.utils import file_create
-from tests import EXAMPLE_PROJECT_NAME
-from tests import cmds
-from tests import example  # pylint: disable=W0611
-from tests import longrun
-from tests import run
+import baw.utils
+import tests
 
 
-@cmds
+@tests.cmds
 def test_creating_project(tmpdir):
     """Creating project without virtual environment"""
-    completed = run(
+    completed = tests.run(
         'baw init xkcd "Longtime project"',
         cwd=tmpdir,
     )
-    assert completed.returncode == SUCCESS, f'{completed.stderr}\n{completed.stdout}'
-    assert exists(join(tmpdir, '.git'))
+    error = f'{completed.stderr}\n{completed.stdout}'
+    assert completed.returncode == baw.utils.SUCCESS, error
+    assert os.path.exists(os.path.join(tmpdir, '.git'))
 
 
-@cmds
-@longrun
-def test_test_with_import(example):  # pylint: disable=W0621
+@tests.cmds
+@tests.longrun
+def test_test_with_import(example):
     """Ensure that import project package while writing tests need no additonal
     configuration on sys.path
 
@@ -46,37 +41,36 @@ def test_test_with_import(example):  # pylint: disable=W0621
     """
     # EXAMPLE_PROJECT_NAME is equal to package name
     python_file = 'samba'
-    test_me = dedent("""\
+    test_me = textwrap.dedent("""\
         def test_me():
             import %s.%s
-    """) % (EXAMPLE_PROJECT_NAME, python_file)
-
-    write = join(example, 'tests', 'my_test.py')
-    file_create(write, test_me)
-    assert exists(write)
-
-    empty_python = join(example, EXAMPLE_PROJECT_NAME, '%s.py' % python_file)
-    file_create(empty_python, '')
-    assert exists(empty_python)
-
+    """) % (tests.EXAMPLE_PROJECT_NAME, python_file)
+    write = os.path.join(example, 'tests', 'my_test.py')
+    baw.utils.file_create(write, test_me)
+    assert os.path.exists(write)
+    empty_python = os.path.join(
+        example,
+        tests.EXAMPLE_PROJECT_NAME,
+        '%s.py' % python_file,
+    )
+    baw.utils.file_create(empty_python)
+    assert os.path.exists(empty_python)
     # install requirements first and run test later
     cmd = 'baw test'
-    completed = run(cmd, example)
+    completed = tests.run(cmd, example)
 
     assert not completed.returncode, completed.stderr + completed.stdout
 
 
 @pytest.fixture
-def project_with_test(example):  # pylint: disable=W0621
+def project_with_test(example):
     """Create project with one test case"""
-
-    test_me = dedent("""\
+    test_me = textwrap.dedent("""\
         def test_me():
             # Empty passing test
             pass
     """)
-
-    write = join(example, 'tests', 'my_test.py')
-    file_create(write, test_me)
-    assert exists(write)
+    write = os.path.join(example, 'tests', 'my_test.py')
+    baw.utils.file_create(write, test_me)
+    assert os.path.exists(write)
     return example
