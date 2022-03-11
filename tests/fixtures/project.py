@@ -12,6 +12,7 @@ import textwrap
 
 import pytest
 
+import baw.config
 import baw.git
 import baw.utils
 import tests
@@ -19,11 +20,16 @@ import tests
 
 @pytest.fixture
 def project_example(testdir, monkeypatch):
-    baw.git.update_userdata()
-    tests.run_command(['init', 'xcd', '"I Like This Project"'], monkeypatch)
-    tests.run_command('plan new', monkeypatch)
-    tests.run_command(['--virtual'], monkeypatch)
-    return testdir.tmpdir
+    with monkeypatch.context() as context:
+        tmpdir = lambda: testdir.tmpdir.join('tmpdir')
+        context.setattr(baw.config, 'bawtmp', tmpdir)
+
+        baw.git.update_userdata()
+        tests.run_command(['init', 'xcd', '"I Like This Project"'], monkeypatch)
+        tests.run_command('plan new', monkeypatch)
+        tests.run_command(['--virtual'], monkeypatch)
+
+        yield testdir.tmpdir
 
 
 @pytest.fixture
