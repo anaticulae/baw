@@ -13,3 +13,6 @@ name = Black and White
 
 [release]
 minimal_coverage = 50
+
+[docker]
+image = baw:0.18.0
