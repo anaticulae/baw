@@ -27,6 +27,7 @@ import os
 import sys
 import typing
 
+import baw
 import baw.utils
 
 PROJECT_PATH = [
@@ -279,7 +280,7 @@ def docker_image(root: str) -> bool:
     result = default_config(
         root,
         lambda x: x['docker']['image'],
-        default='',
+        default=f'baw:{baw.__version__}',
     )
     return result
 
