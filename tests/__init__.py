@@ -40,12 +40,12 @@ NO_BAW_RESON = 'Installing baw takes long time'
 FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 
 # pylint: disable=invalid-name
-skip_cmd = pytest.mark.skipif(NO_BAW, reason='Decrease response time')
-skip_longrun = pytest.mark.skipif(FAST_TESTS, reason='Test requires long time')
+cmds = pytest.mark.skipif(NO_BAW, reason='decrease response time')
+longrun = pytest.mark.skipif(FAST_TESTS, reason='test requires long time')
 nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
-skip_missing_packages = pytest.mark.skip(reason='Required package(s) not available') # yapf:disable
-skip_nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No virtual environment') # yapf:disable
-skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in virtual environment') # yapf:disable
+skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
+nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No venv env')
+skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
 
 def tempname():

@@ -13,16 +13,16 @@ environment afterwards.
 from os.path import exists
 
 from baw.utils import SUCCESS
+from tests import cmds
+from tests import longrun
 from tests import nightly
 from tests import run
 from tests import run_command
-from tests import skip_cmd
-from tests import skip_longrun
 from tests.test_test import project_with_test  # pylint: disable=W0611
 
 
-@skip_cmd
-@skip_longrun
+@cmds
+@longrun
 def test_create_venv(example, monkeypatch):
     """Creating virtual environment."""
     run_command('--virtual', monkeypatch=monkeypatch)
@@ -31,7 +31,7 @@ def test_create_venv(example, monkeypatch):
     assert exists(virtual), 'venv folder does not exists: %s' % virtual
 
 
-@skip_cmd
+@cmds
 @nightly
 def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
     """Running test-example in virtual environment"""

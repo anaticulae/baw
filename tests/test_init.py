@@ -14,8 +14,8 @@ import pytest
 import tests
 
 
-@tests.skip_cmd
-@tests.skip_longrun
+@tests.cmds
+@tests.longrun
 def test_init_project_in_empty_folder(project_example):
     """Run init in empty folder.
 
@@ -25,8 +25,8 @@ def test_init_project_in_empty_folder(project_example):
     assert os.path.exists(index)
 
 
-@tests.skip_cmd
-@tests.skip_longrun
+@tests.cmds
+@tests.longrun
 def test_doc_command(project_example, monkeypatch):
     """Run --doc command to generate documentation."""
     tests.run_command('--doc', monkeypatch)
@@ -34,9 +34,9 @@ def test_doc_command(project_example, monkeypatch):
     assert os.path.exists(created)
 
 
-@tests.skip_cmd
-@tests.skip_longrun
-@tests.skip_nonvirtual
+@tests.cmds
+@tests.longrun
+@tests.nonvirtual
 @pytest.mark.usefixtures('testdir')
 def test_escaping_single_collon(monkeypatch):
     """Generate project with ' in name and test install"""
@@ -48,7 +48,7 @@ def test_escaping_single_collon(monkeypatch):
     'init myroject "This is a beautyful project"',
     'init myroject "This is a beautyful project" --cmdline',
 ])
-@tests.skip_longrun
+@tests.longrun
 @pytest.mark.usefixtures('testdir')
 def test_run_complex_command(monkeypatch, command):
     """Run help and version and format command to reach basic test coverage"""

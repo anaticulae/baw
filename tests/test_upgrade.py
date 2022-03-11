@@ -90,7 +90,7 @@ def test_out_of_date():
     assert installed == "0.5.3"
 
 
-@tests.skip_longrun
+@tests.longrun
 def test_new_requirements():
     result = baw.cmd.upgrade.determine_new_requirements(
         baw.ROOT,
@@ -118,8 +118,8 @@ def test_upgrading(tmpdir):
     assert loaded != TEST_UPGRADE
 
 
-@tests.skip_longrun
-@tests.skip_nonvirtual
+@tests.longrun
+@tests.nonvirtual
 def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621, W0613
     path = os.getcwd()
 

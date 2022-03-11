@@ -29,7 +29,7 @@ def project_with_command(example):  #pylint: disable=W0621
     return example
 
 
-@tests.skip_longrun
+@tests.longrun
 def test_run_commands_with_ls(project_with_command):  #pylint: disable=W0621
     """Running --run with ls."""
     tmpdir = project_with_command
@@ -39,7 +39,7 @@ def test_run_commands_with_ls(project_with_command):  #pylint: disable=W0621
 project_without_command = example  #pylint: disable=C0103
 
 
-@tests.skip_longrun
+@tests.longrun
 def test_run_without_commands_in_project(project_without_command):  #pylint: disable=W0621
     """Running --run without any registered command in project."""
     tmpdir = project_without_command
