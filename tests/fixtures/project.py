@@ -50,3 +50,17 @@ def project_example_done(project_example):  # pylint:disable=W0621
     replaced = loaded.replace(pattern, replacement)
     baw.utils.file_replace(source, replaced)
     return project_example
+
+
+RUN = """
+[run]
+command = ls
+"""
+
+
+@pytest.fixture
+def project_with_command(example):
+    """Create testproject which contains --run-command ls."""
+    path = baw.config.config_path(example)
+    baw.utils.file_append(path, RUN)
+    return example
