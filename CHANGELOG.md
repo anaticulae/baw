@@ -2,6 +2,65 @@
 
 Every noteable change is logged here.
 
+## v0.18.0
+
+### Feature
+
+* clean modern docs path (fbee9ed074f0)
+* do not lint branches count (0ed6680f68cb)
+* extend valid name list (61be8f7bf433)
+* add cli to run cmd on generated resource (520c6339ec53)
+* enable fail on finding on default (596d4b102375)
+* use custom setuptools (b0da472c5812)
+* remove log, workspace files also (c96439e93474)
+* add remove and dev option (4cb6b9d7005b)
+* replace install option (adeb2b9d3078)
+* add method to sort file and make content unique (283bf9de7f95)
+* shrink commits to functional commits (35d40c0724c9)
+* add small program to run any profile step (70e0f216e0ee)
+* add option to hide git status message (6ca5f9c891ba)
+* clean stack dumps (37ddc146a4c1)
+* print error message and exit if path not exists (d9782a091082)
+* generate docs outside source tree (ef80bfa5c466)
+* update current year automatically (189405eee6ea)
+* adjust current year (13fb902849ef)
+* write tmp requirements file to tmp path (78250e8843ba)
+* add hint that package index is not reachable (24ad9fbcb3c0)
+* move project config (e5c33ab715d8)
+* use absolute path, to make work dir independent (3623e628b00d)
+* use baw tmp folder to store generated files (c61d9f8740c4)
+* use more caching (a0fb6a65047d)
+* use new venv folder and log old one as outdated (365571e916f9)
+* add central baw tmp folder (fc1c1e5c6fc4)
+* add option to do not run setup before testing (997fd6214630)
+* add publish command without venv (52a714f468ac)
+* add information about failing publishing (3527d0f644ca)
+
+### Fix
+
+* do not create changelog.rst anymore (bca5199cb8ed)
+* do not copy readme (66ee661c7086)
+* ensure equal name packages (77aee3ac7f34)
+* fix template (0abf8dcfde41)
+* add support for projects starting with n, like nltk (877d2cfa686f)
+* use pragma to skip code (c3ce838fd728)
+* do not skip .cov file (cee0f42cb12c)
+* ensure alphabetic with upper and lower case (d043f5bac2c3)
+* do not run invalid command (d2b6d0374d2c)
+* show the end not the start of a test (a625cd836f7d)
+* increase error view (21dc754bbc6d)
+* adjust to new tmp path (d6b08df88559)
+* do not fail on missing power installation (4a80f3644abb)
+* adjust date to current year (065c78143823)
+* do not clean workspace (0b042c8515a7)
+* skip year as possible release (40b6e9168918)
+
+### Documentation
+
+* remove outdated files (d83914926771)
+* include index page (b72662e7b37b)
+* Happy New Year! (bfceb30df708)
+
 ## v0.17.0
 
 ### Feature
