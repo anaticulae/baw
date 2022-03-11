@@ -78,13 +78,13 @@ def generate_docs(root: str, verbose: bool, virtual: bool) -> int:
     baw.utils.log('sync docs')
     source = os.path.join(root, 'docs')
     shutil.copytree(source, doctmp, dirs_exist_ok=True)
-    for filename in 'README.md CHANGELOG.md'.split():
+    for filename in 'CHANGELOG.md'.split():
         path = os.path.join(root, filename)
         if not os.path.exists(path):
             continue
         loaded = baw.utils.file_read(path)
         baw.utils.file_replace(os.path.join(doctmp, filename), loaded)
-    for filename in 'readme.rst changelog.rst'.split():
+    for filename in 'changelog.rst'.split():
         path = os.path.join(doctmp, 'pages', filename)
         if not os.path.exists(path):
             continue
