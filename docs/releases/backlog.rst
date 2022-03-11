@@ -13,8 +13,6 @@ backlog
 
 * define user configuration file in ~/.baw
 
-* make pip check asynchronus to improve upgrade step
-
 * fix: baw --plan=close: if there is a closed plan 1.9 and further closed
   plans: 1.10, 1.11, 1.12 and a open plan 1.13, --plan=close closes 1.9
   again.
@@ -22,3 +20,9 @@ backlog
 * baw --testconfig use append to support additive entrees
 
 * check pip completion to use this as baw/tool completion
+
+done
+----
+
+* make pip check asynchronus to improve upgrade step
+  ==>> [sync speed is increased due using caching on pip server]
