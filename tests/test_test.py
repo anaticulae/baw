@@ -45,14 +45,10 @@ def test_test_with_import(example):
         def test_me():
             import %s.%s
     """) % (tests.EXAMPLE_PROJECT_NAME, python_file)
-    write = os.path.join(example, 'tests', 'my_test.py')
+    write = example.join('tests/my_test.py')
     baw.utils.file_create(write, test_me)
     assert os.path.exists(write)
-    empty_python = os.path.join(
-        example,
-        tests.EXAMPLE_PROJECT_NAME,
-        '%s.py' % python_file,
-    )
+    empty_python = example.join(tests.EXAMPLE_PROJECT_NAME, f'{python_file}.py')
     baw.utils.file_create(empty_python)
     assert os.path.exists(empty_python)
     # install requirements first and run test later
@@ -70,7 +66,7 @@ def project_with_test(example):
             # Empty passing test
             pass
     """)
-    write = os.path.join(example, 'tests', 'my_test.py')
+    write = example.join('tests/my_test.py')
     baw.utils.file_create(write, test_me)
     assert os.path.exists(write)
     return example
