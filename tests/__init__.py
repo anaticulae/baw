@@ -109,14 +109,16 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 
 
 @pytest.fixture
-def example(testdir):
+def example(testdir, monkeypatch):
     """Creating example project due console"""
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
-    root = str(testdir)
     cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'
-    with assert_run(cmd, cwd=root):
-        assert os.path.exists(os.path.join(root, '.git'))
-    return root
+    with monkeypatch.context() as context:
+        tmpdir = lambda: testdir.tmpdir.join('tmpdir')
+        context.setattr(baw.config, 'bawtmp', tmpdir)
+        with assert_run(cmd, cwd=testdir.tmpdir):
+            assert os.path.exists(os.path.join(testdir.tmpdir, '.git'))
+            yield testdir.tmpdir
 
 
 def file_count(path: str):

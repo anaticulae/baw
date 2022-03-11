@@ -16,21 +16,22 @@ import tests
 
 @tests.skip_cmd
 @tests.skip_longrun
-@pytest.mark.usefixtures('project_example')
-def test_init_project_in_empty_folder():
+def test_init_project_in_empty_folder(project_example):
     """Run init in empty folder.
 
-    Intitialize project and check if documentation is generated."""
-    assert os.path.exists('docs/pages/changelog.rst')
+    Intitialize project and check that documentation is generated.
+    """
+    index = project_example.join('docs/index.rst')
+    assert os.path.exists(index)
 
 
 @tests.skip_cmd
 @tests.skip_longrun
-@pytest.mark.usefixtures('project_example')
-def test_doc_command(monkeypatch):
+def test_doc_command(project_example, monkeypatch):
     """Run --doc command to generate documentation."""
     tests.run_command('--doc', monkeypatch)
-    assert os.path.exists('docs/html')
+    created = project_example.join('tmpdir/docs/xcd/html/index.html')
+    assert os.path.exists(created)
 
 
 @tests.skip_cmd

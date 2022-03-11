@@ -9,14 +9,13 @@
 """Test to create a virtual environment and running tests in virtual
 environment afterwards.
  """
-from os.path import exists
-from os.path import join
 
-from baw.runtime import VIRTUAL_FOLDER
+from os.path import exists
+
 from baw.utils import SUCCESS
-from tests import example  # pylint: disable=W0611
 from tests import nightly
 from tests import run
+from tests import run_command
 from tests import skip_cmd
 from tests import skip_longrun
 from tests.test_test import project_with_test  # pylint: disable=W0611
@@ -24,17 +23,12 @@ from tests.test_test import project_with_test  # pylint: disable=W0611
 
 @skip_cmd
 @skip_longrun
-def test_create_venv(example):  # pylint: disable=W0621
+def test_create_venv(example, monkeypatch):
     """Creating virtual environment."""
-    completed = run(
-        'baw --virtual',
-        cwd=example,
-    )
-    assert completed.returncode == SUCCESS, completed.stderr
+    run_command('--virtual', monkeypatch=monkeypatch)
     # TODO: ADJUST THIS TEST LATER, TODO: PATH BAWTMP FOR THIS TEST?
-    virtual = join(example, VIRTUAL_FOLDER)
-    msg = 'Virtual folder does not exists: %s' % virtual
-    assert exists(virtual), msg
+    virtual = example.join('tmpdir/venv/xkcd')
+    assert exists(virtual), 'venv folder does not exists: %s' % virtual
 
 
 @skip_cmd
