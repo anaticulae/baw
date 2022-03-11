@@ -270,6 +270,20 @@ def plugins(root: str) -> bool:
     return result
 
 
+def docker_image(root: str) -> bool:
+    """\
+    >>> import baw
+    >>> docker_image(baw.ROOT)
+    'baw:...'
+    """
+    result = default_config(
+        root,
+        lambda x: x['docker']['image'],
+        default='',
+    )
+    return result
+
+
 def default_config(root: str, access: callable, default=None) -> bool:
     if os.path.isfile(root):
         path = root
