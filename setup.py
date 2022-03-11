@@ -39,14 +39,6 @@ if __name__ == "__main__":
         classifiers=[
             'Programming Language :: Python :: 3.8',
         ],
-        entry_points={
-            'console_scripts': [
-                'baw = baw.run:main',
-                'baw_profile = baw.small.profile:main',
-                'baw_regen = baw.small.regen:main',
-                'baw_single = baw.small.single:main',
-            ],
-        },
         packages=[
             'baw',
             'baw.archive',
@@ -56,4 +48,12 @@ if __name__ == "__main__":
             'baw.small',
             'baw.templates',
         ],
+        entry_points={
+            'console_scripts': [
+                'baw = baw.run:main',
+                'baw_profile = baw.small.profile:main',
+                'baw_regen = baw.small.regen:main',
+                'baw_single = baw.small.single:main',
+            ],
+        },
     )
