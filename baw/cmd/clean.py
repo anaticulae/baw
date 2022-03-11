@@ -33,7 +33,9 @@ def clean(  # pylint:disable=R1260
         docs, resources, tests, tmp, venv = True, True, True, True, True
     if venv:
         clean_virtual(root)
-    patterns = create_pattern(root, resources, tmp, tests, docs)
+    if docs:
+        clean_docs(root)
+    patterns = create_pattern(root, resources, tmp, tests)
     # problems while deleting recursive
     ret = 0
     for pattern in patterns:
@@ -61,12 +63,25 @@ def clean(  # pylint:disable=R1260
     return baw.utils.SUCCESS
 
 
+def clean_docs(root: str):
+    doctmp = baw.config.docpath(root, mkdir=False)
+    if not os.path.exists(doctmp):
+        baw.utils.error(f'doc path does not exists: {doctmp}')
+        return
+    baw.utils.log(f'clean docs {doctmp}')
+    try:
+        shutil.rmtree(doctmp)
+    except OSError as fail:
+        baw.utils.error(fail)
+        sys.exit(baw.utils.FAILURE)
+    baw.utils.log('Finished')
+
+
 def create_pattern(
     root,
     resources: bool,
     tmp: bool,
     tests: bool,
-    docs: bool,
 ) -> list:
     selected = []
     if resources:
@@ -84,11 +99,6 @@ def create_pattern(
         selected.extend([
             '.pytest_cache',
             '.tmp/pytest_cache',
-        ])
-    if docs:
-        selected.extend([
-            'docs/.tmp',
-            'html',
         ])
     return selected
 

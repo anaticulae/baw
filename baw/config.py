@@ -294,9 +294,9 @@ def bawtmp():
     return path
 
 
-def docpath(root: str) -> str:
-    projectname = os.path.split(root)[1]
-    projectname = projectname.split('-')[0]
-    tmpdoc = os.path.join(bawtmp(), 'docs', projectname)
-    os.makedirs(tmpdoc, exist_ok=True)
+def docpath(root: str, mkdir: bool = True) -> str:
+    shortname = shortcut(root)
+    tmpdoc = os.path.join(bawtmp(), 'docs', shortname)
+    if mkdir:
+        os.makedirs(tmpdoc, exist_ok=True)
     return tmpdoc
