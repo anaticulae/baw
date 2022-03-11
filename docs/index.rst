@@ -7,7 +7,6 @@ General
 .. toctree::
   :maxdepth: 1
 
-  pages/readme
   bugs
 
 Progress
@@ -18,7 +17,7 @@ Progress
 
   releases/releases
   releases/backlog
-  pages/changelog
+  CHANGELOG
 
 Developer
 ---------
@@ -27,7 +26,8 @@ Developer
   :maxdepth: 1
 
 Modules
---------------------
+-------
+
 .. toctree::
    :maxdepth: 4
 
