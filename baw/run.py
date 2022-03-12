@@ -29,6 +29,7 @@ import baw.cmd.release
 import baw.cmd.sync
 import baw.cmd.test
 import baw.cmd.upgrade
+import baw.config
 import baw.execution
 import baw.project
 import baw.runtime
@@ -75,6 +76,26 @@ def run_main():  # pylint:disable=R0911
         # Therefore it is senseless to measure the runtime.
         baw.utils.print_runtime(start)
     return baw.utils.SUCCESS
+
+
+def switch_docker():
+    """Use docker environment to run command."""
+    usedocker = '--docker' in sys.argv
+    if not usedocker:
+        return run_main()
+    root = os.getcwd()
+    # use docker to run cmd
+    argv = [item for item in sys.argv if item != '--docker']
+    usercmd = ' '.join(argv)
+    image = baw.config.docker_image(root=root)
+    docker = f'docker run -it -e RUNJOB="{usercmd}" {image}'
+    completed = baw.runtime.run(docker, cwd=root)
+    if completed.returncode:
+        baw.utils.error(docker)
+        if completed.stdout:
+            baw.utils.error(completed.stdout)
+        baw.utils.error(completed.stderr)
+    return completed.returncode
 
 
 def run_version(args) -> bool:
@@ -368,7 +389,7 @@ def setup_environment(upgrade, release, raw, virtual):  # pylint: disable=W0621
 def main():
     """Entry point of script"""
     try:
-        sys.exit(run_main())
+        sys.exit(switch_docker())
     except KeyboardInterrupt:
         baw.utils.log('\nOperation cancelled by user')
     except Exception as msg:  # pylint: disable=broad-except
