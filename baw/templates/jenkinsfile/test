@@ -1,0 +1,16 @@
+pipeline{
+
+    agent{
+        docker{
+            image 'baw:0.18.0'
+        }
+    }
+
+    stages{
+        stage('test') {
+            steps{
+                sh 'baw test long'
+            }
+        }
+    }
+}
