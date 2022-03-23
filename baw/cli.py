@@ -128,6 +128,7 @@ def create_parser():  # noqa: Z21
     add_release_options(commands)
     add_publish_options(commands)
     add_install_option(commands)
+    add_pipeline_option(commands)
     return parser
 
 
@@ -297,6 +298,17 @@ def add_install_option(parser):
     )
 
 
+def add_pipeline_option(parser):
+    sync = parser.add_parser('jenkins', help='Run pipline task')
+    sync.add_argument(
+        'create',
+        help='generate jenkins file',
+        nargs='?',
+        const='test',
+        choices='test generate nightly release'.split(),
+    )
+
+
 def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
@@ -308,6 +320,7 @@ def parse():
     args['open'] = 'open' in sys.argv
     args['install'] = 'install' in sys.argv
     args['upgrade'] = 'upgrade' in sys.argv
+    args['jenkins'] = 'jenkins' in sys.argv
 
     need_help = not any(args.values())
     if need_help:
