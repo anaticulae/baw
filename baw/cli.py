@@ -313,15 +313,15 @@ def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
     args = vars(parser.parse_args())
-
     args['sync'] = 'sync' in sys.argv
     args['plan'] = 'plan' in sys.argv
     args['init'] = 'init' in sys.argv
     args['open'] = 'open' in sys.argv
     args['install'] = 'install' in sys.argv
-    args['upgrade'] = 'upgrade' in sys.argv
+    if 'upgrade' not in sys.argv:
+        args['upgrade'] = False
     args['jenkins'] = 'jenkins' in sys.argv
-
+    # require help?
     need_help = not any(args.values())
     if need_help:
         parser.print_help()

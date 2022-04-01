@@ -82,7 +82,8 @@ def check_upgrade(root, packages):
     if requirements_dev:
         failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
     requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
-    if not os.path.exists(requirements_extra) or packages not in 'extra all':
+    check_extra = packages in 'extra all'
+    if not os.path.exists(requirements_extra) or not check_extra:
         requirements_extra = None
     failure_extra = REQUIREMENTS_UPTODATE
     if requirements_extra:
