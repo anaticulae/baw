@@ -51,6 +51,7 @@ if __name__ == "__main__":
         entry_points={
             'console_scripts': [
                 'baw = baw.run:main',
+                'baw_cprofile_show = baw.small.cprofile:main',
                 'baw_profile = baw.small.profile:main',
                 'baw_regen = baw.small.regen:main',
                 'baw_single = baw.small.single:main',
