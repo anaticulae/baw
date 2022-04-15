@@ -17,6 +17,8 @@ import baw.run
 import baw.runtime
 import baw.utils
 
+# TODO: RENAME TO BISECT?
+
 
 def main():
     root = baw.run.determine_root(os.getcwd())
