@@ -7,6 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+# to use utila in nightly properly TODO: REMOVE LATER?
+utilatest>=0.12.3<1.0.0
+utilasafe>=0.3.1<1.0.0
+
 # baw --test
 pytest==6.2.4
 pytest_cov==2.11.1
