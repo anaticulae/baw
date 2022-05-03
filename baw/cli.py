@@ -129,6 +129,7 @@ def create_parser():  # noqa: Z21
     add_publish_options(cmds)
     add_install_option(cmds)
     add_pipeline_option(cmds)
+    add_info_option(cmds)
     return parser
 
 
@@ -295,6 +296,16 @@ def add_install_option(parser):
         '--dev',
         help='install in development mode',
         action='store_true',
+    )
+
+
+def add_info_option(parser):
+    info = parser.add_parser('info', help='Print project information.')
+    info.add_argument(
+        'info',
+        help='Print project information.',
+        nargs=1,
+        choices=['venv', 'tmp'],
     )
 
 

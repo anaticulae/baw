@@ -20,6 +20,7 @@ import baw.cmd.clean
 import baw.cmd.doc
 import baw.cmd.format
 import baw.cmd.ide
+import baw.cmd.info
 import baw.cmd.init
 import baw.cmd.install
 import baw.cmd.lint
@@ -68,6 +69,7 @@ def run_main():  # pylint:disable=R0911
             run_publish,
             run_lint,
             run_plan,
+            run_info,
     ):
         if returncode := method(root=root, args=args):
             return returncode
@@ -367,6 +369,17 @@ def run_plan(root: str, args: dict):
         plan=args.get('plan_operation'),
     )
     return result
+
+
+def run_info(root: str, args: dict):
+    if not args.get('info', False):
+        return baw.utils.SUCCESS
+    value = args['info'][0]
+    baw.cmd.info.prints(
+        root=root,
+        value=value,
+    )
+    return baw.utils.SUCCESS
 
 
 # TODO: add matrix with excluding cmds, eg. --init --drop_release
