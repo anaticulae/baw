@@ -29,17 +29,22 @@ def run(root, cmd, worker: int = 1):
     generated = power.generated(project=root)
     assert os.path.exists(generated), str(generated)
     todo = []
-    for path in os.listdir(generated):
-        if '_' not in str(path):
-            continue
+    files = [str(item) for item in os.listdir(generated) if '_' in str(item)]
+    for index, path in enumerate(files):
         path = os.path.join(generated, path)
         assert os.path.exists(path), str(path)
-        todo.append(functools.partial(single, cmd, path))
+        progress = str(int(100.0 * (index / len(files)))).zfill(3)
+        todo.append(functools.partial(
+            single,
+            cmd,
+            path,
+            progress,
+        ))
     baw.utils.fork(*todo, worker=worker)
 
 
-def single(cmd, cwd):
-    logmsg = f'"{cmd}" in {cwd}'
+def single(cmd, cwd, progress: str):
+    logmsg = f'"{progress} {cmd}" in {cwd}'
     baw.utils.log(logmsg)
     completed = baw.runtime.run(command=cmd, cwd=cwd)
     if not completed.returncode:
