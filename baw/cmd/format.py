@@ -31,11 +31,9 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
     failure = run_target(root, command, verbose=False, virtual=virtual)
     if failure.returncode:
         return failure.returncode
-
     # run in parallel if not testing with pytest
-    testrun = os.environ.get('PYTEST_PLUGINS', False)
     # TODO: yapf does not run on virtual environment properly
-    parallel = '-p' if not testrun and not virtual else ''
+    parallel = '-p' if not testing() and not virtual else ''
     # python = baw.config.python(root, virtual=False)
     command = f'yapf -r -i --style=google {parallel} --no-local-style'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
@@ -110,3 +108,9 @@ def format_(
                 return FAILURE
     log(f'{info}: complete\n')
     return SUCCESS
+
+
+def testing() -> bool:
+    if os.environ.get('PYTEST_CURRENT_TEST', None):
+        return True
+    return False
