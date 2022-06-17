@@ -47,9 +47,21 @@ def single(cmd, cwd, progress: str):
     logmsg = f'"{progress} {cmd}" in {cwd}'
     baw.utils.log(logmsg)
     completed = baw.runtime.run(command=cmd, cwd=cwd)
+    append_log(completed=completed, cwd=cwd)
     if not completed.returncode:
         return
     baw.utils.error(f'{logmsg}\n{completed.stderr}\n{completed.stdout}')
+
+
+def append_log(completed, cwd: str):
+    logpath = os.path.join(cwd, 'generated.log')
+    if not os.path.exists(logpath):
+        baw.utils.error(f'miss log path: {logpath}')
+        return
+    separator = '\n\n' + '=' * 30 + 'REGENREGENREGENREGEN' + '=' * 30 + '\n\n'
+    baw.utils.file_append(logpath, separator)
+    baw.utils.file_append(logpath, completed.stdout)
+    baw.utils.file_append(logpath, completed.stderr)
 
 
 def parse_args(parser) -> tuple:
