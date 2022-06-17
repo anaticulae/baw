@@ -165,7 +165,7 @@ def add_release_options(parser):
     release = parser.add_parser('release', help='Test, commit, tag and publish')
     release.add_argument(
         'release',
-        help='Test, commit, tag and publsih',
+        help='Test, commit, tag and publish',
         nargs='?',
         choices='major minor patch noop auto'.split(),
         default='auto',
