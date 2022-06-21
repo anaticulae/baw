@@ -25,6 +25,8 @@ tmp
 *.tmp
 ..code-workspace
 .coverage*
+# vscode tmp file
+*.py.*.py
 
 # Documentation
 docs/conf.py
