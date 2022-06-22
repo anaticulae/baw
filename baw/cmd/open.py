@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import glob
 import os
 import sys
 
@@ -23,6 +24,8 @@ def openme(root: str, path: str = None):
         open_tests(root)
     elif path == 'tmp':
         open_tmp(root)
+    elif path == 'lasttest':
+        open_lasttest(root)
     elif path == 'generated':
         open_generated(root)
     elif path == 'project':
@@ -48,6 +51,20 @@ def open_tmp(root: str):
     name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
     open_this(tmpdir)
+
+
+def open_lasttest(root: str):
+    name = os.path.split(root)[1]
+    tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
+    directories = list(glob.glob(f'{tmpdir}/**/', recursive=True))
+    directories = [item for item in directories if 'pytest_cache' not in item]
+    directories.sort(key=lambda x: os.stat(x).st_mtime)
+    try:
+        last = directories[-1]
+    except IndexError:
+        baw.utils.error(f'could not find any test {root}')
+        return
+    open_this(last)
 
 
 def open_tests(root: str):
