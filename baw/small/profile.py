@@ -53,8 +53,8 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
             baw.utils.error(processed.stderr[-lookback:])
         #     sys.exit(baw.utils.FAILURE)
         states.append(processed.returncode)
-        diff = time.time() - current
-        baw.utils.log(f'done: {int(diff)}')
+        diff = round(time.time() - current, 4)
+        baw.utils.log(f'done: {diff}')
         timed.append(diff)
     baw.utils.log('\n\nDONE:\n========================')
     for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
