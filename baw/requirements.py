@@ -37,12 +37,20 @@ import baw.utils
 
 @dataclasses.dataclass
 class Requirements:
+    """\
+    >>> str(Requirements(equal=dict(painter=('0.1.1', '0.1.1'))))
+    'painter==0.1.1'
+    >>> str(Requirements(equal=dict(rawmaker='1.0.0')))
+    'rawmaker==1.0.0'
+    """
+
     equal: dict = dataclasses.field(default_factory=dict)
     greater: dict = dataclasses.field(default_factory=dict)
 
     def __str__(self):
         result = [
-            f'{package}=={version}' for package, version in self.equal.items()  # pylint:disable=E1101
+            f'{package}=={version[0] if isinstance(version, tuple) else version}'
+            for package, version in self.equal.items()
         ]
         greater = [
             f'{package}>={version}' if isinstance(version, str) else
@@ -145,7 +153,6 @@ def diff(current: Requirements, requested: Requirements, minimal: bool = False):
             if current.equal[key] == value:
                 continue
         result.equal[key] = value  # pylint:disable=E1137
-
     for key, value in requested.greater.items():
         with contextlib.suppress(KeyError):
             if minimal:
