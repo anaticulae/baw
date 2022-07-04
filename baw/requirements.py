@@ -29,8 +29,6 @@ import difflib
 import re
 import sys
 
-import semver
-
 import baw.project.version
 import baw.utils
 
@@ -273,6 +271,7 @@ def lower(current: str, new: str) -> bool:
     >>> lower('1.26.2', '1.26.1')
     True
     """
+    import semver
     current = semver.VersionInfo.parse(current)
     new = semver.VersionInfo.parse(new)
     return new < current
