@@ -17,7 +17,7 @@ import baw.runtime
 import baw.utils
 
 
-def openme(root: str, path: str = None):
+def openme(root: str, path: str = None, console: bool = False):
     if path == 'this':
         open_this()
     elif path == 'tests':
@@ -27,13 +27,13 @@ def openme(root: str, path: str = None):
     elif path == 'lasttest':
         open_lasttest(root)
     elif path == 'generated':
-        open_generated(root)
+        open_generated(root, console)
     elif path == 'project':
         root = baw.project.determine_root(os.getcwd())
         open_this(root)
 
 
-def open_generated(root: str):
+def open_generated(root: str, console: bool = False):
     try:
         import power  # pylint:disable=C0415
     except ImportError:
@@ -41,6 +41,9 @@ def open_generated(root: str):
         sys.exit(baw.utils.FAILURE)
     name = os.path.split(root)[1]
     generated = power.generated(project=name)
+    if console:
+        baw.utils.log(generated)
+        return
     if not os.path.exists(generated):
         baw.utils.error(f'resource: {generated} not generated')
         sys.exit(baw.utils.FAILURE)

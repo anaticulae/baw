@@ -120,7 +120,8 @@ def run_environment(args):
 def run_open(directory, args):
     if not args.get('open', False):
         return False
-    baw.cmd.open.openme(directory, args['path'])
+    printme = args.get('print', False)
+    baw.cmd.open.openme(directory, args['path'], console=printme)
     return True
 
 

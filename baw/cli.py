@@ -195,6 +195,11 @@ def add_open_options(parser):
         nargs='?',
         default='project',
     )
+    plan.add_argument(
+        '--print',
+        help='print path to console',
+        action='store_true',
+    )
 
 
 def add_sync_options(parser):
