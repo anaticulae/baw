@@ -24,6 +24,8 @@ def openme(root: str, path: str = None, console: bool = False):
         open_tests(root)
     elif path == 'tmp':
         open_tmp(root)
+    elif path == 'venv':
+        open_venv(root)
     elif path == 'lasttest':
         open_lasttest(root)
     elif path == 'generated':
@@ -53,6 +55,12 @@ def open_generated(root: str, console: bool = False):
 def open_tmp(root: str):
     name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
+    open_this(tmpdir)
+
+
+def open_venv(root: str):
+    name = os.path.split(root)[1]
+    tmpdir = os.path.join(baw.config.bawtmp(), 'venv', name)
     open_this(tmpdir)
 
 

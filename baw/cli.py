@@ -191,7 +191,7 @@ def add_open_options(parser):
     plan.add_argument(
         'path',
         help='Goal',
-        choices='this project generated tests tmp lasttest'.split(),
+        choices='this project generated tests tmp venv lasttest'.split(),
         nargs='?',
         default='project',
     )
