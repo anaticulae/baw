@@ -72,6 +72,8 @@ good-names=fp,
            z2,
            z3,
            zz,
+           td,
+           mp,
 
 exclude-protected = __version,
 
