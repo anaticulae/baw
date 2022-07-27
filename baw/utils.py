@@ -17,8 +17,6 @@ import sys
 import time
 import webbrowser
 
-import baw.config
-
 BAW_EXT = '.baw'
 TMP = '.tmp'
 
@@ -131,6 +129,7 @@ def tmp(root: str) -> str:
     assert root
     # queuemo-1.17.2-py3.8.egg
     projectname = os.path.split(root)[1].split('-')[0]
+    import baw.config
     path = os.path.join(baw.config.bawtmp(), 'tmp', projectname)
     os.makedirs(path, exist_ok=True)
     return path

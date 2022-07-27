@@ -22,8 +22,6 @@ from baw.git import update_gitignore
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_EXTRA
-from baw.utils import REQUIREMENTS_TXT
-from baw.utils import check_root
 from baw.utils import error
 from baw.utils import get_setup
 from baw.utils import log
@@ -54,7 +52,7 @@ def sync(
     Returns:
         summed exit code of sync processes
     """
-    check_root(root)
+    baw.utils.check_root(root)
     ret = 0
     log()
     ret += update_gitignore(root, verbose=verbose)
@@ -138,7 +136,7 @@ def sync_dependencies(
     verbose: bool = False,
     virtual: bool = False,
 ) -> int:
-    check_root(root)
+    baw.utils.check_root(root)
     log('sync virtual' if virtual else 'sync local')
     resources = determine_resources(root, packages)
     pip_index, extra_url = package_address()
@@ -260,7 +258,7 @@ def determine_resources(root: str, packages: str) -> list:
             resources.append(os.path.join(root, REQUIREMENTS_EXTRA))
 
     # local project file
-    local_requirement = join(root, REQUIREMENTS_TXT)
+    local_requirement = join(root, baw.utils.REQUIREMENTS_TXT)
     if exists(local_requirement):
         resources.append(local_requirement)
     return resources

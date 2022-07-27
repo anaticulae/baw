@@ -17,11 +17,7 @@ from subprocess import run
 
 import baw.resources
 import baw.runtime
-from baw.utils import SUCCESS
-from baw.utils import error
-from baw.utils import file_replace
-from baw.utils import log
-from baw.utils import skip
+import baw.utils
 
 GIT_EXT = '.git'
 GIT_REPO_EXCLUDE = '.git/info/exclude'
@@ -34,9 +30,9 @@ def git_init(root: str):
         root(str): generated project"""
     git_dir = join(root, GIT_EXT)
     if exists(git_dir):
-        skip('git init')
+        baw.utils.skip('git init')
         return
-    log('git init')
+    baw.utils.log('git init')
     command = run(['git', 'init'], check=False)
     evaluate_git_error(command)
 
@@ -48,7 +44,7 @@ def git_add(root: str, pattern: str):
         root(str): root of generated project
         pattern(str): pattern in linux-style"""
     assert exists(root)
-    log('git add')
+    baw.utils.log('git add')
     cmd = baw.runtime.run_target(root, 'git add %s' % pattern, verbose=False)
     evaluate_git_error(cmd)
 
@@ -61,7 +57,7 @@ def git_commit(root, source, message, verbose: int = 0):
     assert exists(root)
     message = '"%s"' % message
     if verbose:
-        log('git commit')
+        baw.utils.log('git commit')
     # support multiple files
     if not isinstance(source, str):
         source = ' '.join(source)
@@ -98,17 +94,17 @@ def git_checkout(
         verbose(bool): increase logging
         virtual(bool): run in virtual environment
     Returns:
-        0 if SUCCESS else FAILURE
+        0 if baw.utils.SUCCESS else FAILURE
     """
     # TODO: RENAME TO GIT_RESET
     runner = partial(baw.runtime.run_target, verbose=verbose, virtual=virtual)
     to_reset = ' '.join(files) if not isinstance(files, str) else files
-    log('Reset %s' % to_reset)
+    baw.utils.log('Reset %s' % to_reset)
     completed = runner(root, 'git checkout -q %s' % to_reset)
 
     if completed.returncode:
         msg = 'while checkout out %s\n%s' % (to_reset, str(completed))
-        error(msg)
+        baw.utils.error(msg)
     return completed.returncode
 
 
@@ -132,7 +128,7 @@ def git_stash(
     Raises:
         Reraises all user execeptions
     """
-    log('Stash environment')
+    baw.utils.log('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = baw.runtime.run_target(
         root,
@@ -141,15 +137,15 @@ def git_stash(
         virtual=virtual,
     )
     if completed.returncode:
-        error(completed.stdout)
-        error(completed.stderr)
+        baw.utils.error(completed.stdout)
+        baw.utils.error(completed.stderr)
         # Stashing an repository with not commit, produces an error
         sys.exit(completed.returncode)
 
     nostash = (not completed.returncode and
                'No local changes to save' in completed.stdout)
     if nostash:
-        log('No stash is required. Environment is already clean.')
+        baw.utils.log('No stash is required. Environment is already clean.')
 
     err = None
     try:
@@ -161,7 +157,7 @@ def git_stash(
         # reraise exception from user code
         if err:
             raise err
-        return SUCCESS
+        return baw.utils.SUCCESS
     # unstash to recreate dirty environment
     cmd = 'git stash pop'
     completed = baw.runtime.run_target(
@@ -171,7 +167,7 @@ def git_stash(
         virtual=virtual,
     )
     if completed.returncode:
-        error(completed.stderr)
+        baw.utils.error(completed.stderr)
     # reraise except from user code
     if err:
         raise err
@@ -216,9 +212,12 @@ def git_modified(root: str) -> bool:
 
 def update_gitignore(root: str, verbose: bool = False):
     if verbose:
-        log('sync gitexclude')
-    file_replace(join(root, GIT_REPO_EXCLUDE), baw.resources.GITIGNORE)
-    return SUCCESS
+        baw.utils.log('sync gitexclude')
+    baw.utils.file_replace(
+        join(root, GIT_REPO_EXCLUDE),
+        baw.resources.GITIGNORE,
+    )
+    return baw.utils.SUCCESS
 
 
 def update_userdata(username='supermario', email='test@test.com'):

@@ -12,14 +12,10 @@ import os
 import time
 
 import baw
+import baw.config
 import baw.git
 import baw.project.version
-from baw.config import name
-from baw.config import shortcut
-from baw.config import sources
-from baw.utils import REQUIREMENTS_TXT
-from baw.utils import file_read
-from baw.utils import forward_slash
+import baw.utils
 
 FOLDERS = [
     'tests',
@@ -175,16 +171,16 @@ if __name__ == "__main__":
     main()
 """
 
-CODE_WORKSPACE = file_read(WORKSPACE_TEMPLATE)
-GITIGNORE = file_read(os.path.join(TEMPLATES, '.gitignore'))
-SETUP_PY = file_read(os.path.join(TEMPLATES, 'setup.tpy'))
-SETUP_CFG = file_read(os.path.join(TEMPLATES, 'setup.cfg'))
-RELEASE_PLAN = file_read(os.path.join(TEMPLATES, 'docs/plan.rst'))
+CODE_WORKSPACE = baw.utils.file_read(WORKSPACE_TEMPLATE)
+GITIGNORE = baw.utils.file_read(os.path.join(TEMPLATES, '.gitignore'))
+SETUP_PY = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.tpy'))
+SETUP_CFG = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.cfg'))
+RELEASE_PLAN = baw.utils.file_read(os.path.join(TEMPLATES, 'docs/plan.rst'))
 
-DOC_CONF = file_read(os.path.join(TEMPLATES, 'conf.py'))
+DOC_CONF = baw.utils.file_read(os.path.join(TEMPLATES, 'conf.py'))
 
-ISORT_TEMPLATE = file_read(ISORT_PATH)
-CONFTEST_TEMPLATE = file_read(CONFTEST_PATH)
+ISORT_TEMPLATE = baw.utils.file_read(ISORT_PATH)
+CONFTEST_TEMPLATE = baw.utils.file_read(CONFTEST_PATH)
 
 # None copies files
 FILES = [
@@ -197,7 +193,7 @@ FILES = [
     ('docs/releases/releases.rst', RELEASE_RST),
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
-    (REQUIREMENTS_TXT, REQUIREMENTS),
+    (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
     # ('setup.py', SETUP_PY),
 ]
 
@@ -214,10 +210,10 @@ def template_replace(root: str, template: str, **kwargs) -> str:
     Hint:
         Vars are defined as {{VARNAME}}.
     """
-    root = forward_slash(root, save_newline=False)
-    short = shortcut(root)
-    source = sources(root)
-    name_ = name(root)
+    root = baw.utils.forward_slash(root, save_newline=False)
+    short = baw.config.shortcut(root)
+    source = baw.config.sources(root)
+    name_ = baw.config.name(root)
     version_tag = baw.project.version.determine(root)
     year = str(time.localtime(time.time()).tm_year)
 
