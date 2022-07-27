@@ -28,6 +28,7 @@ import sys
 import typing
 
 import baw
+import baw.resources
 import baw.utils
 
 PROJECT_PATH = [
@@ -77,13 +78,13 @@ def create(root: str, shortname: str, longname: str):
     assert os.path.exists(root)
     cfg = configparser.ConfigParser()
     cfg['project'] = {'short': shortname, 'name': longname}
-    cfg['release'] = {'fail_on_finding': True}
+    # cfg['release'] = {'fail_on_finding': True}
     outpath = config_path(root)
     # write to buffer
     output = io.StringIO()
     cfg.write(output)
     output.seek(0)
-    content = output.getvalue()
+    content = baw.resources.COPYRIGHT + output.getvalue()
     # create config
     baw.utils.file_replace(outpath, content)
 
