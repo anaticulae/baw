@@ -221,6 +221,10 @@ def collect_new_packages(root, source, sink, virtual, verbose=False):
                 sync_error = True
             else:
                 available = available_version(dependency, package=package)
+                installed = installed_version(dependency)
+                if installed:
+                    if baw.requirements.lower(installed, available):
+                        available = installed
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
     return sync_error
