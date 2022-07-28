@@ -40,18 +40,40 @@ def determine(root: str) -> str:
 
 # TODO: IMPROVE THIS, USE EXTERNAL BIB
 def major(item: str) -> int:
+    """\
+    >>> major('20220524')
+    20220524
+    """
     result = item.split('.')[0]
     result = int(result)
     return result
 
 
 def minor(item: str) -> int:
-    result = item.split('.')[1]
+    """\
+    >>> minor('20220524')
+    0
+    """
+    try:
+        result = item.split('.')[1]
+    except IndexError:
+        return 0
     result = int(result)
     return result
 
 
 def patch(item: str) -> int:
-    result = item.split('.')[2]
+    """\
+    >>> patch('2.1.3')
+    3
+    >>> patch('2.1')
+    0
+    >>> patch('20220524')
+    0
+    """
+    try:
+        result = item.split('.')[2]
+    except IndexError:
+        return 0
     result = int(result)
     return result

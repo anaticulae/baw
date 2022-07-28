@@ -211,7 +211,7 @@ def smart_replace(requirements: str, old: str, new: str):
     return result
 
 
-def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0912
+def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0911,R0912
     """\
     >>> inside('2.12.0', '2.14.0<3.0.0')
     False
@@ -227,6 +227,8 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0912
     True
     >>> inside('0.2.6', ['0.2.6', '0.2.6'])
     True
+    >>> inside('20220524', '20220524')
+    True
     """
     if not isinstance(expected, str):
         if expected[0] != expected[1]:
@@ -237,6 +239,8 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0912
         split = expected.split('<=') if '<=' in expected else expected.split(
             '<')
         small, greater = split
+    elif expected.isdigit():
+        return current == expected
     else:
         small, greater = expected, expected
 
@@ -272,6 +276,12 @@ def lower(current: str, new: str) -> bool:
     True
     """
     import semver
-    current = semver.VersionInfo.parse(current)
-    new = semver.VersionInfo.parse(new)
+    try:
+        current = semver.VersionInfo.parse(current)
+    except ValueError:
+        current: int = int(current)
+    try:
+        new = semver.VersionInfo.parse(new)
+    except ValueError:
+        new: int = int(new)
     return new < current
