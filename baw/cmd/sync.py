@@ -264,18 +264,22 @@ def determine_resources(root: str, packages: str) -> list:
     return resources
 
 
-def get_install_cmd(root, to_install, verbose, pip_index, extra_url, virtual):
+def get_install_cmd(
+    root: str,
+    to_install: str,
+    verbose: bool,
+    pip_index: str,
+    extra_url: str,
+    virtual: bool,
+):
     warning = '' if verbose else '--no-warn-conflicts'
-    pip = '--index-url %s --extra-index-url %s' % (pip_index, extra_url)
+    pip = f'--index-url {pip_index} --extra-index-url {extra_url}'
     config = '--retries 2 --disable-pip-version-check'
     python = baw.config.python(root, virtual=virtual)
-    cmd = '%s -mpip install %s %s -U %s -r %s' % (
-        python,
-        warning,
-        pip,
-        config,
-        to_install,
-    )
+    # prepare command
+    cmd = f'{python} -mpip install {warning} {pip} '
+    cmd += f'-U {config} '
+    cmd += f'-r {to_install} '
     return cmd, pip
 
 
