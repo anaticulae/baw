@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.19.2
+
+### Feature
+
+* adjust build format (3578988acccc)
+
 ## v0.19.1
 
 ### Fix
