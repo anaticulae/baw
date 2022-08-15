@@ -7,11 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 import sys
 from contextlib import contextmanager
 from functools import partial
-from os.path import exists
-from os.path import join
 from subprocess import CompletedProcess
 from subprocess import run
 
@@ -28,8 +27,8 @@ def git_init(root: str):
 
     Args:
         root(str): generated project"""
-    git_dir = join(root, GIT_EXT)
-    if exists(git_dir):
+    git_dir = os.path.join(root, GIT_EXT)
+    if os.path.exists(git_dir):
         baw.utils.skip('git init')
         return
     baw.utils.log('git init')
@@ -43,7 +42,7 @@ def git_add(root: str, pattern: str):
     Args:
         root(str): root of generated project
         pattern(str): pattern in linux-style"""
-    assert exists(root)
+    assert os.path.exists(root)
     baw.utils.log('git add')
     cmd = baw.runtime.run_target(root, 'git add %s' % pattern, verbose=False)
     evaluate_git_error(cmd)
@@ -54,7 +53,7 @@ def add(root: str, pattern: str):
 
 
 def git_commit(root, source, message, verbose: int = 0):
-    assert exists(root)
+    assert os.path.exists(root)
     message = '"%s"' % message
     if verbose:
         baw.utils.log('git commit')
