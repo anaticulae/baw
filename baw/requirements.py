@@ -271,11 +271,15 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0911,R
 
 
 def lower(current: str, new: str) -> bool:
-    """\
+    """Verify if the `new` requirement is older than the `current`.
+
     >>> lower('1.26.2', '1.26.1')
     True
+    >>> lower('1.5', '20.2.3')
+    False
     """
     import semver
+    current, new = fix_version(current), fix_version(new)
     try:
         current = semver.VersionInfo.parse(current)
     except ValueError:
