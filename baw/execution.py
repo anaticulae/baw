@@ -93,4 +93,6 @@ def run(root: str, virtual: bool = False) -> int:
 def distribution_format() -> str:
     # distribution = 'bdist_wheel --universal'
     # TODO: VERIFY THE BEST ONE
-    return 'sdist --format=gztar'
+    # TODO: REQUIRES MANIFEST FILE TO COPY REQUIREMENTS
+    # return 'sdist --format=gztar'
+    return 'bdist_wheel --universal'
