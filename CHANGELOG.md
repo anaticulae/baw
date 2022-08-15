@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.19.3
+
+### Feature
+
+* ensure that pip index is trusted (f330c16a0dc2)
+
+### Fix
+
+* use wheel to avoid MANIFEST file for the first time (3d9a7acc725c)
+* increase required utilatest version (33e78cf87121)
+* add missing resource for new tar format (beb667cf58fc)
+
 ## v0.19.2
 
 ### Feature
