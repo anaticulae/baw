@@ -9,6 +9,7 @@
 
 import contextlib
 import os
+import re
 import sys
 from os.path import exists
 from os.path import join
@@ -272,8 +273,10 @@ def get_install_cmd(
     extra_url: str,
     virtual: bool,
 ):
+    trusted = host(pip_index)
     warning = '' if verbose else '--no-warn-conflicts'
-    pip = f'--index-url {pip_index} --extra-index-url {extra_url}'
+    pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
+    pip += f'--trusted {trusted}'
     config = '--retries 2 --disable-pip-version-check'
     python = baw.config.python(root, virtual=virtual)
     # prepare command
@@ -281,6 +284,19 @@ def get_install_cmd(
     cmd += f'-U {config} '
     cmd += f'-r {to_install} '
     return cmd, pip
+
+
+HOST = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+
+
+def host(url: str) -> str:
+    """\
+    >>> host('http://169.254.149.20:6103')
+    '169.254.149.20'
+    """
+    if searched := HOST.search(url):
+        return searched[0]
+    return None
 
 
 def pip_list(
