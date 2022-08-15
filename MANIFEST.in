@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+include requirements.txt
+include CHANGELOG.md
+
 include baw/requires/requirements-dev.txt
 include baw/requires/requirements-doc.txt
 
