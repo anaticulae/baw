@@ -40,7 +40,7 @@ def publish(root: str, verbose: bool = False, virtual: bool = True):
         return FAILURE
     adress, internal_port, _ = get_setup()
     url = f'{adress}:{internal_port}'
-    distribution = 'bdist_wheel --universal'
+    distribution = distribution_format()
     python = baw.config.python(root)
     command = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
@@ -88,3 +88,9 @@ def run(root: str, virtual: bool = False) -> int:
         log('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
         ret += completed.returncode
     return ret
+
+
+def distribution_format() -> str:
+    # distribution = 'bdist_wheel --universal'
+    # TODO: VERIFY THE BEST ONE
+    return 'sdist --format=gztar'
