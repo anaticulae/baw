@@ -2,6 +2,43 @@
 
 Every noteable change is logged here.
 
+## v0.19.0
+
+### Feature
+
+* extend valid name list (db0d8412e0c8)
+* add copyright header (0534d8303080)
+* add monkeypatch and testdir as valid var names (21b37b3c350a)
+* add option to open venv dir (261c79368723)
+* add option to print path to console (2f777747074d)
+* increase accuracy (a9f5eb5cce18)
+* add method to open last test (ee0cf01f44fc)
+* ignore vs code python tmp files (f3b53a2ac92b)
+* append log regeneration log (909787ef7f52)
+* display progress to improve user feedback (e940677f1607)
+* add info option (1406a55c816d)
+* add cli to ease cprofile evaluation (af970d061603)
+* add jenkins files (12c98e51cb1d)
+* add pipeline step (46ca7962b713)
+* use docker to run cmd if --docker is used (d0a8b65f4193)
+* use baw version if no docker version is defined (2907afb27b00)
+* add basic test docker file (3aa81798172d)
+* add dockerfile template (721b988bc2f8)
+* add method to determine docker image (f26812eff88d)
+* use modern cli approach (41d676001e2b)
+
+### Fix
+
+* ensure that not fully defined version produces an error (99138f5017e2)
+* skip replacement, no git repository (31917d2edaf7)
+* adjust new version detector (57905e4fca9a)
+* support ints as version value (1417e1897d17)
+* make baw installable without semver (4ee8800b6bb7)
+* equal requirement creator (f379dd36e83e)
+* use improved testing verifier (c212e5b25e55)
+* install utilatest to avoid problems with nightly (e7d62027320b)
+* upgrade requires string selection (57251d6299a5)
+
 ## v0.18.0
 
 ### Feature
