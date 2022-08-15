@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.19.1
+
+### Fix
+
+* rename template to avoid cleaning when running clean in baw (a9e1e816eacc)
+
 ## v0.19.0
 
 ### Feature
