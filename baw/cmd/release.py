@@ -178,7 +178,6 @@ def temp_semantic_config(root: str):
         fp.write(replaced)
         fp.seek(0)
     yield fp.name
-
     # remove file
     os.unlink(fp.name)
 
@@ -215,13 +214,11 @@ def drop(
         baw.utils.error('No release tag detected')
         return baw.utils.FAILURE
     current_release = matched['release']
-
     # do not remove the first commit/release in the repository
     if current_release == DEFAULT_RELEASE:
         baw.utils.error('Could not remove %s release' % DEFAULT_RELEASE)
         return baw.utils.FAILURE
     baw.utils.log(current_release)
-
     # remove the last release commit
     # git reset HEAD~1
     baw.utils.log('Remove last commit')
@@ -229,19 +226,16 @@ def drop(
     if completed.returncode:
         baw.utils.error('while removing the last commit: %s' % str(completed))
         return completed.returncode
-
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
     completed = reset_resources(root, virtual=virtual, verbose=verbose)
     if completed:
         return completed
-
     # git tag -d HEAD
     baw.utils.log('Remove release tag')
     completed = runner(root, 'git tag -d %s' % current_release)
     if completed.returncode:
         baw.utils.error('while remove tag: %s' % str(completed))
         return completed.returncode
-
     # TODO: ? remove upstream ? or just overwrite ?
     return baw.utils.SUCCESS
 
