@@ -212,8 +212,12 @@ def git_modified(root: str) -> bool:
 def update_gitignore(root: str, verbose: bool = False):
     if verbose:
         baw.utils.log('sync gitexclude')
+    exclude = os.path.join(root, GIT_REPO_EXCLUDE)
+    if not os.path.exists(exclude):
+        baw.utils.log(f'no git dir: {exclude}, skip update')
+        return baw.utils.SUCCESS
     baw.utils.file_replace(
-        join(root, GIT_REPO_EXCLUDE),
+        exclude,
         baw.resources.GITIGNORE,
     )
     return baw.utils.SUCCESS
