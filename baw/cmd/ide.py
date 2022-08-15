@@ -17,8 +17,6 @@ import baw.resources
 import baw.runtime
 import baw.utils
 
-WORKSPACE_NAME = '..code-workspace'
-
 
 def ide_open(root: str, packages: tuple = None) -> int:
     """Generate vscode workspace and run afterwards."""

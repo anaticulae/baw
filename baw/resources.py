@@ -26,7 +26,7 @@ FOLDERS = [
 TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
 assert os.path.exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
 
-WORKSPACE_TEMPLATE = os.path.join(TEMPLATES, '..code-workspace')
+WORKSPACE_TEMPLATE = os.path.join(TEMPLATES, '.code-workspace')
 assert os.path.exists(WORKSPACE_TEMPLATE), f'No template {WORKSPACE_TEMPLATE}'
 
 GIT_IGNORE_TEMPLATE = os.path.join(TEMPLATES, '.gitignore')
