@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.19.4
+
+### Fix
+
+* disable utilasafe for the moment (8a4fa93b3365)
+
 ## v0.19.3
 
 ### Feature
