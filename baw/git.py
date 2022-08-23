@@ -9,6 +9,7 @@
 
 import functools
 import os
+import subprocess
 import sys
 from contextlib import contextmanager
 from functools import partial
@@ -193,7 +194,7 @@ def git_headtag(root: str, virtual: bool, verbose: bool = False):
 
 
 def git_headhash(root: str) -> str:
-    if not installed():
+    if not git_installed():
         return None
     cmd = 'git rev-parse --verify HEAD'
     completed = baw.runtime.run_target(root, cmd, verbose=False)
@@ -249,5 +250,19 @@ def evaluate_git_error(process: CompletedProcess):
 
 
 @functools.lru_cache
-def installed():
-    return baw.runtime.run('git -h', cwd='').returncode == baw.utils.SUCCESS
+def git_installed() -> bool:
+    """\
+    >>> str(git_installed())
+    '...'
+    """
+    try:
+        process = subprocess.run(
+            ['git', '-h'],
+            capture_output=True,
+            check=False,
+        )
+    except FileNotFoundError:
+        return False
+    if process.returncode == baw.utils.SUCCESS:
+        return True
+    return False
