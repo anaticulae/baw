@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v0.19.5
+
+### Fix
+
+* update to new virtual path (8bc101e3ae4a)
+* skip version determining if git is not installed (1e2d23af5fd3)
+* do not print any error if git is not installed (fbea1d29ce56)
+
 ## v0.19.4
 
 ### Fix
