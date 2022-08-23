@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import functools
 import os
 import sys
 from contextlib import contextmanager
@@ -192,6 +193,8 @@ def git_headtag(root: str, virtual: bool, verbose: bool = False):
 
 
 def git_headhash(root: str) -> str:
+    if not installed():
+        return None
     cmd = 'git rev-parse --verify HEAD'
     completed = baw.runtime.run_target(root, cmd, verbose=False)
     if completed.returncode:
@@ -243,3 +246,8 @@ def evaluate_git_error(process: CompletedProcess):
         raise ChildProcessError('Git is not installed')
     if process.returncode:
         raise ChildProcessError(f'Could not run git: {process}')
+
+
+@functools.lru_cache
+def installed():
+    return baw.runtime.run('git -h', cwd='').returncode == baw.utils.SUCCESS
