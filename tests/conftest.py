@@ -41,4 +41,4 @@ if not 'PYTEST_XDIST_WORKER' in os.environ:
         assert COMPLETED.returncode == baw.utils.SUCCESS, COMPLETED
 
         COMPLETED = run('where baw')
-        assert '.virtual' in COMPLETED.stdout.split()[0], COMPLETED
+        assert 'venv' in COMPLETED.stdout.split()[0], COMPLETED
