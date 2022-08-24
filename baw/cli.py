@@ -286,7 +286,7 @@ def add_test_options(parser):
         help='',
         nargs='?',
         default='fast',
-        choices=['fast', 'long', 'nightly', 'skip'],
+        choices='docs fast long nightly skip'.split(),
     )
 
 

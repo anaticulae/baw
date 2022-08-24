@@ -268,6 +268,7 @@ def run_test(root: str, args):
     result = baw.cmd.test.run_test(
         root=root,
         coverage=args['cov'],
+        docs='docs' in args['test'],
         fast='fast' in args['test'],
         longrun='long' in args['test'],
         nightly='nightly' in args['test'],
