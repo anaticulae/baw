@@ -21,6 +21,9 @@ backlog
 
 * check pip completion to use this as baw/tool completion
 
+* baw doctests: improve behavior when running coverage on normal and
+  doctests, may reduce worker count to 1 to avoid side effects.
+
 done
 ----
 
