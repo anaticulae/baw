@@ -28,6 +28,7 @@ def run_test(  # pylint:disable=R0914
     testconfig: list = None,
     *,
     coverage: bool = False,
+    docs: bool = False,
     fast: bool = False,
     generate: bool = False,
     instafail: bool = False,
@@ -48,6 +49,7 @@ def run_test(  # pylint:disable=R0914
         root(str): path to root of tested project
         testconfig(list): list of user defined test parameter via -k
         coverage(bool): run python test coverage
+        docs(bool): run doctests
         fast(bool): skip long running tests
         generate(bool): generate required test data
         instafail(bool): print error while running pytest
@@ -62,11 +64,10 @@ def run_test(  # pylint:disable=R0914
     Returns:
         returncode(int): 0 if successful else > 0
     """
-    if not any((generate, nightly, longrun, fast)):
+    if not any((generate, nightly, longrun, fast, docs)):
         baw.utils.log('skip tests...')
         return baw.utils.SUCCESS
     baw.utils.check_root(root)
-
     baw.utils.log('tests')
     testenv = setup_testenvironment(
         root,
@@ -76,12 +77,11 @@ def run_test(  # pylint:disable=R0914
         generate=generate,
         noinstall=noinstall,
     )
-
-    generate_only = generate and not (fast or longrun or nightly)
-
+    generate_only = generate and not (fast or longrun or nightly or docs)
     cmd = create_test_cmd(
         root,
         coverage=coverage,
+        doctest=docs,
         generate_only=generate_only,
         instafail=instafail,
         parameter=testconfig,
@@ -90,7 +90,6 @@ def run_test(  # pylint:disable=R0914
         verbose=verbose,
         virtual=virtual,
     )
-
     environment = baw.git.git_stash if stash else baw.utils.empty
     with environment(root, verbose=verbose, virtual=virtual):
         completed = baw.runtime.run_target(
@@ -104,7 +103,6 @@ def run_test(  # pylint:disable=R0914
             skip_error_code={NO_TEST_TO_RUN},
             virtual=virtual,
         )
-
     if completed.returncode == baw.utils.SUCCESS:
         if generate_only:
             # do not write log of collect tests
@@ -177,6 +175,7 @@ def create_test_cmd(  # pylint:disable=R0914
     quiet,
     parameter,
     generate_only,
+    doctest: bool = True,
     verbose: bool = False,
     virtual: bool = False,
 ):
@@ -205,6 +204,8 @@ def create_test_cmd(  # pylint:disable=R0914
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} {plugins} '
            f'-o cache_dir={cachedir} {sources}')
+    if doctest:
+        cmd += '--doctest-modules '
     if instafail:
         cmd += '--instafail '
     if verbose:
