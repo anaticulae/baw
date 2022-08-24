@@ -194,7 +194,7 @@ def create_test_cmd(  # pylint:disable=R0914
     if '-n' in manual_parameter:
         manual_parameter = f'-p xdist {manual_parameter}'
     generate_only = '--collect-only' if generate_only else ''
-    sources = tests_sources(root, parameter)
+    sources = tests_sources(root, parameter, doctest, generate_only)
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     # run pytest
@@ -204,7 +204,7 @@ def create_test_cmd(  # pylint:disable=R0914
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} {plugins} '
            f'-o cache_dir={cachedir} {sources}')
-    if doctest:
+    if doctest or generate_only:
         cmd += '--doctest-modules '
     if instafail:
         cmd += '--instafail '
@@ -227,13 +227,16 @@ def create_testdir(root):
     return tmp_testpath, cachedir
 
 
-def tests_sources(root, parameter) -> str:
+def tests_sources(root, parameter, doctest: bool, generate_only: bool) -> str:
     # set to root to run doctests for all subproject's
     testdir = os.path.join(root, 'tests')
     doctests = ' '.join(baw.config.sources(root))
     if 'pyargs' in str(parameter):
         # select tests by --pyargs
         testdir, doctests = '', ''
+    if doctest and not generate_only:
+        # skip normal tests if doctest is selected
+        testdir = ''
     result = f'{testdir} {doctests} '
     return result
 
