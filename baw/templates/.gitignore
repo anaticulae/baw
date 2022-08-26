@@ -1,8 +1,8 @@
 # Folder
 **.pytest_cache**
 **__pycache__**
-**build**
-**generated**
+/build/
+/generated/
 .eggs/**
 .pylint.d
 .requirements.txt
