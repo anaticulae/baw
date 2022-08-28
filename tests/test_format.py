@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import os
 import subprocess
 
@@ -14,6 +15,7 @@ import pytest
 import baw.config
 import baw.runtime
 import baw.utils
+import tests
 
 
 @pytest.fixture
@@ -27,6 +29,7 @@ def simpleproject(testdir):
     return root
 
 
+@tests.hasbaw
 def test_regression_format_keep_single_list(simpleproject):  # pylint:disable=W0621
     """Do not use -k, as a result renaming does not work propper.
 
