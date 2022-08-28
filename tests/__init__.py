@@ -47,6 +47,11 @@ skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
 nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No venv env')
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
+HASBAW = subprocess.run('baw --help', check=False, shell=True).returncode
+hasbaw = pytest.mark.skipif(not HASBAW, reason='install baw')
+HASGIT = subprocess.run('git help', check=False, shell=True).returncode
+hasgit = pytest.mark.skipif(not HASGIT, reason='install git')
+
 
 def tempname():
     """Get random file-name with 20-ziffre, random name
@@ -88,10 +93,6 @@ def run(command: str, cwd: str = None):
     return completed
 
 
-hasgit = pytest.mark.skipf(run('git help').returncode, reason='install git')
-hasbaw = pytest.mark.skipf(run('baw --help').returncode, reason='install baw')
-
-
 @contextlib.contextmanager
 def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
@@ -115,6 +116,10 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 @pytest.fixture
 def example(testdir, monkeypatch):
     """Creating example project due console"""
+    if run('baw --help').returncode:
+        pytest.skip('install baw')
+    if run('git help').returncode:
+        pytest.skip('install git')
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:

@@ -16,6 +16,8 @@ import baw.utils
 import tests
 
 
+@tests.hasbaw
+@tests.hasgit
 @tests.cmds
 def test_creating_project(tmpdir):
     """Creating project without virtual environment"""
@@ -28,6 +30,8 @@ def test_creating_project(tmpdir):
     assert os.path.exists(os.path.join(tmpdir, '.git'))
 
 
+@tests.hasbaw
+@tests.hasgit
 @tests.cmds
 @tests.longrun
 def test_test_with_import(example):

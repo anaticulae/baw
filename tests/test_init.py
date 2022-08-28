@@ -35,6 +35,8 @@ def test_doc_command(project_example, monkeypatch):
 
 
 @tests.cmds
+@tests.hasbaw
+@tests.hasgit
 @tests.longrun
 @tests.nonvirtual
 @pytest.mark.usefixtures('testdir')
@@ -48,6 +50,8 @@ def test_escaping_single_collon(monkeypatch):
     'init myroject "This is a beautyful project"',
     'init myroject "This is a beautyful project" --cmdline',
 ])
+@tests.hasbaw
+@tests.hasgit
 @tests.longrun
 @pytest.mark.usefixtures('testdir')
 def test_run_complex_command(monkeypatch, command):
