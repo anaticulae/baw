@@ -30,6 +30,7 @@ def test_create_venv(example, monkeypatch):
     assert os.path.exists(virtual), 'venv folder does not exists: %s' % virtual
 
 
+@tests.hasbaw
 @tests.cmds
 @tests.nightly
 def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
