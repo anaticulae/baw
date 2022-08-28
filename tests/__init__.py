@@ -88,6 +88,10 @@ def run(command: str, cwd: str = None):
     return completed
 
 
+hasgit = pytest.mark.skipf(run('git help').returncode, reason='install git')
+hasbaw = pytest.mark.skipf(run('baw --help').returncode, reason='install baw')
+
+
 @contextlib.contextmanager
 def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
