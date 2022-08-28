@@ -118,6 +118,7 @@ def test_upgrading(tmpdir):
     assert loaded != TEST_UPGRADE
 
 
+@tests.hasgit
 @tests.longrun
 @tests.nonvirtual
 def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621, W0613
