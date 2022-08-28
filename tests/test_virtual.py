@@ -10,33 +10,31 @@
 environment afterwards.
  """
 
-from os.path import exists
+import os
 
-from baw.utils import SUCCESS
-from tests import cmds
-from tests import longrun
-from tests import nightly
-from tests import run
-from tests import run_command
+import baw.utils
+import tests
 from tests.test_test import project_with_test  # pylint: disable=W0611
 
 
-@cmds
-@longrun
+@tests.cmds
+@tests.longrun
 def test_create_venv(example, monkeypatch):
     """Creating virtual environment."""
-    run_command('--virtual', monkeypatch=monkeypatch)
+    tests.run_command(
+        '--virtual',
+        monkeypatch=monkeypatch,
+    )
     # TODO: ADJUST THIS TEST LATER, TODO: PATH BAWTMP FOR THIS TEST?
     virtual = example.join('tmpdir/venv/xkcd')
-    assert exists(virtual), 'venv folder does not exists: %s' % virtual
+    assert os.path.exists(virtual), 'venv folder does not exists: %s' % virtual
 
 
-@cmds
-@nightly
+@tests.cmds
+@tests.nightly
 def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
     """Running test-example in virtual environment"""
     # install requirements first and run test later
     cmd = 'baw --virtual sync' + ' && baw test'  #python -mpytest tests -v'
-    completed = run(cmd, project_with_test)
-
-    assert completed.returncode == SUCCESS, completed.stderr
+    completed = tests.run(cmd, project_with_test)
+    assert completed.returncode == baw.utils.SUCCESS, completed.stderr
