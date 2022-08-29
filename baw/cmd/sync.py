@@ -90,14 +90,11 @@ def check_dependency(
 ):
     """Check if packages need an upgrade."""
     (adress, internal, external) = get_setup()
-
     pip_index = '%s:%d' % (adress, internal)
     extra_url = '%s:%d' % (adress, external)
-
     # if not connected(pip_index, extra_url):
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
-
     python = baw.config.python(root, virtual=virtual)
     for index in [pip_index, extra_url]:
         pip = f'{python} -mpip search --index {index} {package}'
@@ -118,7 +115,6 @@ def check_dependency(
             continue
         if completed.returncode and completed.stderr:
             error(completed.stderr)
-
         if completed.stdout:
             if f'{package} ' not in completed.stdout:
                 # nltk (3.5)  - 3.5
