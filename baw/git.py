@@ -7,14 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import functools
 import os
 import subprocess
 import sys
-from contextlib import contextmanager
-from functools import partial
-from subprocess import CompletedProcess
-from subprocess import run
 
 import baw.resources
 import baw.runtime
@@ -34,7 +31,7 @@ def git_init(root: str):
         baw.utils.skip('git init')
         return
     baw.utils.log('git init')
-    command = run(['git', 'init'], check=False)
+    command = subprocess.run(['git', 'init'], check=False)
     evaluate_git_error(command)
 
 
@@ -98,7 +95,11 @@ def git_checkout(
         0 if baw.utils.SUCCESS else FAILURE
     """
     # TODO: RENAME TO GIT_RESET
-    runner = partial(baw.runtime.run_target, verbose=verbose, virtual=virtual)
+    runner = functools.partial(
+        baw.runtime.run_target,
+        verbose=verbose,
+        virtual=virtual,
+    )
     to_reset = ' '.join(files) if not isinstance(files, str) else files
     baw.utils.log('Reset %s' % to_reset)
     completed = runner(root, 'git checkout -q %s' % to_reset)
@@ -109,7 +110,7 @@ def git_checkout(
     return completed.returncode
 
 
-@contextmanager
+@contextlib.contextmanager
 def git_stash(
     root: str,
     *,
@@ -229,11 +230,11 @@ def update_gitignore(root: str, verbose: bool = False):
 
 def update_userdata(username='supermario', email='test@test.com'):
     cmd = f'git config --global user.email "{email}" user.name="{username}"'
-    process = run(cmd, check=False)
+    process = subprocess.run(cmd, check=False)
     evaluate_git_error(process)
 
 
-def evaluate_git_error(process: CompletedProcess):
+def evaluate_git_error(process: subprocess.CompletedProcess):
     """Raise exception depending on returncode of completed process
 
     Args:
