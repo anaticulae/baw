@@ -11,11 +11,14 @@ import pytest
 
 import baw
 import baw.cmd.sync
+import baw.runtime
 from baw.cmd.sync import sync
 
 
 @pytest.mark.parametrize('venv', [False, True])
 def test_sync(venv):
+    if venv and not baw.runtime.has_venv(baw.ROOT):
+        pytest.skip('generate venv')
     sync(baw.ROOT, virtual=venv, verbose=False)
 
 
