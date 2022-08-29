@@ -14,9 +14,9 @@ import baw.cmd.sync
 from baw.cmd.sync import sync
 
 
-@pytest.mark.parametrize('virtual', [False, True])
-def test_sync(virtual):
-    sync(baw.ROOT, virtual=virtual, verbose=False)
+@pytest.mark.parametrize('venv', [False, True])
+def test_sync(venv):
+    sync(baw.ROOT, virtual=venv, verbose=False)
 
 
 def test_pip_list():
