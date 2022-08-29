@@ -257,7 +257,7 @@ def git_installed() -> bool:
     """
     try:
         process = subprocess.run(
-            ['git', '-h'],
+            ['git', 'help'],
             capture_output=True,
             check=False,
         )
