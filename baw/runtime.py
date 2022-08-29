@@ -320,11 +320,7 @@ def _run_virtual(
         'Scripts' if iswin else 'bin',
         'activate',
     )
-    deactivate = os.path.join(
-        venv(root),
-        'Scripts' if iswin else 'bin',
-        'deactivate',
-    )
+    deactivate = os.path.join(venv(root), 'Scripts/deactivate')
     if not os.path.exists(activate):
         msg = (f'Path `{activate}` does not exists.\nRegenerate the venv')
         raise RuntimeError(msg)
@@ -333,7 +329,9 @@ def _run_virtual(
         deactivate = f'{deactivate}.bat'
     else:
         activate = f'source {activate}'
-        deactivate = f'source {deactivate}'
+        # linux does not require a deactivate script, its just a function
+        # which was create by activate
+        deactivate = 'deactivate'
     execute = f'{activate} && {cmd} && {deactivate}'
     process = run(
         execute,
