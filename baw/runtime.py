@@ -167,7 +167,6 @@ def run_target(
         CompletedProcess - os process which was runned
     """
     start = time.time()
-
     try:
         cwd, skip_error_code, skip_error_message = setup_target(
             root,
@@ -178,10 +177,8 @@ def run_target(
     except ValueError as fail:
         baw.utils.error(str(fail))
         return baw.utils.FAILURE
-
     if verbose:
         baw.utils.log(command)
-
     if virtual:
         try:
             completed = _run_virtual(
@@ -208,7 +205,6 @@ def run_target(
             debugging=debugging,
             env=env,
         )
-
     log_result(
         completed,
         cwd,
@@ -217,7 +213,6 @@ def run_target(
         start if runtimelog else None,
         verbose,
     )
-
     return completed
 
 
