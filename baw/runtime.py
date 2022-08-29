@@ -325,17 +325,19 @@ def _run_virtual(
         msg = (f'Path `{activate}` does not exists.\n'
                'Regenerate the virtual env')
         raise RuntimeError(msg)
-
     if sys.platform == 'win32':
         activate = f'{activate}.bat'
         deactivate = f'{deactivate}.bat'
     else:
         activate = f'source {activate}'
         deactivate = f'source {deactivate}'
-
     execute = f'{activate} && {cmd} && {deactivate}'
-    process = run(execute, cwd, env=env, debugging=debugging)
-
+    process = run(
+        execute,
+        cwd,
+        env=env,
+        debugging=debugging,
+    )
     return process
 
 
