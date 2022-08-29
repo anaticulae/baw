@@ -31,7 +31,11 @@ def git_init(root: str):
         baw.utils.skip('git init')
         return
     baw.utils.log('git init')
-    command = subprocess.run(['git', 'init'], check=False)
+    command = subprocess.run(
+        ['git', 'init'],
+        check=False,
+        capture_output=True,
+    )
     evaluate_git_error(command)
 
 
@@ -230,7 +234,11 @@ def update_gitignore(root: str, verbose: bool = False):
 
 def update_userdata(username='supermario', email='test@test.com'):
     cmd = f'git config --global user.email "{email}" user.name="{username}"'
-    process = subprocess.run(cmd, check=False)
+    process = subprocess.run(
+        cmd,
+        check=False,
+        capture_output=True,
+    )
     evaluate_git_error(process)
 
 
