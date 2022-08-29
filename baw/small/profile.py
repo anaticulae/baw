@@ -72,7 +72,7 @@ def git_commits(root, ranges) -> list:
     5
     """
     count = len(ranges)
-    cmd = ("git log  --pretty=format:\"%H %s\" | "
+    cmd = ("git log --pretty=format:\"%H %s\" | "
            rf'grep -E "(feat|fix|test|refactor)\(" | head -n {count}')
     completed = baw.runtime.run_target(
         root,
