@@ -11,11 +11,14 @@ import concurrent.futures
 import contextlib
 import functools
 import os
+import random
 import shutil
 import stat
 import sys
 import time
 import webbrowser
+
+import baw
 
 BAW_EXT = '.baw'
 TMP = '.tmp'
@@ -125,14 +128,31 @@ def tmp(root: str) -> str:
         root(str): project root
     Returns:
         path to temporary folder
+
+    >>> tmp(baw.ROOT)
+    '...'
     """
     assert root
     # queuemo-1.17.2-py3.8.egg
     projectname = os.path.split(root)[1].split('-')[0]
-    import baw.config
+    import baw.config  # pylint:disable=W0621
     path = os.path.join(baw.config.bawtmp(), 'tmp', projectname)
     os.makedirs(path, exist_ok=True)
     return path
+
+
+def tmpfile() -> str:
+    """\
+    >>> tmpfile()
+    '...'
+    """
+    name = str(int(random.random() * 10000000000)).zfill(10)
+    tmpdir = tmp(baw.ROOT)
+    result = os.path.join(tmpdir, name)
+    if os.path.exists(result):
+        # try again
+        return tmpfile()
+    return result
 
 
 def check_root(root: str):
