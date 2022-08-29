@@ -12,7 +12,6 @@ import functools
 import os
 import re
 import sys
-import tempfile
 
 import baw.archive.test
 import baw.cmd.complex
@@ -174,12 +173,13 @@ def temp_semantic_config(root: str):
     if replaced == baw.resources.SETUP_CFG:
         baw.utils.error('while replacing template')
         sys.exit(baw.utils.FAILURE)
-    with tempfile.TemporaryFile(mode='w', delete=False) as fp:
-        fp.write(replaced)
-        fp.seek(0)
-    yield fp.name
+    # use own tmpfile cause TemporaryFile(delete=True) seems no supported
+    # at linux, parameter delete is missing.
+    tmp = baw.utils.tmpfile()
+    baw.utils.file_create(tmp, replaced)
+    yield tmp
     # remove file
-    os.unlink(fp.name)
+    os.unlink(tmp)
 
 
 RELEASE_PATTERN = r'(?P<release>v\d+\.\d+\.\d+)'
