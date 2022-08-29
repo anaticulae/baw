@@ -7,11 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
 import subprocess
 
-import baw.config
-import baw.runtime
 import baw.utils
 from tests import example  # pylint:disable=W0611
 from tests.fixtures.project import project_example  # pylint:disable=W0611
@@ -19,26 +16,8 @@ from tests.fixtures.project import project_with_command  # pylint:disable=W0611
 
 pytest_plugins = 'pytester'  # pylint: disable=invalid-name
 
-if not 'PYTEST_XDIST_WORKER' in os.environ:
-    # master process only
-    if 'VIRTUAL' in os.environ:
-
-        def run(cmd):
-            result = subprocess.run(
-                cmd,
-                cwd=baw.ROOT,
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                universal_newlines=True,
-                timeout=5.0,
-                check=False,
-            )
-            return result
-
-        PYTHON = baw.config.python(baw.ROOT)
-        # ensure that baw is installed
-        COMPLETED = run(f'{PYTHON} setup.py install')
-        assert COMPLETED.returncode == baw.utils.SUCCESS, COMPLETED
-
-        COMPLETED = run('where baw')
-        assert 'venv' in COMPLETED.stdout.split()[0], COMPLETED
+assert subprocess.run(
+    ['baw', '--help'],
+    capture_output=True,
+    check=False,
+).returncode == baw.utils.SUCCESS, 'require baw'
