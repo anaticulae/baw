@@ -68,7 +68,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
 
 def git_commits(root, ranges) -> list:
     """\
-    >>> len(git_commits('.', list(range(5))))
+    >>> len(git_commits('.', list(range(5)))) if baw.git.git_installed() else 5
     5
     """
     count = len(ranges)
