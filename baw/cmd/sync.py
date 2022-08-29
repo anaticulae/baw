@@ -314,6 +314,7 @@ def pip_list(
         virtual=virtual,
     )
     if completed.returncode and completed.stderr:
+        error(f'{cmd}, {verbose}, {virtual}')
         error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
