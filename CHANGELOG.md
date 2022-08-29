@@ -2,6 +2,31 @@
 
 Every noteable change is logged here.
 
+## v0.20.0
+
+### Feature
+
+* add method to create tmp file (5123039b83aa)
+* add method to check if venv exists (918bcfe358c3)
+* log failing command (cd2c7b0efac9)
+* do not run doc test in default (8a55831fd0ca)
+* skip normal tests if doctest is selected (90e194e4fe7e)
+* add parameter to select doctests (93f267d6d147)
+* add docs test selection (f228c4078deb)
+
+### Fix
+
+* use own temporary file cause delete (4b248b9f0847)
+* do not run deactivate script on linux (551a1412b91a)
+* do not pollute log (bddb98ada7c5)
+* adjust installed test (e0b94ce41057)
+* adjust venv path on linux (31185ecdcdbc)
+* adjust committer author (3d5fb0e51de3)
+* ensure that source is defined correctly (6d6799696a27)
+* skip fixture if git or baw is not installed (9d1f513030f7)
+* do not threat build.sh as ignored file (2227c15e8415)
+* do not skip doctests on coverage run (c460c403e730)
+
 ## v0.19.5
 
 ### Fix
