@@ -331,8 +331,7 @@ def _run_virtual(
         'deactivate',
     )
     if not os.path.exists(activate):
-        msg = (f'Path `{activate}` does not exists.\n'
-               'Regenerate the virtual env')
+        msg = (f'Path `{activate}` does not exists.\nRegenerate the venv')
         raise RuntimeError(msg)
     if iswin:
         activate = f'{activate}.bat'
