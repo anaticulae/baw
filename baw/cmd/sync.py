@@ -97,6 +97,8 @@ def check_dependency(
     #     raise RuntimeError(msg)
     python = baw.config.python(root, virtual=virtual)
     for index in [pip_index, extra_url]:
+        if not str(index).startswith('http'):
+            index = f'http://{index}'
         pip = f'{python} -mpip search --index {index} {package}'
         completed = run_target(
             root,
