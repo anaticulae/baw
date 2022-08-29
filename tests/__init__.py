@@ -9,7 +9,6 @@
 
 import contextlib
 import os
-import random
 import subprocess
 import sys
 
@@ -17,9 +16,6 @@ import pytest
 
 import baw.run
 import baw.utils
-
-MAX_NUMBER = 20
-MAX_TEST_RANDOM = 10**MAX_NUMBER
 
 THIS = os.path.dirname(__file__)
 PROJECT = os.path.abspath(os.path.join(THIS, '..'))
@@ -61,31 +57,6 @@ HASGIT = subprocess.run(
     capture_output=True,
 ).returncode
 hasgit = pytest.mark.skipif(not HASGIT, reason='install git')
-
-
-def tempname():
-    """Get random file-name with 20-ziffre, random name
-
-    Returns:
-        filename(str): random file name
-    """
-    return str(random.randrange(MAX_TEST_RANDOM)).zfill(MAX_NUMBER)
-
-
-def tempfile():
-    """Get temporary file-path located in `TEMP_FOLDER`.
-
-    Returns:
-        filepath(str): to tempfile in TEMP_FOLDER
-    """
-    temp = os.path.join(PROJECT, baw.utils.TMP)
-    os.makedirs(temp, exist_ok=True)
-
-    name = 'temp%s' % tempname()
-    path = os.path.join(temp, name)
-    if os.path.exists(path):
-        return tempfile()
-    return path
 
 
 def run(command: str, cwd: str = None):
