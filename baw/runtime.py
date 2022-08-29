@@ -53,6 +53,15 @@ def venv(root: str) -> str:
     return virtual
 
 
+def has_venv(root: str) -> bool:
+    assert root
+    name = baw.config.shortcut(root)
+    virtual = os.path.join(baw.config.bawtmp(), 'venv', name)
+    if os.path.exists(virtual):
+        return True
+    return False
+
+
 def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     """Create `virtual` folder in project root, do nothing if folder exists
 
