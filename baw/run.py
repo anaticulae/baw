@@ -316,6 +316,7 @@ def run_release(root: str, args: dict):
     virtual = args.get('virtual', True)
     # overwrite virtual flag if given
     novenv = args.get('no_venv', False)
+    no_linter = args.get('no_linter', False)
     if novenv:
         baw.utils.log('do not use venv')
         virtual = False
@@ -330,6 +331,7 @@ def run_release(root: str, args: dict):
         release_type=args['release'],
         test=test,
         virtual=virtual,
+        no_linter=no_linter,
     )
     return result
 

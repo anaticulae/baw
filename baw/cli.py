@@ -177,6 +177,7 @@ def add_release_options(parser):
     )
     release.add_argument('--no_test', action='store_true', help='skip tests')
     release.add_argument('--no_venv', action='store_true', help='skip venv')
+    release.add_argument('--no_linter', action='store_true', help='skip linter')
 
 
 def add_publish_options(parser):

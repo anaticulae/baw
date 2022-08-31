@@ -37,6 +37,7 @@ def release(
     verbose: bool = False,
     virtual: bool = True,
     require_clean: bool = True,
+    no_linter: bool = False,
 ) -> int:
     """Running release. Running test, commit and tag.
 
@@ -54,6 +55,7 @@ def release(
         verbose(bool): log additional output
         virtual(bool): run in virtual environment
         require_clean(bool): check that repository is clean
+        no_linter(bool): skip running linter
     Return:
         0 if success else > 0
 
@@ -66,8 +68,9 @@ def release(
         return returncode
     if returncode := check_repository(root, require_clean):
         return returncode
-    if returncode := run_linter(root, verbose, virtual):
-        return returncode
+    if not no_linter:
+        if returncode := run_linter(root, verbose, virtual):
+            return returncode
     if returncode := run_test(root, sync, test, stash, verbose, virtual):
         return returncode
     if returncode := publish(root, verbose, release_type):
