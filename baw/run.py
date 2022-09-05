@@ -58,7 +58,6 @@ def run_main():  # pylint:disable=R0911
             run_bisect,
             run_format,
             run_venv,
-            run_drop,
             run_upgrade,
             run_clean,
             run_sync,
@@ -196,17 +195,6 @@ def run_venv(root, args):
     return result
 
 
-def run_drop(root, args):
-    if not args.get('drop', False):
-        return baw.utils.SUCCESS
-    result = baw.cmd.release.drop(
-        root,
-        verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
-    )
-    return result
-
-
 def run_upgrade(root, args):
     if not args.get('upgrade', False):
         return baw.utils.SUCCESS
@@ -325,6 +313,13 @@ def run_release(root: str, args: dict):
     notest = args.get('no_test', False)
     if notest:
         test = False
+    if args.get('release') == 'drop':
+        result = baw.cmd.release.drop(
+            root,
+            verbose=args['verbose'],
+            virtual=virtual,
+        )
+        return result
     # run release
     result = baw.cmd.release.release(
         root=root,
@@ -337,7 +332,7 @@ def run_release(root: str, args: dict):
 
 
 def run_publish(root: str, args: dict):
-    if not args.get('publish', False):
+    if not args.get('publish', False) or args['release'] == 'drop':
         return baw.utils.SUCCESS
     virtual = True
     # overwrite virtual flag if given

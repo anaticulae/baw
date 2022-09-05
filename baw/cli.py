@@ -62,7 +62,6 @@ LINT = Command(
 DOCKER = Command(longcut='--docker', message='Use docker environment')
 FORMAT = Command(longcut='--format', message='Format repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
-DROP_RELEASE = Command(longcut='--drop', message='Remove last release')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
 NOTESTS = Command(
@@ -96,7 +95,6 @@ def create_parser():  # noqa: Z21
         BUILD,
         DOC,
         DOCKER,
-        DROP_RELEASE,
         FORMAT,
         IDE,
         LINT,
@@ -167,7 +165,7 @@ def add_release_options(parser):
         'release',
         help='Test, commit, tag and publish',
         nargs='?',
-        choices='major minor patch noop auto'.split(),
+        choices='major minor patch noop auto drop'.split(),
         default='auto',
     )
     release.add_argument(
