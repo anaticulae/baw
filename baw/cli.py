@@ -168,11 +168,7 @@ def add_release_options(parser):
         choices='major minor patch noop auto drop'.split(),
         default='auto',
     )
-    release.add_argument(
-        '--no_install',
-        action='store_true',
-        help='do not install',
-    )
+    release.add_argument('--no_install', action='store_true', help='skip insta')
     release.add_argument('--no_test', action='store_true', help='skip tests')
     release.add_argument('--no_venv', action='store_true', help='skip venv')
     release.add_argument('--no_linter', action='store_true', help='skip linter')
