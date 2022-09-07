@@ -5,6 +5,7 @@
 /generated/
 .eggs/**
 .pylint.d
+.local
 .requirements.txt
 .tmp
 .virtual
