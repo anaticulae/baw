@@ -237,6 +237,7 @@ def update_userdata(username='supermario', email='test@test.com'):
     process = subprocess.run(
         cmd,
         check=False,
+        shell=True,
         capture_output=True,
     )
     evaluate_git_error(process)
