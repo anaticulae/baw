@@ -49,7 +49,6 @@ def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
     """Ensure that project init generates first release plan"""
     plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
     assert os.path.exists(plan), plan
-
     clean = baw.git.is_clean(project_example)
     assert clean, clean
 
@@ -58,7 +57,6 @@ def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
 def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
     workspace = project_example_done
     baw.cmd.plan.close(workspace)
-
     current_status = baw.cmd.plan.status(workspace)
     assert current_status == baw.cmd.plan.Status.CLOSED, current_status
 
