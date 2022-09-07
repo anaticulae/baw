@@ -44,18 +44,16 @@ nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No venv env')
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
 HASBAW = subprocess.run(
-    'baw --help',
+    'which baw'.split(),
     check=False,
-    shell=True,
     capture_output=True,
-).returncode
+).returncode == 0
 hasbaw = pytest.mark.skipif(not HASBAW, reason='install baw')
 HASGIT = subprocess.run(
-    'git help',
+    'which git'.split(),
     check=False,
-    shell=True,
     capture_output=True,
-).returncode
+).returncode == 0
 hasgit = pytest.mark.skipif(not HASGIT, reason='install git')
 
 
