@@ -22,7 +22,7 @@ GIT_REPO_EXCLUDE = '.git/info/exclude'
 
 
 def git_init(root: str):
-    """Init git-repository if not exists, If .git exists, return
+    """Init git repository. Do nothing if repo already exists.
 
     Args:
         root(str): generated project"""
