@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+import sys
 
 import pytest
 
@@ -25,6 +26,10 @@ def test_init_project_in_empty_folder(project_example):
     assert os.path.exists(index)
 
 
+@pytest.mark.skipif(
+    sys.hexversion >= 0x030900F0,
+    reason='python 3.10, update Sphinx',
+)
 @tests.cmds
 @tests.longrun
 def test_doc_command(project_example, monkeypatch):
