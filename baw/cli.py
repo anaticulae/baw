@@ -60,7 +60,6 @@ LINT = Command(
 )
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
-FORMAT = Command(longcut='--format', message='Format repository')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
@@ -95,7 +94,6 @@ def create_parser():  # noqa: Z21
         BUILD,
         DOC,
         DOCKER,
-        FORMAT,
         IDE,
         LINT,
         NOTESTS,
@@ -127,6 +125,7 @@ def create_parser():  # noqa: Z21
     add_publish_options(cmds)
     add_install_option(cmds)
     add_pipeline_option(cmds)
+    add_format_option(cmds)
     add_info_option(cmds)
     return parser
 
@@ -303,6 +302,20 @@ def add_install_option(parser):
     )
 
 
+def add_format_option(parser):
+    test = parser.add_parser('format', help='Format code')
+    test.add_argument(
+        '--imports',
+        help='run isort',
+        action='store_true',
+    )
+    test.add_argument(
+        '--code',
+        help='run yapf',
+        action='store_true',
+    )
+
+
 def add_info_option(parser):
     info = parser.add_parser('info', help='Print project information.')
     info.add_argument(
@@ -333,6 +346,7 @@ def parse():
     args['init'] = 'init' in sys.argv
     args['open'] = 'open' in sys.argv
     args['install'] = 'install' in sys.argv
+    args['format'] = 'format' in sys.argv
     if 'upgrade' not in sys.argv:
         args['upgrade'] = False
     args['jenkins'] = 'jenkins' in sys.argv
