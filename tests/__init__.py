@@ -95,9 +95,9 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 @pytest.fixture
 def example(testdir, monkeypatch):
     """Creating example project due console"""
-    if run('baw --help').returncode:
+    if run('which baw').returncode:
         pytest.skip('install baw')
-    if run('git help').returncode:
+    if run('which git').returncode:
         pytest.skip('install git')
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'

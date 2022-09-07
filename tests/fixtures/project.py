@@ -20,9 +20,9 @@ import tests
 
 @pytest.fixture
 def project_example(testdir, monkeypatch):
-    if baw.runtime.run('baw --help', cwd=testdir.tmpdir).returncode:
+    if baw.runtime.run('which baw', cwd=testdir.tmpdir).returncode:
         pytest.skip('install baw')
-    if baw.runtime.run('baw help', cwd=testdir.tmpdir).returncode:
+    if baw.runtime.run('which git', cwd=testdir.tmpdir).returncode:
         pytest.skip('install git')
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')
