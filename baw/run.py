@@ -332,7 +332,7 @@ def run_release(root: str, args: dict):
 
 
 def run_publish(root: str, args: dict):
-    if not args.get('publish', False) or args['release'] == 'drop':
+    if not args.get('publish', False) or args.get('release', None) == 'drop':
         return baw.utils.SUCCESS
     virtual = True
     # overwrite virtual flag if given
