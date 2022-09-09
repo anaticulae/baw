@@ -43,13 +43,13 @@ skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
 nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No venv env')
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
-HASBAW = subprocess.run(
+HASBAW = subprocess.run(  # pylint:disable=c2001
     'which baw'.split(),
     check=False,
     capture_output=True,
 ).returncode == 0
 hasbaw = pytest.mark.skipif(not HASBAW, reason='install baw')
-HASGIT = subprocess.run(
+HASGIT = subprocess.run(  # pylint:disable=c2001
     'which git'.split(),
     check=False,
     capture_output=True,
