@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.21.1
+
+### Fix
+
+* do not fail if release is not given (8e8d78bbbfb1)
+
 ## v0.21.0
 
 ### Feature
