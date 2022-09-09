@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v0.21.0
+
+### Feature
+
+* add alias file (d02d75092bdc)
+* move drop to test command (aa204aaf0955)
+* add option to skip linter run (ebb8f54f8b17)
+* add interface documentation (18d8060866cb)
+
 ## v0.20.0
 
 ### Feature
