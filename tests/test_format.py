@@ -8,7 +8,6 @@
 # =============================================================================
 
 import os
-import subprocess
 
 import pytest
 
@@ -30,7 +29,7 @@ def simpleproject(testdir):
 
 
 @tests.hasbaw
-def test_regression_format_keep_single_list(simpleproject):  # pylint:disable=W0621
+def test_regression_format_keep_single_list(simpleproject, monkeypatch):  # pylint:disable=W0621
     """Do not use -k, as a result renaming does not work propper.
 
     import hello.abc as ha produces:
@@ -46,8 +45,7 @@ def test_regression_format_keep_single_list(simpleproject):  # pylint:disable=W0
     baw.utils.file_create(path, source)
     assert os.path.exists(path)
 
-    completed = subprocess.run('baw format'.split(), check=False)
-    assert completed.returncode == baw.utils.SUCCESS
+    tests.run_command('format', monkeypatch=monkeypatch)
 
     read = baw.utils.file_read(path)
     assert read == source
