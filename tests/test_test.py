@@ -10,8 +10,6 @@
 import os
 import textwrap
 
-import pytest
-
 import baw.utils
 import tests
 
@@ -60,17 +58,3 @@ def test_test_with_import(example):
     completed = tests.run(cmd, example)
 
     assert not completed.returncode, completed.stderr + completed.stdout
-
-
-@pytest.fixture
-def project_with_test(example):
-    """Create project with one test case"""
-    test_me = textwrap.dedent("""\
-        def test_me():
-            # Empty passing test
-            pass
-    """)
-    write = example.join('tests/my_test.py')
-    baw.utils.file_create(write, test_me)
-    assert os.path.exists(write)
-    return example

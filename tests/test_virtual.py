@@ -15,7 +15,6 @@ import os
 import baw.runtime
 import baw.utils
 import tests
-from tests.test_test import project_with_test  # pylint: disable=W0611
 
 
 @tests.cmds
@@ -34,7 +33,7 @@ def test_create_venv(example, monkeypatch):
 @tests.hasbaw
 @tests.cmds
 @tests.nightly
-def test_run_test_in_venv(project_with_test):  # pylint: disable=W0621
+def test_run_test_in_venv(project_with_test):
     """Running test-example in virtual environment"""
     # install requirements first and run test later
     cmd = 'baw --virtual sync' + ' && baw test'  #python -mpytest tests -v'

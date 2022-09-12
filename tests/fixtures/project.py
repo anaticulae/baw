@@ -68,3 +68,17 @@ def project_with_command(example):
     path = baw.config.config_path(example)
     baw.utils.file_append(path, RUN)
     return example
+
+
+@pytest.fixture
+def project_with_test(example):
+    """Create project with one test case"""
+    test_me = textwrap.dedent("""\
+        def test_me():
+            # Empty passing test
+            pass
+    """)
+    write = example.join('tests/my_test.py')
+    baw.utils.file_create(write, test_me)
+    assert os.path.exists(write)
+    return example
