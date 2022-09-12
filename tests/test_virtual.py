@@ -12,6 +12,7 @@ environment afterwards.
 
 import os
 
+import baw.runtime
 import baw.utils
 import tests
 from tests.test_test import project_with_test  # pylint: disable=W0611
@@ -25,9 +26,9 @@ def test_create_venv(example, monkeypatch):
         '--virtual',
         monkeypatch=monkeypatch,
     )
-    # TODO: ADJUST THIS TEST LATER, TODO: PATH BAWTMP FOR THIS TEST?
-    virtual = example.join('tmpdir/venv/xkcd')
-    assert os.path.exists(virtual), 'venv folder does not exists: %s' % virtual
+    # TODO: ENSURE THAT CORRECT VENV IS CREATED?
+    venv = baw.runtime.venv(example, creates=False)
+    assert os.path.exists(venv), f'venv folder does not exists: {venv}'
 
 
 @tests.hasbaw
