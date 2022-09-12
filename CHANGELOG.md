@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v0.21.2
+
+### Fix
+
+* do not add venv files (02a1c8db2dd6)
+* add files correctly (cdef9385d7f8)
+* run on linux correctly (d1a920a47aa1)
+* clarify program skipper (5f8c12c37ca2)
+
+### Documentation
+
+* adjust documentation (8eb149ecf59b)
+
 ## v0.21.1
 
 ### Fix
