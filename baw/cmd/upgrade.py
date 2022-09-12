@@ -13,6 +13,7 @@ import re
 
 import baw.cmd.complex
 import baw.cmd.sync
+import baw.config
 import baw.git
 import baw.requirements
 import baw.utils
@@ -199,7 +200,7 @@ def determine_new_requirements(
 
 def collect_new_packages(root, source, sink, virtual, verbose=False):
     sync_error = False
-    parallel_worker = os.environ.get('BAW_PARALLEL_PIP_CALLS', 10)
+    parallel_worker = baw.config.pip_parallel_worker(root)
     with concurrent.futures.ThreadPoolExecutor(max_workers=parallel_worker) as executor: # yapf:disable
         todo = {
             executor.submit(

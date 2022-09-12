@@ -286,6 +286,21 @@ def docker_image(root: str) -> bool:
     return result
 
 
+def pip_parallel_worker(root: str) -> bool:
+    """\
+    >>> import baw
+    >>> pip_parall_worker(baw.ROOT) >=1
+    True
+    """
+    parallel_pip_calls = int(os.environ.get('BAW_PARALLEL_PIP_CALLS'), 10)
+    result = default_config(
+        root,
+        lambda x: x['pip']['worker'],
+        default=parallel_pip_calls,
+    )
+    return result
+
+
 def default_config(root: str, access: callable, default=None) -> bool:
     if os.path.isfile(root):
         path = root
