@@ -127,7 +127,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621
     def commit_all():
         completed = baw.runtime.run_target(
             path,
-            'git add . && git commit -m "Upgade requirements"',
+            'git add . && git commit -m "Upgrade requirements"',
         )
         assert completed.returncode == baw.utils.SUCCESS, str(completed)
 
