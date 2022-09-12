@@ -12,6 +12,7 @@ import sys
 
 import baw.config
 import baw.project
+import baw.runtime
 import baw.utils
 
 
@@ -25,16 +26,19 @@ def prints(root, value: str):
 
 
 def print_tmp(root: str):
-    root = baw.project.determine_root(root)
-    name = os.path.split(root)[1]
+    name: str = 'global'
+    if not baw.config.venv_global():
+        root = baw.project.determine_root(root)
+        name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
     baw.utils.log(tmpdir)
     sys.exit(baw.utils.SUCCESS)
 
 
 def print_venv(root: str):
-    root = baw.project.determine_root(root)
-    name = os.path.split(root)[1]
-    tmpdir = os.path.join(baw.config.bawtmp(), 'venv', name)
+    tmpdir = baw.runtime.venv(
+        root,
+        creates=False,
+    )
     baw.utils.log(tmpdir)
     sys.exit(baw.utils.SUCCESS)
