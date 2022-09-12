@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.22.0
+
+### Feature
+
+* add global variable to use single venv (59848289d29c)
+* make creation more verbose (a9d94d07d2d6)
+
+### Fix
+
+* adjust default value (fa942f93e164)
+* use global venv to determine venv, tmp correctly (926bcb1070bf)
+
 ## v0.21.2
 
 ### Fix
