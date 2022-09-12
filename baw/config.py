@@ -304,7 +304,7 @@ def pip_parallel_worker(root: str) -> bool:
     >>> pip_parall_worker(baw.ROOT) >=1
     True
     """
-    parallel_pip_calls = int(os.environ.get('BAW_PARALLEL_PIP_CALLS'), 10)
+    parallel_pip_calls = int(os.environ.get('BAW_PARALLEL_PIP_CALLS', '10'))
     result = default_config(
         root,
         lambda x: x['pip']['worker'],
