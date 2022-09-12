@@ -39,7 +39,7 @@ def destroy(path: str):
     return True
 
 
-def venv(root: str) -> str:
+def venv(root: str, creates: bool = True) -> str:
     assert root
     name: str = 'global'
     if not baw.config.venv_global():
@@ -51,16 +51,14 @@ def venv(root: str) -> str:
     if os.path.exists(outdated):
         baw.utils.error(f'use outdated virtual: {outdated}')
         return outdated
-    os.makedirs(virtual, exist_ok=True)
+    if creates:
+        os.makedirs(virtual, exist_ok=True)
     return virtual
 
 
 def has_venv(root: str) -> bool:
     assert root
-    name: str = 'global'
-    if not baw.config.venv_global():
-        name = baw.config.shortcut(root)
-    virtual = os.path.join(baw.config.bawtmp(), 'venv', name)
+    virtual = venv(root, creates=False)
     if os.path.exists(virtual):
         return True
     return False
