@@ -111,7 +111,7 @@ def patch_pip(root):
 
     TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
     """
-    baw.utils.log('Patching the wheel')
+    baw.utils.log(f'Patching the wheel: {root}')
     to_patch = os.path.join(
         venv(root),
         'Lib/site-packages/pip/_internal/wheel.py',
