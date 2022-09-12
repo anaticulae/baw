@@ -42,6 +42,18 @@ SPELLING_DEFAULT = False
 FAIL_ON_FINDING_DEFAULT = True
 
 
+def venv_global() -> bool:
+    """Use single venv.
+
+    >>> str(venv_global())
+    '...'
+    """
+    single = str(os.environ.get('BAW_VENV_GLOBAL', default='')).lower()
+    if '1' in single or 'true' in single:
+        return True
+    return False
+
+
 @functools.lru_cache()
 def name(root: str):
     assert os.path.exists(root)
