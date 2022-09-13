@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v0.23.0
+
+### Feature
+
+* do not use global when running baw tests (927c8ee696ee)
+
+### Fix
+
+* use tmp file to avoid file collision (0e2aaa841ab0)
+* always log docker result (273bdabd7562)
+* add volume to current image (00b299cc3572)
+* do not use absolute path (2b6196bb624e)
+* fix runner (575fec078a98)
+* adjust image name (d6b1d6ac1666)
+
 ## v0.22.0
 
 ### Feature
