@@ -99,21 +99,10 @@ def forward_slash(content: str, save_newline=True):
     return content
 
 
-def get_setup():
-    try:
-        adress = os.environ['HELPY_URL']
-        internal = int(os.environ['HELPY_INT_PORT'])
-        external = int(os.environ['HELPY_EXT_PORT'])
-        return (adress, internal, external)
-    except KeyError as failure:
-        error(f'Missing global var {failure}')
-        sys.exit(FAILURE)
-
-
 def package_address():
     try:
-        internal = os.environ['HELPY_INT_DIRECT']
-        external = os.environ['HELPY_EXT_DIRECT']
+        internal = os.environ['PIP_INDEX_URL']
+        external = os.environ['PIP_EXTRA_INDEX_URL']
         return (internal, external)
     except KeyError as failure:
         error(f'Missing global var {failure}')

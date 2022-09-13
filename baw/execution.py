@@ -18,8 +18,8 @@ from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import check_root
 from baw.utils import error
-from baw.utils import get_setup
 from baw.utils import log
+from baw.utils import package_address
 
 # TODO: Use twine for uploading packages
 SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
@@ -38,8 +38,7 @@ def publish(root: str, verbose: bool = False, virtual: bool = True):
     if not tag:
         error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
-    adress, internal_port, _ = get_setup()
-    url = f'{adress}:{internal_port}'
+    url, _ = package_address()
     distribution = distribution_format()
     python = baw.config.python(root)
     command = f'{python} setup.py {distribution} upload -r {url}'

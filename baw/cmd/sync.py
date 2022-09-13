@@ -24,7 +24,6 @@ from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import REQUIREMENTS_EXTRA
 from baw.utils import error
-from baw.utils import get_setup
 from baw.utils import log
 from baw.utils import package_address
 
@@ -89,9 +88,7 @@ def check_dependency(
     verbose: bool = False,
 ):
     """Check if packages need an upgrade."""
-    (adress, internal, external) = get_setup()
-    pip_index = '%s:%d' % (adress, internal)
-    extra_url = '%s:%d' % (adress, external)
+    pip_index, extra_url = package_address()
     # if not connected(pip_index, extra_url):
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
