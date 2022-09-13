@@ -92,7 +92,9 @@ def switch_docker():
         argv[0] = argv[0].split('/')[-1]
     usercmd = ' '.join(argv)
     image = baw.config.docker_image(root=root)
-    docker = f'docker run --rm {image} "{usercmd}"'
+    # TODO: MOVE TO CONFIG OR SOMETHING ELSE
+    volume = f'-v {os.getcwd()}:/var/test'
+    docker = f'docker run --rm {volume} {image} "{usercmd}"'
     completed = baw.runtime.run(docker, cwd=root)
     if completed.returncode:
         baw.utils.error(docker)
