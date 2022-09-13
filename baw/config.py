@@ -301,7 +301,7 @@ def docker_image(root: str) -> bool:
 def pip_parallel_worker(root: str) -> bool:
     """\
     >>> import baw
-    >>> pip_parall_worker(baw.ROOT) >=1
+    >>> pip_parallel_worker(baw.ROOT) >=1
     True
     """
     parallel_pip_calls = int(os.environ.get('BAW_PARALLEL_PIP_CALLS', '10'))
