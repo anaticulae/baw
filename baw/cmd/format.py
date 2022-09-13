@@ -9,6 +9,7 @@
 
 import concurrent.futures
 import os
+import sys
 
 from baw.config import sources
 from baw.config import testing
@@ -27,10 +28,29 @@ def format_repository(root: str, verbose: bool = False, virtual: bool = False):
     return SUCCESS
 
 
+def installed(program: str, root: str, virtual: bool = False):
+    done = run_target(
+        root,
+        command=f'which {program}',
+        virtual=virtual,
+        verbose=False,
+    )
+    if done.returncode == SUCCESS:
+        return True
+    error(f'not installed: {program}')
+    error(f'venv: {virtual}')
+    error(f'python: {sys.executable}')
+    error(f'path: {" ".join(sys.path)}')
+    return False
+
+
 def format_source(root: str, verbose: bool = False, virtual: bool = False):
+    if not installed('yapf', root=root, virtual=virtual):
+        return FAILURE
     command = 'yapf -i --style=google setup.py'
-    failure = run_target(root, command, verbose=False, virtual=virtual)
+    failure = run_target(root, command, verbose=True, virtual=virtual)
     if failure.returncode:
+        error(failure)
         return failure.returncode
     # run in parallel if not testing with pytest
     # TODO: yapf does not run on virtual environment properly
@@ -41,6 +61,8 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
 
 
 def format_imports(root: str, verbose: bool = False, virtual: bool = False):
+    if not installed('isort', root=root, virtual=virtual):
+        return FAILURE
     project_sources = sources(root)
     short = ' -p '.join(project_sources)
     isort = [
