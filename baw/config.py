@@ -50,6 +50,9 @@ def venv_global() -> bool:
     """
     single = str(os.environ.get('BAW_VENV_GLOBAL', default='')).lower()
     if '1' in single or 'true' in single:
+        if testing():
+            # do not use global for baw project
+            return False
         return True
     return False
 
