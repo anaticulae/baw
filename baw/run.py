@@ -87,6 +87,9 @@ def switch_docker():
     root = os.getcwd()
     # use docker to run cmd
     argv = [item for item in sys.argv if item != '--docker']
+    if argv:
+        # TODO: REMOVE THIS HACK
+        argv[0] = argv[0].split('/')[-1]
     usercmd = ' '.join(argv)
     image = baw.config.docker_image(root=root)
     docker = f'docker run --rm {image} "{usercmd}"'
