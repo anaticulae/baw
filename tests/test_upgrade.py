@@ -16,9 +16,6 @@ import tests
 import tests.fixtures.project
 import tests.fixtures.requirements
 
-# fixture
-project_example = tests.fixtures.project.project_example  # pylint:disable=C0103
-
 NEW_VERSION_AVAILABLE = """
 utila (0.5.4)  - 0.5.4
   INSTALLED: 0.5.3
@@ -108,12 +105,12 @@ iamraw
 
 def test_upgrading(tmpdir):
     requirements_path = os.path.join(tmpdir, baw.utils.REQUIREMENTS_TXT)
-
-    baw.utils.file_create(requirements_path, TEST_UPGRADE)
-
+    baw.utils.file_create(
+        requirements_path,
+        TEST_UPGRADE,
+    )
     # use default requirements.txt
     baw.cmd.upgrade.upgrade_requirements(tmpdir)
-
     loaded = baw.utils.file_read(requirements_path)
     assert loaded != TEST_UPGRADE
 
@@ -121,7 +118,7 @@ def test_upgrading(tmpdir):
 @tests.hasgit
 @tests.longrun
 @tests.nonvirtual
-def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0621, W0613
+def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     path = os.getcwd()
 
     def commit_all():
