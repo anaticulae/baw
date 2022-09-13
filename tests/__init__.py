@@ -50,7 +50,7 @@ def hasprog(program: str):
         f'which {program}'.split(),
         check=False,
         capture_output=True,
-    ).returncode == 0
+    ).returncode == baw.utils.SUCCESS
     result = pytest.mark.skipif(not has, reason=f'install {program}')
     return result
 
