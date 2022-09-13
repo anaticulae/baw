@@ -55,18 +55,8 @@ def hasprog(program: str):
     return result
 
 
-HASBAW = subprocess.run(  # pylint:disable=c2001
-    'which baw'.split(),
-    check=False,
-    capture_output=True,
-).returncode == 0
-hasbaw = pytest.mark.skipif(not HASBAW, reason='install baw')
-HASGIT = subprocess.run(  # pylint:disable=c2001
-    'which git'.split(),
-    check=False,
-    capture_output=True,
-).returncode == 0
-hasgit = pytest.mark.skipif(not HASGIT, reason='install git')
+hasbaw = hasprog('baw')
+hasgit = hasprog('git')
 
 
 def run(command: str, cwd: str = None):
