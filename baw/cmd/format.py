@@ -48,7 +48,7 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
     if not installed('yapf', root=root, virtual=virtual):
         return FAILURE
     command = 'yapf -i --style=google setup.py'
-    failure = run_target(root, command, verbose=True, virtual=virtual)
+    failure = run_target(root, command, verbose=False, virtual=virtual)
     if failure.returncode:
         error(failure)
         return failure.returncode
