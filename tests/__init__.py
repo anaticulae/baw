@@ -43,6 +43,18 @@ skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
 nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No venv env')
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
+
+def hasprog(program: str):
+    assert program, 'define program'
+    has = subprocess.run(  # pylint:disable=c2001
+        f'which {program}'.split(),
+        check=False,
+        capture_output=True,
+    ).returncode == 0
+    result = pytest.mark.skipif(not has, reason=f'install {program}')
+    return result
+
+
 HASBAW = subprocess.run(  # pylint:disable=c2001
     'which baw'.split(),
     check=False,
