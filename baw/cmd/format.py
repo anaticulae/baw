@@ -11,6 +11,7 @@ import concurrent.futures
 import os
 
 from baw.config import sources
+from baw.config import testing
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
@@ -108,9 +109,3 @@ def format_(
                 return FAILURE
     log(f'{info}: complete\n')
     return SUCCESS
-
-
-def testing() -> bool:
-    if os.environ.get('PYTEST_CURRENT_TEST', None):
-        return True
-    return False

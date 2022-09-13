@@ -343,3 +343,9 @@ def docpath(root: str, mkdir: bool = True) -> str:
     if mkdir:
         os.makedirs(tmpdoc, exist_ok=True)
     return tmpdoc
+
+
+def testing() -> bool:
+    if os.environ.get('PYTEST_CURRENT_TEST', None):
+        return True
+    return False
