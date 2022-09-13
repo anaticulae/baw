@@ -101,6 +101,10 @@ def switch_docker():
         if completed.stdout:
             baw.utils.error(completed.stdout)
         baw.utils.error(completed.stderr)
+    else:
+        baw.utils.log(completed.stdout)
+        if completed.stderr:
+            baw.utils.error(completed.stderr)
     return completed.returncode
 
 
