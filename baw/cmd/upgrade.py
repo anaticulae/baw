@@ -89,7 +89,7 @@ def check_upgrade(root, packages):
     failure_extra = REQUIREMENTS_UPTODATE
     if requirements_extra:
         failure_extra = upgrade_requirements(root, baw.utils.REQUIREMENTS_EXTRA)
-    # requirements.txt is uptodate, no update requireded
+    # requirements.txt is up-to-date, no update required
     if all((
             failure == REQUIREMENTS_UPTODATE,
             failure_dev == REQUIREMENTS_UPTODATE,
@@ -118,7 +118,7 @@ def upgrade_requirements(
 
     Args:
         root(str): generated project
-        requirements(str): relativ path to requirements
+        requirements(str): relative path to requirements
         virtual(bool): run in virtual environment
     Returns:
         SUCCESS if file was upgraded
@@ -133,7 +133,7 @@ def upgrade_requirements(
     content = baw.utils.file_read(req_path)
     if not content.strip():
         baw.utils.log(f'Empty: {req_path}. Skipping replacement.')
-        # stop further synchonizing process and quit with SUCCESS
+        # stop further synchronizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
     upgraded = determine_new_requirements(root, content, virtual=virtual)
     if upgraded is None:
