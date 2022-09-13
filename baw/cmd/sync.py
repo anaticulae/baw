@@ -153,7 +153,7 @@ def sync_dependencies(
         return baw.utils.SUCCESS
     log(f'\nrequire update:\n{required}')
     # create temporary requirements file
-    requirements = os.path.join(baw.utils.tmp(root), 'requirements.txt')
+    requirements = baw.utils.tmpfile()
     baw.utils.file_replace(requirements, str(required))
     cmd, pip = get_install_cmd(
         root,
