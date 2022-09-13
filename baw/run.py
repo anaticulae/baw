@@ -116,6 +116,9 @@ def run_version(args) -> bool:
 
 
 def run_environment(args):
+    if baw.config.venv_always():
+        # overwrite virtual selection
+        args['virtual'] = True
     root = setup_environment(
         args['upgrade'],
         args.get('release', ''),
