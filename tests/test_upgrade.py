@@ -153,7 +153,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     assert 'Reset' in stdout, stdout
 
     # Reuse virtual environment
-    # remove failling test
+    # remove failing test
     baw.utils.file_remove(failingtest_path)
     commit_all()
 
