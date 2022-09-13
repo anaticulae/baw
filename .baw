@@ -15,4 +15,4 @@ name = Black and White
 minimal_coverage = 50
 
 [docker]
-image = baw:0.18.0
+image = 169.254.149.20:6001/test:0.1.0
