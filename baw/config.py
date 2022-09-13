@@ -43,7 +43,7 @@ FAIL_ON_FINDING_DEFAULT = True
 
 
 def venv_global() -> bool:
-    """Use single venv.
+    """Use global venv.
 
     >>> str(venv_global())
     '...'
