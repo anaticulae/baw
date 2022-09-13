@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v0.24.0
+
+### Feature
+
+* verify that formatter is installed (35a9ac16594e)
+* add global env to always run inside venv (2f242b4eaab9)
+* use global pip env (63d89b4ea6fb)
+
+### Fix
+
+* reduce verbosity (a8173353bdfa)
+
 ## v0.23.0
 
 ### Feature
