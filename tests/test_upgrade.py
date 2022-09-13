@@ -130,16 +130,13 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
 
     # yapf in a higher version is provided by dev environment
     baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
-
     failed_test = textwrap.dedent("""\
     def test_me():
         assert 0
     """)
     failingtest_path = 'tests/test_failed.py'
-
     baw.utils.file_create(failingtest_path, failed_test)
     commit_all()
-
     result = baw.cmd.upgrade.upgrade(
         path,
         verbose=True,
@@ -148,15 +145,12 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     )
     assert result == baw.utils.FAILURE
     stdout = capsys.readouterr().out
-
     assert stdout
     assert 'Reset' in stdout, stdout
-
     # Reuse virtual environment
     # remove failing test
     baw.utils.file_remove(failingtest_path)
     commit_all()
-
     result = baw.cmd.upgrade.upgrade(
         path,
         verbose=False,
