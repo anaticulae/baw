@@ -29,8 +29,8 @@ virtualenv==20.4.6
 
 rope==0.10.7
 
-yapf==0.32.0 # format source code
-isort==4.3.15 # format imports
+yapf==0.32.0            # format source code
+isort==5.8.0            # format imports
 
 pylint==2.8.2
 

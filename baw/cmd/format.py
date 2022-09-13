@@ -72,12 +72,10 @@ def format_imports(root: str, verbose: bool = False, virtual: bool = False):
         short,
         "-p",
         "tests",
-        "-ot",
-        "-y",
-        "-sl",  # force single line
-        "-ns",  # override default skip of __init__
+        "--ot",
+        "--sl",  # force single line
+        "--ns",  # override default skip of __init__
         "__init__.py",
-        "-rc",  # recursive
         "--line-width 999",  # do not break imports
     ]
     isort: str = ' '.join(isort)
