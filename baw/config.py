@@ -288,7 +288,7 @@ def docker_image(root: str) -> bool:
     """\
     >>> import baw
     >>> docker_image(baw.ROOT)
-    'baw:...'
+    '...'
     """
     result = default_config(
         root,
