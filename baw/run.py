@@ -89,7 +89,7 @@ def switch_docker():
     argv = [item for item in sys.argv if item != '--docker']
     usercmd = ' '.join(argv)
     image = baw.config.docker_image(root=root)
-    docker = f'docker run -it -e RUNJOB="{usercmd}" {image}'
+    docker = f'docker run --rm {image} "{usercmd}"'
     completed = baw.runtime.run(docker, cwd=root)
     if completed.returncode:
         baw.utils.error(docker)
