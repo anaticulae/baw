@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.25.0
+
+### Feature
+
+* add option to print cov report (ff00531439a5)
+
 ## v0.24.1
 
 ### Fix
