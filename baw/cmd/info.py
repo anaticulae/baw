@@ -23,6 +23,9 @@ def prints(root, value: str):
     if value == 'venv':
         print_venv(root)
         return
+    if value == 'covreport':
+        print_covreport(root)
+        return
 
 
 def print_tmp(root: str):
@@ -41,4 +44,13 @@ def print_venv(root: str):
         creates=False,
     )
     baw.utils.log(tmpdir)
+    sys.exit(baw.utils.SUCCESS)
+
+
+def print_covreport(root: str):
+    result = os.path.join(
+        baw.utils.tmp(root),
+        'report',
+    )
+    baw.utils.log(result)
     sys.exit(baw.utils.SUCCESS)
