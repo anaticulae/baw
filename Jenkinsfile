@@ -40,7 +40,7 @@ pipeline {
         }
         stage('nightly'){
             steps{
-                sh 'baw test nightly -n16'
+                sh 'baw test nightly -n16 --cov'
             }
         }
         stage('release'){
