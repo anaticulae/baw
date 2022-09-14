@@ -322,7 +322,7 @@ def add_info_option(parser):
         'info',
         help='Print project information.',
         nargs=1,
-        choices=['venv', 'tmp'],
+        choices='venv tmp'.split(),
     )
 
 
