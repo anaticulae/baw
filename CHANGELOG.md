@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.24.1
+
+### Fix
+
+* adjust config to upgraded isort (bea07df8e0cd)
+
 ## v0.24.0
 
 ### Feature
