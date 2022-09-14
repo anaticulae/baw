@@ -12,7 +12,7 @@ short = baw
 name = Black and White
 
 [release]
-minimal_coverage = 50
+minimal_coverage = 40
 
 [docker]
 image = 169.254.149.20:6001/test:0.1.0
