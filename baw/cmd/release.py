@@ -195,7 +195,7 @@ def drop(
     virtual: bool = False,
     verbose: bool = False,
 ):
-    """Remove the last release tag and commit
+    """Remove the last release tag and commit.
 
     1. Check if last commit is a tagged release, if not abbort
     2. Remove last commit git reset HEAD~1
@@ -251,7 +251,6 @@ def reset_resources(
     short = baw.config.shortcut(root)
     initpath = os.path.join(short, '__init__.py')
     changelog = 'CHANGELOG.md'
-
     to_reset = []
     ret = 0
     for item in [initpath, changelog]:
