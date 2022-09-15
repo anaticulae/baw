@@ -46,6 +46,42 @@ def init(
     return baw.utils.SUCCESS
 
 
+def upgrade(
+    root: str,
+    verbose: bool = False,
+    venv: bool = False,
+):
+    source = jenkinsfile(root)
+    if not os.path.exists(source):
+        baw.utils.error(f'Jenkinsfile does not exists: {source}')
+        return baw.utils.FAILURE
+    newest = image_newest()
+    replaced = baw.resources.template_replace(
+        root,
+        template=baw.resources.JENKINSFILE,
+        docker_image_test=newest,
+    )
+    before = baw.utils.file_read(source)
+    if replaced.strip() == before.strip():
+        baw.utils.error('Jenkinsfile unchanged, skip upgrade')
+        return baw.utils.FAILURE
+    with baw.git.git_stash(root, verbose=verbose, virtual=venv):
+        baw.utils.file_replace(
+            source,
+            content=replaced,
+        )
+        failure = baw.git.commit(
+            root,
+            source=source,
+            message='chore(ci): upgrade Jenkinsfile',
+            verbose=False,
+        )
+        if failure:
+            return failure
+    baw.utils.log('Jenkinsfile upgraded')
+    return baw.utils.SUCCESS
+
+
 def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
 
@@ -71,7 +107,11 @@ def run(args: dict):
             venv=args.get('virtual'),
         )
     if args.get('action') == 'upgrade':
-        baw.utils.error('not implemented')
+        return upgrade(
+            root,
+            verbose=args.get('verbose'),
+            venv=args.get('virtual'),
+        )
     if args.get('action') == 'test':
         baw.utils.error('not implemented')
     return baw.utils.FAILURE
