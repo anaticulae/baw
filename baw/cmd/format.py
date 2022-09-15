@@ -39,8 +39,9 @@ def format_source(root: str, verbose: bool = False, virtual: bool = False):
     # run in parallel if not testing with pytest
     # TODO: yapf does not run on virtual environment properly
     parallel = '-p' if not baw.config.testing() and not virtual else ''
+    template_skip = '-e *.tpy'
     # python = baw.config.python(root, virtual=False)
-    command = f'yapf -r -i --style=google {parallel} --no-local-style'
+    command = f'yapf -r -i --style=google {template_skip} {parallel} --no-local-style'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
 
