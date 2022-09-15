@@ -65,7 +65,6 @@ def run_main():  # pylint:disable=R0911
             run_install,
             run_publish,
             run_lint,
-            run_plan,
     ):
         if returncode := method(root=root, args=args):
             return returncode
@@ -365,9 +364,8 @@ def run_lint(root: str, args: dict):
     return result
 
 
-def run_plan(root: str, args: dict):
-    if not args.get('plan', False):
-        return baw.utils.SUCCESS
+def run_plan(args: dict):
+    root = get_root(args)
     result = baw.cmd.plan.action(
         root=root,
         plan=args.get('plan_operation'),

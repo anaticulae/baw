@@ -210,6 +210,7 @@ def add_plan_options(parser):
         help='modify current release plan',
         choices=['new', 'close'],
     )
+    plan.set_defaults(func=baw.run.run_plan)
 
 
 def add_init_options(parser):
