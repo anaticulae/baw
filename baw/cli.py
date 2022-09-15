@@ -310,16 +310,17 @@ def add_info_option(parser):
 def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
+    subcmd = sys.argv[1] if len(sys.argv) >= 2 else ''
     args = vars(parser.parse_args())
-    args['sync'] = 'sync' in sys.argv
-    args['plan'] = 'plan' in sys.argv
-    args['init'] = 'init' in sys.argv
-    args['open'] = 'open' in sys.argv
-    args['install'] = 'install' in sys.argv
-    args['format'] = 'format' in sys.argv
+    args['sync'] = subcmd == 'sync'
+    args['plan'] = subcmd == 'plan'
+    args['init'] = subcmd == 'init'
+    args['open'] = subcmd == 'open'
+    args['install'] = subcmd == 'install'
+    args['format'] = subcmd == 'format'
     if 'upgrade' not in sys.argv:
         args['upgrade'] = False
-    args['pipeline'] = 'pipeline' in sys.argv
+    args['pipeline'] = subcmd == 'pipeline'
     # require help?
     need_help = not any(args.values())
     if need_help:
