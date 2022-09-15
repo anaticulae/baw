@@ -77,8 +77,7 @@ def run(command: str, cwd: str = None):
 @contextlib.contextmanager
 def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
-
-    msg = '%s\n%s' % (completed.stderr, completed.stdout)
+    msg = f'{completed.stderr}\n{completed.stdout}'
     assert not completed.returncode, msg
     yield completed
 
@@ -86,7 +85,7 @@ def assert_run(command: str, cwd: str = None):
 @contextlib.contextmanager
 def assert_run_fail(command: str, cwd: str = None):
     completed = run(command, cwd)
-    msg = '%s\n%s' % (completed.stderr, completed.stdout)
+    msg = f'{completed.stderr}\n{completed.stdout}'
     assert completed.returncode, msg
     yield completed
 
