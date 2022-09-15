@@ -274,6 +274,7 @@ def add_test_options(parser):
         default='fast',
         choices='docs fast long nightly skip'.split(),
     )
+    test.set_defaults(func=baw.run.run_test)
 
 
 def add_install_option(parser):

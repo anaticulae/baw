@@ -60,7 +60,6 @@ def run_main():  # pylint:disable=R0911
     for method in (
             run_bisect,
             run_venv,
-            run_test,
             run_doc,
             run_install,
             run_publish,
@@ -240,7 +239,8 @@ def run_sync(args):
     return result
 
 
-def run_test(root: str, args):
+def run_test(args):
+    root = get_root(args)
     if not args.get('test', False):
         return baw.utils.SUCCESS
     testconfig = []
