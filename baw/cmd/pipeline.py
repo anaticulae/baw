@@ -35,6 +35,7 @@ def init(
             source,
             content=replaced,
         )
+        baw.git.add(root, 'Jenkinsfile')
         failure = baw.git.commit(
             root,
             source=source,

@@ -24,7 +24,6 @@ def simple(example, monkeypatch):
     yield runner, example
 
 
-@pytest.mark.xfail(reason='incomplete impl')
 @tests.cmds
 def test_cmd_pipeline_init(simple):  # pylint:disable=W0621
     simple[0]('pipeline init')
