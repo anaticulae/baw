@@ -39,15 +39,25 @@ def git_init(root: str):
     evaluate_git_error(command)
 
 
-def git_add(root: str, pattern: str):
+def git_add(
+    root: str,
+    pattern: str,
+    verbose: bool = False,
+):
     """Stage items matching on given pattern
 
     Args:
         root(str): root of generated project
-        pattern(str): pattern in linux-style"""
+        pattern(str): pattern in linux-style
+        verbose(bool): increase verbosity
+    """
     assert os.path.exists(root)
     baw.utils.log('git add')
-    cmd = baw.runtime.run_target(root, 'git add %s' % pattern, verbose=False)
+    cmd = baw.runtime.run_target(
+        root,
+        f'git add {pattern}',
+        verbose=verbose,
+    )
     evaluate_git_error(cmd)
 
 

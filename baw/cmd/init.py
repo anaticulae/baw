@@ -73,7 +73,7 @@ def init(
         )
         if completed:
             return completed
-    baw.git.git_add(root, '.')
+    baw.git.git_add(root, '.', verbose=verbose)
     # Deactivate options to reach fast reaction
     baw.cmd.release.release(
         root,
