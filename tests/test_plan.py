@@ -35,7 +35,7 @@ def test_plan_current_status():
     assert status != baw.cmd.plan.Status.EMPTY
 
 
-@tests.longrun
+@tests.nightly
 def test_plan_code_quality(project_example):  # pylint:disable=W0621
     quality = baw.cmd.plan.code_quality(project_example)
     assert quality
@@ -44,7 +44,7 @@ def test_plan_code_quality(project_example):  # pylint:disable=W0621
     assert quality.coverage <= 100.0, quality.coverage
 
 
-@tests.longrun
+@tests.nightly
 def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
     """Ensure that project init generates first release plan"""
     plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
@@ -53,7 +53,7 @@ def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
     assert clean, clean
 
 
-@tests.longrun
+@tests.nightly
 def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
     workspace = project_example_done
     baw.cmd.plan.close(workspace)
@@ -61,7 +61,7 @@ def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
     assert current_status == baw.cmd.plan.Status.CLOSED, current_status
 
 
-@tests.longrun
+@tests.nightly
 def test_cli_plan_close_current_plan(project_example_done, monkeypatch):  # pylint:disable=W0621
     workspace = project_example_done
     tests.run_command('plan close', monkeypatch)
@@ -69,7 +69,7 @@ def test_cli_plan_close_current_plan(project_example_done, monkeypatch):  # pyli
     assert current_status == baw.cmd.plan.Status.CLOSED, current_status
 
 
-@tests.longrun
+@tests.nightly
 def test_cli_plan_close_current_plan_and_open_new(
     project_example_done,  # pylint:disable=W0621
     monkeypatch,
