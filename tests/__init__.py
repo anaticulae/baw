@@ -40,7 +40,7 @@ cmds = pytest.mark.skipif(NO_BAW, reason='decrease response time')
 longrun = pytest.mark.skipif(FAST_TESTS, reason='test requires long time')
 nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
 skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
-nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='No venv env')
+nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='erquire venv')
 skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
 
