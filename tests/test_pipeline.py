@@ -12,27 +12,20 @@ import os
 
 import pytest
 
-import baw.utils
 import tests
-
-BASE = """\
-[project]
-short = jenkins
-name = lets test the jenkinsfile
-"""
 
 
 @pytest.fixture
-def simple(testdir, monkeypatch):
-    baw.utils.file_create(
-        testdir.tmpdir.join('.baw'),
-        content=BASE,
+def simple(example, monkeypatch):
+    runner = functools.partial(
+        tests.run_command,
+        monkeypatch=monkeypatch,
     )
-    runner = functools.partial(tests.run_command, monkeypatch=monkeypatch)
-    yield runner, testdir.tmpdir
+    yield runner, example
 
 
 @pytest.mark.xfail(reason='incomplete impl')
+@tests.cmds
 def test_cmd_pipeline_init(simple):  # pylint:disable=W0621
     simple[0]('pipeline init')
     assert os.path.exists(simple[1].join('Jenkinsfile'))
