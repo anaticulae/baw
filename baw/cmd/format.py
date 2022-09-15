@@ -10,14 +10,9 @@
 import concurrent.futures
 import os
 
-from baw.config import sources
-from baw.config import testing
-from baw.runtime import installed
-from baw.runtime import run_target
-from baw.utils import FAILURE
-from baw.utils import SUCCESS
-from baw.utils import error
-from baw.utils import log
+import baw.config
+import baw.runtime
+import baw.utils
 
 
 def format_repository(root: str, verbose: bool = False, virtual: bool = False):
@@ -25,29 +20,34 @@ def format_repository(root: str, verbose: bool = False, virtual: bool = False):
         failure = item(root, verbose=verbose, virtual=virtual)
         if failure:
             return failure
-    return SUCCESS
+    return baw.utils.SUCCESS
 
 
 def format_source(root: str, verbose: bool = False, virtual: bool = False):
-    if not installed('yapf', root=root, virtual=virtual):
-        return FAILURE
+    if not baw.runtime.installed('yapf', root=root, virtual=virtual):
+        return baw.utils.FAILURE
     command = 'yapf -i --style=google setup.py'
-    failure = run_target(root, command, verbose=False, virtual=virtual)
+    failure = baw.runtime.run_target(
+        root,
+        command,
+        verbose=False,
+        virtual=virtual,
+    )
     if failure.returncode:
-        error(failure)
+        baw.utils.error(failure)
         return failure.returncode
     # run in parallel if not testing with pytest
     # TODO: yapf does not run on virtual environment properly
-    parallel = '-p' if not testing() and not virtual else ''
+    parallel = '-p' if not baw.config.testing() and not virtual else ''
     # python = baw.config.python(root, virtual=False)
     command = f'yapf -r -i --style=google {parallel} --no-local-style'
     return format_(root, cmd=command, verbose=verbose, virtual=virtual)
 
 
 def format_imports(root: str, verbose: bool = False, virtual: bool = False):
-    if not installed('isort', root=root, virtual=virtual):
-        return FAILURE
-    project_sources = sources(root)
+    if not baw.runtime.installed('isort', root=root, virtual=virtual):
+        return baw.utils.FAILURE
+    project_sources = baw.config.sources(root)
     short = ' -p '.join(project_sources)
     isort = [
         "-o",
@@ -82,8 +82,8 @@ def format_(
     verbose: bool = False,
     virtual: bool = False,
 ):
-    log(info)
-    folder = sources(root)
+    baw.utils.log(info)
+    folder = baw.config.sources(root)
 
     # check that `tests` path exists
     testpath = os.path.join(root, 'tests')
@@ -96,10 +96,10 @@ def format_(
             source = os.path.join(root, item)
             command = f'{cmd} {source}'
             if verbose:
-                log(command)
+                baw.utils.log(command)
             waitfor.append(
                 executor.submit(
-                    run_target,
+                    baw.runtime.run_target,
                     root=root,
                     command=command,
                     cwd=source,
@@ -109,7 +109,7 @@ def format_(
         for future in concurrent.futures.as_completed(waitfor):
             completed = future.result()
             if completed.returncode:
-                error(f'error while formatting {completed.stderr}')
-                return FAILURE
-    log(f'{info}: complete\n')
-    return SUCCESS
+                baw.utils.error(f'error while formatting {completed.stderr}')
+                return baw.utils.FAILURE
+    baw.utils.log(f'{info}: complete\n')
+    return baw.utils.SUCCESS
