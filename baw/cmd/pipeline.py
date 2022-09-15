@@ -24,9 +24,11 @@ def init(
     if os.path.exists(source):
         baw.utils.error(f'Jenkinsfile already exists: {source}')
         return baw.utils.FAILURE
+    newest = image_newest()
     replaced = baw.resources.template_replace(
         root,
         template=baw.resources.JENKINSFILE,
+        docker_image_test=newest,
     )
     with baw.git.git_stash(root, verbose=verbose, virtual=venv):
         baw.utils.file_create(
@@ -46,6 +48,18 @@ def init(
 
 def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
+
+
+def image_newest():
+    """\
+    >>> image_newest()
+    '...:...:...'
+    """
+    repository = '169.254.149.20:6001'
+    imagename = 'test'
+    version = '0.3.0'
+    result = f'{repository}:{imagename}:{version}'
+    return result
 
 
 def run(args: dict):
