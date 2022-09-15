@@ -101,6 +101,7 @@ def example(testdir, monkeypatch):
     if run('which git').returncode:
         pytest.skip('install git')
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
+    baw.git.update_userdata()
     cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')
