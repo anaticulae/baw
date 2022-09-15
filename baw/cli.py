@@ -12,6 +12,7 @@ import argparse
 import dataclasses
 import sys
 
+import baw.cmd.pipeline
 import baw.cmd.release
 
 
@@ -120,7 +121,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.release.extend_cli(cmds)
     add_publish_options(cmds)
     add_install_option(cmds)
-    add_pipeline_option(cmds)
+    baw.cmd.pipeline.extend_cli(cmds)
     add_format_option(cmds)
     add_info_option(cmds)
     return parser
@@ -303,17 +304,6 @@ def add_info_option(parser):
         help='Print project information.',
         nargs=1,
         choices='venv tmp covreport'.split(),
-    )
-
-
-def add_pipeline_option(parser):
-    sync = parser.add_parser('jenkins', help='Run pipline task')
-    sync.add_argument(
-        'create',
-        help='generate jenkins file',
-        nargs='?',
-        const='test',
-        choices='test generate nightly release'.split(),
     )
 
 
