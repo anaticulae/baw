@@ -135,7 +135,7 @@ def tmpfile() -> str:
     >>> tmpfile()
     '...'
     """
-    name = str(int(random.random() * 10000000000)).zfill(10)
+    name = str(int(random.random() * 10000000000)).zfill(10)  # nosec
     tmpdir = tmp(baw.ROOT)
     result = os.path.join(tmpdir, name)
     if os.path.exists(result):

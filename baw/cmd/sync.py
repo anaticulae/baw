@@ -334,7 +334,7 @@ def connected(internal: str, external: str) -> bool:
     result = True
     for item in [internal, external]:
         try:
-            with urlopen(item) as response:
+            with urlopen(item) as response:  # nosec
                 response.read()
         except URLError:
             result = False

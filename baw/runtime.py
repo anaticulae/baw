@@ -357,7 +357,7 @@ def run(command: str, cwd: str, env=None, debugging: bool = False):
         env = dict(os.environ.items())
     # Capturering stdout and stderr reuqires PIPE in completed process.
     # Debugging with pdb due console requires no PIPE.
-    process = subprocess.run(  # pylint:disable=W1510
+    process = subprocess.run(  # pylint:disable=W1510 # nosec
         command,
         cwd=cwd,
         encoding=baw.utils.UTF8,

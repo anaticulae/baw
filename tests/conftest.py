@@ -18,7 +18,7 @@ from tests.fixtures.project import project_with_test  # pylint:disable=W0611
 
 pytest_plugins = 'pytester'  # pylint: disable=invalid-name
 
-assert subprocess.run(
+assert subprocess.run(  # nosec
     ['which', 'baw'],
     capture_output=True,
     check=False,

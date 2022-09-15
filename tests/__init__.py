@@ -46,7 +46,7 @@ skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
 
 def hasprog(program: str):
     assert program, 'define program'
-    has = subprocess.run(  # pylint:disable=c2001
+    has = subprocess.run(  # pylint:disable=c2001 # nosec
         f'which {program}'.split(),
         check=False,
         capture_output=True,
@@ -62,7 +62,7 @@ hasgit = hasprog('git')
 def run(command: str, cwd: str = None):
     """Run external process."""
     cwd = cwd if cwd else os.getcwd()
-    completed = subprocess.run(
+    completed = subprocess.run(  # nosec
         command,
         cwd=cwd,
         shell=True,

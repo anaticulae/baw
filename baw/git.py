@@ -31,7 +31,7 @@ def git_init(root: str):
         baw.utils.skip('git init')
         return
     baw.utils.log('git init')
-    command = subprocess.run(
+    command = subprocess.run(  # nosec
         ['git', 'init'],
         check=False,
         capture_output=True,
@@ -240,7 +240,7 @@ def update_gitignore(root: str, verbose: bool = False):
 
 def update_userdata(username='supermario', email='test@test.com'):
     cmd = f'git config --global user.email "{email}" user.name="{username}"'
-    process = subprocess.run(
+    process = subprocess.run(  # nosec
         cmd,
         check=False,
         shell=True,
@@ -272,7 +272,7 @@ def git_installed() -> bool:
     '...'
     """
     try:
-        process = subprocess.run(
+        process = subprocess.run(  # nosec
             ['git', 'help'],
             capture_output=True,
             check=False,

@@ -73,7 +73,7 @@ def create(
     # TODO: REFACTOR THIS HACK
     if major == 0 and minor == '1':  # pylint:disable=C2001
         # first release plan
-        token = '  :maxdepth: 1\n'
+        token = '  :maxdepth: 1\n'  # nosec
         replace = '  :maxdepth: 1\n\n  0.1.0\n'
         loaded = loaded.replace(token, replace, 1)
         baw.utils.file_replace(overview, loaded)
