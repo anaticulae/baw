@@ -61,7 +61,6 @@ def run_main():  # pylint:disable=R0911
             run_bisect,
             run_venv,
             run_doc,
-            run_install,
             run_publish,
             run_lint,
     ):
@@ -286,9 +285,8 @@ def run_doc(root: str, args: dict):
     return result
 
 
-def run_install(root: str, args: dict):
-    if not args.get('install', False):
-        return baw.utils.SUCCESS
+def run_install(args: dict):
+    root = get_root(args)
     result = baw.cmd.install.install(
         root=root,
         virtual=args.get('virtual', False),

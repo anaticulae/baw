@@ -289,6 +289,7 @@ def add_install_option(parser):
         help='install in development mode',
         action='store_true',
     )
+    test.set_defaults(func=baw.run.run_install)
 
 
 def add_format_option(parser):
