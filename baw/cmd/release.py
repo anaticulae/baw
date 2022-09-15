@@ -91,6 +91,9 @@ def extend_cli(parser):
     parser.add_argument('--no_test', action='store_true', help='skip tests')
     parser.add_argument('--no_venv', action='store_true', help='skip venv')
     parser.add_argument('--no_linter', action='store_true', help='skip linter')
+    # TODO :MOVE THIS
+    import baw.run  # pylint:disable=W0621
+    parser.set_defaults(func=baw.run.run_release)
 
 
 def require_release(root, virtual):

@@ -31,7 +31,9 @@ def test_run_command(monkeypatch, command):
         with pytest.raises(SystemExit) as result:
             baw.run.main()
         result = str(result)
-        assert 'SystemExit(0)' in result, result
+        # if no command is selected print help message and return code 1
+        expected = 'SystemExit(0)' if command else 'SystemExit(1)'
+        assert expected in result, result
 
 
 def assert_success(result):

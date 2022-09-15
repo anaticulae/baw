@@ -40,15 +40,18 @@ import baw.utils
 def run_main():  # pylint:disable=R0911
     start = time.time()
     args = baw.cli.parse()
-    if not any(args.values()):
+    if not any(args):
         return baw.utils.SUCCESS
     if run_version(args):
         return baw.utils.SUCCESS
     directory = run_environment(args)
     if run_open(directory, args):
         return baw.utils.SUCCESS
-    # create a new git repository with template code
-    run_init_project(directory, args)
+    func = args.get('func')
+    if func:
+        # TODO: REMOVE ALL METHOD BELOW
+        return func(args)
+    # # create a new git repository with template code
     # open vscode
     if returncode := run_ide(directory, args):
         return returncode
@@ -56,19 +59,13 @@ def run_main():  # pylint:disable=R0911
         return baw.utils.FAILURE
     for method in (
             run_bisect,
-            run_format,
             run_venv,
-            run_upgrade,
-            run_clean,
-            run_sync,
             run_test,
             run_doc,
             run_install,
-            run_release,
             run_publish,
             run_lint,
             run_plan,
-            run_info,
     ):
         if returncode := method(root=root, args=args):
             return returncode
@@ -109,7 +106,7 @@ def switch_docker():
 
 
 def run_version(args) -> bool:
-    if not args['version']:
+    if not args.get('version'):
         return False
     baw.utils.log(baw.__version__)
     return True
@@ -120,7 +117,7 @@ def run_environment(args):
         # overwrite virtual selection
         args['virtual'] = True
     root = setup_environment(
-        args['upgrade'],
+        args.get('upgrade', False),
         args.get('release', ''),
         args['raw'],
         args.get('virtual', False),
@@ -136,9 +133,8 @@ def run_open(directory, args):
     return True
 
 
-def run_init_project(directory, args):
-    if not args.get('init', False):
-        return
+def run_init_project(args):
+    directory = run_environment(args)
     #  No GIT found, exit 1
     with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
         shortcut, description, cmdline = (
@@ -146,12 +142,13 @@ def run_init_project(directory, args):
             args['description'],
             args['cmdline'],
         )
-        baw.cmd.init.init(
+        completed = baw.cmd.init.init(
             directory,
             shortcut,
             name=description,
             cmdline=cmdline,
         )
+    return completed
 
 
 def run_ide(directory, args):
@@ -185,9 +182,8 @@ def run_bisect(root, args):
     )
 
 
-def run_format(root, args):
-    if not args.get('format', False):
-        return baw.utils.SUCCESS
+def run_format(args):
+    root = get_root(args)
     result = baw.cmd.format.format_repository(
         root,
         verbose=args.get('verbose', False),
@@ -207,9 +203,8 @@ def run_venv(root, args):
     return result
 
 
-def run_upgrade(root, args):
-    if not args.get('upgrade', False):
-        return baw.utils.SUCCESS
+def run_upgrade(args):
+    root = get_root(args)
     result = baw.cmd.upgrade.upgrade(
         root=root,
         verbose=args.get('verbose', False),
@@ -219,10 +214,9 @@ def run_upgrade(root, args):
     return result
 
 
-def run_clean(root, args):
-    clean = args.get('clean', '')
-    if not clean:
-        return baw.utils.SUCCESS
+def run_clean(args):
+    root = get_root(args)
+    clean = args['clean']
     result = baw.cmd.clean.clean(
         docs=clean == 'docs',
         resources=clean == 'resources',
@@ -235,9 +229,8 @@ def run_clean(root, args):
     return result
 
 
-def run_sync(root, args):
-    if not args.get('sync', False):
-        return baw.utils.SUCCESS
+def run_sync(args):
+    root = get_root(args)
     result = baw.cmd.sync.sync(
         root=root,
         packages=args.get('packages'),
@@ -307,9 +300,8 @@ def run_install(root: str, args: dict):
     return result
 
 
-def run_release(root: str, args: dict):
-    if not args.get('release', False):
-        return baw.utils.SUCCESS
+def run_release(args: dict):
+    root = get_root(args)
     # always publish after release
     args['publish'] = True
     virtual = args.get('virtual', True)
@@ -381,9 +373,8 @@ def run_plan(root: str, args: dict):
     return result
 
 
-def run_info(root: str, args: dict):
-    if not args.get('info', False):
-        return baw.utils.SUCCESS
+def run_info(args: dict):
+    root = get_root(args)
     value = args['info'][0]
     baw.cmd.info.prints(
         root=root,
@@ -420,3 +411,10 @@ def main():
         stack_trace = traceback.format_exc()
         baw.utils.log(baw.utils.forward_slash(stack_trace))
     sys.exit(baw.utils.FAILURE)
+
+
+def get_root(args):
+    directory = run_environment(args)
+    if not (root := determine_root(directory)):
+        return sys.exit(baw.utils.FAILURE)
+    return root

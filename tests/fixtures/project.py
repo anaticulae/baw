@@ -27,7 +27,6 @@ def project_example(testdir, monkeypatch):
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')
         context.setattr(baw.config, 'bawtmp', tmpdir)
-
         baw.git.update_userdata()
         tests.run_command(['init', 'xcd', '"I Like This Project"'], monkeypatch)
         tests.run_command('plan new', monkeypatch)

@@ -14,6 +14,8 @@ import sys
 
 import baw.cmd.pipeline
 import baw.cmd.release
+import baw.run
+import baw.utils
 
 
 @dataclasses.dataclass
@@ -110,7 +112,7 @@ def create_parser():  # noqa: Z21
             add(*shortcuts, **args)
         else:
             add(*shortcuts, action='store_true', help=msg)
-    cmds = parser.add_subparsers()
+    cmds = parser.add_subparsers(help='sub-command help')
     add_open_options(cmds)
     add_clean_options(cmds)
     add_upgrade_option(cmds)
@@ -141,6 +143,7 @@ def add_upgrade_option(parser):
         nargs='?',
         default='requirements',
     )
+    plan.set_defaults(func=baw.run.run_upgrade)
 
 
 def add_clean_options(parser):
@@ -152,6 +155,7 @@ def add_clean_options(parser):
         nargs='?',
         default='tests',
     )
+    plan.set_defaults(func=baw.run.run_clean)
 
 
 def add_publish_options(parser):
@@ -196,6 +200,7 @@ def add_sync_options(parser):
         const='dev',
         choices=['all', 'dev', 'doc', 'extra', 'requirements'],
     )
+    sync.set_defaults(func=baw.run.run_sync)
 
 
 def add_plan_options(parser):
@@ -212,6 +217,7 @@ def add_init_options(parser):
     init.add_argument('shortcut', help='Project name')
     init.add_argument('description', help='Project description')
     init.add_argument('--cmdline', action='store_true')
+    init.set_defaults(func=baw.run.run_init_project)
 
 
 def add_test_options(parser):
@@ -295,6 +301,7 @@ def add_format_option(parser):
         help='run yapf',
         action='store_true',
     )
+    test.set_defaults(func=baw.run.run_format)
 
 
 def add_info_option(parser):
@@ -305,24 +312,17 @@ def add_info_option(parser):
         nargs=1,
         choices='venv tmp covreport'.split(),
     )
+    info.set_defaults(func=baw.run.run_info)
 
 
 def parse():
     """Parse arguments from sys-args and return the result as dictionary."""
     parser = create_parser()
-    subcmd = sys.argv[1] if len(sys.argv) >= 2 else ''
-    args = vars(parser.parse_args())
-    args['sync'] = subcmd == 'sync'
-    args['plan'] = subcmd == 'plan'
-    args['init'] = subcmd == 'init'
-    args['open'] = subcmd == 'open'
-    args['install'] = subcmd == 'install'
-    args['format'] = subcmd == 'format'
-    if 'upgrade' not in sys.argv:
-        args['upgrade'] = False
-    args['pipeline'] = subcmd == 'pipeline'
+    args = parser.parse_args()
     # require help?
-    need_help = not any(args.values())
+    need_help = not any(vars(args).values())
     if need_help:
         parser.print_help()
+        sys.exit(baw.utils.FAILURE)
+    args = vars(args)
     return args
