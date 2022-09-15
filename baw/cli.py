@@ -12,6 +12,8 @@ import argparse
 import dataclasses
 import sys
 
+import baw.cmd.release
+
 
 @dataclasses.dataclass
 class Command:
@@ -115,7 +117,7 @@ def create_parser():  # noqa: Z21
     add_plan_options(cmds)
     add_sync_options(cmds)
     add_test_options(cmds)
-    add_release_options(cmds)
+    baw.cmd.release.extend_cli(cmds)
     add_publish_options(cmds)
     add_install_option(cmds)
     add_pipeline_option(cmds)
@@ -149,22 +151,6 @@ def add_clean_options(parser):
         nargs='?',
         default='tests',
     )
-
-
-def add_release_options(parser):
-    # TODO: MOVE TO release.py
-    release = parser.add_parser('release', help='Test, commit, tag and publish')
-    release.add_argument(
-        'release',
-        help='Test, commit, tag and publish',
-        nargs='?',
-        choices='major minor patch noop auto drop'.split(),
-        default='auto',
-    )
-    release.add_argument('--no_install', action='store_true', help='skip insta')
-    release.add_argument('--no_test', action='store_true', help='skip tests')
-    release.add_argument('--no_venv', action='store_true', help='skip venv')
-    release.add_argument('--no_linter', action='store_true', help='skip linter')
 
 
 def add_publish_options(parser):

@@ -78,6 +78,21 @@ def release(
     return baw.utils.SUCCESS
 
 
+def extend_cli(parser):
+    parser = parser.add_parser('release', help='Test, commit, tag and publish')
+    parser.add_argument(
+        'release',
+        help='Test, commit, tag and publish',
+        nargs='?',
+        choices='major minor patch noop auto drop'.split(),
+        default='auto',
+    )
+    parser.add_argument('--no_install', action='store_true', help='skip insta')
+    parser.add_argument('--no_test', action='store_true', help='skip tests')
+    parser.add_argument('--no_venv', action='store_true', help='skip venv')
+    parser.add_argument('--no_linter', action='store_true', help='skip linter')
+
+
 def require_release(root, virtual):
     current_head = baw.git.git_headtag(root, virtual=virtual)
     if not current_head:
