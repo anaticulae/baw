@@ -32,7 +32,7 @@ def main():
 
 
 def profile(root, cmd, ranges, lookback: int = 20000) -> list:
-    todo = git_commits(root, ranges)
+    todo = commits(root, ranges)
     timed = []
     states = []
     for index, (commit, headline) in enumerate(todo, start=1):
@@ -66,9 +66,9 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
     return timed
 
 
-def git_commits(root, ranges) -> list:
+def commits(root, ranges) -> list:
     """\
-    >>> len(git_commits('.', list(range(5)))) if baw.git.git_installed() else 5
+    >>> len(commits('.', list(range(5)))) if baw.git.git_installed() else 5
     5
     """
     count = len(ranges)

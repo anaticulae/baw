@@ -65,7 +65,7 @@ def add(root: str, pattern: str):
     return git_add(root, pattern)
 
 
-def git_commit(root, source, message, verbose: int = 0):
+def commit(root, source, message, verbose: int = 0):
     assert os.path.exists(root)
     message = '"%s"' % message
     if verbose:
@@ -79,10 +79,6 @@ def git_commit(root, source, message, verbose: int = 0):
         verbose=verbose,
     )
     return process.returncode
-
-
-def commit(root, source, message, verbose: int = 0):
-    return git_commit(root, source, message, verbose)
 
 
 def is_clean(root, verbose: bool = True):

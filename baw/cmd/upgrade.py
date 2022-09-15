@@ -63,7 +63,7 @@ def upgrade(
             baw.utils.error('Upgrading failed')
             assert not completed
             return failure
-        failure = baw.git.git_commit(
+        failure = baw.git.commit(
             root,
             source=requirements,
             message=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',

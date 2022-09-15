@@ -35,7 +35,7 @@ def init(
             source,
             content=replaced,
         )
-        failure = baw.git.git_commit(
+        failure = baw.git.commit(
             root,
             source=source,
             message='chore(ci): add Jenkinsfile',
