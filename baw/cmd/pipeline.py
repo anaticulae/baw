@@ -86,15 +86,15 @@ def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
 
 
-def image_newest():
+def image_newest() -> str:
     """\
     >>> image_newest()
-    '...:...:...'
+    '.../...:...'
     """
     repository = '169.254.149.20:6001'
     imagename = 'test'
     version = '0.3.0'
-    result = f'{repository}:{imagename}:{version}'
+    result = f'{repository}/{imagename}:{version}'
     return result
 
 
