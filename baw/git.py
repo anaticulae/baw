@@ -52,7 +52,8 @@ def git_add(
         verbose(bool): increase verbosity
     """
     assert os.path.exists(root)
-    baw.utils.log('git add')
+    if verbose:
+        baw.utils.log('git add')
     cmd = baw.runtime.run_target(
         root,
         f'git add {pattern}',
