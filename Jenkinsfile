@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image '169.254.149.20:6001/test:0.2.0'
+            image '169.254.149.20:6001:test:0.3.0'
             args '--privileged -u root -v $WORKSPACE:/var/test'
         }
     }
