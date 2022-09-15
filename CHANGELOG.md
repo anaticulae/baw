@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v0.27.1
+
+### Fix
+
+* ensure that jenkins file is added (6ece0c9a2017)
+* adjust docker name (2584f97461c3)
+
 ## v0.27.0
 
 ### Feature
