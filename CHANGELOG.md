@@ -2,6 +2,33 @@
 
 Every noteable change is logged here.
 
+## v0.27.0
+
+### Feature
+
+* implement pipeline upgrade method (55ade3a146df)
+* add method to determine current newest docker image (8ec9a0e5f212)
+* extend Jenkins template (bb7f6c4c2171)
+* make git verbose if needed (b8f76eb318a6)
+* make formatter optional (bfa3116d774e)
+* ensure that semantic release is installed (bfd7d8b0ad2d)
+* inform about existing jenkins file (41278b67f09a)
+* connect to cli (7c2fdab628a7)
+* add jenkins init (073faf5a699f)
+* add empty jenkins file (7a9e8afe3536)
+* remove notests flag, use test skip instead (51953aea1714)
+
+### Fix
+
+* convert install cmd (15b4dac036af)
+* do not format template file (7ab38a140b07)
+* do not test on upgrade (01028c71e369)
+* fix test command (0b8ed9556cb0)
+* convert plan command (2138ac09ac02)
+* adjust first evaluation, use pythonic style (a71e27d79a0f)
+* avoid overlapping commands (f993674ee9a5)
+* align pipeline options (923e77eb1947)
+
 ## v0.26.0
 
 ## v0.25.0
