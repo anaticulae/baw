@@ -142,6 +142,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
         verbose=True,
         virtual=True,
         generate=False,  # do not change - see test.py/generate_only
+        notests=False,
     )
     assert result == baw.utils.FAILURE
     stdout = capsys.readouterr().out

@@ -38,13 +38,12 @@ def sync_and_test(
         if ret:
             error('\nSync failed, could not release.\n')
             return ret
-
     if not test:
         return SUCCESS
-
     ret = run_test(
         root,
         generate=generate,
+        fast=test,
         longrun=longrun,
         quiet=quiet,
         stash=stash,

@@ -22,7 +22,7 @@ import baw.utils
 def upgrade(
     root: str,
     *,
-    notests: bool = False,
+    notests: bool = True,
     verbose: bool = False,
     virtual: bool = False,
     generate: bool = True,
