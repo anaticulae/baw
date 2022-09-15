@@ -9,11 +9,11 @@
 
 
 def extend_cli(parser):
-    sync = parser.add_parser('jenkins', help='Run pipline task')
+    sync = parser.add_parser('pipeline', help='Run pipline task')
     sync.add_argument(
         'create',
-        help='generate jenkins file',
+        help='manage the jenkins file',
         nargs='?',
         const='test',
-        choices='test generate nightly release'.split(),
+        choices='init upgrade test'.split(),
     )

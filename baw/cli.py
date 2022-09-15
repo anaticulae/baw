@@ -319,7 +319,7 @@ def parse():
     args['format'] = 'format' in sys.argv
     if 'upgrade' not in sys.argv:
         args['upgrade'] = False
-    args['jenkins'] = 'jenkins' in sys.argv
+    args['pipeline'] = 'pipeline' in sys.argv
     # require help?
     need_help = not any(args.values())
     if need_help:
