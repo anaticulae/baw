@@ -11,6 +11,7 @@ import os
 
 import baw.git
 import baw.resources
+import baw.run
 import baw.utils
 
 
@@ -40,6 +41,17 @@ def init(
     return baw.utils.SUCCESS
 
 
+def run(args: dict):
+    root = baw.run.get_root(args)
+    if args.get('action') == 'init':
+        return init(
+            root,
+            verbose=args.get('verbose'),
+            venv=args.get('virtual'),
+        )
+    return baw.utils.FAILURE
+
+
 def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
 
@@ -47,9 +59,10 @@ def jenkinsfile(root: str):
 def extend_cli(parser):
     cli = parser.add_parser('pipeline', help='Run pipline task')
     cli.add_argument(
-        'create',
+        'action',
         help='manage the jenkins file',
         nargs='?',
         const='test',
         choices='init upgrade test'.split(),
     )
+    cli.set_defaults(func=run)
