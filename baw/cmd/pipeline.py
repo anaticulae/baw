@@ -44,6 +44,7 @@ def init(
         )
         if failure:
             return failure
+    baw.utils.log('Jenkinsfile added')
     return baw.utils.SUCCESS
 
 
