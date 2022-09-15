@@ -47,6 +47,9 @@ def run_main():  # pylint:disable=R0911
     directory = run_environment(args)
     if run_open(directory, args):
         return baw.utils.SUCCESS
+    if args.get('virtual', False):
+        if failure := run_venv(args):
+            return failure
     func = args.get('func')
     if func:
         # TODO: REMOVE ALL METHOD BELOW
@@ -59,7 +62,6 @@ def run_main():  # pylint:disable=R0911
         return baw.utils.FAILURE
     for method in (
             run_bisect,
-            run_venv,
             run_doc,
             run_publish,
             run_lint,
@@ -189,9 +191,8 @@ def run_format(args):
     return result
 
 
-def run_venv(root, args):
-    if not args.get('virtual', False):
-        return baw.utils.SUCCESS
+def run_venv(args):
+    root = get_root(args)
     result = baw.runtime.create(
         root,
         clean=args.get('clean', '') in 'venv all',
