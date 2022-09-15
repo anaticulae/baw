@@ -19,7 +19,6 @@ import time
 import webbrowser
 
 import baw
-from baw.runtime import run_target
 
 BAW_EXT = '.baw'
 TMP = '.tmp'
@@ -311,7 +310,8 @@ def select_executor():
 
 
 def installed(program: str, root: str, virtual: bool = False):
-    done = run_target(
+    import baw.runtime
+    done = baw.runtime.run_target(
         root,
         command=f'which {program}',
         virtual=virtual,
