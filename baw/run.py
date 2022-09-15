@@ -311,6 +311,8 @@ def run_release(args: dict):
     if novenv:
         baw.utils.log('do not use venv')
         virtual = False
+    if not baw.utils.installed('semantic-release', root, virtual=virtual):
+        return baw.utils.FAILURE
     test = True
     # do not test before releasing
     notest = args.get('no_test', False)

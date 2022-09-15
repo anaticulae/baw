@@ -50,7 +50,8 @@ def init(
     if os.path.exists(baw_path):
         baw.utils.error('Project %s already exists.' % baw_path)
         raise ValueError(baw.utils.FAILURE)
-
+    if not baw.utils.installed('semantic-release', root):
+        return baw.utils.FAILURE
     # Escape ' to avoid errors in generated code
     name = name.replace("'", r'\'')
 
