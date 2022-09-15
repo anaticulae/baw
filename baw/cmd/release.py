@@ -172,9 +172,12 @@ def publish(root, verbose, release_type):
         # Only release with type if user select one. If the user does select
         # a release-type let semantic release decide.
         release_type = '' if release_type == 'auto' else '--%s' % release_type
-        cmd = 'semantic-release version %s --config="%s"'
-        cmd = cmd % (release_type, config)
-        completed = baw.runtime.run_target(root, cmd, verbose=verbose)
+        cmd = f'semantic-release version {release_type} --config="{config}"'
+        completed = baw.runtime.run_target(
+            root,
+            cmd,
+            verbose=verbose,
+        )
         baw.utils.log(completed.stdout)
         if NO_RELEASE_MESSAGE in completed.stdout:
             baw.utils.error('abort release')
