@@ -224,7 +224,6 @@ def drop(
     4. Remove tag
     """
     baw.utils.log('Start dropping release')
-
     # git tag --contains HEAD -> Answer the last commit
     baw.utils.log('Detect current release:')
     runner = functools.partial(

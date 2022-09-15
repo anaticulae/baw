@@ -19,6 +19,7 @@ import time
 import webbrowser
 
 import baw
+from baw.runtime import run_target
 
 BAW_EXT = '.baw'
 TMP = '.tmp'
@@ -307,3 +308,19 @@ def select_executor():
     if testrun:
         executor = concurrent.futures.ThreadPoolExecutor
     return executor
+
+
+def installed(program: str, root: str, virtual: bool = False):
+    done = run_target(
+        root,
+        command=f'which {program}',
+        virtual=virtual,
+        verbose=False,
+    )
+    if done.returncode == SUCCESS:
+        return True
+    error(f'not installed: {program}')
+    error(f'venv: {virtual}')
+    error(f'python: {sys.executable}')
+    error(f'path: {" ".join(sys.path)}')
+    return False

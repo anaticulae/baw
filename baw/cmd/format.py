@@ -17,6 +17,7 @@ from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import error
+from baw.utils import installed
 from baw.utils import log
 
 
@@ -26,22 +27,6 @@ def format_repository(root: str, verbose: bool = False, virtual: bool = False):
         if failure:
             return failure
     return SUCCESS
-
-
-def installed(program: str, root: str, virtual: bool = False):
-    done = run_target(
-        root,
-        command=f'which {program}',
-        virtual=virtual,
-        verbose=False,
-    )
-    if done.returncode == SUCCESS:
-        return True
-    error(f'not installed: {program}')
-    error(f'venv: {virtual}')
-    error(f'python: {sys.executable}')
-    error(f'path: {" ".join(sys.path)}')
-    return False
 
 
 def format_source(root: str, verbose: bool = False, virtual: bool = False):
