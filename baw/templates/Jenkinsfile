@@ -1,0 +1,57 @@
+pipeline {
+    agent {
+        docker {
+            image '{{DOCKER_IMAGE_TEST}}'
+            args '--privileged -u root -v $WORKSPACE:/var/test'
+        }
+    }
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'master')
+        booleanParam(name: 'RELEASE', defaultValue: false)
+    }
+
+    stages{
+        stage('sync'){
+            steps{
+                sh 'ls -al /tmp'
+                sh 'baw sync all'
+            }
+        }
+        stage('doctest'){
+            steps{
+                sh 'baw test docs -n1'
+            }
+        }
+        stage('fast'){
+            steps{
+                sh 'baw test fast -n5'
+            }
+        }
+        stage('long'){
+            steps{
+                sh 'baw test long -n8'
+            }
+        }
+        stage('lint'){
+            steps{
+                sh 'baw --lint'
+            }
+        }
+        stage('nightly'){
+            steps{
+                // TODO: ADD JUNIT OPTION TO BAW
+                sh 'baw --testconfig="++junit+xml=report.xml" test nightly -n16 --cov'
+                junit '**/report.xml'
+            }
+        }
+        stage('release'){
+            when {
+                expression { return params.RELEASE }
+            }
+            steps{
+                sh 'baw install && baw release'
+            }
+        }
+    }
+}
