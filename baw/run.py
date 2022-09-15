@@ -310,7 +310,7 @@ def run_release(args: dict):
     if novenv:
         baw.utils.log('do not use venv')
         virtual = False
-    if not baw.utils.installed('semantic-release', root, virtual=virtual):
+    if not baw.runtime.installed('semantic-release', root, virtual=virtual):
         return baw.utils.FAILURE
     test = True
     # do not test before releasing
@@ -415,6 +415,7 @@ def main():
 
 def get_root(args):
     directory = run_environment(args)
-    if not (root := determine_root(directory)):
+    root = determine_root(directory)
+    if not root:
         return sys.exit(baw.utils.FAILURE)
     return root

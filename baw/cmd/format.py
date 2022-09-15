@@ -9,15 +9,14 @@
 
 import concurrent.futures
 import os
-import sys
 
 from baw.config import sources
 from baw.config import testing
+from baw.runtime import installed
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import error
-from baw.utils import installed
 from baw.utils import log
 
 

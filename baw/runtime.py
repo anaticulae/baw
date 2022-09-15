@@ -370,3 +370,19 @@ def run(command: str, cwd: str, env=None, debugging: bool = False):
         check=False,
     )
     return process
+
+
+def installed(program: str, root: str, virtual: bool = False):
+    done = run_target(
+        root,
+        command=f'which {program}',
+        virtual=virtual,
+        verbose=False,
+    )
+    if done.returncode == baw.utils.SUCCESS:
+        return True
+    baw.utils.error(f'not installed: {program}')
+    baw.utils.error(f'venv: {virtual}')
+    baw.utils.error(f'python: {sys.executable}')
+    baw.utils.error(f'path: {" ".join(sys.path)}')
+    return False
