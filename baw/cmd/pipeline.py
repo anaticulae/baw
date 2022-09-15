@@ -44,6 +44,10 @@ def init(
     return baw.utils.SUCCESS
 
 
+def jenkinsfile(root: str):
+    return os.path.join(root, 'Jenkinsfile')
+
+
 def run(args: dict):
     root = baw.run.get_root(args)
     if args.get('action') == 'init':
@@ -57,10 +61,6 @@ def run(args: dict):
     if args.get('action') == 'test':
         baw.utils.error('not implemented')
     return baw.utils.FAILURE
-
-
-def jenkinsfile(root: str):
-    return os.path.join(root, 'Jenkinsfile')
 
 
 def extend_cli(parser):
