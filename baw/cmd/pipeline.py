@@ -45,8 +45,8 @@ def jenkinsfile(root: str):
 
 
 def extend_cli(parser):
-    sync = parser.add_parser('pipeline', help='Run pipline task')
-    sync.add_argument(
+    cli = parser.add_parser('pipeline', help='Run pipline task')
+    cli.add_argument(
         'create',
         help='manage the jenkins file',
         nargs='?',
