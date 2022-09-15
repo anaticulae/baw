@@ -32,6 +32,7 @@ def init(
     cmdline: bool = False,
     *,
     verbose: bool = False,
+    formatter: bool = False,
 ) -> int:
     """Init project due generatig file and folder
 
@@ -41,6 +42,7 @@ def init(
         name(str): long name of generated project, used in documentation
         cmdline(bool): add default cmdline template to use project as cli
         verbose(bool): increase logging
+        formatter(bool): run yapf and isort
     Raises:
         ValueError: if project already exists
     Returns:
@@ -62,13 +64,15 @@ def init(
     create_requirements(root)
     baw.git.update_gitignore(root)
     baw.utils.log()  # write newline
-    completed = baw.cmd.format.format_repository(
-        root,
-        verbose=verbose,
-        virtual=False,
-    )
-    if completed:
-        return completed
+    if formatter:
+        # TODO: EXPOSE FORMATTER BY CLI FLAG
+        completed = baw.cmd.format.format_repository(
+            root,
+            verbose=verbose,
+            virtual=False,
+        )
+        if completed:
+            return completed
     baw.git.git_add(root, '.')
     # Deactivate options to reach fast reaction
     baw.cmd.release.release(
