@@ -12,6 +12,7 @@ import subprocess
 import baw.utils
 from tests import example  # pylint:disable=W0611
 from tests.fixtures.project import project_example  # pylint:disable=W0611
+from tests.fixtures.project import project_example_done  # pylint:disable=W0611
 from tests.fixtures.project import project_with_command  # pylint:disable=W0611
 from tests.fixtures.project import project_with_test  # pylint:disable=W0611
 

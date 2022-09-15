@@ -12,11 +12,10 @@ import os
 import baw.cmd.lint
 import baw.utils
 import tests
-from tests import example  # pylint:disable=W0611
 
 
 @tests.nightly
-def test_linter_run_with_scope(example, capsys):  # pylint:disable=W0621
+def test_linter_run_with_scope(example, capsys):
     root = str(example)
     returncode = baw.cmd.lint.lint(root)
     assert returncode == baw.utils.SUCCESS, f'{returncode} {capsys.readouterr()}'

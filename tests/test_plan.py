@@ -13,9 +13,6 @@ import baw.cmd.plan
 import baw.git
 import baw.utils
 import tests
-# pylint:disable=W0611
-from tests.fixtures.project import project_example
-from tests.fixtures.project import project_example_done
 
 ROOT = baw.ROOT
 
@@ -36,7 +33,7 @@ def test_plan_current_status():
 
 
 @tests.nightly
-def test_plan_code_quality(project_example):  # pylint:disable=W0621
+def test_plan_code_quality(project_example):
     quality = baw.cmd.plan.code_quality(project_example)
     assert quality
     assert isinstance(quality.rating, float), quality.rating
@@ -45,7 +42,7 @@ def test_plan_code_quality(project_example):  # pylint:disable=W0621
 
 
 @tests.nightly
-def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
+def test_plan_init_first_testplan(project_example):
     """Ensure that project init generates first release plan"""
     plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
     assert os.path.exists(plan), plan
@@ -54,7 +51,7 @@ def test_plan_init_first_testplan(project_example):  # pylint:disable=W0621
 
 
 @tests.nightly
-def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
+def test_plan_close_plan(project_example_done):
     workspace = project_example_done
     baw.cmd.plan.close(workspace)
     current_status = baw.cmd.plan.status(workspace)
@@ -62,7 +59,7 @@ def test_plan_close_plan(project_example_done):  # pylint:disable=W0621
 
 
 @tests.nightly
-def test_cli_plan_close_current_plan(project_example_done, monkeypatch):  # pylint:disable=W0621
+def test_cli_plan_close_current_plan(project_example_done, monkeypatch):
     workspace = project_example_done
     tests.run_command('plan close', monkeypatch)
     current_status = baw.cmd.plan.status(workspace)
@@ -71,7 +68,7 @@ def test_cli_plan_close_current_plan(project_example_done, monkeypatch):  # pyli
 
 @tests.nightly
 def test_cli_plan_close_current_plan_and_open_new(
-    project_example_done,  # pylint:disable=W0621
+    project_example_done,
     monkeypatch,
 ):
     workspace = project_example_done
