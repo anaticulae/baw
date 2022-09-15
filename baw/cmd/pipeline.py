@@ -21,6 +21,9 @@ def init(
     venv: bool = False,
 ):
     source = jenkinsfile(root)
+    if os.path.exists(source):
+        baw.utils.error(f'Jenkinsfile already exists: {source}')
+        return baw.utils.FAILURE
     replaced = baw.resources.template_replace(
         root,
         template=baw.resources.JENKINSFILE,
@@ -49,6 +52,10 @@ def run(args: dict):
             verbose=args.get('verbose'),
             venv=args.get('virtual'),
         )
+    if args.get('action') == 'upgrade':
+        baw.utils.error('not implemented')
+    if args.get('action') == 'test':
+        baw.utils.error('not implemented')
     return baw.utils.FAILURE
 
 
