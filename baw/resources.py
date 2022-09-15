@@ -172,6 +172,7 @@ if __name__ == "__main__":
 """
 
 CODE_WORKSPACE = baw.utils.file_read(WORKSPACE_TEMPLATE)
+JENKINSFILE = baw.utils.file_read(os.path.join(TEMPLATES, 'Jenkinsfile'))
 GITIGNORE = baw.utils.file_read(os.path.join(TEMPLATES, '.gitignore'))
 SETUP_PY = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.tpy'))
 SETUP_CFG = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.cfg'))
