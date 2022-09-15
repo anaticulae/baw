@@ -54,16 +54,13 @@ def init(
         return baw.utils.FAILURE
     # Escape ' to avoid errors in generated code
     name = name.replace("'", r'\'')
-
     baw.git.git_init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
     create_requirements(root)
-
     baw.git.update_gitignore(root)
-
     baw.utils.log()  # write newline
     completed = baw.cmd.format.format_repository(
         root,
@@ -72,9 +69,7 @@ def init(
     )
     if completed:
         return completed
-
     baw.git.git_add(root, '.')
-
     # Deactivate options to reach fast reaction
     baw.cmd.release.release(
         root,
@@ -85,7 +80,6 @@ def init(
         virtual=False,  # No virtual for first time needed
         require_clean=False,
     )
-
     # TODO: Think aboud activating later? Add test flag?
     # Reduces times of creating from 8 to 2 secs
     # quality = baw.cmd.plan.code_quality(root)
@@ -95,7 +89,6 @@ def init(
     #     coverage=quality.coverage,
     # )
     # baw.cmd.plan.create(root)
-
     return baw.utils.SUCCESS
 
 
