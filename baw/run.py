@@ -213,7 +213,6 @@ def run_upgrade(root, args):
     result = baw.cmd.upgrade.upgrade(
         root=root,
         verbose=args.get('verbose', False),
-        notests=args['notests'],
         virtual=False,
         packages=args['upgrade'],
     )

@@ -63,10 +63,6 @@ DOCKER = Command(longcut='--docker', message='Use docker environment')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
-NOTESTS = Command(
-    longcut='--notests',
-    message='Do not run test suite',
-)
 TEST_CONFIG = Command(
     longcut='--testconfig',
     message='parametrize test command',
@@ -75,7 +71,6 @@ TEST_CONFIG = Command(
         'nargs': '+'
     },
 )
-
 VENV = Command(longcut='--virtual', message='Run commands in venv')
 # TODO count V to determine verbosity. -VVV
 VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
@@ -96,7 +91,6 @@ def create_parser():  # noqa: Z21
         DOCKER,
         IDE,
         LINT,
-        NOTESTS,
         RAW,
         REPORT,
         RUN,
