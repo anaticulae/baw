@@ -33,7 +33,6 @@ class Command:
 
 
 ALL = Command('-a', '--all', 'Clean and run all expect of publishing')
-BUILD = Command('-b', '--build', 'Run build tasks')
 IDE = Command(
     longcut='--ide',
     message='generate workspace and open vscode',
@@ -79,7 +78,6 @@ def create_parser():  # noqa: Z21
     todo = (
         ALL,
         BISECT,
-        BUILD,
         DOCKER,
         IDE,
         RAW,
