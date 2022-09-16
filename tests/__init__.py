@@ -8,6 +8,7 @@
 # =============================================================================
 
 import contextlib
+import functools
 import os
 import subprocess
 import sys
@@ -100,6 +101,8 @@ def example(testdir, monkeypatch):
         pytest.skip('install baw')
     if run('which git').returncode:
         pytest.skip('install git')
+    if NO_BAW:
+        pytest.skip('decrease response time, use longrun')
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     baw.git.update_userdata()
     cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'
@@ -109,6 +112,15 @@ def example(testdir, monkeypatch):
         with assert_run(cmd, cwd=testdir.tmpdir):
             assert os.path.exists(os.path.join(testdir.tmpdir, '.git'))
             yield testdir.tmpdir
+
+
+@pytest.fixture
+def simple(example, monkeypatch):  # pylint:disable=W0621
+    runner = functools.partial(
+        run_command,
+        monkeypatch=monkeypatch,
+    )
+    yield runner, example
 
 
 def file_count(path: str):

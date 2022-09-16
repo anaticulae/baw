@@ -12,10 +12,9 @@ environment afterwards.
 
 import os
 
-import tests
-
 import baw.runtime
 import baw.utils
+import tests
 
 
 @tests.cmds
