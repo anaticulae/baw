@@ -233,6 +233,10 @@ def add_test_options(parser):
         nargs=1,
     )
     test.add_argument(
+        '--junit_xml',
+        help='junit-xml for pytest',
+    )
+    test.add_argument(
         '-x',
         help='fail fast after first error',
         action='store_true',

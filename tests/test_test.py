@@ -58,3 +58,9 @@ def test_test_with_import(example):
     completed = tests.run(cmd, example)
 
     assert not completed.returncode, completed.stderr + completed.stdout
+
+
+def test_cmd_junit_xml(simple):  # pylint:disable=W0621
+    expected = os.path.join(simple[1], 'myreport.xml')
+    simple[0](f'test --junit_xml={expected}')
+    assert os.path.exists(expected)

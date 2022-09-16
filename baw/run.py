@@ -258,6 +258,8 @@ def run_test(args):
         testconfig += ['-x ']
     if args['config']:
         testconfig += args['config']
+    if args['junit_xml']:
+        testconfig += [f'--junit-xml="{args["junit_xml"]}"']
     result = baw.cmd.test.run_test(
         root=root,
         coverage=args['cov'],
