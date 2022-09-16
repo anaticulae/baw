@@ -37,7 +37,7 @@ import baw.runtime
 import baw.utils
 
 
-def run_main():  # pylint:disable=R0911,R1260
+def run_main():  # pylint:disable=R0911,R1260,too-many-branches
     start = time.time()
     args = baw.cli.parse()
     if not any(args):
@@ -50,6 +50,9 @@ def run_main():  # pylint:disable=R0911,R1260
     if args.get('venv', False):
         if failure := run_venv(args):
             return failure
+    if args.get('bisect', False):
+        if failure := run_bisect(args):
+            return failure
     func = args.get('func')
     if func:
         # TODO: REMOVE ALL METHOD BELOW
@@ -60,10 +63,7 @@ def run_main():  # pylint:disable=R0911,R1260
         return returncode
     if not (root := determine_root(directory)):
         return baw.utils.FAILURE
-    for method in (
-            run_bisect,
-            run_publish,
-    ):
+    for method in (run_publish,):
         if returncode := method(root=root, args=args):
             return returncode
     if not args.get('ide', False):
@@ -168,15 +168,20 @@ def determine_root(directory):
     return root
 
 
-def run_bisect(root, args):
-    if not args.get('commits', False):
-        return baw.utils.SUCCESS
-    return baw.cmd.bisect.cli(
+def run_bisect(args):
+    commits = args['bisect'][0]
+    cmds = list(sys.argv)[1:]
+    cmds.remove('--bisect')
+    cmds.remove(commits)
+    root = get_root(args)
+    result = baw.cmd.bisect.cli(
         root,
-        args['commits'],
+        commits=commits,
+        args=cmds,
         verbose=args.get('verbose', False),
         venv=args.get('venv', False),
     )
+    return result
 
 
 def run_format(args):

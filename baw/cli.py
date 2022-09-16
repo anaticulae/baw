@@ -45,10 +45,10 @@ IDE = Command(
 )
 BISECT = Command(
     longcut='--bisect',
-    message='run git bisect',
+    message='run git bisect, use ^ to separate good and bad commit',
     args={
-        'nargs': '+',
-        'dest': 'commits',
+        'nargs': 1,
+        'dest': 'bisect',
     },
 )
 # run tests, increment version, commit, git tag and push to package index

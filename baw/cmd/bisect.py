@@ -16,33 +16,23 @@ import baw.utils
 
 def cli(
     root: str,
-    commits: list,
+    commits: str,
+    args: list,
     venv: bool = False,
     verbose: bool = False,
 ):
-    args = list(sys.argv)
-    if not len(commits) in (1, 2):
-        baw.utils.error(f'invalid commit definition {commits}')
-        sys.exit(baw.utils.INPUT_ERROR)
+    baw.utils.log(commits)
+    commits = commits.split('^')
     if len(commits) == 1:
         bad, good = 'HEAD', commits[0]
     else:
         bad, good = commits
-        args.remove(commits[1])
-    try:
-        # --bisect HEAD~10
-        args.remove(commits[0])
-        args.remove('--bisect')
-    except ValueError:
-        # --bisect=HEAD~10
-        # TODO: CHECK GOOD BAD?
-        args.remove(f'--bisect={commits[0]}')
-    args = args[1:]
+        # args.remove(commits[1])
+    # TODO: CHECK GOOD BAD?
     if not args:
         baw.utils.error('nothing to bisect')
         sys.exit(baw.utils.INPUT_ERROR)
     verify = ' '.join(args)
-
     completed = bisect(
         root,
         verify=verify,
