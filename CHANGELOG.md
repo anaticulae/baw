@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.0.0
+
+### Feature
+
+* convert ide command (56b6acc5b885)
+* integrate testconfig into test command (6de06a791c81)
+* convert doc command (ac6bf27d7763)
+* change --virtual to --venv (9e08cd3cf0b5)
+* convert linter commands (ec807a1e4e56)
+* log successful creation (0ec3d06dd4b7)
+
+### Fix
+
+* adjust bisect command (f21b60bec0ab)
+* decrease logging (89a32a20e9b6)
+* enable venv cmd (165043bded41)
+
 ## v0.27.1
 
 ### Fix
