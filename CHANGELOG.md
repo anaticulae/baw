@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.1.0
+
+### Feature
+
+* use new junit parameter (c47ffdd2610e)
+* add parameter to define junit report path (c8cb6a9269a4)
+
+### Fix
+
+* add missing publish step (b1539dcd10f3)
+
 ## v1.0.0
 
 ### Feature
