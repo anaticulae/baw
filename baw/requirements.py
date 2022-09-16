@@ -128,18 +128,23 @@ def parse(content: str) -> Requirements:  # pylint:disable=R1260,R0912
     return result
 
 
-def fix_version(item: str) -> str:
+def fix_version(item: str, semver: bool = False) -> str:
     """\
     >>> fix_version('3.5')
     '3.5.0'
     >>> fix_version('20181108')
     '20181108'
+    >>> fix_version('3.3.7.1', semver=True) # TODO: IMPROVE LATER
+    '3.3.7'
     """
     if '.' not in item:
         return item
     item = item.strip()
     if item.count('.') == 1:
         item = f'{item}.0'
+    if semver:
+        if item.count('.') == 3:
+            item = item.rsplit('.', maxsplit=1)[0]
     return item
 
 
@@ -277,9 +282,11 @@ def lower(current: str, new: str) -> bool:
     True
     >>> lower('1.5', '20.2.3')
     False
+    >>> lower('3.3.7.1', '4.0.0') # TODO: INVESTIGATE LATER
+    False
     """
     import semver
-    current, new = fix_version(current), fix_version(new)
+    current, new = fix_version(current, True), fix_version(new, True)
     try:
         current = semver.VersionInfo.parse(current)
     except ValueError:
