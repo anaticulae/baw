@@ -288,10 +288,10 @@ def add_format_option(parser):
 
 
 def add_info_option(parser):
-    info = parser.add_parser('info', help='Print project information.')
+    info = parser.add_parser('info', help='Print project information')
     info.add_argument(
         'info',
-        help='Print project information.',
+        help='Print project information',
         nargs=1,
         choices='venv tmp covreport'.split(),
     )
