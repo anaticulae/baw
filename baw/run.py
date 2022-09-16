@@ -57,10 +57,6 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
     if func:
         # TODO: REMOVE ALL METHOD BELOW
         return func(args)
-    # # create a new git repository with template code
-    # open vscode
-    if returncode := run_ide(directory, args):
-        return returncode
     if not (root := determine_root(directory)):
         return baw.utils.FAILURE
     for method in (run_publish,):
@@ -148,12 +144,15 @@ def run_init_project(args):
     return completed
 
 
-def run_ide(directory, args):
-    if not args.get('ide', False):
-        return baw.utils.SUCCESS
-    packages = tuple(args['ide']) if args['ide'] != [None] else None
+def run_ide(args):
+    # # create a new git repository with template code
+    # open vscode
+    root = run_environment(args)
+    packages = None
+    if args['package']:
+        packages = tuple(args['package'])
     if returncode := baw.cmd.ide.ide_open(
-            root=directory,
+            root=root,
             packages=packages,
     ):
         return returncode

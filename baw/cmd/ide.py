@@ -135,3 +135,14 @@ def workspace_configuration(root: str):
     """Path to generated workspace configuration."""
     config = os.path.join(baw.utils.tmp(root), '..code-workspace')
     return baw.utils.forward_slash(config)
+
+
+def extend_cli(parser):
+    ides = parser.add_parser('ide', help='Create Workspace and open IDE')
+    ides.set_defaults(func=baw.run.run_ide)
+    ides.add_argument(
+        'package',
+        help='Open selective package(s)',
+        nargs='*',
+        default=[],
+    )

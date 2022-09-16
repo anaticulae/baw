@@ -13,6 +13,7 @@ import dataclasses
 import sys
 
 import baw.cmd.doc
+import baw.cmd.ide
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.release
@@ -33,15 +34,6 @@ class Command:
 
 
 ALL = Command(longcut='--all', message='Clean and run all expect of publishing')
-IDE = Command(
-    longcut='--ide',
-    message='generate workspace and open vscode',
-    args={
-        'nargs': '?',
-        'dest': 'ide',
-        'action': 'append',
-    },
-)
 BISECT = Command(
     longcut='--bisect',
     message='run git bisect, use ^ to separate good and bad commit',
@@ -69,7 +61,6 @@ def create_parser():  # noqa: Z21
         ALL,
         BISECT,
         DOCKER,
-        IDE,
         RAW,
         VENV,
         VERBOSE,
@@ -84,6 +75,7 @@ def create_parser():  # noqa: Z21
         else:
             add(*shortcuts, action='store_true', help=msg)
     cmds = parser.add_subparsers(help='sub-command help')
+    baw.cmd.ide.extend_cli(cmds)
     baw.cmd.doc.extend_cli(cmds)
     add_open_options(cmds)
     add_clean_options(cmds)
