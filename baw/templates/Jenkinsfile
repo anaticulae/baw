@@ -51,6 +51,7 @@ pipeline {
             }
             steps{
                 sh 'baw install && baw release && baw publish'
+                // TODO: GIT COMMIT?
             }
         }
     }
