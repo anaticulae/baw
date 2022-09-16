@@ -16,6 +16,7 @@ pipeline {
             steps{
                 sh 'ls -al /tmp'
                 sh 'baw sync all'
+                sh 'pip install -e .'
             }
         }
         stage('doctest'){
