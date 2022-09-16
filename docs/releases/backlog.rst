@@ -17,8 +17,6 @@ backlog
   plans: 1.10, 1.11, 1.12 and a open plan 1.13, --plan=close closes 1.9
   again.
 
-* baw --testconfig use append to support additive entrees
-
 * check pip completion to use this as baw/tool completion
 
 * baw doctests: improve behavior when running coverage on normal and
