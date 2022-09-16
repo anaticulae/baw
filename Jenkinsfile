@@ -42,7 +42,7 @@ pipeline {
         stage('nightly'){
             steps{
                 // TODO: ADD JUNIT OPTION TO BAW
-                sh 'baw --testconfig="++junit+xml=report.xml" test nightly -n16 --cov'
+                sh 'baw test nightly -n16 --cov --config="++junit+xml=report.xml"'
                 junit '**/report.xml'
             }
         }

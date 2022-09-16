@@ -55,14 +55,6 @@ DOCKER = Command(longcut='--docker', message='Use docker environment')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
 REPORT = Command('-re', '--report', 'Write module status in html report')
 RUN = Command('-ru', '--run', 'Run application')
-TEST_CONFIG = Command(
-    longcut='--testconfig',
-    message='parametrize test command',
-    args={
-        'dest': 'testconfig',
-        'nargs': '+'
-    },
-)
 VENV = Command(longcut='--venv', message='Use virtual environment')
 # TODO count V to determine verbosity. -VVV
 VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
@@ -83,7 +75,6 @@ def create_parser():  # noqa: Z21
         RAW,
         REPORT,
         RUN,
-        TEST_CONFIG,
         VENV,
         VERBOSE,
         VERSION,
@@ -247,6 +238,11 @@ def add_test_options(parser):
         '--no_install',
         help='do not run setup before testing',
         action='store_true',
+    )
+    test.add_argument(
+        '--config',
+        help='overwrite pytest invocation',
+        nargs=1,
     )
     test.add_argument(
         '-x',

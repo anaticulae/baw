@@ -257,8 +257,8 @@ def run_test(args):
             testconfig += [f'-k {kselected}']
     if args['x']:
         testconfig += ['-x ']
-    if args['testconfig']:
-        testconfig += args['testconfig']
+    if args['config']:
+        testconfig += args['config']
     result = baw.cmd.test.run_test(
         root=root,
         coverage=args['cov'],
