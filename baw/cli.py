@@ -32,7 +32,7 @@ class Command:
             yield item
 
 
-ALL = Command('-a', '--all', 'Clean and run all expect of publishing')
+ALL = Command(longcut='--all', message='Clean and run all expect of publishing')
 IDE = Command(
     longcut='--ide',
     message='generate workspace and open vscode',
@@ -53,8 +53,6 @@ BISECT = Command(
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
-REPORT = Command('-re', '--report', 'Write module status in html report')
-RUN = Command('-ru', '--run', 'Run application')
 VENV = Command(longcut='--venv', message='Use virtual environment')
 # TODO count V to determine verbosity. -VVV
 VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
@@ -73,8 +71,6 @@ def create_parser():  # noqa: Z21
         DOCKER,
         IDE,
         RAW,
-        REPORT,
-        RUN,
         VENV,
         VERBOSE,
         VERSION,
