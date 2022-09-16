@@ -198,7 +198,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Your code has been rated at 9.24/10
     completed = baw.runtime.run_target(
         root,
-        command='baw --lint',
+        command='baw lint',
         skip_error_code=set(range(100)),
         verbose=verbose,
     )

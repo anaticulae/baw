@@ -133,3 +133,15 @@ def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
     elif log_always:
         log('bandit complete')
     return completed.returncode
+
+
+def extend_cli(parser):
+    lints = parser.add_parser('lint', help='Statical code analysis')
+    lints.add_argument(
+        'action',
+        help='what shall we do',
+        choices='all minimal todo'.split(),
+        nargs='?',
+        default='minimal',
+    )
+    lints.set_defaults(func=baw.run.run_lint)

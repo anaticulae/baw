@@ -37,7 +37,7 @@ import baw.runtime
 import baw.utils
 
 
-def run_main():  # pylint:disable=R0911
+def run_main():  # pylint:disable=R0911,R1260
     start = time.time()
     args = baw.cli.parse()
     if not any(args):
@@ -64,7 +64,6 @@ def run_main():  # pylint:disable=R0911
             run_bisect,
             run_doc,
             run_publish,
-            run_lint,
     ):
         if returncode := method(root=root, args=args):
             return returncode
@@ -351,12 +350,11 @@ def run_publish(root: str, args: dict):
     return result
 
 
-def run_lint(root: str, args: dict):
-    if not args.get('lint', False):
-        return baw.utils.SUCCESS
+def run_lint(args: dict):
+    root = get_root(args)
     result = baw.cmd.lint.lint(
         root=root,
-        scope=args['lint'],
+        scope=args['action'],
         verbose=args.get('verbose', False),
         virtual=args.get('virtual', False),
     )

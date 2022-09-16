@@ -49,4 +49,4 @@ def test_linter_run_with_scope(example, capsys):
 
 @tests.longrun
 def test_linter_run_cli(example, monkeypatch):  # pylint:disable=W0613,W0621
-    tests.run_command('--lint=todo', monkeypatch=monkeypatch)
+    tests.run_command('lint=todo', monkeypatch=monkeypatch)

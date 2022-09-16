@@ -35,7 +35,7 @@ pipeline {
         }
         stage('lint'){
             steps{
-                sh 'baw --lint'
+                sh 'baw lint'
             }
         }
         stage('nightly'){

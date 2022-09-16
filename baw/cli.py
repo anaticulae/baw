@@ -12,6 +12,7 @@ import argparse
 import dataclasses
 import sys
 
+import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.release
 import baw.run
@@ -50,19 +51,6 @@ BISECT = Command(
         'dest': 'commits',
     },
 )
-LINT = Command(
-    longcut='--lint',
-    message='Run statical code analysis.',
-    args={
-        'nargs': '?',
-        'const': 'minimal',
-        'choices': [
-            'all',
-            'minimal',
-            'todo',
-        ],
-    },
-)
 # run tests, increment version, commit, git tag and push to package index
 DOCKER = Command(longcut='--docker', message='Use docker environment')
 RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
@@ -95,7 +83,6 @@ def create_parser():  # noqa: Z21
         DOC,
         DOCKER,
         IDE,
-        LINT,
         RAW,
         REPORT,
         RUN,
@@ -124,6 +111,7 @@ def create_parser():  # noqa: Z21
     add_publish_options(cmds)
     add_install_option(cmds)
     baw.cmd.pipeline.extend_cli(cmds)
+    baw.cmd.lint.extend_cli(cmds)
     add_format_option(cmds)
     add_info_option(cmds)
     return parser
