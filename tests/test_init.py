@@ -33,8 +33,8 @@ def test_init_project_in_empty_folder(project_example):
 @tests.cmds
 @tests.nightly
 def test_doc_command(project_example, monkeypatch):
-    """Run --doc command to generate documentation."""
-    tests.run_command('--doc', monkeypatch)
+    """Run doc command to generate documentation."""
+    tests.run_command('doc', monkeypatch)
     created = project_example.join('tmpdir/docs/xcd/html/index.html')
     assert os.path.exists(created)
 

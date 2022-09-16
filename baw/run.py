@@ -62,7 +62,6 @@ def run_main():  # pylint:disable=R0911,R1260
         return baw.utils.FAILURE
     for method in (
             run_bisect,
-            run_doc,
             run_publish,
     ):
         if returncode := method(root=root, args=args):
@@ -274,9 +273,8 @@ def run_test(args):
     return result
 
 
-def run_doc(root: str, args: dict):
-    if not args.get('doc', False):
-        return baw.utils.SUCCESS
+def run_doc(args: dict):
+    root = get_root(args)
     result = baw.cmd.doc.doc(
         root=root,
         verbose=args.get('verbose', False),

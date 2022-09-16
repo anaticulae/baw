@@ -146,3 +146,8 @@ def is_sphinx_installed(root: str, venv: bool) -> bool:
     )
     isinstalled = completed.returncode == baw.utils.SUCCESS
     return isinstalled
+
+
+def extend_cli(parser):
+    lints = parser.add_parser('doc', help='Generate docs using Sphinx')
+    lints.set_defaults(func=baw.run.run_doc)

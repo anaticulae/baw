@@ -12,6 +12,7 @@ import argparse
 import dataclasses
 import sys
 
+import baw.cmd.doc
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.release
@@ -33,7 +34,6 @@ class Command:
 
 ALL = Command('-a', '--all', 'Clean and run all expect of publishing')
 BUILD = Command('-b', '--build', 'Run build tasks')
-DOC = Command(longcut='--doc', message='Generate documentation with Sphinx')
 IDE = Command(
     longcut='--ide',
     message='generate workspace and open vscode',
@@ -80,7 +80,6 @@ def create_parser():  # noqa: Z21
         ALL,
         BISECT,
         BUILD,
-        DOC,
         DOCKER,
         IDE,
         RAW,
@@ -100,6 +99,7 @@ def create_parser():  # noqa: Z21
         else:
             add(*shortcuts, action='store_true', help=msg)
     cmds = parser.add_subparsers(help='sub-command help')
+    baw.cmd.doc.extend_cli(cmds)
     add_open_options(cmds)
     add_clean_options(cmds)
     add_upgrade_option(cmds)

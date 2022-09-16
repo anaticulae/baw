@@ -12,7 +12,7 @@ alias scovnv="covnv --testconfig=+n=4"
 
 alias btg="baw test skip --generate"
 alias btgv="baw --venv test skip --generate"
-alias doc="baw --doc"
+alias doc="baw doc"
 alias drop="baw --drop"
 alias format="baw format"
 alias ide="baw --ide &"
