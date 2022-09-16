@@ -51,7 +51,7 @@ pipeline {
                 expression { return params.RELEASE }
             }
             steps{
-                sh 'baw install && baw release'
+                sh 'baw install && baw release && baw publish'
             }
         }
     }
