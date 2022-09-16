@@ -9,7 +9,6 @@
 """Define structure of command line interface."""
 
 import argparse
-import dataclasses
 import sys
 
 import baw.cmd.doc
@@ -21,59 +20,13 @@ import baw.run
 import baw.utils
 
 
-@dataclasses.dataclass
-class Command:
-    shortcut: str = ''
-    longcut: str = ''
-    message: str = ''
-    args: dict = None
-
-    def __iter__(self):
-        for item in [self.shortcut, self.longcut, self.message, self.args]:
-            yield item
-
-
-ALL = Command(longcut='--all', message='Clean and run all expect of publishing')
-BISECT = Command(
-    longcut='--bisect',
-    message='run git bisect, use ^ to separate good and bad commit',
-    args={
-        'nargs': 1,
-        'dest': 'bisect',
-    },
-)
-# run tests, increment version, commit, git tag and push to package index
-DOCKER = Command(longcut='--docker', message='Use docker environment')
-RAW = Command(longcut='--raw', message='Do not modify stdout/stderr')
-VENV = Command(longcut='--venv', message='Use virtual environment')
-# TODO count V to determine verbosity. -VVV
-VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
-VERSION = Command('-v', '--version', 'Show version of this program')
-
-
 def create_parser():  # noqa: Z21
     """Create parser out of defined dictionary with command-line-definition.
 
     Returns created argparser
     """
     parser = argparse.ArgumentParser(prog='baw')
-    todo = (
-        ALL,
-        BISECT,
-        DOCKER,
-        RAW,
-        VENV,
-        VERBOSE,
-        VERSION,
-    )
-    for shortcut, longcut, msg, args in todo:
-        shortcuts = (shortcut, longcut) if shortcut else (longcut,)
-        add = parser.add_argument
-        if args:
-            args['help'] = msg
-            add(*shortcuts, **args)
-        else:
-            add(*shortcuts, action='store_true', help=msg)
+    add_parameter(parser)
     cmds = parser.add_subparsers(help='sub-command help')
     baw.cmd.ide.extend_cli(cmds)
     baw.cmd.doc.extend_cli(cmds)
@@ -92,6 +45,59 @@ def create_parser():  # noqa: Z21
     add_format_option(cmds)
     add_info_option(cmds)
     return parser
+
+
+def parse():
+    """Parse arguments from sys-args and return the result as dictionary."""
+    parser = create_parser()
+    args = parser.parse_args()
+    # require help?
+    need_help = not any(vars(args).values())
+    if need_help:
+        parser.print_help()
+        sys.exit(baw.utils.FAILURE)
+    args = vars(args)
+    return args
+
+
+def add_parameter(parser):
+    # run tests, increment version, commit, git tag and push to package index
+    parser.add_argument(
+        '--all',
+        action='store_true',
+        help='Clean and run all expect of publishing',
+    )
+    parser.add_argument(
+        '--bisect',
+        help='Git bisect, use ^ to separate good and bad commit',
+    )
+    parser.add_argument(
+        '--docker',
+        action='store_true',
+        help='Use docker environment',
+    )
+    parser.add_argument(
+        '--raw',
+        action='store_true',
+        help='Do not modify stdout/stderr',
+    )
+    parser.add_argument(
+        '--venv',
+        action='store_true',
+        help='Use virtual environment',
+    )
+    # TODO count V to determine verbosity. -VVV
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Extend verbosity of logging',
+    )
+    parser.add_argument(
+        '-v',
+        '--version',
+        action='store_true',
+        help='Show version of this program',
+    )
 
 
 def add_upgrade_option(parser):
@@ -290,16 +296,3 @@ def add_info_option(parser):
         choices='venv tmp covreport'.split(),
     )
     info.set_defaults(func=baw.run.run_info)
-
-
-def parse():
-    """Parse arguments from sys-args and return the result as dictionary."""
-    parser = create_parser()
-    args = parser.parse_args()
-    # require help?
-    need_help = not any(vars(args).values())
-    if need_help:
-        parser.print_help()
-        sys.exit(baw.utils.FAILURE)
-    args = vars(args)
-    return args
