@@ -8,7 +8,7 @@
 .local
 .requirements.txt
 .tmp
-.virtual
+.venv
 .vscode/**
 dist
 tmp

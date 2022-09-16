@@ -6,27 +6,28 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Test to create a virtual environment and running tests in virtual
+"""Test to create a venv environment and running tests in venv
 environment afterwards.
  """
 
 import os
 
+import tests
+
 import baw.runtime
 import baw.utils
-import tests
 
 
 @tests.cmds
 @tests.longrun
 def test_create_venv(example, monkeypatch):
-    """Creating virtual environment."""
+    """Creating venv environment."""
     tests.run_command(
-        '--virtual',
+        '--venv',
         monkeypatch=monkeypatch,
     )
     # TODO: ENSURE THAT CORRECT VENV IS CREATED?
-    venv = baw.runtime.venv(example, creates=False)
+    venv = baw.runtime.virtual(example, creates=False)
     assert os.path.exists(venv), f'venv folder does not exists: {venv}'
 
 
@@ -34,8 +35,8 @@ def test_create_venv(example, monkeypatch):
 @tests.cmds
 @tests.nightly
 def test_run_test_in_venv(project_with_test):
-    """Running test-example in virtual environment"""
+    """Running test-example in venv environment"""
     # install requirements first and run test later
-    cmd = 'baw --virtual sync' + ' && baw test'  #python -mpytest tests -v'
+    cmd = 'baw --venv sync' + ' && baw test'  #python -mpytest tests -v'
     completed = tests.run(cmd, project_with_test)
     assert completed.returncode == baw.utils.SUCCESS, completed.stderr

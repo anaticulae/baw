@@ -18,7 +18,7 @@ import tests
 @tests.hasgit
 @tests.cmds
 def test_creating_project(tmpdir):
-    """Creating project without virtual environment"""
+    """Creating project without venv environment"""
     completed = tests.run(
         'baw init xkcd "Longtime project"',
         cwd=tmpdir,

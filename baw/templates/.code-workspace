@@ -12,6 +12,7 @@
             "**/.swo": true,
             "**/.swp": true,
             "**/.tmp": true,
+            "**/.venv": true,
             "**/.virtual": true,
             "**/.vscode": true,
             "**/build": true,

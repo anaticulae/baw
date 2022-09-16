@@ -17,13 +17,13 @@ def install(
     *,
     dev: bool = False,
     remove: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
     verbose: bool = False,
 ):
     if remove:
-        remove_current(root, virtual=virtual, verbose=verbose)
+        remove_current(root, venv=venv, verbose=verbose)
     # -f always install newest one
-    python = baw.config.python(root, virtual=virtual)
+    python = baw.config.python(root, venv=venv)
     if dev:
         # TODO: USE PIP FOR BOTH?
         command = f'{python} -mpip install -e .'
@@ -35,7 +35,7 @@ def install(
         command,
         root,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     if completed.returncode:
         baw.utils.log(completed.stdout)
@@ -45,7 +45,7 @@ def install(
     return completed.returncode
 
 
-def remove_current(root: str, virtual: bool = False, verbose: bool = False):
+def remove_current(root: str, venv: bool = False, verbose: bool = False):
     package = baw.config.shortcut(root)
     while range(10):
         cmd = f'pip uninstall {package} --yes'
@@ -53,7 +53,7 @@ def remove_current(root: str, virtual: bool = False, verbose: bool = False):
             root,
             command=cmd,
             verbose=verbose,
-            virtual=virtual,
+            venv=venv,
         )
         if completed.stderr:
             break

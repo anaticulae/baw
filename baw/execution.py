@@ -27,14 +27,14 @@ SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
                         '(https://pypi.org/p/twine/)')
 
 
-def publish(root: str, verbose: bool = False, virtual: bool = True):
+def publish(root: str, verbose: bool = False, venv: bool = True):
     """Push release to defined repository
 
     Hint:
-        publish run's always in virtual environment
+        publish run's always in venv environment
     """
     log('publish start')
-    tag = git_headtag(root, virtual=False, verbose=verbose)
+    tag = git_headtag(root, venv=False, verbose=verbose)
     if not tag:
         error('Could not find release-git-tag. Aborting publishing.')
         return FAILURE
@@ -50,7 +50,7 @@ def publish(root: str, verbose: bool = False, virtual: bool = True):
         root,
         verbose=verbose,
         skip_error_message=[SDIST_UPLOAD_WARNING],
-        virtual=virtual,
+        venv=venv,
     )
     if completed.returncode == SUCCESS:
         log('publish completed')
@@ -63,13 +63,13 @@ def publish(root: str, verbose: bool = False, virtual: bool = True):
 SEPARATOR_WIDTH = 80
 
 
-def run(root: str, virtual: bool = False) -> int:
+def run(root: str, venv: bool = False) -> int:
     """Check project-environment for custom run sequences, execute them from
     first to end.
 
     Args:
         root(str): project root where .baw and git are located
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
     Returns:
         0 if all sequences run succesfull else not 0
     """
@@ -79,11 +79,11 @@ def run(root: str, virtual: bool = False) -> int:
     if not cmds:
         error('No commands available')
         return FAILURE
-    env = {} if virtual else dict(environ.items())
+    env = {} if venv else dict(environ.items())
     ret = SUCCESS
     for command, executable in cmds.items():
         log('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
-        completed = run_target(root, executable, env=env, virtual=virtual)
+        completed = run_target(root, executable, env=env, venv=venv)
         log('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
         ret += completed.returncode
     return ret

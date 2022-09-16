@@ -93,7 +93,7 @@ def git_checkout(
     files: str,
     *,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> int:
     """Checkout files from git repository
 
@@ -101,7 +101,7 @@ def git_checkout(
         root(str): root to generated project
         files(str or iterable): files to checkout
         verbose(bool): increase logging
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
     Returns:
         0 if baw.utils.SUCCESS else FAILURE
     """
@@ -109,7 +109,7 @@ def git_checkout(
     runner = functools.partial(
         baw.runtime.run_target,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     to_reset = ' '.join(files) if not isinstance(files, str) else files
     baw.utils.log('Reset %s' % to_reset)
@@ -126,13 +126,13 @@ def git_stash(
     root: str,
     *,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> int:
     """Save uncommited/not versonied content to improve testability
 
     Args:
         root(str): root of execution
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
         verbose(bool): increase logging
     Yields:
         Context: to run user operation which requires stashed environment.
@@ -147,7 +147,7 @@ def git_stash(
         root,
         cmd,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     if completed.returncode:
         baw.utils.error(completed.stdout)
@@ -177,7 +177,7 @@ def git_stash(
         root,
         cmd,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     if completed.returncode:
         baw.utils.error(completed.stderr)
@@ -187,7 +187,7 @@ def git_stash(
     return completed.returncode
 
 
-def git_headtag(root: str, virtual: bool, verbose: bool = False):
+def git_headtag(root: str, venv: bool, verbose: bool = False):
     command = 'git tag --points-at HEAD'
     completed = baw.runtime.run_target(
         root,
@@ -197,7 +197,7 @@ def git_headtag(root: str, virtual: bool, verbose: bool = False):
         skip_error_code={129},
         skip_error_message=["error: malformed object name 'HEAD'"],
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     # could not collect any git tag of current head
     if completed.returncode:

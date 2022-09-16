@@ -17,11 +17,11 @@ from baw.cmd.sync import sync
 
 @pytest.mark.parametrize('venv', [False, True])
 def test_sync(venv):
-    if venv and not baw.runtime.has_venv(baw.ROOT):
+    if venv and not baw.runtime.has_virtual(baw.ROOT):
         pytest.skip('generate venv')
-    sync(baw.ROOT, virtual=venv, verbose=False)
+    sync(baw.ROOT, venv=venv, verbose=False)
 
 
 def test_pip_list():
-    parsed = baw.cmd.sync.pip_list(baw.ROOT, virtual=False)
+    parsed = baw.cmd.sync.pip_list(baw.ROOT, venv=False)
     assert len(parsed.equal) >= 10, parsed.equal

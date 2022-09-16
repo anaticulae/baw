@@ -16,7 +16,7 @@ import baw.runtime
 import baw.utils
 
 
-def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
+def doc(root: str, venv: bool = False, verbose: bool = False) -> int:
     """Run Sphinx doc generation
 
     The result is locatated in `doc/html` as html-report. The stderr and
@@ -24,25 +24,25 @@ def doc(root: str, virtual: bool = False, verbose: bool = False) -> int:
 
     Args:
         root(str): project root
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
         verbose(bool): if True more logging information are provided
     Returns:
         0 if generation was successful
         1 if some errors occurs
     """
-    if not is_sphinx_installed(root=root, virtual=virtual):
-        msg = 'sphinx is not installed, run baw sync=all --virtual'
+    if not is_sphinx_installed(root=root, venv=venv):
+        msg = 'sphinx is not installed, run baw sync=all --venv'
         baw.utils.error(msg)
         return baw.utils.FAILURE
-    if returnvalue := generate_docs(root, verbose, virtual):
+    if returnvalue := generate_docs(root, verbose, venv):
         return returnvalue
-    if returnvalue := build_html(root, verbose, virtual):
+    if returnvalue := build_html(root, verbose, venv):
         return returnvalue
     open_docs(root)
     return baw.utils.SUCCESS
 
 
-def generate_docs(root: str, verbose: bool, virtual: bool) -> int:
+def generate_docs(root: str, verbose: bool, venv: bool) -> int:
     doctmp = baw.config.docpath(root)
     sources = root  # include test and package
     ignore = ' '.join([
@@ -66,7 +66,7 @@ def generate_docs(root: str, verbose: bool, virtual: bool) -> int:
         command=command,
         cwd=root,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     if completed.returncode:
         return completed.returncode
@@ -94,7 +94,7 @@ def generate_docs(root: str, verbose: bool, virtual: bool) -> int:
     return baw.utils.SUCCESS
 
 
-def build_html(root: str, verbose: bool, virtual: bool) -> int:
+def build_html(root: str, verbose: bool, venv: bool) -> int:
     # Create html result
     build_options = ' '.join([
         # '-vvvv ',
@@ -114,7 +114,7 @@ def build_html(root: str, verbose: bool, virtual: bool) -> int:
         root,
         command=command,
         cwd=root,
-        virtual=virtual,
+        venv=venv,
         verbose=verbose,
     )
     return result.returncode
@@ -133,14 +133,14 @@ def open_docs(root: str):
     baw.utils.openbrowser(url)
 
 
-def is_sphinx_installed(root: str, virtual: bool) -> bool:
+def is_sphinx_installed(root: str, venv: bool) -> bool:
     """Use `pip` to verify that documentation tool `sphinx` is installed."""
     command = 'pip show sphinx'
     completed = baw.runtime.run_target(
         root,
         command=command,
         cwd=root,
-        virtual=virtual,
+        venv=venv,
         skip_error_code=[1],  # sphinx is not installed
         verbose=False,
     )

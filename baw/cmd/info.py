@@ -39,7 +39,7 @@ def print_tmp(root: str):
 
 
 def print_venv(root: str):
-    tmpdir = baw.runtime.venv(
+    tmpdir = baw.runtime.virtual(
         root,
         creates=False,
     )

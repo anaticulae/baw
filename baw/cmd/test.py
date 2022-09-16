@@ -39,7 +39,7 @@ def run_test(  # pylint:disable=R0914
     stash: bool = False,
     noinstall: bool = False,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> int:
     """Running test-step in root/tests
 
@@ -60,7 +60,7 @@ def run_test(  # pylint:disable=R0914
         stash(bool): stash all changes to test commited-change in repository
         noinstall(bool): do not run install step before testing
         verbose(bool): extend logging
-        virtual(bool): run command in virtual environment
+        venv(bool): run command in venv environment
     Returns:
         returncode(int): 0 if successful else > 0
     """
@@ -88,10 +88,10 @@ def run_test(  # pylint:disable=R0914
         pdb=pdb,
         quiet=quiet,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     environment = baw.git.git_stash if stash else baw.utils.empty
-    with environment(root, verbose=verbose, virtual=virtual):
+    with environment(root, verbose=verbose, venv=venv):
         completed = baw.runtime.run_target(
             root,
             cmd,
@@ -101,7 +101,7 @@ def run_test(  # pylint:disable=R0914
             verbose=verbose,
             # no tests available => no problem
             skip_error_code={NO_TEST_TO_RUN},
-            virtual=virtual,
+            venv=venv,
         )
     if completed.returncode == baw.utils.SUCCESS:
         if generate_only:
@@ -177,7 +177,7 @@ def create_test_cmd(  # pylint:disable=R0914
     generate_only,
     doctest: bool = True,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ):
     pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
     # using ROOT to get location from baw-tool
@@ -204,7 +204,7 @@ def create_test_cmd(  # pylint:disable=R0914
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     # run pytest
-    python = baw.config.python(root, virtual=virtual)
+    python = baw.config.python(root, venv=venv)
     plugins = determine_plugins(root)
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '

@@ -69,7 +69,7 @@ def init(
         completed = baw.cmd.format.format_repository(
             root,
             verbose=verbose,
-            virtual=False,
+            venv=False,
         )
         if completed:
             return completed
@@ -81,7 +81,7 @@ def init(
         sync=False,  # No sync for first time needed
         test=False,  # No testing for the first time needed
         verbose=verbose,
-        virtual=False,  # No virtual for first time needed
+        venv=False,  # No venv for first time needed
         require_clean=False,
     )
     # TODO: Think aboud activating later? Add test flag?

@@ -43,7 +43,7 @@ def test_doc_command(project_example, monkeypatch):
 @tests.hasbaw
 @tests.hasgit
 @tests.longrun
-@tests.nonvirtual
+@tests.nonvenv
 @pytest.mark.usefixtures('testdir')
 def test_escaping_single_collon(monkeypatch):
     """Generate project with ' in name and test install"""

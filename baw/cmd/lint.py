@@ -38,7 +38,7 @@ def lint(
     root: str,
     scope: Scope = Scope.ALL,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
     log_always: bool = True,
 ) -> int:
     """Run statical code analysis on `root`.
@@ -49,7 +49,7 @@ def lint(
                     minimal, exclude todos from analysis; todo, exclude
                     all expect todos.
         verbose(bool): increase logging
-        virtual(bool): run command in virtual environment
+        venv(bool): run command in venv environment
         log_always(bool): suppress logging if False and process completed
                           successful
     Returns:
@@ -64,16 +64,15 @@ def lint(
     run_in = f'{code} {linttest} '
 
     # TODO: ADD TO RETURNCODE LATER
-    bandit_ = functools.partial(bandit, root, run_in, virtual, log_always,
+    bandit_ = functools.partial(bandit, root, run_in, venv, log_always, verbose)
+    pylint_ = functools.partial(pylint, root, scope, run_in, venv, log_always,
                                 verbose)
-    pylint_ = functools.partial(pylint, root, scope, run_in, virtual,
-                                log_always, verbose)
     _, returncode = baw.utils.fork(*[bandit_, pylint_], process=True)
     return returncode
 
 
-def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
-    python = baw.config.python(root, virtual=virtual)
+def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
+    python = baw.config.python(root, venv=venv)
     spelling = baw.config.spelling(root)
     pylint_ = baw.config.pylint(root)
     cmd = f'{python} -mpylint {run_in}'
@@ -105,7 +104,7 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
         root,
         cmd,
         cwd=root,
-        virtual=virtual,
+        venv=venv,
         verbose=verbose,
     )
     if log_always or completed.returncode:
@@ -114,8 +113,8 @@ def pylint(root, scope, run_in, virtual, log_always: bool, verbose: int) -> int:
     return completed.returncode
 
 
-def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
-    python = baw.config.python(root, virtual=virtual)
+def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
+    python = baw.config.python(root, venv=venv)
     cmd = f'{python} -mbandit {run_in} -r '
     cmd += '--skip B101'  # skip assert is used
     cmd += ',B404'  # import subprocess
@@ -124,7 +123,7 @@ def bandit(root, run_in, virtual, log_always: bool, verbose: int) -> int:
         root,
         cmd,
         cwd=root,
-        virtual=virtual,
+        venv=venv,
         verbose=verbose,
     )
     if completed.returncode:

@@ -30,7 +30,7 @@ def init(
         template=baw.resources.JENKINSFILE,
         docker_image_test=newest,
     )
-    with baw.git.git_stash(root, verbose=verbose, virtual=venv):
+    with baw.git.git_stash(root, verbose=verbose, venv=venv):
         baw.utils.file_create(
             source,
             content=replaced,
@@ -67,7 +67,7 @@ def upgrade(
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
         return baw.utils.FAILURE
-    with baw.git.git_stash(root, verbose=verbose, virtual=venv):
+    with baw.git.git_stash(root, verbose=verbose, venv=venv):
         baw.utils.file_replace(
             source,
             content=replaced,
@@ -106,13 +106,13 @@ def run(args: dict):
         return init(
             root,
             verbose=args.get('verbose'),
-            venv=args.get('virtual'),
+            venv=args.get('venv'),
         )
     if args.get('action') == 'upgrade':
         return upgrade(
             root,
             verbose=args.get('verbose'),
-            venv=args.get('virtual'),
+            venv=args.get('venv'),
         )
     if args.get('action') == 'test':
         baw.utils.error('not implemented')

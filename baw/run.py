@@ -47,7 +47,7 @@ def run_main():  # pylint:disable=R0911,R1260
     directory = run_environment(args)
     if run_open(directory, args):
         return baw.utils.SUCCESS
-    if args.get('virtual', False):
+    if args.get('venv', False):
         if failure := run_venv(args):
             return failure
     func = args.get('func')
@@ -112,13 +112,13 @@ def run_version(args) -> bool:
 
 def run_environment(args):
     if baw.config.venv_always():
-        # overwrite virtual selection
-        args['virtual'] = True
+        # overwrite venv selection
+        args['venv'] = True
     root = setup_environment(
         args.get('upgrade', False),
         args.get('release', ''),
         args['raw'],
-        args.get('virtual', False),
+        args.get('venv', False),
     )
     return root
 
@@ -176,7 +176,7 @@ def run_bisect(root, args):
         root,
         args['commits'],
         verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
     )
 
 
@@ -185,7 +185,7 @@ def run_format(args):
     result = baw.cmd.format.format_repository(
         root,
         verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
     )
     return result
 
@@ -205,7 +205,7 @@ def run_upgrade(args):
     result = baw.cmd.upgrade.upgrade(
         root=root,
         verbose=args.get('verbose', False),
-        virtual=False,
+        venv=False,
         packages=args['upgrade'],
     )
     return result
@@ -233,7 +233,7 @@ def run_sync(args):
         packages=args.get('packages'),
         minimal=args.get('minimal', False),
         verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
     )
     return result
 
@@ -269,7 +269,7 @@ def run_test(args):
         testconfig=testconfig,
         noinstall=args.get('no_install', False),
         verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
     )
     return result
 
@@ -280,7 +280,7 @@ def run_doc(root: str, args: dict):
     result = baw.cmd.doc.doc(
         root=root,
         verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
     )
     return result
 
@@ -289,7 +289,7 @@ def run_install(args: dict):
     root = get_root(args)
     result = baw.cmd.install.install(
         root=root,
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
         verbose=args.get('verbose', False),
         dev=args.get('dev', False),
         remove=args.get('remove', False),
@@ -301,14 +301,14 @@ def run_release(args: dict):
     root = get_root(args)
     # always publish after release
     args['publish'] = True
-    virtual = args.get('virtual', True)
-    # overwrite virtual flag if given
+    venv = args.get('venv', True)
+    # overwrite venv flag if given
     novenv = args.get('no_venv', False)
     no_linter = args.get('no_linter', False)
     if novenv:
         baw.utils.log('do not use venv')
-        virtual = False
-    if not baw.runtime.installed('semantic-release', root, virtual=virtual):
+        venv = False
+    if not baw.runtime.installed('semantic-release', root, venv=venv):
         return baw.utils.FAILURE
     test = True
     # do not test before releasing
@@ -319,7 +319,7 @@ def run_release(args: dict):
         result = baw.cmd.release.drop(
             root,
             verbose=args['verbose'],
-            virtual=virtual,
+            venv=venv,
         )
         return result
     # run release
@@ -327,7 +327,7 @@ def run_release(args: dict):
         root=root,
         release_type=args['release'],
         test=test,
-        virtual=virtual,
+        venv=venv,
         no_linter=no_linter,
     )
     return result
@@ -336,16 +336,16 @@ def run_release(args: dict):
 def run_publish(root: str, args: dict):
     if not args.get('publish', False) or args.get('release', None) == 'drop':
         return baw.utils.SUCCESS
-    virtual = True
-    # overwrite virtual flag if given
+    venv = True
+    # overwrite venv flag if given
     novenv = args.get('no_venv', False)
     if novenv:
         baw.utils.log('do not use venv')
-        virtual = False
+        venv = False
     result = baw.execution.publish(
         root=root,
         verbose=args.get('verbose', False),
-        virtual=virtual,
+        venv=venv,
     )
     return result
 
@@ -356,7 +356,7 @@ def run_lint(args: dict):
         root=root,
         scope=args['action'],
         verbose=args.get('verbose', False),
-        virtual=args.get('virtual', False),
+        venv=args.get('venv', False),
     )
     return result
 
@@ -383,13 +383,13 @@ def run_info(args: dict):
 # TODO: add matrix with excluding cmds, eg. --init --drop_release
 
 
-def setup_environment(upgrade, release, raw, virtual):  # pylint: disable=W0621
+def setup_environment(upgrade, release, raw, venv):  # pylint: disable=W0621
     if upgrade or release:
-        # Upgrade, release command requires always virtual environment
-        virtual = True
-    if virtual:
-        # expose virtual flag
-        os.environ['VIRTUAL'] = "TRUE"
+        # Upgrade, release command requires always venv environment
+        venv = True
+    if venv:
+        # expose venv flag
+        os.environ['venv'] = "TRUE"
     if raw:
         # expose raw out flag
         os.environ[baw.utils.PLAINOUTPUT] = "TRUE"

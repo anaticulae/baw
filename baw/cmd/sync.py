@@ -33,7 +33,7 @@ def sync(
     packages: str = 'dev',
     *,
     minimal: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
     verbose: bool = False,
 ) -> int:
     """Sync packages which are defined in requirements.txt
@@ -45,8 +45,8 @@ def sync(
                         - extra
                         - all
         minimal(bool): if True use minimal version in requirement file
-        virtual(bool): if True sync the virtual environment
-                       if BOTH sync virtual and local environment
+        venv(bool): if True sync the venv environment
+                       if BOTH sync venv and local environment
                        if False sync local environment
         verbose(bool): if True, increase verbosity of logging
     Returns:
@@ -57,13 +57,13 @@ def sync(
     log()
     ret += update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
-    if virtual == 'BOTH':
+    if venv == 'BOTH':
         for item in [True, False]:
             ret += sync_dependencies(
                 root,
                 packages=packages,
                 minimal=minimal,
-                virtual=item,
+                venv=item,
                 verbose=verbose,
             )
             if ret:
@@ -74,7 +74,7 @@ def sync(
             root,
             packages=packages,
             minimal=minimal,
-            virtual=virtual,
+            venv=venv,
             verbose=verbose,
         )
     return ret
@@ -84,7 +84,7 @@ def check_dependency(
     root: str,
     package: str,
     *,
-    virtual: bool,
+    venv: bool,
     verbose: bool = False,
 ):
     """Check if packages need an upgrade."""
@@ -92,7 +92,7 @@ def check_dependency(
     # if not connected(pip_index, extra_url):
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
-    python = baw.config.python(root, virtual=virtual)
+    python = baw.config.python(root, venv=venv)
     for index in [pip_index, extra_url]:
         if not str(index).startswith('http'):
             index = f'http://{index}'
@@ -101,7 +101,7 @@ def check_dependency(
             root,
             pip,
             verbose=verbose,
-            virtual=virtual,
+            venv=venv,
             skip_error_code=[23, 2],  # package not found
         )
         if completed.returncode == 23:
@@ -130,10 +130,10 @@ def sync_dependencies(
     *,
     minimal: bool = False,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> int:
     baw.utils.check_root(root)
-    log('sync virtual' if virtual else 'sync local')
+    log('sync venv' if venv else 'sync local')
     resources = determine_resources(root, packages)
     pip_index, extra_url = package_address()
     if not connected(pip_index, extra_url):
@@ -144,7 +144,7 @@ def sync_dependencies(
         resources,
         minimal=minimal,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
@@ -158,7 +158,7 @@ def sync_dependencies(
         verbose,
         pip_index,
         extra_url,
-        virtual=virtual,
+        venv=venv,
     )
     if verbose:
         log(cmd)
@@ -167,7 +167,7 @@ def sync_dependencies(
         cmd,
         cwd=root,
         verbose=False,
-        virtual=virtual,
+        venv=venv,
     )
     baw.utils.file_remove(requirements)
     if 'NewConnectionError' in completed.stdout:
@@ -189,10 +189,10 @@ def required_installation(
     root,
     txts: list,
     minimal: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
     verbose: bool = False,
 ):
-    current = pip_list(root, verbose=verbose, virtual=virtual)
+    current = pip_list(root, verbose=verbose, venv=venv)
     requested = [
         baw.requirements.parse(baw.utils.file_read(item)) for item in txts
     ]
@@ -266,14 +266,14 @@ def get_install_cmd(
     verbose: bool,
     pip_index: str,
     extra_url: str,
-    virtual: bool,
+    venv: bool,
 ):
     trusted = host(pip_index)
     warning = '' if verbose else '--no-warn-conflicts'
     pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
     pip += f'--trusted {trusted}'
     config = '--retries 2 --disable-pip-version-check'
-    python = baw.config.python(root, virtual=virtual)
+    python = baw.config.python(root, venv=venv)
     # prepare command
     cmd = f'{python} -mpip install {warning} {pip} '
     cmd += f'-U {config} '
@@ -297,9 +297,9 @@ def host(url: str) -> str:
 def pip_list(
     root,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> baw.requirements.Requirements:
-    python = baw.config.python(root, virtual=virtual)
+    python = baw.config.python(root, venv=venv)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
         log(cmd)
@@ -308,10 +308,10 @@ def pip_list(
         cmd,
         cwd=root,
         verbose=False,
-        virtual=virtual,
+        venv=venv,
     )
     if completed.returncode and completed.stderr:
-        error(f'{cmd}, {verbose}, {virtual}')
+        error(f'{cmd}, {verbose}, {venv}')
         error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout

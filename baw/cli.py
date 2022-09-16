@@ -64,7 +64,7 @@ TEST_CONFIG = Command(
         'nargs': '+'
     },
 )
-VENV = Command(longcut='--virtual', message='Run commands in venv')
+VENV = Command(longcut='--venv', message='Use virtual environment')
 # TODO count V to determine verbosity. -VVV
 VERBOSE = Command(longcut='--verbose', message='Extend verbosity of logging')
 VERSION = Command('-v', '--version', 'Show version of this program')

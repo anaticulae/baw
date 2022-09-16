@@ -25,7 +25,7 @@ def sync_and_test(
     sync: bool = False,
     test: bool = True,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
 ):
     verbose = False if quiet else verbose
     if sync:
@@ -33,7 +33,7 @@ def sync_and_test(
             root,
             packages=packages,
             verbose=verbose,
-            virtual=virtual,
+            venv=venv,
         )
         if ret:
             error('\nSync failed, could not release.\n')
@@ -49,7 +49,7 @@ def sync_and_test(
         stash=stash,
         testconfig=testconfig,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     if ret:
         if not quiet:

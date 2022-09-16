@@ -32,7 +32,7 @@ def clean(  # pylint:disable=R1260
     if all_:
         docs, resources, tests, tmp, venv = True, True, True, True, True
     if venv:
-        clean_virtual(root)
+        clean_venv(root)
     if docs:
         clean_docs(root)
     patterns = create_pattern(root, resources, tmp, tests)
@@ -126,23 +126,23 @@ nano.save
 ResourceDir = collections.namedtuple('ResourceDir', 'path')
 
 
-def clean_virtual(root: str):
-    """Clean virtual environment of given project
+def clean_venv(root: str):
+    """Clean venv environment of given project
 
     Args:
         root(str): generated project
     Hint:
-        Try to remove .virtual folder
+        Try to remove .venv folder
     Raises:
         SystemExit if cleaning not work
     """
-    virtual_path = baw.runtime.venv(root)
-    if not os.path.exists(virtual_path):
-        baw.utils.log(f'Virtual environment does not exist {virtual_path}')
+    venv_path = baw.runtime.virtual(root)
+    if not os.path.exists(venv_path):
+        baw.utils.log(f'venv environment does not exist {venv_path}')
         return
-    baw.utils.log(f'Try to clean virtual environment {virtual_path}')
+    baw.utils.log(f'Try to clean venv environment {venv_path}')
     try:
-        shutil.rmtree(virtual_path)
+        shutil.rmtree(venv_path)
     except OSError as fail:
         baw.utils.error(fail)
         sys.exit(baw.utils.FAILURE)

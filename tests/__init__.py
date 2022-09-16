@@ -28,7 +28,7 @@ NO_LONGRUN_REASON = 'Takes to mutch time'
 
 FAST = 'FAST' in os.environ.keys()
 NIGHTLY = 'NIGHTLY' in os.environ.keys()
-VIRTUAL = 'VIRTUAL' in os.environ.keys()
+venv = 'venv' in os.environ.keys()
 
 NO_BAW = FAST
 NO_BAW_RESON = 'Installing baw takes long time'
@@ -40,8 +40,8 @@ cmds = pytest.mark.skipif(NO_BAW, reason='decrease response time')
 longrun = pytest.mark.skipif(FAST_TESTS, reason='test requires long time')
 nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
 skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
-nonvirtual = pytest.mark.skipif(not VIRTUAL, reason='erquire venv')
-skip_virtual = pytest.mark.skipif(VIRTUAL, reason='do not run in venv env')
+nonvenv = pytest.mark.skipif(not venv, reason='erquire venv')
+skip_venv = pytest.mark.skipif(venv, reason='do not run in venv env')
 
 
 def hasprog(program: str):

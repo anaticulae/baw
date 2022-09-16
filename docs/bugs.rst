@@ -12,7 +12,7 @@ closed
 stash removes untracked content
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-baw --virtual --test=stash: It stashes every untracked change, the venv is
+baw --venv --test=stash: It stashes every untracked change, the venv is
 also an untracked change and there removed.
 
 activating venv on windows

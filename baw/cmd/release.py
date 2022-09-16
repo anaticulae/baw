@@ -35,7 +35,7 @@ def release(
     sync: bool = True,
     test: bool = True,
     verbose: bool = False,
-    virtual: bool = True,
+    venv: bool = True,
     require_clean: bool = True,
     no_linter: bool = False,
 ) -> int:
@@ -53,7 +53,7 @@ def release(
         test(bool): running test suite before release: first release
                     0.0.0 does not require any testing.
         verbose(bool): log additional output
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
         require_clean(bool): check that repository is clean
         no_linter(bool): skip running linter
     Return:
@@ -64,14 +64,14 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
-    if returncode := require_release(root, virtual):
+    if returncode := require_release(root, venv):
         return returncode
     if returncode := check_repository(root, require_clean):
         return returncode
     if not no_linter:
-        if returncode := run_linter(root, verbose, virtual):
+        if returncode := run_linter(root, verbose, venv):
             return returncode
-    if returncode := run_test(root, sync, test, stash, verbose, virtual):
+    if returncode := run_test(root, sync, test, stash, verbose, venv):
         return returncode
     if returncode := publish(root, verbose, release_type):
         return returncode
@@ -96,8 +96,8 @@ def extend_cli(parser):
     parser.set_defaults(func=baw.run.run_release)
 
 
-def require_release(root, virtual):
-    current_head = baw.git.git_headtag(root, virtual=virtual)
+def require_release(root, venv):
+    current_head = baw.git.git_headtag(root, venv=venv)
     if not current_head:
         return baw.utils.SUCCESS
     if current_head.isnumeric():
@@ -117,7 +117,7 @@ def check_repository(root, require_clean: bool):
     return baw.utils.SUCCESS
 
 
-def run_linter(root: str, verbose: bool, virtual: bool) -> int:
+def run_linter(root: str, verbose: bool, venv: bool) -> int:
     if not baw.config.fail_on_finding(root):
         return baw.utils.SUCCESS
     # run linter step before running test and release
@@ -125,7 +125,7 @@ def run_linter(root: str, verbose: bool, virtual: bool) -> int:
             root,
             baw.cmd.lint.Scope.MINIMAL,
             verbose=verbose,
-            virtual=virtual,
+            venv=venv,
             log_always=False,
     ):
         baw.utils.error('could not release, solve this errors first.')
@@ -140,7 +140,7 @@ def run_test(
     test: bool,
     stash: bool,
     verbose: bool,
-    virtual: bool,
+    venv: bool,
 ):
     if not sync and not test:
         return baw.utils.SUCCESS
@@ -159,7 +159,7 @@ def run_test(
             test=test,
             testconfig=['-n', 'auto'],
             verbose=verbose,
-            virtual=virtual,
+            venv=venv,
         )
         return ret
     baw.utils.log('release was already tested successfully')
@@ -213,7 +213,7 @@ DEFAULT_RELEASE = 'v0.0.0'
 
 def drop(
     root: str,
-    virtual: bool = False,
+    venv: bool = False,
     verbose: bool = False,
 ):
     """Remove the last release tag and commit.
@@ -229,7 +229,7 @@ def drop(
     runner = functools.partial(
         baw.runtime.run_target,
         verbose=verbose,
-        virtual=virtual,
+        venv=venv,
     )
     completed = runner(root, 'git tag --contains HEAD')
     matched = re.match(RELEASE_PATTERN, completed.stdout)
@@ -250,7 +250,7 @@ def drop(
         baw.utils.error('while removing the last commit: %s' % str(completed))
         return completed.returncode
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
-    completed = reset_resources(root, virtual=virtual, verbose=verbose)
+    completed = reset_resources(root, venv=venv, verbose=verbose)
     if completed:
         return completed
     # git tag -d HEAD
@@ -265,7 +265,7 @@ def drop(
 
 def reset_resources(
     root: str,
-    virtual: bool = False,
+    venv: bool = False,
     verbose: bool = False,
 ):
     short = baw.config.shortcut(root)
@@ -287,7 +287,7 @@ def reset_resources(
     completed = baw.git.git_checkout(
         root,
         to_reset,
-        virtual=virtual,
+        venv=venv,
         verbose=verbose,
     )
     return completed

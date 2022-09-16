@@ -260,8 +260,8 @@ def config_path(root: str) -> str:
 
 
 @functools.lru_cache()
-def python(root: str, virtual: bool = False) -> str:
-    if virtual:
+def python(root: str, venv: bool = False) -> str:
+    if venv:
         return 'python'
     result = default_config(
         root,

@@ -117,7 +117,7 @@ def test_upgrading(tmpdir):
 
 @tests.hasgit
 @tests.longrun
-@tests.nonvirtual
+@tests.nonvenv
 def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     path = os.getcwd()
 
@@ -140,7 +140,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     result = baw.cmd.upgrade.upgrade(
         path,
         verbose=True,
-        virtual=True,
+        venv=True,
         generate=False,  # do not change - see test.py/generate_only
         notests=False,
     )
@@ -148,14 +148,14 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     stdout = capsys.readouterr().out
     assert stdout
     assert 'Reset' in stdout, stdout
-    # Reuse virtual environment
+    # Reuse venv environment
     # remove failing test
     baw.utils.file_remove(failingtest_path)
     commit_all()
     result = baw.cmd.upgrade.upgrade(
         path,
         verbose=False,
-        virtual=True,
+        venv=True,
         generate=False,  # see above
     )
     assert result == baw.utils.SUCCESS

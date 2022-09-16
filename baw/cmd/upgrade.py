@@ -24,7 +24,7 @@ def upgrade(
     *,
     notests: bool = True,
     verbose: bool = False,
-    virtual: bool = False,
+    venv: bool = False,
     generate: bool = True,
     packages: str = 'requirements',
 ) -> int:
@@ -32,7 +32,7 @@ def upgrade(
 
     force: upgrade dev requirements also
     """
-    with baw.git.git_stash(root, verbose=verbose, virtual=virtual):
+    with baw.git.git_stash(root, verbose=verbose, venv=venv):
         returnvalue = check_upgrade(root, packages=packages)
         if returnvalue in (baw.utils.SUCCESS, baw.utils.FAILURE):
             return returnvalue
@@ -47,7 +47,7 @@ def upgrade(
             test=not notests,
             testconfig=None,
             verbose=verbose,
-            virtual='BOTH',  # sync virtual and non virtual environment
+            venv='BOTH',  # sync venv and non venv environment
         )
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
@@ -58,7 +58,7 @@ def upgrade(
                 root,
                 requirements,
                 verbose=verbose,
-                virtual=virtual,
+                venv=venv,
             )
             baw.utils.error('Upgrading failed')
             assert not completed
@@ -111,7 +111,7 @@ REQUIREMENTS_UPTODATE = 100
 def upgrade_requirements(
     root: str,
     requirements: str = baw.utils.REQUIREMENTS_TXT,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
     available version on pip repository.
@@ -119,7 +119,7 @@ def upgrade_requirements(
     Args:
         root(str): generated project
         requirements(str): relative path to requirements
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
     Returns:
         SUCCESS if file was upgraded
     """
@@ -135,7 +135,7 @@ def upgrade_requirements(
         baw.utils.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchronizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
-    upgraded = determine_new_requirements(root, content, virtual=virtual)
+    upgraded = determine_new_requirements(root, content, venv=venv)
     if upgraded is None:
         return baw.utils.FAILURE
     replaced = baw.requirements.replace(content, upgraded)
@@ -181,7 +181,7 @@ def determine_new_requirements(
     root: str,
     requirements: str,
     *,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> baw.requirements.NewRequirements:
     parsed = baw.requirements.parse(requirements)
     if parsed is None:
@@ -192,13 +192,13 @@ def determine_new_requirements(
     equal = {}
     greater = {}
     for source, sink in [(parsed.equal, equal), (parsed.greater, greater)]:
-        sync_error |= collect_new_packages(root, source, sink, virtual)
+        sync_error |= collect_new_packages(root, source, sink, venv)
     if sync_error:
         return None
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(root, source, sink, virtual, verbose=False):
+def collect_new_packages(root, source, sink, venv, verbose=False):
     sync_error = False
     parallel_worker = baw.config.pip_parallel_worker(root)
     with concurrent.futures.ThreadPoolExecutor(max_workers=parallel_worker) as executor: # yapf:disable
@@ -207,7 +207,7 @@ def collect_new_packages(root, source, sink, virtual, verbose=False):
                 baw.cmd.sync.check_dependency,
                 root,
                 package,
-                virtual=virtual,
+                venv=venv,
                 verbose=verbose,
             ): (package, version) for package, version in source.items()
         }

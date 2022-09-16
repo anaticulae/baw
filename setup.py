@@ -8,7 +8,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 """ Run this setup script to install baw on your local maschine or
-virtual environment."""
+venv environment."""
 
 import os
 import re

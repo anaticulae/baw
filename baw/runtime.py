@@ -16,22 +16,22 @@ import time
 import baw.config
 import baw.utils
 
-VIRTUAL_FOLDER = '.virtual'
+VENV_FOLDER = '.venv'
 
 NO_EXECUTABLE = 127
 
 
 def destroy(path: str):
-    """Remove virtual path recursive if path exists, do nothing."""
+    """Remove venv path recursive if path exists, do nothing."""
     if not os.path.exists(path):
         baw.utils.log(f'Nothing to clean, path does not exists {path}')
         return True
-    baw.utils.log(f'Removing virtual environment {path}')
+    baw.utils.log(f'Removing venv environment {path}')
     try:
         shutil.rmtree(path)
     except PermissionError as fail:
-        # This error occurs, if an ide e.g. vscode uses the virtual environment
-        # so removing .virtual folder is not possible.
+        # This error occurs, if an ide e.g. vscode uses the venv environment
+        # so removing .venv folder is not possible.
         baw.utils.error(fail)
         msg = f'Could not remove {path}. Path is locked by an other application.'
         baw.utils.error(msg)
@@ -39,56 +39,56 @@ def destroy(path: str):
     return True
 
 
-def venv(root: str, creates: bool = True) -> str:
+def virtual(root: str, creates: bool = True) -> str:
     assert root
     name: str = 'global'
     if not baw.config.venv_global():
         name = baw.config.shortcut(root)
-    virtual = os.path.join(baw.config.bawtmp(), 'venv', name)
-    if os.path.exists(virtual):
-        return virtual
-    outdated = os.path.join(root, VIRTUAL_FOLDER)
+    venv = os.path.join(baw.config.bawtmp(), 'venv', name)
+    if os.path.exists(venv):
+        return venv
+    outdated = os.path.join(root, VENV_FOLDER)
     if os.path.exists(outdated):
-        baw.utils.error(f'use outdated virtual: {outdated}')
+        baw.utils.error(f'use outdated venv: {outdated}')
         return outdated
     if creates:
-        os.makedirs(virtual, exist_ok=True)
-    return virtual
+        os.makedirs(venv, exist_ok=True)
+    return venv
 
 
-def has_venv(root: str) -> bool:
+def has_virtual(root: str) -> bool:
     assert root
-    virtual = venv(root, creates=False)
-    if os.path.exists(virtual):
+    venv = virtual(root, creates=False)
+    if os.path.exists(venv):
         return True
     return False
 
 
 def create(root: str, clean: bool = False, verbose: bool = False) -> int:
-    """Create `virtual` folder in project root, do nothing if folder exists
+    """Create `venv` folder in project root, do nothing if folder exists
 
     This method creates the folder and does the init via python `venv`-module.
 
     Args:
         root(str): project root
-        clean(bool): virtual path is removed before creating new environment
+        clean(bool): venv path is removed before creating new environment
         verbose(bool): explain what is being done
     Returns:
         SUCCESS if creating was was succesfull else FAILURE
     """
-    virtual = venv(root)
-    if not os.path.exists(virtual):
-        baw.utils.log(f'create virtual: {virtual}')
-        os.makedirs(virtual, exist_ok=True)
-    if os.path.exists(virtual) and list(os.scandir(virtual)):
-        baw.utils.log(f'virtual: {virtual}')
+    venv = virtual(root)
+    if not os.path.exists(venv):
+        baw.utils.log(f'create venv: {venv}')
+        os.makedirs(venv, exist_ok=True)
+    if os.path.exists(venv) and list(os.scandir(venv)):
+        baw.utils.log(f'venv: {venv}')
         return baw.utils.SUCCESS
-    python = baw.config.python(root, virtual=False)
+    python = baw.config.python(root, venv=False)
     # '--system-site-packages'
     cmd = f'{python} -m virtualenv . --copies '
     if clean:
         cmd = f'{cmd} --clear'
-    process = run(command=cmd, cwd=virtual)
+    process = run(command=cmd, cwd=venv)
     patch_pip(root)
     if sys.version_info.major == 3 and sys.version_info.minor == 7:
         # python 3.7
@@ -115,7 +115,7 @@ def patch_pip(root):
     """
     baw.utils.log(f'Patching the wheel: {root}')
     to_patch = os.path.join(
-        venv(root),
+        virtual(root),
         'Lib/site-packages/pip/_internal/wheel.py',
     )
     if not os.path.exists(to_patch):
@@ -127,7 +127,7 @@ def patch_pip(root):
 
 
 def patch_env(root):
-    path = os.path.join(venv(root), 'Scripts/activate.bat')
+    path = os.path.join(virtual(root), 'Scripts/activate.bat')
     content = baw.utils.file_read(path)
     content = content.split(':END')[0]  # remove content after :END
     baw.utils.file_remove(path)
@@ -145,7 +145,7 @@ def run_target(
     skip_error_code: set = None,
     skip_error_message: list = None,
     verbose: bool = True,
-    virtual: bool = False,
+    venv: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run target
 
@@ -163,7 +163,7 @@ def run_target(
         skip_error_message(list): list of error messages which are
                                   expected as no problem
         verbose(bool): explain what is beeing done
-        virtual(bool): run in virtual environment
+        venv(bool): run in venv environment
 
     Returns:
         CompletedProcess - os process which was runned
@@ -181,9 +181,9 @@ def run_target(
         return baw.utils.FAILURE
     if verbose:
         baw.utils.log(command)
-    if virtual:
+    if venv:
         try:
-            completed = _run_virtual(
+            completed = _run_venv(
                 root,
                 cmd=command,
                 cwd=root,
@@ -296,33 +296,33 @@ def log_result(  # pylint:disable=R1260,R0912
             baw.utils.print_runtime(start)
 
 
-def _run_virtual(
+def _run_venv(
     root: str,
     cmd: str,
     cwd: str,
     env: dict = None,
     debugging: bool = False,
 ) -> subprocess.CompletedProcess:
-    """Run command with virtual environment
+    """Run command with venv environment
 
     Args:
-        root(str): project root to locate `virtual`-folder
+        root(str): project root to locate `venv`-folder
         cmd(str): command to execute
         cwd(str): working directory where command is executed
         env(dict): replace enviroment variables
         debugging(bool): run pdb when error occurs
     Raises:
-        RuntimeError: if virtual path does not exists
+        RuntimeError: if venv path does not exists
     Returns:
         CompletedProcess
     """
     iswin = sys.platform == 'win32'
     activate = os.path.join(
-        venv(root),
+        virtual(root),
         'Scripts' if iswin else 'bin',
         'activate',
     )
-    deactivate = os.path.join(venv(root), 'Scripts/deactivate')
+    deactivate = os.path.join(virtual(root), 'Scripts/deactivate')
     if not os.path.exists(activate):
         msg = (f'Path `{activate}` does not exists.\nRegenerate the venv')
         raise RuntimeError(msg)
@@ -372,17 +372,17 @@ def run(command: str, cwd: str, env=None, debugging: bool = False):
     return process
 
 
-def installed(program: str, root: str, virtual: bool = False):
+def installed(program: str, root: str, venv: bool = False):
     done = run_target(
         root,
         command=f'which {program}',
-        virtual=virtual,
+        venv=venv,
         verbose=False,
     )
     if done.returncode == baw.utils.SUCCESS:
         return True
     baw.utils.error(f'not installed: {program}')
-    baw.utils.error(f'venv: {virtual}')
+    baw.utils.error(f'venv: {venv}')
     baw.utils.error(f'python: {sys.executable}')
     baw.utils.error(f'path: {" ".join(sys.path)}')
     return False
