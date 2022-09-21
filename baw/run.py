@@ -140,6 +140,7 @@ def run_init_project(args):
             shortcut,
             name=description,
             cmdline=cmdline,
+            verbose=args['verbose'],
         )
     return completed
 
