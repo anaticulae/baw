@@ -12,6 +12,7 @@ import functools
 import os
 import re
 import sys
+import textwrap
 
 import baw.archive.test
 import baw.cmd.complex
@@ -176,11 +177,11 @@ def run_test(
 
 def publish(root, verbose, release_type):
     baw.utils.log("Update version tag")
-    with temp_semantic_config(root):
+    with temp_semantic_config(root, verbose):
         # Only release with type if user select one. If the user does select
         # a release-type let semantic release decide.
         release_type = '' if release_type == 'auto' else '--%s' % release_type
-        cmd = f'semantic-release version {release_type}'
+        cmd = f'semantic-release publish {release_type}'
         completed = baw.runtime.run_target(
             root,
             cmd,
@@ -200,7 +201,7 @@ def publish(root, verbose, release_type):
 
 
 @contextlib.contextmanager
-def temp_semantic_config(root: str):
+def temp_semantic_config(root: str, verbose):
     short = baw.config.shortcut(root)
     replaced = baw.resources.SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == baw.resources.SETUP_CFG:
@@ -210,9 +211,25 @@ def temp_semantic_config(root: str):
     # at linux, parameter delete is missing.
     config = os.path.join(root, 'setup.cfg')
     baw.utils.file_create(config, replaced)
+    changelog = determine_changelog(root, verbose)
+    baw.utils.file_append(config, f'commit_message={changelog}')
     yield config
     # remove file
     os.unlink(config)
+
+
+def determine_changelog(root: str, verbose: bool) -> str:
+    cmd = 'baw_semantic_release changelog --unreleased'
+    completed = baw.runtime.run_target(
+        root,
+        cmd,
+        verbose=verbose,
+    )
+    changelog = completed.stdout
+    result = textwrap.indent(changelog, prefix='    ')
+    result = result.strip()
+    result = result.replace('###', '>>>')
+    return result
 
 
 RELEASE_PATTERN = r'(?P<release>v\d+\.\d+\.\d+)'
