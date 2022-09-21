@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image '169.254.149.20:6001/test:0.3.0'
-            args '--privileged -u root -v $WORKSPACE:/var/test'
+            image '169.254.149.20:6001/arch_python_git_baw:0.7.3'
+            args '--privileged -u root -v $WORKSPACE:/var/workspace'
         }
     }
 
