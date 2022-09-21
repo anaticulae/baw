@@ -81,7 +81,7 @@ def commits(root, ranges) -> list:
         verbose=False,
     )
     stdout = completed.stdout.strip()
-    if completed.returncode:
+    if completed.returncode or completed.stderr:
         baw.utils.error(completed)
         sys.exit(baw.utils.FAILURE)
     result = [line.split(maxsplit=1) for line in stdout.splitlines()]
