@@ -27,7 +27,7 @@ import baw.utils
 NO_RELEASE_MESSAGE = 'No release will be made.'
 
 
-def release(
+def release(  # pylint:disable=R1260
     root: str,
     *,
     release_type: str = 'auto',
@@ -64,13 +64,21 @@ def release(
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
+    if verbose:
+        baw.utils.log('require release?')
     if returncode := require_release(root, venv):
         return returncode
+    if verbose:
+        baw.utils.log('check repository')
     if returncode := check_repository(root, require_clean):
         return returncode
     if not no_linter:
+        if verbose:
+            baw.utils.log('run linter')
         if returncode := run_linter(root, verbose, venv):
             return returncode
+    if verbose:
+        baw.utils.log('run test')
     if returncode := run_test(root, sync, test, stash, verbose, venv):
         return returncode
     if returncode := publish(root, verbose, release_type):
