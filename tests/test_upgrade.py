@@ -116,7 +116,7 @@ def test_upgrading(tmpdir):
 
 
 @tests.hasgit
-@tests.longrun
+@tests.nightly
 @tests.nonvenv
 def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     path = os.getcwd()
