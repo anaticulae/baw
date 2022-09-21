@@ -330,6 +330,7 @@ def run_release(args: dict):
     result = baw.cmd.release.release(
         root=root,
         release_type=args['release'],
+        verbose=args['verbose'],
         test=test,
         venv=venv,
         no_linter=no_linter,
