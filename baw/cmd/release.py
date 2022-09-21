@@ -186,6 +186,7 @@ def publish(root, verbose, release_type):
             return baw.utils.FAILURE
     if completed.returncode:
         baw.utils.error('while running semantic-release')
+        baw.utils.error(completed.stderr)
         return completed.returncode
     return baw.utils.SUCCESS
 
