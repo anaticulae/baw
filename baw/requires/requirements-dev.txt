@@ -32,6 +32,6 @@ isort==5.8.0            # format imports
 
 pylint==2.8.2
 
-bandit==1.7.0 # show secury issues
+bandit==1.7.4 # show secury issues
 
 pyenchant==3.2.0  # spelling
