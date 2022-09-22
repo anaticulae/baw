@@ -211,11 +211,20 @@ def temp_semantic_config(root: str, verbose):
     # at linux, parameter delete is missing.
     config = os.path.join(root, 'setup.cfg')
     baw.utils.file_create(config, replaced)
-    changelog = determine_changelog(root, verbose)
-    baw.utils.file_append(config, f'commit_message={changelog}')
+    if not firstversion(root):
+        changelog = determine_changelog(root, verbose)
+        baw.utils.file_append(config, f'commit_message={changelog}')
+    else:
+        baw.utils.file_append(config, 'commit_message=Initial Release')
     yield config
     # remove file
     os.unlink(config)
+
+
+def firstversion(root: str) -> bool:
+    if not baw.git.git_headhash(root):
+        return True
+    return False
 
 
 def determine_changelog(root: str, verbose: bool) -> str:
