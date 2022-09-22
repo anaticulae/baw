@@ -55,6 +55,7 @@ if __name__ == "__main__":
                 'baw_profile = baw.small.profile:main',
                 'baw_regen = baw.small.regen:main',
                 'baw_single = baw.small.single:main',
+                'baw_semantic_release = baw.small.version:main',
             ],
         },
     )
