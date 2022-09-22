@@ -23,7 +23,7 @@ python-semantic-release==7.25.2
 setuptools==65.3.0
 
 # create venv environment
-virtualenv==20.4.6
+virtualenv==20.16.5
 
 rope==0.10.7
 
