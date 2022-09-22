@@ -80,6 +80,10 @@ def assert_run(command: str, cwd: str = None):
     completed = run(command, cwd)
     msg = f'{completed.stderr}\n{completed.stdout}'
     assert not completed.returncode, msg
+    baw.utils.log(command)
+    baw.utils.log(completed.stdout)
+    if completed.stderr:
+        baw.utils.error(completed.stderr)
     yield completed
 
 
