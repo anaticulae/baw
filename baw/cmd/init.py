@@ -83,6 +83,7 @@ def init(
         verbose=verbose,
         venv=False,  # No venv for first time needed
         require_clean=False,
+        no_linter=True,
     )
     # TODO: Think aboud activating later? Add test flag?
     # Reduces times of creating from 8 to 2 secs
