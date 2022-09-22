@@ -210,7 +210,7 @@ def temp_semantic_config(root: str, verbose):
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = os.path.join(root, 'setup.cfg')
-    baw.utils.file_create(config, replaced)
+    baw.utils.file_replace(config, replaced)
     if not firstversion(root):
         changelog = determine_changelog(root, verbose)
         baw.utils.file_append(config, f'commit_message={changelog}')
