@@ -47,6 +47,7 @@ if __name__ == "__main__":
             'baw.requires',
             'baw.small',
             'baw.templates',
+            'baw.templates.docs',
         ],
         entry_points={
             'console_scripts': [
