@@ -73,18 +73,8 @@ def init(
         )
         if completed:
             return completed
-    baw.git.git_add(root, '.', verbose=verbose)
+    first_commit(root, verbose)
     # Deactivate options to reach fast reaction
-    baw.cmd.release.release(
-        root,
-        stash=False,  # Nothing to stash at the first time
-        sync=False,  # No sync for first time needed
-        test=False,  # No testing for the first time needed
-        verbose=verbose,
-        venv=False,  # No venv for first time needed
-        require_clean=False,
-        no_linter=True,
-    )
     # TODO: Think aboud activating later? Add test flag?
     # Reduces times of creating from 8 to 2 secs
     # quality = baw.cmd.plan.code_quality(root)
@@ -95,6 +85,29 @@ def init(
     # )
     # baw.cmd.plan.create(root)
     return baw.utils.SUCCESS
+
+
+def first_commit(root, verbose: bool):
+    """This is a replacement for semantic_release cause project setup
+    does not worker proper like in the past(4.1.1) anymore."""
+    baw.git.git_add(
+        root,
+        '.',
+        verbose=verbose,
+    )
+    baw.git.commit(
+        root,
+        source=' ',
+        message=INIT,
+        tag='v0.0.0',
+    )
+
+
+INIT = """\
+0.0.0 initial release
+
+Automatically generated release.
+"""
 
 
 def create_folder(root: str):
