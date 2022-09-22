@@ -66,7 +66,7 @@ def add(root: str, pattern: str):
     return git_add(root, pattern)
 
 
-def commit(root, source, message, verbose: int = 0):
+def commit(root, source, message, tag: str = None, verbose: int = 0):
     assert os.path.exists(root)
     message = '"%s"' % message
     if verbose:
@@ -79,6 +79,12 @@ def commit(root, source, message, verbose: int = 0):
         'git commit %s -m %s' % (source, message),
         verbose=verbose,
     )
+    if not process.returncode and tag:
+        process = baw.runtime.run_target(
+            root,
+            f'git tag {tag}',
+            verbose=verbose,
+        )
     return process.returncode
 
 
