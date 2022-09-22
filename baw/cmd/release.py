@@ -228,7 +228,11 @@ def firstversion(root: str) -> bool:
 
 
 def determine_changelog(root: str, verbose: bool) -> str:
-    cmd = 'baw_semantic_release changelog --unreleased'
+    short = baw.config.shortcut(root)
+    cmd = 'baw_semantic_release  changelog '
+    cmd += f'-D "version_variable={short}/__init__.py:__version__" '
+    cmd += '-D "changelog_components=baw.changelog.changelog_headers" '
+    cmd += '--unreleased'
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -238,6 +242,7 @@ def determine_changelog(root: str, verbose: bool) -> str:
     result = textwrap.indent(changelog, prefix='    ')
     result = result.strip()
     result = result.replace('###', '>>>')
+    result = result.replace('##', '>>')
     return result
 
 
