@@ -9,10 +9,10 @@
 
 import sys
 
-import semantic_release.cli
-
 
 def main():
+    import semantic_release.cli
+
     # run the patch
     import baw.changelog  # pylint:disable=W0611
 

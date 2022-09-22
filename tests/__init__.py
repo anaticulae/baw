@@ -15,6 +15,7 @@ import sys
 
 import pytest
 
+import baw.git
 import baw.run
 import baw.utils
 
@@ -103,7 +104,7 @@ def example(testdir, monkeypatch):
     """Creating example project due console"""
     if run('which baw').returncode:
         pytest.skip('install baw')
-    if run('which git').returncode:
+    if not baw.git.git_installed():
         pytest.skip('install git')
     if NO_BAW:
         pytest.skip('decrease response time, use longrun')

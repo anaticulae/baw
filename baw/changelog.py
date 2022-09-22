@@ -17,6 +17,8 @@ import os
 import pathlib
 import typing
 
+import baw.git
+
 
 def changelog_headers(  # pylint:disable=W0613
     owner: str,
@@ -113,4 +115,5 @@ def __patch__():
     pathlib.Path.write_text = write_text
 
 
-__patch__()
+if baw.git.git_installed():
+    __patch__()
