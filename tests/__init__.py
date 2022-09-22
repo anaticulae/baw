@@ -48,17 +48,23 @@ skip_venv = pytest.mark.skipif(venv, reason='do not run in venv env')
 
 def hasprog(program: str):
     assert program, 'define program'
-    has = subprocess.run(  # pylint:disable=c2001 # nosec
+    completed = subprocess.run(  # pylint:disable=c2001 # nosec
         f'which {program}'.split(),
         check=False,
         capture_output=True,
-    ).returncode == baw.utils.SUCCESS
-    result = pytest.mark.skipif(not has, reason=f'install {program}')
+    )
+    installed = completed.returncode == baw.utils.SUCCESS
+    if installed:
+        expected = f'{program}:'
+        if completed.stdout.strip() in (expected, expected.encode('utf8')):
+            # workaround for `whereis` of arch
+            installed = False
+    result = pytest.mark.skipif(not installed, reason=f'install {program}')
     return result
 
 
-hasbaw = hasprog('baw')
 hasgit = hasprog('git')
+hasbaw = hasprog('baw')
 
 
 def run(command: str, cwd: str = None):
