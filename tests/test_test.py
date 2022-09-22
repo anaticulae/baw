@@ -20,7 +20,7 @@ import tests
 def test_creating_project(tmpdir):
     """Creating project without venv environment"""
     completed = tests.run(
-        'baw init xkcd "Longtime project"',
+        'baw --verbose init xkcd "Longtime project"',
         cwd=tmpdir,
     )
     error = f'{completed.stderr}\n{completed.stdout}'

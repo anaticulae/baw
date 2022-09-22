@@ -105,7 +105,7 @@ def example(testdir, monkeypatch):
         pytest.skip('decrease response time, use longrun')
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     baw.git.update_userdata()
-    cmd = f'baw init {EXAMPLE_PROJECT_NAME} "Longtime project"'
+    cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')
         context.setattr(baw.config, 'bawtmp', tmpdir)
@@ -132,7 +132,7 @@ def run_command(command, monkeypatch):
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
-        context.setattr(sys, 'argv', ['baw'] + command)
+        context.setattr(sys, 'argv', ['baw', '--verbose'] + command)
         with pytest.raises(SystemExit) as result:
             baw.run.main()
         result = str(result)
