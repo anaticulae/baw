@@ -94,8 +94,8 @@ def image_newest() -> str:
     '.../...:...'
     """
     repository = '169.254.149.20:6001'
-    imagename = 'test'
-    version = '0.3.0'
+    imagename = 'arch_python_baw'
+    version = '0.8.0'
     result = f'{repository}/{imagename}:{version}'
     return result
 
