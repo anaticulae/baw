@@ -72,8 +72,10 @@ def commits(root, ranges) -> list:
     5
     """
     count = len(ranges)
-    cmd = ("git log --pretty=format:\"%H %s\" | "
-           rf'grep -E "(feat|fix|test|refactor)\(" | head -n {count}')
+    cmd = 'git log --pretty=format:\"%H %s\" '
+    cmd += r'| grep -E "(feat|fix|test|refactor)\(" '
+    # TODO, WORKAROUND, HACK: ENABLE LATER, grep: write error: Illegal seek
+    # cmd += '| head -n %d' % count
     completed = baw.runtime.run_target(
         root,
         command=cmd,
@@ -84,7 +86,7 @@ def commits(root, ranges) -> list:
     if completed.returncode or completed.stderr:
         baw.utils.error(completed)
         sys.exit(baw.utils.FAILURE)
-    result = [line.split(maxsplit=1) for line in stdout.splitlines()]
+    result = [line.split(maxsplit=1) for line in stdout.splitlines()[0:count]]
     return result
 
 
