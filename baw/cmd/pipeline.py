@@ -58,10 +58,12 @@ def upgrade(
         baw.utils.error(f'Jenkinsfile does not exists: {source}')
         return baw.utils.FAILURE
     newest = image_newest()
+    args = image_args()
     replaced = baw.resources.template_replace(
         root,
         template=baw.resources.JENKINSFILE,
-        docker_image_test=newest,
+        docker_image_test_name=newest,
+        docker_image_test_args=args,
     )
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
@@ -106,6 +108,18 @@ def image_newest() -> str:
         '0.8.1',
     )
     result = f'{repository}/{imagename}:{version}'
+    return result
+
+
+def image_args() -> str:
+    """\
+    >>> image_args()
+    '...'
+    """
+    result = os.environ.get(
+        'BAW_PIPELINE_TEST_ARGS',
+        '--privileged -u root -v $WORKSPACE:/var/workdir',
+    )
     return result
 
 

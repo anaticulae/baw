@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image '{{DOCKER_IMAGE_TEST}}'
-            args '--privileged -u root -v $WORKSPACE:/var/test'
+            image '{{DOCKER_IMAGE_TEST_NAME}}'
+            args  '{{DOCKER_IMAGE_TEST_ARGS}}'
         }
     }
 
