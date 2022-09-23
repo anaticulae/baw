@@ -154,6 +154,7 @@ def add_open_options(parser):
         help='print path to console',
         action='store_true',
     )
+    plan.set_defaults(func=baw.run.run_open)
 
 
 def add_sync_options(parser):

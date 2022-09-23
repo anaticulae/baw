@@ -45,8 +45,6 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
     if run_version(args):
         return baw.utils.SUCCESS
     directory = run_environment(args)
-    if run_open(directory, args):
-        return baw.utils.SUCCESS
     if args.get('venv', False):
         if failure := run_venv(args):
             return failure
@@ -118,12 +116,15 @@ def run_environment(args):
     return root
 
 
-def run_open(directory, args):
-    if not args.get('open', False):
-        return False
-    printme = args.get('print', False)
-    baw.cmd.open.openme(directory, args['path'], console=printme)
-    return True
+def run_open(args):
+    directory = run_environment(args)
+    printme = args['print']
+    baw.cmd.open.openme(
+        root=directory,
+        path=args['path'],
+        prints=printme,
+    )
+    sys.exit(baw.utils.SUCCESS)
 
 
 def run_init_project(args):

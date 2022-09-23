@@ -17,22 +17,22 @@ import baw.runtime
 import baw.utils
 
 
-def openme(root: str, path: str = None, console: bool = False):
+def openme(root: str, path: str = None, prints: bool = False):
     if path == 'this':
-        open_this()
+        open_this(prints=prints)
     elif path == 'tests':
-        open_tests(root)
+        open_tests(root, prints=prints)
     elif path == 'tmp':
-        open_tmp(root)
+        open_tmp(root, prints=prints)
     elif path == 'venv':
-        open_venv(root)
+        open_venv(root, prints=prints)
     elif path == 'lasttest':
-        open_lasttest(root)
+        open_lasttest(root, prints=prints)
     elif path == 'generated':
-        open_generated(root, console)
+        open_generated(root, prints)
     elif path == 'project':
         root = baw.project.determine_root(os.getcwd())
-        open_this(root)
+        open_this(root, prints=prints)
 
 
 def open_generated(root: str, console: bool = False):
@@ -52,19 +52,19 @@ def open_generated(root: str, console: bool = False):
     open_this(generated)
 
 
-def open_tmp(root: str):
+def open_tmp(root: str, prints: bool = False):
     name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
-    open_this(tmpdir)
+    open_this(tmpdir, prints=prints)
 
 
-def open_venv(root: str):
+def open_venv(root: str, prints: bool = False):
     name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'venv', name)
-    open_this(tmpdir)
+    open_this(tmpdir, prints=prints)
 
 
-def open_lasttest(root: str):
+def open_lasttest(root: str, prints: bool = False):
     name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
     directories = list(glob.glob(f'{tmpdir}/**/', recursive=True))
@@ -75,15 +75,15 @@ def open_lasttest(root: str):
     except IndexError:
         baw.utils.error(f'could not find any test {root}')
         return
-    open_this(last)
+    open_this(last, prints=prints)
 
 
-def open_tests(root: str):
+def open_tests(root: str, prints: bool = False):
     tests = os.path.join(root, 'tests')
-    open_this(tests)
+    open_this(tests, prints=prints)
 
 
-def open_this(path=None):
+def open_this(path=None, prints: bool = False):
     if path is None:
         path = os.getcwd()
     path = str(path)
@@ -92,6 +92,9 @@ def open_this(path=None):
         sys.exit(baw.utils.FAILURE)
     # convert for windows
     path = path.replace('/', '\\')
+    if prints:
+        baw.utils.log(path)
+        return
     cmd = f'explorer {path}'
     completed = baw.runtime.run(
         cmd,
