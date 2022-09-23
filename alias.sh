@@ -54,7 +54,7 @@ alias bog="baw open generated"
 alias bot="baw open tmp"
 alias bc="baw clean"
 alias bsv="baw --venv sync all"
-alias setup="./setup.py install"
+alias setup="pip install ."
 
 alias rt="baw clean resources"
 
