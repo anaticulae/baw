@@ -252,7 +252,6 @@ def determine_resources(root: str, packages: str) -> list:
     if packages in ('extra', 'all'):
         if os.path.exists(os.path.join(root, REQUIREMENTS_EXTRA)):
             resources.append(os.path.join(root, REQUIREMENTS_EXTRA))
-
     # local project file
     local_requirement = join(root, baw.utils.REQUIREMENTS_TXT)
     if exists(local_requirement):
