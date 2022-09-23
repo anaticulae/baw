@@ -17,6 +17,7 @@ import pytest
 
 import baw.git
 import baw.run
+import baw.runtime
 import baw.utils
 
 THIS = os.path.dirname(__file__)
@@ -47,18 +48,7 @@ skip_venv = pytest.mark.skipif(venv, reason='do not run in venv env')
 
 
 def hasprog(program: str):
-    assert program, 'define program'
-    completed = subprocess.run(  # pylint:disable=c2001 # nosec
-        f'which {program}'.split(),
-        check=False,
-        capture_output=True,
-    )
-    installed = completed.returncode == baw.utils.SUCCESS
-    if installed:
-        expected = f'{program}:'
-        if completed.stdout.strip() in (expected, expected.encode('utf8')):
-            # workaround for `whereis` of arch
-            installed = False
+    installed = baw.runtime.hasprog(program)
     result = pytest.mark.skipif(not installed, reason=f'install {program}')
     return result
 

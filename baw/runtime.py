@@ -382,3 +382,19 @@ def installed(program: str, root: str, venv: bool = False):
     baw.utils.error(f'python: {sys.executable}')
     baw.utils.error(f'path: {" ".join(sys.path)}')
     return False
+
+
+def hasprog(program: str):
+    assert program, 'define program'
+    completed = subprocess.run(  # pylint:disable=c2001 # nosec
+        f'which {program}'.split(),
+        check=False,
+        capture_output=True,
+    )
+    isinstalled = completed.returncode == baw.utils.SUCCESS
+    if isinstalled:
+        expected = f'{program}:'
+        if completed.stdout.strip() in (expected, expected.encode('utf8')):
+            # workaround for `whereis` of arch
+            isinstalled = False
+    return isinstalled
