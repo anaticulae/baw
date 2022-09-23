@@ -2,6 +2,63 @@
 
 Every noteable change is logged here.
 
+## v1.3.0
+
+### Feature
+
+* use git ignore to clean tmp files (5fb4dfd43288)
+* integrate chore into release (26e6a37f88fc)
+* upgrade pipeline image (6c13d7dd65d5)
+
+### Fix
+
+* create pytest config in project (9b5d9f908c9e)
+* remove hack after knowing what happens (f36717629a55)
+* use old resolver to get rawmaker dependencies done (e6d5c39158e1)
+* configure changelog detector (2b6ade56516b)
+* do not fail on existing setup config (41f8f9e559ca)
+
+### Chore
+
+* ignore pytest.ini (6666a990c074)
+* integrate data package into packages (1d39a6792125)
+* adjust shortcuts (abe201277508)
+
+## v1.2.1
+
+### Fix
+
+* ensure that git is installed (365ee8a031fb)
+
+## v1.2.0
+
+### Feature
+
+* upgrade isort (7f5ec2ba3941)
+* upgrade venv (275cbbf4ba19)
+* upgrade pytest (9a9ad16f0798)
+* upgrade bandit (bd26d2a74896)
+* use own initial commit mechanism (82d5825ca317)
+* add parameter to tag commit (f171901e07de)
+* add wrapper to patch semantic_version (bcc686d43967)
+* update changelog generator (851efd555a2f)
+* add own changelog printer (9dcfc5e18ea7)
+* add release (f9239d0c066f)
+* add temp config in project (5d0cbee9f703)
+* log semantic release error (b0da126dda68)
+
+### Fix
+
+* solve grep error (fdc595cecc3b)
+* use patch semantic release (c86a22729287)
+* do not run linter on project setup (d100fcbae4f5)
+* do not try to compute changelog for first init (57ebb5260f26)
+* add missing verbose flag (8f751d9fc941)
+* pass missing verbose flag (99473544d70b)
+* fail commit detection on dubious error (e731423b2adb)
+* hack requirement lower (afd3d597e16d)
+* adjust command (3c7e8e9460c7)
+
 ## v1.1.0
 
 ### Feature
