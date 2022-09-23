@@ -16,6 +16,8 @@ from os.path import join
 from urllib.request import URLError
 from urllib.request import urlopen
 
+from pip import __version__ as pip_version
+
 import baw.config
 import baw.requirements
 import baw.utils
@@ -272,13 +274,22 @@ def get_install_cmd(
     pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
     pip += f'--trusted {trusted}'
     config = '--retries 2 --disable-pip-version-check '
-    config += '--use-deprecated=legacy-resolver '
+    if require_legacy_solver():
+        config += '--use-deprecated=legacy-resolver '
     python = baw.config.python(root, venv=venv)
     # prepare command
     cmd = f'{python} -mpip install {warning} {pip} '
     cmd += f'-U {config} '
     cmd += f'-r {to_install} '
     return cmd, pip
+
+
+def require_legacy_solver() -> bool:
+    """Older pip version does ot require or support this option."""
+    major = baw.project.version.major(pip_version)
+    if major < 21:
+        return False
+    return True
 
 
 HOST = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
