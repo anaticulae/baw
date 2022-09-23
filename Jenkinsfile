@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image '169.254.149.20:6001/arch_python_git_baw:0.7.3'
-            args '--privileged -u root -v $WORKSPACE:/var/workspace'
+            image '169.254.149.20:6001/arch_python_git_baw:0.8.1'
+            args  '--privileged -u root -v $WORKSPACE:/var/workdir'
         }
     }
 
@@ -52,6 +52,7 @@ pipeline {
             }
             steps{
                 sh 'baw install && baw release && baw publish'
+                // TODO: GIT COMMIT?
             }
         }
     }
