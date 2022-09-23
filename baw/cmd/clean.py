@@ -18,7 +18,7 @@ import baw.config
 import baw.runtime
 
 
-def clean(  # pylint:disable=R1260
+def clean(  # pylint:disable=R1260,too-many-branches
     root: str,
     docs: bool = False,
     resources: bool = False,
@@ -35,6 +35,8 @@ def clean(  # pylint:disable=R1260
         clean_venv(root)
     if docs:
         clean_docs(root)
+    if tmp:
+        clean_git(root)
     patterns = create_pattern(root, resources, tmp, tests)
     # problems while deleting recursive
     ret = 0
@@ -61,6 +63,22 @@ def clean(  # pylint:disable=R1260
         sys.exit(ret)
     baw.utils.log()  # Newline
     return baw.utils.SUCCESS
+
+
+def clean_git(root: str):
+    if not baw.runtime.hasprog('git'):
+        baw.utils.error('git is not installed, could not clean')
+        return
+    completed = baw.runtime.run_target(
+        root=root,
+        command='git clean -xf',
+        cwd=root,
+        verbose=False,
+    )
+    if completed.stdout:
+        baw.utils.log(completed.stdout)
+    if completed.stderr:
+        baw.utils.error(completed.stderr)
 
 
 def clean_docs(root: str):
