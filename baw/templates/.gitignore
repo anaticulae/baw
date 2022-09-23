@@ -27,6 +27,7 @@ tmp
 ..code-workspace
 .coverage*
 setup.cfg
+pytest.ini
 # vscode tmp file
 *.py.*.py
 
