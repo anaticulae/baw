@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.4.0 (2022-09-23)
+
+### Feature
+
+* make pipeline args configurable (9b6da2fcee35)
+* make image name configurable due env variables (ea50e03a6752)
+
+### Fix
+
+* do not miss the changelog (9e8bafe1c9d4)
+* adjust baw open (85af3ef42daf)
+* do not use outdated installer (5fa157edadaf)
+
+### Chore
+
+* upgrade Jenkinsfile (ac325a584b4d)
+
 ## v1.3.0
 
 ### Feature
