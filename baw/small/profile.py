@@ -74,19 +74,25 @@ def commits(root, ranges) -> list:
     count = len(ranges)
     cmd = 'git log --pretty=format:\"%H %s\" '
     cmd += r'| grep -E "(feat|fix|test|refactor)\(" '
-    # TODO, WORKAROUND, HACK: ENABLE LATER, grep: write error: Illegal seek
-    # cmd += '| head -n %d' % count
+    cmd += '| head -n %d' % count
+    # grep detects the first n-commits and close the inpipe ealier bevore
+    # all data is processed. This is not a problem for us.
+    no_error = ['grep: write error: Illegal seek\n']
     completed = baw.runtime.run_target(
         root,
         command=cmd,
         cwd=root,
+        skip_error_message=no_error,
         verbose=False,
     )
+    if completed.stderr:
+        # see above
+        completed.stderr = completed.stderr.replace(no_error[0], '')
     stdout = completed.stdout.strip()
     if completed.returncode or completed.stderr:
         baw.utils.error(completed)
         sys.exit(baw.utils.FAILURE)
-    result = [line.split(maxsplit=1) for line in stdout.splitlines()[0:count]]
+    result = [line.split(maxsplit=1) for line in stdout.splitlines()]
     return result
 
 
