@@ -181,7 +181,7 @@ def publish(root, verbose, release_type):
         # Only release with type if user select one. If the user does select
         # a release-type let semantic release decide.
         release_type = '' if release_type == 'auto' else '--%s' % release_type
-        cmd = f'baw_semantic_release version {release_type}'
+        cmd = f'baw_semantic_release publish {release_type}'
         completed = baw.runtime.run_target(
             root,
             cmd,
