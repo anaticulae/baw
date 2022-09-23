@@ -272,7 +272,8 @@ def get_install_cmd(
     warning = '' if verbose else '--no-warn-conflicts'
     pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
     pip += f'--trusted {trusted}'
-    config = '--retries 2 --disable-pip-version-check'
+    config = '--retries 2 --disable-pip-version-check '
+    config += '--use-deprecated=legacy-resolver '
     python = baw.config.python(root, venv=venv)
     # prepare command
     cmd = f'{python} -mpip install {warning} {pip} '
