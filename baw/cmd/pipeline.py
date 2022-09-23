@@ -24,12 +24,7 @@ def init(
     if os.path.exists(source):
         baw.utils.error(f'Jenkinsfile already exists: {source}')
         return baw.utils.FAILURE
-    newest = image_newest()
-    replaced = baw.resources.template_replace(
-        root,
-        template=baw.resources.JENKINSFILE,
-        docker_image_test=newest,
-    )
+    replaced = create_jenkinsfile(root)
     with baw.git.git_stash(root, verbose=verbose, venv=venv):
         baw.utils.file_create(
             source,
@@ -57,14 +52,7 @@ def upgrade(
     if not os.path.exists(source):
         baw.utils.error(f'Jenkinsfile does not exists: {source}')
         return baw.utils.FAILURE
-    newest = image_newest()
-    args = image_args()
-    replaced = baw.resources.template_replace(
-        root,
-        template=baw.resources.JENKINSFILE,
-        docker_image_test_name=newest,
-        docker_image_test_args=args,
-    )
+    replaced = create_jenkinsfile(root)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
@@ -84,6 +72,18 @@ def upgrade(
             return failure
     baw.utils.log('Jenkinsfile upgraded')
     return baw.utils.SUCCESS
+
+
+def create_jenkinsfile(root: str):
+    newest = image_newest()
+    args = image_args()
+    replaced = baw.resources.template_replace(
+        root,
+        template=baw.resources.JENKINSFILE,
+        docker_image_test_name=newest,
+        docker_image_test_args=args,
+    )
+    return replaced
 
 
 def jenkinsfile(root: str):
