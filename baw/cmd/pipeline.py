@@ -93,9 +93,18 @@ def image_newest() -> str:
     >>> image_newest()
     '.../...:...'
     """
-    repository = '169.254.149.20:6001'
-    imagename = 'arch_python_baw'
-    version = '0.8.0'
+    repository = os.environ.get(
+        'BAW_PIPELINE_REPO',
+        '169.254.149.20:6001',
+    )
+    imagename = os.environ.get(
+        'BAW_PIPELINE_NAME',
+        'arch_python_baw',
+    )
+    version = os.environ.get(
+        'BAW_PIPELINE_VERSION',
+        '0.8.1',
+    )
     result = f'{repository}/{imagename}:{version}'
     return result
 

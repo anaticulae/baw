@@ -37,3 +37,20 @@ footer
 
 * BREAKING CHANGE:
 * Solves, refer etc.
+
+## Docker
+
+```
+repository = os.environ.get(
+    'BAW_PIPELINE_REPO',
+    '169.254.149.20:6001',
+)
+imagename = os.environ.get(
+    'BAW_PIPELINE_NAME',
+    'arch_python_baw',
+)
+version = os.environ.get(
+    'BAW_PIPELINE_VERSION',
+    '0.8.1',
+)
+```
