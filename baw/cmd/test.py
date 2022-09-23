@@ -179,9 +179,7 @@ def create_test_cmd(  # pylint:disable=R0914
     verbose: bool = False,
     venv: bool = False,
 ):
-    pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
-    # using ROOT to get location from baw-tool
-    assert os.path.exists(pytest_ini), f'no testconfig available {pytest_ini}'
+    pytest_ini = create_pytest_config(root)
     # configure test run
     debugger = '--pdb ' if pdb else ''
     cov = cov_args(root, pdb=debugger) if coverage else ''
@@ -217,6 +215,19 @@ def create_test_cmd(  # pylint:disable=R0914
     if verbose:
         cmd += '-vv '
     return cmd
+
+
+def create_pytest_config(root: str) -> str:
+    pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
+    # using ROOT to get location from baw-tool
+    assert os.path.exists(pytest_ini), f'no testconfig available {pytest_ini}'
+    config = baw.utils.file_read(pytest_ini)
+    path = os.path.join(root, 'pytest.ini')
+    baw.utils.file_replace(
+        path,
+        content=config,
+    )
+    return path
 
 
 def create_testdir(root):
