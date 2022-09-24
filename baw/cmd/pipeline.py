@@ -143,7 +143,7 @@ def run(args: dict):
 
 
 def extend_cli(parser):
-    cli = parser.add_parser('pipeline', help='Run pipline task')
+    cli = parser.add_parser('pipe', help='Run pipline task')
     cli.add_argument(
         'action',
         help='manage the jenkins file',
