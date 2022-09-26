@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.5.0 (2022-09-26)
+
+### Feature
+
+* add run shell option (bcd2ad11c253)
+* shorten command (3fa82e66553f)
+
+### Fix
+
+* replace variables correctly (be0e9282f4c5)
+* legacy solver is not required for older pip (f374fcbc73fb)
+
+### Chore
+
+* upgrade Sphinx (7ac237c986cb)
+
 ## v1.4.0 (2022-09-23)
 
 ### Feature
