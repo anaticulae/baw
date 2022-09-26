@@ -12,7 +12,7 @@ extensions = [
     # Used to write beautiful docstrings:
     'sphinx.ext.napoleon',
     # Used to include .md files:
-    'm2r',
+    'recommonmark',
     # Used to insert typehints into the final docs:
     'sphinx_autodoc_typehints',
     # Used to embed values from the source code into the docs:
@@ -20,6 +20,10 @@ extensions = [
 ]
 
 source_suffix = ['.rst']
+
+source_parsers = {
+    '.md': 'recommonmark.parser.CommonMarkParser',
+}
 
 # The master toctree document.
 master_doc = 'index'
