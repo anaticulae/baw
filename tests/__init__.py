@@ -169,3 +169,9 @@ def cmd_split(cmd: str) -> list:
         else:
             result.extend(item.split())
     return result
+
+
+def stdout(capsys) -> str:
+    out = capsys.readouterr().out
+    result = str(out)
+    return result

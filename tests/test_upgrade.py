@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import os
 import textwrap
 
@@ -145,7 +146,7 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
         notests=False,
     )
     assert result == baw.utils.FAILURE
-    stdout = capsys.readouterr().out
+    stdout = tests.stdout(capsys)
     assert stdout
     assert 'Reset' in stdout, stdout
     # Reuse venv environment

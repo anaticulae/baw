@@ -7,9 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import tests
+
 
 def test_cmd_sh(simple, capsys):  # pylint:disable=W0621
     simple[0]('sh ls')
-    stdout = capsys.readouterr().out
+    stdout = tests.stdout(capsys)
     assert 'README' in stdout
     assert 'CHANGELOG' in stdout

@@ -22,5 +22,5 @@ def test_cmd_info(cmd, expected, monkeypatch, capsys):
         f'info {cmd}',
         monkeypatch,
     )
-    stdout = capsys.readouterr().out
+    stdout = tests.stdout(capsys)
     assert expected in stdout, str(stdout)
