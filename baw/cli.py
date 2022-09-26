@@ -16,6 +16,7 @@ import baw.cmd.ide
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.release
+import baw.cmd.sh
 import baw.run
 import baw.utils
 
@@ -40,6 +41,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.release.extend_cli(cmds)
     add_publish_options(cmds)
     add_install_option(cmds)
+    add_shell_option(cmds)
     baw.cmd.pipeline.extend_cli(cmds)
     baw.cmd.lint.extend_cli(cmds)
     add_format_option(cmds)
@@ -256,6 +258,12 @@ def add_test_options(parser):
         choices='docs fast long nightly skip'.split(),
     )
     test.set_defaults(func=baw.run.run_test)
+
+
+def add_shell_option(parser):
+    init = parser.add_parser('sh', help='Run shell cmd in env')
+    init.add_argument('cmd', help='command')
+    init.set_defaults(func=baw.cmd.sh.run_shell)
 
 
 def add_install_option(parser):
