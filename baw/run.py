@@ -170,7 +170,7 @@ def determine_root(directory):
 
 
 def run_bisect(args):
-    commits = args['bisect'][0]
+    commits = args['bisect']
     cmds = list(sys.argv)[1:]
     cmds.remove('--bisect')
     cmds.remove(commits)
