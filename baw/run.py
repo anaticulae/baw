@@ -219,13 +219,19 @@ def run_upgrade(args):
 def run_clean(args):
     root = get_root(args)
     clean = args['clean']
+    docs = clean == 'docs'
+    resources = clean == 'resources'
+    tests = clean == 'tests'
+    tmp = clean == 'tmp'
+    venv = clean == 'venv'
+    all_ = clean == 'all'
     result = baw.cmd.clean.clean(
-        docs=clean == 'docs',
-        resources=clean == 'resources',
-        tests=clean == 'tests',
-        tmp=clean == 'tmp',
-        venv=clean == 'venv',
-        all_=clean == 'all',
+        docs=docs,
+        resources=resources,
+        tests=tests,
+        tmp=tmp,
+        venv=venv,
+        all_=all_,
         root=root,
     )
     return result
