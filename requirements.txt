@@ -9,4 +9,4 @@
 
 semver>=2.13.0<3.0.0
 # required for resource generation
-utila>=2.50.0<4.0.0
+utila>=2.88.0<4.0.0
