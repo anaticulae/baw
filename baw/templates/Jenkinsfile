@@ -1,12 +1,12 @@
-pipeline {
-    agent {
-        docker {
+pipeline{
+    agent{
+        docker{
             image '{{DOCKER_IMAGE_TEST_NAME}}'
             args  '{{DOCKER_IMAGE_TEST_ARGS}}'
         }
     }
 
-    parameters {
+    parameters{
         string(name: 'BRANCH', defaultValue: 'master')
         booleanParam(name: 'RELEASE', defaultValue: false)
     }

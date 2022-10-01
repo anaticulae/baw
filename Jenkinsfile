@@ -1,12 +1,12 @@
-pipeline {
-    agent {
-        docker {
+pipeline{
+    agent{
+        docker{
             image '169.254.149.20:6001/arch_python_git_baw:0.8.1'
             args  '--privileged -u root -v $WORKSPACE:/var/workdir'
         }
     }
 
-    parameters {
+    parameters{
         string(name: 'BRANCH', defaultValue: 'master')
         booleanParam(name: 'RELEASE', defaultValue: false)
     }
