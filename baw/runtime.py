@@ -81,7 +81,8 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         baw.utils.log(f'create venv: {venv}')
         os.makedirs(venv, exist_ok=True)
     if os.path.exists(venv) and list(os.scandir(venv)):
-        baw.utils.log(f'venv: {venv}')
+        if verbose:
+            baw.utils.log(f'venv: {venv}')
         return baw.utils.SUCCESS
     python = baw.config.python(root, venv=False)
     # '--system-site-packages'
@@ -89,7 +90,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     if clean:
         cmd = f'{cmd} --clear'
     process = run(command=cmd, cwd=venv)
-    patch_pip(root)
+    patch_pip(root, verbose=verbose)
     if sys.version_info.major == 3 and sys.version_info.minor == 7:
         # python 3.7
         patch_env(root)
@@ -106,14 +107,15 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     return baw.utils.SUCCESS
 
 
-def patch_pip(root):
+def patch_pip(root, verbose: bool = False):
     """This patch is required for install pdfminer.six==20181108 under
     pip==18.1, this can may be removed with new pip or pdfminer. There is a
     problem with sorting RECORS, cause mixing sort int and str.
 
     TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
     """
-    baw.utils.log(f'Patching the wheel: {root}')
+    if verbose:
+        baw.utils.log(f'Patching the wheel: {root}')
     to_patch = os.path.join(
         virtual(root),
         'Lib/site-packages/pip/_internal/wheel.py',
