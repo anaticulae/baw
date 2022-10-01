@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.6.0 (2022-10-01)
+
+### Feature
+
+* add separate CI clean step (a2be064e0103)
+* ensure that package is installed (cb9451fe4d4b)
+
+### Fix
+
+* do not print venv: path in info/open printer (20533ec7538a)
+* adjust commit selection (0b69be19e596)
+
 ## v1.5.0 (2022-09-26)
 
 ### Feature
