@@ -124,7 +124,7 @@ def add_clean_options(parser):
     plan.add_argument(
         'clean',
         help='Remove different type of content',
-        choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv'],
+        choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv', 'ci'],
         nargs='?',
         default='tests',
     )

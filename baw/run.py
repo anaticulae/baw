@@ -225,6 +225,11 @@ def run_clean(args):
     tmp = clean == 'tmp'
     venv = clean == 'venv'
     all_ = clean == 'all'
+    if clean == 'ci':
+        docs = True
+        resources = True
+        tests = True
+        tmp = True
     result = baw.cmd.clean.clean(
         docs=docs,
         resources=resources,
