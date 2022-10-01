@@ -21,7 +21,7 @@ import tests
 @tests.longrun
 def test_create_venv(example, monkeypatch):
     """Creating venv environment."""
-    tests.run_command(
+    tests.baaw(
         '--venv',
         monkeypatch=monkeypatch,
     )

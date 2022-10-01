@@ -18,7 +18,7 @@ import tests
     ('venv', 'venv'),
 ))
 def test_cmd_info(cmd, expected, monkeypatch, capsys):
-    tests.run_command(
+    tests.baaw(
         f'info {cmd}',
         monkeypatch,
     )

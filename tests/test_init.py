@@ -34,7 +34,7 @@ def test_init_project_in_empty_folder(project_example):
 @tests.nightly
 def test_doc_command(project_example, monkeypatch):
     """Run doc command to generate documentation."""
-    tests.run_command('doc', monkeypatch)
+    tests.baaw('doc', monkeypatch)
     created = project_example.join('tmpdir/docs/xcd/html/index.html')
     assert os.path.exists(created)
 
@@ -47,7 +47,7 @@ def test_doc_command(project_example, monkeypatch):
 @pytest.mark.usefixtures('testdir')
 def test_escaping_single_collon(monkeypatch):
     """Generate project with ' in name and test install"""
-    tests.run_command('init xcd "I\'ts magic"', monkeypatch)
+    tests.baaw('init xcd "I\'ts magic"', monkeypatch)
     tests.assert_run('.', 'pip install --editable .')
 
 
@@ -61,4 +61,4 @@ def test_escaping_single_collon(monkeypatch):
 @pytest.mark.usefixtures('testdir')
 def test_run_complex_command(monkeypatch, command):
     """Run help and version and format command to reach basic test coverage"""
-    tests.run_command(command, monkeypatch)
+    tests.baaw(command, monkeypatch)

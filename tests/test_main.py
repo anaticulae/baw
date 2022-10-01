@@ -22,7 +22,7 @@ import baw.run
         '-v',
         # ['--format'], problem with multiprocessing tests/xdist
     ])
-def test_run_command(monkeypatch, command):
+def test_baaw(monkeypatch, command):
     """Run help and version and format command to reach basic test coverage"""
     with monkeypatch.context() as context:
         # Remove all environment vars

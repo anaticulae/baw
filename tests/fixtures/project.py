@@ -28,9 +28,9 @@ def project_example(testdir, monkeypatch):
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')
         context.setattr(baw.config, 'bawtmp', tmpdir)
         baw.git.update_userdata()
-        tests.run_command(['init', 'xcd', '"I Like This Project"'], monkeypatch)
-        tests.run_command('plan new', monkeypatch)
-        tests.run_command(['--venv'], monkeypatch)
+        tests.baaw(['init', 'xcd', '"I Like This Project"'], monkeypatch)
+        tests.baaw('plan new', monkeypatch)
+        tests.baaw(['--venv'], monkeypatch)
         yield testdir.tmpdir
 
 

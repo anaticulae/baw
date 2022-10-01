@@ -118,7 +118,7 @@ def example(testdir, monkeypatch):
 @pytest.fixture
 def simple(example, monkeypatch):  # pylint:disable=W0621
     runner = functools.partial(
-        run_command,
+        baaw,
         monkeypatch=monkeypatch,
     )
     yield runner, example
@@ -128,7 +128,7 @@ def file_count(path: str):
     return len(os.listdir(path))
 
 
-def run_command(
+def baaw(
     command,
     monkeypatch,
     verbose: bool = True,

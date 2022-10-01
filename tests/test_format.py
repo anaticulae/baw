@@ -45,7 +45,7 @@ def test_regression_format_keep_single_list(simpleproject, monkeypatch):  # pyli
     baw.utils.file_create(path, source)
     assert os.path.exists(path)
 
-    tests.run_command('format', monkeypatch=monkeypatch)
+    tests.baaw('format', monkeypatch=monkeypatch)
 
     read = baw.utils.file_read(path)
     assert read == source

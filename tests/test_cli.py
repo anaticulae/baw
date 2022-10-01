@@ -12,7 +12,7 @@ import tests
 
 
 @tests.longrun
-def test_run_commands_with_ls(project_with_command):
+def test_baaws_with_ls(project_with_command):
     """Running --run with ls."""
     tmpdir = project_with_command
     tests.assert_run('baw --run', cwd=tmpdir)
