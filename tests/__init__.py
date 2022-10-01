@@ -128,12 +128,20 @@ def file_count(path: str):
     return len(os.listdir(path))
 
 
-def run_command(command, monkeypatch):
+def run_command(
+    command,
+    monkeypatch,
+    verbose: bool = True,
+):
     command = cmd_split(command)
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
-        context.setattr(sys, 'argv', ['baw', '--verbose'] + command)
+        cmd = ['baw']
+        if verbose:
+            cmd += ['--verbose']
+        cmd += command
+        context.setattr(sys, 'argv', cmd)
         with pytest.raises(SystemExit) as result:
             baw.run.main()
         result = str(result)
