@@ -100,7 +100,7 @@ def example(testdir, monkeypatch):
     """Creating example project due console"""
     if run('which baw').returncode:
         pytest.skip('install baw')
-    if not baw.git.git_installed():
+    if not baw.git.installed():
         pytest.skip('install git')
     if NO_BAW:
         pytest.skip('decrease response time, use longrun')

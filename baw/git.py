@@ -212,7 +212,7 @@ def git_headtag(root: str, venv: bool, verbose: bool = False):
 
 
 def git_headhash(root: str) -> str:
-    if not git_installed():
+    if not installed():
         return None
     cmd = 'git rev-parse --verify HEAD'
     completed = baw.runtime.run_target(root, cmd, verbose=False)
@@ -273,9 +273,9 @@ def evaluate_git_error(process: subprocess.CompletedProcess):
 
 
 @functools.lru_cache
-def git_installed() -> bool:
+def installed() -> bool:
     """\
-    >>> str(git_installed())
+    >>> str(installed())
     '...'
     """
     try:

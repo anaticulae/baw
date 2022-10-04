@@ -22,7 +22,7 @@ import tests
 def project_example(testdir, monkeypatch):
     if baw.runtime.run('which baw', cwd=testdir.tmpdir).returncode:
         pytest.skip('install baw')
-    if not baw.git.git_installed():
+    if not baw.git.installed():
         pytest.skip('install git')
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')

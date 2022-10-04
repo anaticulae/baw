@@ -115,5 +115,5 @@ def __patch__():
     pathlib.Path.write_text = write_text
 
 
-if baw.git.git_installed():
+if baw.git.installed():
     __patch__()

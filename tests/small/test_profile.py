@@ -18,7 +18,7 @@ def test_commits():
     ranges = list(range(5))
     commits = baw.small.profile.commits(baw.ROOT, ranges=ranges)
     expected = (0,)
-    if baw.git.git_installed():
+    if baw.git.installed():
         expected = (5,)
         if os.environ.get('JENKINS_HOME', False):
             # reduced checkout may only check out a single version or may
