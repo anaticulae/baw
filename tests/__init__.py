@@ -47,6 +47,19 @@ nonvenv = pytest.mark.skipif(not venv, reason='erquire venv')
 skip_venv = pytest.mark.skipif(venv, reason='do not run in venv env')
 
 
+def register_marker(name: str):
+    """After upgrading pytest, markers must be registered in pytest
+    config. To avoid putting holyvalue markers in every pytest.ini we
+    bypass them by directly acessing the pytest API. This may fail in
+    the future."""
+    pytest.mark._markers.add(name)  # pylint:disable=W0212
+    return getattr(pytest.mark, name)
+
+
+longrun = register_marker('longrun')
+nightly = register_marker('nightly')
+
+
 def hasprog(program: str):
     installed = baw.runtime.hasprog(program)
     result = pytest.mark.skipif(not installed, reason=f'install {program}')
