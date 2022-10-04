@@ -1,7 +1,7 @@
 pipeline{
     agent{
         docker{
-            image '169.254.149.20:6001/arch_python_git_baw:0.8.1'
+            image '169.254.149.20:6001/arch_python_git_baw:0.10.4'
             args  '-v $WORKSPACE:/var/workdir:ro'
         }
     }
