@@ -69,7 +69,7 @@ def run_test(  # pylint:disable=R0914
         return baw.utils.SUCCESS
     baw.utils.check_root(root)
     baw.utils.log('tests')
-    testenv = setup_testenvironment(
+    testenv, markers = setup_testenvironment(
         root,
         fast=fast,
         longrun=longrun,
@@ -85,6 +85,7 @@ def run_test(  # pylint:disable=R0914
         generate_only=generate_only,
         instafail=instafail,
         parameter=testconfig,
+        markers=markers,
         pdb=pdb,
         quiet=quiet,
         verbose=verbose,
@@ -151,19 +152,27 @@ def setup_testenvironment(
         baw.utils.error(f'no testdir: {testdir} available')
         sys.exit(baw.utils.FAILURE)
     env = dict(os.environ.items())
+    markers = ''
     if longrun:
         env['LONGRUN'] = 'True'  # FAST = 'LONGRUN' not in environ.keys()
+        markers += '-m longrun '
     if fast:
         env['FAST'] = 'True'  # Skip all tests wich are long or medium
     if nightly:
         env['NIGHTLY'] = 'True'  # Very long running test
+        markers += '-m nightly '
     if generate:
         env['GENERATE'] = 'True'  # Generate test resources
     if noinstall:
         env['NOINSTALL'] = 'True'  # do not run setup process
     # comma-separated plugins to load during startup
     env['PYTEST_PLUGINS'] = 'pytester'
-    return env
+    if not markers:
+        markers = '-m "not longrun and not nightly"'
+    if generate:
+        # disable marker selection
+        markers = ''
+    return env, markers
 
 
 def create_test_cmd(  # pylint:disable=R0914
@@ -175,6 +184,7 @@ def create_test_cmd(  # pylint:disable=R0914
     quiet,
     parameter,
     generate_only,
+    markers: str,
     doctest: bool = True,
     verbose: bool = False,
     venv: bool = False,
@@ -210,6 +220,8 @@ def create_test_cmd(  # pylint:disable=R0914
            f'-o cache_dir={cachedir} {sources}')
     if doctest or generate_only or coverage:
         cmd += '--doctest-modules '
+    if markers:
+        cmd += f'{markers} '
     if instafail:
         cmd += '--instafail '
     if verbose:
