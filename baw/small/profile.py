@@ -67,10 +67,6 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
 
 
 def commits(root, ranges) -> list:
-    """\
-    >>> len(commits('.', list(range(5)))) if baw.git.git_installed() else 5
-    5
-    """
     count = len(ranges)
     cmd = 'git log --pretty=format:\"%H %s\" '
     cmd += r'| grep -E "(feat|fix|test|refactor)\(" '
