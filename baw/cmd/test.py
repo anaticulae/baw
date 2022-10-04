@@ -148,7 +148,7 @@ def setup_testenvironment(
 ):
     testdir = os.path.join(root, 'tests')
     if not os.path.exists(testdir):
-        baw.utils.error('No testdirectory %s available' % testdir)
+        baw.utils.error(f'no testdir: {testdir} available')
         sys.exit(baw.utils.FAILURE)
     env = dict(os.environ.items())
     if longrun:
