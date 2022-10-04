@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import binascii
 import concurrent.futures
 import contextlib
 import functools
@@ -307,3 +308,14 @@ def select_executor():
     if testrun:
         executor = concurrent.futures.ThreadPoolExecutor
     return executor
+
+
+def binhash(data: bytes) -> int:
+    """\
+    >>> binhash(b'hello')
+    907060870
+    """
+    if isinstance(data, str):
+        data: bytes = data.encode('utf8')
+    result = binascii.crc32(data)
+    return result

@@ -26,6 +26,9 @@ def prints(root, value: str):
     if value == 'covreport':
         print_covreport(root)
         return
+    if value == 'requirement':
+        baw.utils.log(print_requirement_hash(root))
+        return
 
 
 def print_tmp(root: str):
@@ -54,3 +57,20 @@ def print_covreport(root: str):
     )
     baw.utils.log(result)
     sys.exit(baw.utils.SUCCESS)
+
+
+def print_requirement_hash(root: str) -> str:
+    """\
+    >>> import baw
+    >>> str(print_requirement_hash(baw.ROOT))
+    '...'
+    """
+    todo = 'requirements.txt requirements.dev requirements.extra'.split()
+    content = ''
+    for fname in todo:
+        path = os.path.join(root, fname)
+        if not os.path.exists(path):
+            continue
+        content += baw.utils.file_read(path)
+    hashed = baw.utils.binhash(content)
+    return hashed

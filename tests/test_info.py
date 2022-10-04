@@ -26,6 +26,16 @@ def test_cmd_info(cmd, expected, monkeypatch, capsys):
     assert expected in stdout, str(stdout)
 
 
+def test_cmd_requirement_info(monkeypatch, capsys):
+    tests.baaw(
+        'info requirement',
+        monkeypatch,
+    )
+    stdout = tests.stdout(capsys)
+    # ensure that stdout only procudes a single int
+    hashed = int(stdout)  # pylint:disable=W0612
+
+
 def test_cmd_info_venv_fix(monkeypatch, capsys):
     """\
     Exepect `c/tmp/dev/tmp/baw`
