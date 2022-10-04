@@ -118,7 +118,7 @@ def image_args() -> str:
     """
     result = os.environ.get(
         'BAW_PIPELINE_TEST_ARGS',
-        '--privileged -u root -v $WORKSPACE:/var/workdir',
+        '--privileged -u root -v $WORKSPACE:/var/workdir:ro',
     )
     return result
 
