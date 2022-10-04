@@ -65,7 +65,7 @@ def print_requirement_hash(root: str) -> str:
     >>> str(print_requirement_hash(baw.ROOT))
     '...'
     """
-    todo = 'requirements.txt requirements.dev requirements.extra'.split()
+    todo = 'Jenkinsfile requirements.txt requirements.dev requirements.extra'.split()  # yapf:disable
     content = ''
     for fname in todo:
         path = os.path.join(root, fname)
