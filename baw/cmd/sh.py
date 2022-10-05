@@ -22,12 +22,9 @@ def run_shell(args: dict):
         command=cmd,
         cwd=root,
         verbose=False,
+        debugging=True,
         venv=args['venv'],
     )
-    if completed.stderr:
-        baw.utils.error(completed.stderr)
-    if completed.stdout:
-        baw.utils.log(completed.stdout)
     if completed.returncode:
         sys.exit(completed.returncode)
     sys.exit(baw.utils.SUCCESS)
