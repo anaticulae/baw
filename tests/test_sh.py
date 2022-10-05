@@ -7,9 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utilatest
+
 import tests
 
 
+@utilatest.longrun
 def test_cmd_sh(simple, capsys):  # pylint:disable=W0621
     simple[0]('sh ls')
     stdout = tests.stdout(capsys)

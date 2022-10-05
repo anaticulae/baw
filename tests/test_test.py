@@ -16,7 +16,7 @@ import tests
 
 @tests.hasbaw
 @tests.hasgit
-@tests.cmds
+@tests.longrun
 def test_creating_project(tmpdir):
     """Creating project without venv environment"""
     completed = tests.run(
@@ -30,7 +30,6 @@ def test_creating_project(tmpdir):
 
 @tests.hasbaw
 @tests.hasgit
-@tests.cmds
 @tests.longrun
 def test_test_with_import(example):
     """Ensure that import project package while writing tests need no additonal

@@ -14,7 +14,7 @@ import baw.utils
 import tests
 
 
-@tests.cmds
+@tests.longrun
 def test_clean_files_and_dirs(tmpdir):
     """Create some files and folder and clean them afterwards.
 

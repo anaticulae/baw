@@ -17,7 +17,6 @@ import baw.utils
 import tests
 
 
-@tests.cmds
 @tests.longrun
 def test_create_venv(example, monkeypatch):
     """Creating venv environment."""
@@ -31,7 +30,6 @@ def test_create_venv(example, monkeypatch):
 
 
 @tests.hasbaw
-@tests.cmds
 @tests.nightly
 def test_run_test_in_venv(project_with_test):
     """Running test-example in venv environment"""

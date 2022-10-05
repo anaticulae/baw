@@ -15,7 +15,6 @@ import pytest
 import tests
 
 
-@tests.cmds
 @tests.nightly
 def test_init_project_in_empty_folder(project_example):
     """Run init in empty folder.
@@ -30,7 +29,6 @@ def test_init_project_in_empty_folder(project_example):
     sys.hexversion >= 0x030900F0,
     reason='python 3.10, update Sphinx',
 )
-@tests.cmds
 @tests.nightly
 def test_doc_command(project_example, monkeypatch):
     """Run doc command to generate documentation."""
@@ -39,7 +37,6 @@ def test_doc_command(project_example, monkeypatch):
     assert os.path.exists(created)
 
 
-@tests.cmds
 @tests.hasbaw
 @tests.hasgit
 @tests.longrun

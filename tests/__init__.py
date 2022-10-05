@@ -33,13 +33,9 @@ FAST = 'FAST' in os.environ.keys()
 NIGHTLY = 'NIGHTLY' in os.environ.keys()
 venv = 'venv' in os.environ.keys()
 
-NO_BAW = FAST
-NO_BAW_RESON = 'Installing baw takes long time'
-
 FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 
 # pylint: disable=invalid-name
-cmds = pytest.mark.skipif(NO_BAW, reason='decrease response time')
 longrun = pytest.mark.skipif(FAST_TESTS, reason='test requires long time')
 nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
 skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
@@ -115,10 +111,6 @@ def example(testdir, monkeypatch):
         pytest.skip('install baw')
     if not baw.git.installed():
         pytest.skip('install git')
-    if NO_BAW:
-        # TODO: ADJUST LONGRUN
-        pytest.skip('decrease response time, use all')
-    assert not NO_BAW, 'test require baw-package, but this is not wanted'
     baw.git.update_userdata()
     cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
