@@ -50,6 +50,8 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
     if args.get('bisect', False):
         if failure := run_bisect(args):
             return failure
+    # setup virtual flag, verify this!
+    run_environment(args)
     func = args.get('func')
     if func:
         # TODO: REMOVE ALL METHOD BELOW
@@ -235,7 +237,7 @@ def run_clean(args):
 
 
 def run_sync(args):
-    root = get_root(args)
+    root = run_environment(args)
     result = baw.cmd.sync.sync(
         root=root,
         packages=args.get('packages'),
