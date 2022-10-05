@@ -9,13 +9,9 @@
 """Run every function which is used by `baw`."""
 
 import baw.config
-from baw.git import git_headtag
-from baw.runtime import run_target
-from baw.utils import FAILURE
-from baw.utils import SUCCESS
-from baw.utils import error
-from baw.utils import log
-from baw.utils import package_address
+import baw.git
+import baw.runtime
+import baw.utils
 
 # TODO: Use twine for uploading packages
 SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
@@ -29,18 +25,18 @@ def publish(root: str, verbose: bool = False, venv: bool = True):
     Hint:
         publish run's always in venv environment
     """
-    log('publish start')
-    tag = git_headtag(root, venv=False, verbose=verbose)
+    baw.utils.log('publish start')
+    tag = baw.git.git_headtag(root, venv=False, verbose=verbose)
     if not tag:
-        error('Could not find release-git-tag. Aborting publishing.')
-        return FAILURE
-    url, _ = package_address()
+        baw.utils.error('Could not find release-git-tag. Aborting publishing.')
+        return baw.utils.FAILURE
+    url, _ = baw.utils.package_address()
     distribution = distribution_format()
     python = baw.config.python(root)
     command = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
-        log(f'build distribution: {command}')
-    completed = run_target(
+        baw.utils.log(f'build distribution: {command}')
+    completed = baw.runtime.run_target(
         root,
         command,
         root,
@@ -48,11 +44,11 @@ def publish(root: str, verbose: bool = False, venv: bool = True):
         skip_error_message=[SDIST_UPLOAD_WARNING],
         venv=venv,
     )
-    if completed.returncode == SUCCESS:
-        log('publish completed')
+    if completed.returncode == baw.utils.SUCCESS:
+        baw.utils.log('publish completed')
     else:
-        error(completed.stderr)
-        error('publish failed')
+        baw.utils.error(completed.stderr)
+        baw.utils.error('publish failed')
     return completed.returncode
 
 
