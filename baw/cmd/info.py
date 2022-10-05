@@ -16,7 +16,7 @@ import baw.runtime
 import baw.utils
 
 
-def prints(root, value: str):
+def prints(root, value: str, verbose: bool = False):
     if value == 'tmp':
         print_tmp(root)
         return
@@ -27,6 +27,9 @@ def prints(root, value: str):
         print_covreport(root)
         return
     if value == 'requirement':
+        if verbose:
+            name = baw.config.shortcut(root)
+            baw.utils.log(f'{name}-', end='')
         baw.utils.log(print_requirement_hash(root))
         return
 

@@ -394,6 +394,7 @@ def run_info(args: dict):
     baw.cmd.info.prints(
         root=root,
         value=value,
+        verbose=args.get('verbose', False),
     )
     return baw.utils.SUCCESS
 

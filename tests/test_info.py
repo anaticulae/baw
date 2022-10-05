@@ -30,10 +30,21 @@ def test_cmd_requirement_info(monkeypatch, capsys):
     tests.baaw(
         'info requirement',
         monkeypatch,
+        verbose=False,
     )
     stdout = tests.stdout(capsys)
     # ensure that stdout only procudes a single int
     hashed = int(stdout)  # pylint:disable=W0612
+
+
+def test_cmd_requirement_verbose_info(monkeypatch, capsys):
+    tests.baaw(
+        '--verbose info requirement',
+        monkeypatch,
+    )
+    stdout = tests.stdout(capsys)
+    assert stdout.startswith('baw-')
+    assert len(stdout.split('-')) == 2
 
 
 def test_cmd_info_venv_fix(monkeypatch, capsys):
