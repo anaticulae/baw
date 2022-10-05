@@ -17,6 +17,7 @@ import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.release
 import baw.cmd.sh
+import baw.cmd.test
 import baw.run
 import baw.utils
 
@@ -37,7 +38,7 @@ def create_parser():  # noqa: Z21
     add_init_options(cmds)
     add_plan_options(cmds)
     add_sync_options(cmds)
-    add_test_options(cmds)
+    baw.cmd.test.extend_cli(cmds)
     baw.cmd.release.extend_cli(cmds)
     add_publish_options(cmds)
     add_install_option(cmds)
@@ -193,71 +194,6 @@ def add_init_options(parser):
     init.add_argument('description', help='Project description')
     init.add_argument('--cmdline', action='store_true')
     init.set_defaults(func=baw.run.run_init_project)
-
-
-def add_test_options(parser):
-    test = parser.add_parser('test', help='Run unit tests')
-    test.add_argument(
-        '-n',
-        help='process count; use auto to select os.cpu_count',
-        default='auto',
-    )
-    test.add_argument(
-        '-k',
-        help='pattern to select tests to run',
-    )
-    test.add_argument(
-        '--cov',
-        help='test coverage',
-        action='store_true',
-    )
-    test.add_argument(
-        '--generate',
-        help='test data generator',
-        action='store_true',
-    )
-    test.add_argument(
-        '--stash',
-        help='stash repository before running tests',
-        action='store_true',
-    )
-    test.add_argument(
-        '--pdb',
-        help='start interactive pdb after error occurs',
-        action='store_true',
-    )
-    test.add_argument(
-        '--instafail',
-        help='print error while running pytest',
-        action='store_true',
-    )
-    test.add_argument(
-        '--no_install',
-        help='do not run setup before testing',
-        action='store_true',
-    )
-    test.add_argument(
-        '--config',
-        help='overwrite pytest invocation',
-        nargs=1,
-    )
-    test.add_argument(
-        '--junit_xml',
-        help='junit-xml for pytest',
-    )
-    test.add_argument(
-        '-x',
-        help='fail fast after first error',
-        action='store_true',
-    )
-    test.add_argument(
-        'test',
-        help='',
-        nargs='?',
-        default='fast',
-        choices='skip docs fast long nightly all'.split(),
-    )
-    test.set_defaults(func=baw.run.run_test)
 
 
 def add_shell_option(parser):

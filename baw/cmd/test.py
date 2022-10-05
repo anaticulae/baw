@@ -15,6 +15,7 @@ import baw.archive.test
 import baw.config
 import baw.datetime
 import baw.git
+import baw.run
 import baw.runtime
 import baw.utils
 
@@ -338,3 +339,68 @@ def collect_cov_sources(root: str) -> str:
     if ret:
         sys.exit(ret)
     return cov_sources
+
+
+def extend_cli(parser):
+    test = parser.add_parser('test', help='Run unit tests')
+    test.add_argument(
+        '-n',
+        help='process count; use auto to select os.cpu_count',
+        default='auto',
+    )
+    test.add_argument(
+        '-k',
+        help='pattern to select tests to run',
+    )
+    test.add_argument(
+        '--cov',
+        help='test coverage',
+        action='store_true',
+    )
+    test.add_argument(
+        '--generate',
+        help='test data generator',
+        action='store_true',
+    )
+    test.add_argument(
+        '--stash',
+        help='stash repository before running tests',
+        action='store_true',
+    )
+    test.add_argument(
+        '--pdb',
+        help='start interactive pdb after error occurs',
+        action='store_true',
+    )
+    test.add_argument(
+        '--instafail',
+        help='print error while running pytest',
+        action='store_true',
+    )
+    test.add_argument(
+        '--no_install',
+        help='do not run setup before testing',
+        action='store_true',
+    )
+    test.add_argument(
+        '--config',
+        help='overwrite pytest invocation',
+        nargs=1,
+    )
+    test.add_argument(
+        '--junit_xml',
+        help='junit-xml for pytest',
+    )
+    test.add_argument(
+        '-x',
+        help='fail fast after first error',
+        action='store_true',
+    )
+    test.add_argument(
+        'test',
+        help='',
+        nargs='?',
+        default='fast',
+        choices='skip docs fast long nightly all'.split(),
+    )
+    test.set_defaults(func=baw.run.run_test)
