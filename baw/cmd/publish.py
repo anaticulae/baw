@@ -58,3 +58,14 @@ def distribution_format() -> str:
     # TODO: REQUIRES MANIFEST FILE TO COPY REQUIREMENTS
     # return 'sdist --format=gztar'
     return 'bdist_wheel --universal'
+
+
+def extend_cli(parser):
+    created = parser.add_parser('publish', help='Push release to repository')
+    created.add_argument(
+        'publish',
+        nargs='?',
+        default='dest',
+        help='Push release to this repository',
+    )
+    created.add_argument('--no_venv', action='store_true')

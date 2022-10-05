@@ -44,7 +44,6 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
         return baw.utils.SUCCESS
     if run_version(args):
         return baw.utils.SUCCESS
-    directory = run_environment(args)
     if args.get('venv', False):
         if failure := run_venv(args):
             return failure

@@ -15,6 +15,7 @@ import baw.cmd.doc
 import baw.cmd.ide
 import baw.cmd.lint
 import baw.cmd.pipeline
+import baw.cmd.publish
 import baw.cmd.release
 import baw.cmd.sh
 import baw.cmd.test
@@ -40,7 +41,7 @@ def create_parser():  # noqa: Z21
     add_sync_options(cmds)
     baw.cmd.test.extend_cli(cmds)
     baw.cmd.release.extend_cli(cmds)
-    add_publish_options(cmds)
+    baw.cmd.publish.extend_cli(cmds)
     add_install_option(cmds)
     add_shell_option(cmds)
     baw.cmd.pipeline.extend_cli(cmds)
@@ -130,17 +131,6 @@ def add_clean_options(parser):
         default='tests',
     )
     plan.set_defaults(func=baw.run.run_clean)
-
-
-def add_publish_options(parser):
-    publish = parser.add_parser('publish', help='Push release to repository')
-    publish.add_argument(
-        'publish',
-        nargs='?',
-        default='dest',
-        help='Push release to this repository',
-    )
-    publish.add_argument('--no_venv', action='store_true')
 
 
 def add_open_options(parser):
