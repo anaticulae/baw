@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v1.7.0 (2022-10-05)
+
+### Feature
+
+* live log sh command (c6a8be42fee7)
+* use verbose flag to add project name to requirement hash (95009f283df0)
+* integrate Jenkinsfile into requirement hashing (ca68379f1f05)
+* replace skip due marker concept (4e169f199ea5)
+* add marker selection (7d44f5563fcc)
+* add method to determine requirement hash (220663a3e5af)
+
+### Chore
+
+* upgrade baw tmp path (09533fce3e54)
+* root is not necessary (6403c642dea6)
+* use read only volume to avoid modifying git repository (ab4ab500f197)
+* install utilasafe in default (f4c120184b30)
+* upgrade requirements.txt (b4e4bad1327d)
+
 ## v1.6.0 (2022-10-01)
 
 ### Feature
