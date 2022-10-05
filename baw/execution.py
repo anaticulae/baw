@@ -8,15 +8,11 @@
 #==============================================================================
 """Run every function which is used by `baw`."""
 
-from os import environ
-
 import baw.config
-from baw.config import commands
 from baw.git import git_headtag
 from baw.runtime import run_target
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
-from baw.utils import check_root
 from baw.utils import error
 from baw.utils import log
 from baw.utils import package_address
@@ -58,35 +54,6 @@ def publish(root: str, verbose: bool = False, venv: bool = True):
         error(completed.stderr)
         error('publish failed')
     return completed.returncode
-
-
-SEPARATOR_WIDTH = 80
-
-
-def run(root: str, venv: bool = False) -> int:
-    """Check project-environment for custom run sequences, execute them from
-    first to end.
-
-    Args:
-        root(str): project root where .baw and git are located
-        venv(bool): run in venv environment
-    Returns:
-        0 if all sequences run succesfull else not 0
-    """
-    check_root(root)
-    log('Run')
-    cmds = commands(root)
-    if not cmds:
-        error('No commands available')
-        return FAILURE
-    env = {} if venv else dict(environ.items())
-    ret = SUCCESS
-    for command, executable in cmds.items():
-        log('\n' + command.upper().center(SEPARATOR_WIDTH, '*') + '\n')
-        completed = run_target(root, executable, env=env, venv=venv)
-        log('\n' + command.upper().center(SEPARATOR_WIDTH, '='))
-        ret += completed.returncode
-    return ret
 
 
 def distribution_format() -> str:
