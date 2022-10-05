@@ -238,12 +238,15 @@ def run_clean(args):
 
 def run_sync(args):
     root = run_environment(args)
+    venv = args.get('venv', False)
+    if venv:
+        run_venv(args)
     result = baw.cmd.sync.sync(
         root=root,
         packages=args.get('packages'),
         minimal=args.get('minimal', False),
         verbose=args.get('verbose', False),
-        venv=args.get('venv', False),
+        venv=venv,
     )
     return result
 
