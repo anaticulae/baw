@@ -255,7 +255,7 @@ def add_test_options(parser):
         help='',
         nargs='?',
         default='fast',
-        choices='docs fast long nightly skip'.split(),
+        choices='docs fast long nightly all skip'.split(),
     )
     test.set_defaults(func=baw.run.run_test)
 

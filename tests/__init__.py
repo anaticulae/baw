@@ -116,7 +116,8 @@ def example(testdir, monkeypatch):
     if not baw.git.installed():
         pytest.skip('install git')
     if NO_BAW:
-        pytest.skip('decrease response time, use longrun')
+        # TODO: ADJUST LONGRUN
+        pytest.skip('decrease response time, use all')
     assert not NO_BAW, 'test require baw-package, but this is not wanted'
     baw.git.update_userdata()
     cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'

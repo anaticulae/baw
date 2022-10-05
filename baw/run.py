@@ -280,6 +280,7 @@ def run_test(args):
         fast='fast' in args['test'],
         longrun='long' in args['test'],
         nightly='nightly' in args['test'],
+        alls='all' in args['test'],
         pdb=args['pdb'],
         generate=args['generate'],
         stash=args['stash'],

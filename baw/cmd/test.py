@@ -34,6 +34,7 @@ def run_test(  # pylint:disable=R0914
     instafail: bool = False,
     longrun: bool = False,
     nightly: bool = False,
+    alls: bool = False,
     pdb: bool = False,
     quiet: bool = False,
     stash: bool = False,
@@ -54,7 +55,8 @@ def run_test(  # pylint:disable=R0914
         generate(bool): generate required test data
         instafail(bool): print error while running pytest
         longrun(bool): run long running tests
-        nightly(bool): run all tests
+        nightly(bool): run nightly tests
+        alls(bool): run all tests
         pdb(bool): run debugger on error
         quiet(bool): pytest - use minimal logging
         stash(bool): stash all changes to test commited-change in repository
@@ -64,7 +66,7 @@ def run_test(  # pylint:disable=R0914
     Returns:
         returncode(int): 0 if successful else > 0
     """
-    if not any((generate, nightly, longrun, fast, docs)):
+    if not any((generate, nightly, longrun, fast, docs, alls)):
         baw.utils.log('skip tests...')
         return baw.utils.SUCCESS
     baw.utils.check_root(root)
@@ -74,12 +76,15 @@ def run_test(  # pylint:disable=R0914
         fast=fast,
         longrun=longrun,
         nightly=nightly,
+        alls=alls,
         generate=generate,
         noinstall=noinstall,
     )
-    generate_only = generate and not (fast or longrun or nightly or docs)
+    generate_only = generate and not (fast or longrun or nightly or docs or
+                                      alls)
     cmd = create_test_cmd(
         root,
+        alls=alls,
         coverage=coverage,
         doctest=docs,
         generate_only=generate_only,
@@ -144,6 +149,7 @@ def setup_testenvironment(
     fast: bool,
     longrun: bool,
     nightly: bool,
+    alls: bool,
     generate: bool,
     noinstall: bool = False,
 ):
@@ -169,7 +175,7 @@ def setup_testenvironment(
     env['PYTEST_PLUGINS'] = 'pytester'
     if not markers:
         markers = '-m "not longrun and not nightly"'
-    if generate:
+    if generate or alls:
         # disable marker selection
         markers = ''
     return env, markers
@@ -186,6 +192,7 @@ def create_test_cmd(  # pylint:disable=R0914
     generate_only,
     markers: str,
     doctest: bool = True,
+    alls=False,
     verbose: bool = False,
     venv: bool = False,
 ):
@@ -218,7 +225,7 @@ def create_test_cmd(  # pylint:disable=R0914
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} {plugins} '
            f'-o cache_dir={cachedir} {sources}')
-    if doctest or generate_only or coverage:
+    if doctest or generate_only or coverage or alls:
         cmd += '--doctest-modules '
     if markers:
         cmd += f'{markers} '
