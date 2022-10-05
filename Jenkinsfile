@@ -46,6 +46,12 @@ pipeline{
                 junit '**/report.xml'
             }
         }
+        stage('cov'){
+            steps{
+                sh 'baw test all --cov --junit_xml=report.xml'
+                junit '**/report.xml'
+            }
+        }
         stage('release'){
             when {
                 expression { return params.RELEASE }
