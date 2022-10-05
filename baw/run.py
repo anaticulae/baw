@@ -102,8 +102,6 @@ def run_environment(args):
         # overwrite venv selection
         args['venv'] = True
     root = setup_environment(
-        args.get('upgrade', False),
-        args.get('release', ''),
         args['raw'],
         args.get('venv', False),
     )
@@ -396,10 +394,7 @@ def run_info(args: dict):
 # TODO: add matrix with excluding cmds, eg. --init --drop_release
 
 
-def setup_environment(upgrade, release, raw, venv):  # pylint: disable=W0621
-    if upgrade or release:
-        # Upgrade, release command requires always venv environment
-        venv = True
+def setup_environment(raw, venv):  # pylint: disable=W0621
     if venv:
         # expose venv flag
         os.environ['venv'] = "TRUE"
