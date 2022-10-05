@@ -31,7 +31,7 @@ NO_LONGRUN_REASON = 'Takes to mutch time'
 
 FAST = 'FAST' in os.environ.keys()
 NIGHTLY = 'NIGHTLY' in os.environ.keys()
-venv = 'venv' in os.environ.keys()
+VENV = 'VENV' in os.environ.keys()
 
 FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 
@@ -39,8 +39,8 @@ FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 longrun = pytest.mark.skipif(FAST_TESTS, reason='test requires long time')
 nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
 skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
-nonvenv = pytest.mark.skipif(not venv, reason='erquire venv')
-skip_venv = pytest.mark.skipif(venv, reason='do not run in venv env')
+nonvenv = pytest.mark.skipif(not VENV, reason='erquire venv')
+skip_venv = pytest.mark.skipif(VENV, reason='do not run in venv env')
 
 
 def register_marker(name: str):
