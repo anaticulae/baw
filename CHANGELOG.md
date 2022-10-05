@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.8.0 (2022-10-05)
+
+### Feature
+
+* add all flag to select all tests (0716c65e0f1b)
+
+### Chore
+
+* add cov step (55ea9d7d6281)
+
 ## v1.7.0 (2022-10-05)
 
 ### Feature
