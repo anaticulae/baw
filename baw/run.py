@@ -54,11 +54,6 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
     if func:
         # TODO: REMOVE ALL METHOD BELOW
         return func(args)
-    if not (root := determine_root(directory)):
-        return baw.utils.FAILURE
-    for method in (run_publish,):
-        if returncode := method(root=root, args=args):
-            return returncode
     if not args.get('ide', False):
         # --ide is a very long running task, sometimes 'endless'.
         # Therefore it is senseless to measure the runtime.
@@ -351,10 +346,9 @@ def run_release(args: dict):
     return result
 
 
-def run_publish(root: str, args: dict):
-    if not args.get('publish', False) or args.get('release', None) == 'drop':
-        return baw.utils.SUCCESS
-    venv = True
+def run_publish(args: dict):
+    root = get_root(args)
+    venv = args['venv']
     # overwrite venv flag if given
     novenv = args.get('no_venv', False)
     if novenv:

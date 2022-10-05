@@ -10,6 +10,7 @@
 
 import baw.config
 import baw.git
+import baw.run
 import baw.runtime
 import baw.utils
 
@@ -69,3 +70,4 @@ def extend_cli(parser):
         help='Push release to this repository',
     )
     created.add_argument('--no_venv', action='store_true')
+    created.set_defaults(func=baw.run.run_test)
