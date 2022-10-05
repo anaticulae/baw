@@ -26,12 +26,12 @@ import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.open
 import baw.cmd.plan
+import baw.cmd.publish
 import baw.cmd.release
 import baw.cmd.sync
 import baw.cmd.test
 import baw.cmd.upgrade
 import baw.config
-import baw.execution
 import baw.project
 import baw.runtime
 import baw.utils
@@ -361,7 +361,7 @@ def run_publish(root: str, args: dict):
     if novenv:
         baw.utils.log('do not use venv')
         venv = False
-    result = baw.execution.publish(
+    result = baw.cmd.publish.publish(
         root=root,
         verbose=args.get('verbose', False),
         venv=venv,
