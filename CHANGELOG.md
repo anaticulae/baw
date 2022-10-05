@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.8.1 (2022-10-05)
+
+### Fix
+
+* ensure that sync creates venv if required (a29a77dcb9fd)
+* revert renaming bug (04ebdd4f489d)
+* regression, add global venv (7f1fae99e7ed)
+* do not always run release in venv (a8ed71ae3f60)
+* adjust publish command (79ffd10e778f)
+
 ## v1.8.0 (2022-10-05)
 
 ### Feature
