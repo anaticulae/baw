@@ -70,4 +70,4 @@ def extend_cli(parser):
         help='Push release to this repository',
     )
     created.add_argument('--no_venv', action='store_true')
-    created.set_defaults(func=baw.run.run_test)
+    created.set_defaults(func=baw.run.run_publish)
