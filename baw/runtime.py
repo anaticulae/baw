@@ -90,10 +90,11 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     if clean:
         cmd = f'{cmd} --clear'
     process = run(command=cmd, cwd=venv)
-    patch_pip(root, verbose=verbose)
-    if sys.version_info.major == 3 and sys.version_info.minor == 7:
-        # python 3.7
-        patch_env(root)
+    if iswin():
+        patch_pip(root, verbose=verbose)
+        if sys.version_info.major == 3 and sys.version_info.minor == 7:
+            # python 3.7
+            patch_env(root)
     if process.returncode:
         baw.utils.error(cmd)
         baw.utils.error('While creating virtual environment:')
@@ -400,3 +401,7 @@ def hasprog(program: str):
             # workaround for `whereis` of arch
             isinstalled = False
     return isinstalled
+
+
+def iswin():
+    return 'win' in sys.platform
