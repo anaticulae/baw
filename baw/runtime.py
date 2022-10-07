@@ -64,7 +64,7 @@ def has_virtual(root: str) -> bool:
     return False
 
 
-def create(root: str, clean: bool = False, verbose: bool = False) -> int:
+def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pylint:disable=R1260
     """Create `venv` folder in project root, do nothing if folder exists
 
     This method creates the folder and does the init via python `venv`-module.
@@ -89,6 +89,8 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
     cmd = f'{python} -m virtualenv . --copies '
     if clean:
         cmd = f'{cmd} --clear'
+    if verbose:
+        baw.utils.log(f'{cmd} in {venv}')
     process = run(command=cmd, cwd=venv)
     if iswin():
         patch_pip(root, verbose=verbose)
