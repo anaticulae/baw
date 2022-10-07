@@ -96,7 +96,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:
         patch_env(root)
     if process.returncode:
         baw.utils.error(cmd)
-        baw.utils.error('While creating virutal environment:')
+        baw.utils.error('While creating virtual environment:')
         baw.utils.log(process.stdout)
         baw.utils.error(process.stderr)
         return baw.utils.FAILURE
