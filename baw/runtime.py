@@ -314,17 +314,17 @@ def _run_venv(
     Returns:
         CompletedProcess
     """
-    iswin = sys.platform == 'win32'
+    windows = sys.platform == 'win32'
     activate = os.path.join(
         virtual(root),
-        'Scripts' if iswin else 'bin',
+        'Scripts' if windows else 'bin',
         'activate',
     )
     deactivate = os.path.join(virtual(root), 'Scripts/deactivate')
     if not os.path.exists(activate):
         msg = (f'Path `{activate}` does not exists.\nRegenerate the venv')
         raise RuntimeError(msg)
-    if iswin:
+    if windows:
         activate = f'{activate}.bat'
         deactivate = f'{deactivate}.bat'
     else:
