@@ -139,6 +139,7 @@ __pycache__
 build
 dist
 nano.save
+pytest.ini
 """.strip().splitlines()
 
 ResourceDir = collections.namedtuple('ResourceDir', 'path')
