@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.9.0 (2022-10-10)
+
+### Feature
+
+* add missing venv flag (ff6e013713fc)
+* make error more informative (369a6335dec2)
+* do not run in privileged mode (309a48ec76dc)
+* extend tmp cleaner (9b6112367e0f)
+* use verbose flag to inform about venv creation (7e2d0cc44167)
+
+### Fix
+
+* do not patch on linux (cdecffee36e7)
+
 ## v1.8.1 (2022-10-05)
 
 ### Fix
