@@ -109,8 +109,8 @@ def create_pattern(
             tmpdir = power.generated(project=os.path.split(root)[1])
             if os.path.exists(tmpdir):
                 selected.append(ResourceDir(tmpdir))
-        except ModuleNotFoundError:
-            baw.utils.error('install power to clean resources')
+        except ModuleNotFoundError as error:
+            baw.utils.error(f'install power to clean resources: {error}')
     if tmp:
         selected.extend(TMP)
     if tests:
