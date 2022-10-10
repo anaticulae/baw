@@ -177,9 +177,13 @@ def run_test(
 
 def publish(root, verbose, release_type, venv: bool = False):
     baw.utils.log("Update version tag")
-    with temp_semantic_config(root, verbose, venv=venv):
-        # Only release with type if user select one. If the user does select
-        # a release-type let semantic release decide.
+    with temp_semantic_config(root, verbose, venv=venv) as cfg:
+        # Only release with type if user select one. If the user does
+        # select a release-type let semantic release decide. If only some
+        # style are commited but we want the release, we have to overwrite
+        # default action.
+        if require_autopatch(baw.utils.file_read(cfg)):
+            release_type = 'patch'
         release_type = '' if release_type == 'auto' else '--%s' % release_type
         cmd = f'baw_semantic_release publish {release_type}'
         completed = baw.runtime.run_target(
@@ -220,6 +224,13 @@ def temp_semantic_config(root: str, verbose, venv: bool = False):
     yield config
     # remove file
     os.unlink(config)
+
+
+def require_autopatch(changelog: str):
+    for item in 'Feature Fix Documentation'.split():
+        if f'### {item}' in changelog:
+            return False
+    return True
 
 
 def firstversion(root: str) -> bool:
