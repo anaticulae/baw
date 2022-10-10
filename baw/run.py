@@ -333,8 +333,8 @@ def run_release(args: dict):
     if args.get('release') == 'drop':
         result = baw.cmd.release.drop(
             root,
-            verbose=args['verbose'],
             venv=venv,
+            verbose=args['verbose'],
         )
         return result
     # run release

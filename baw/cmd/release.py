@@ -82,7 +82,7 @@ def release(  # pylint:disable=R1260
         baw.utils.log('run test')
     if returncode := run_test(root, sync, test, stash, verbose, venv):
         return returncode
-    if returncode := publish(root, verbose, release_type):
+    if returncode := publish(root, verbose, release_type, venv=venv):
         return returncode
     return baw.utils.SUCCESS
 
@@ -175,9 +175,9 @@ def run_test(
     return baw.utils.SUCCESS
 
 
-def publish(root, verbose, release_type):
+def publish(root, verbose, release_type, venv: bool = False):
     baw.utils.log("Update version tag")
-    with temp_semantic_config(root, verbose):
+    with temp_semantic_config(root, verbose, venv=venv):
         # Only release with type if user select one. If the user does select
         # a release-type let semantic release decide.
         release_type = '' if release_type == 'auto' else '--%s' % release_type
@@ -186,6 +186,7 @@ def publish(root, verbose, release_type):
             root,
             cmd,
             verbose=verbose,
+            venv=venv,
         )
         baw.utils.log(completed.stdout)
         if NO_RELEASE_MESSAGE in completed.stdout:
@@ -201,7 +202,7 @@ def publish(root, verbose, release_type):
 
 
 @contextlib.contextmanager
-def temp_semantic_config(root: str, verbose):
+def temp_semantic_config(root: str, verbose, venv: bool = False):
     short = baw.config.shortcut(root)
     replaced = baw.resources.SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == baw.resources.SETUP_CFG:
@@ -212,7 +213,7 @@ def temp_semantic_config(root: str, verbose):
     config = os.path.join(root, 'setup.cfg')
     baw.utils.file_replace(config, replaced)
     if not firstversion(root):
-        changelog = determine_changelog(root, verbose)
+        changelog = determine_changelog(root, verbose, venv=venv)
         baw.utils.file_append(config, f'commit_message={changelog}')
     else:
         baw.utils.file_append(config, 'commit_message=Initial Release')
@@ -227,9 +228,9 @@ def firstversion(root: str) -> bool:
     return False
 
 
-def determine_changelog(root: str, verbose: bool) -> str:
+def determine_changelog(root: str, verbose: bool, venv: bool = False) -> str:
     short = baw.config.shortcut(root)
-    cmd = 'baw_semantic_release  changelog '
+    cmd = 'baw_semantic_release changelog '
     cmd += f'-D "version_variable={short}/__init__.py:__version__" '
     cmd += '-D "changelog_components=baw.changelog.changelog_headers" '
     cmd += '--unreleased'
@@ -237,6 +238,7 @@ def determine_changelog(root: str, verbose: bool) -> str:
         root,
         cmd,
         verbose=verbose,
+        venv=venv,
     )
     changelog = completed.stdout
     result = textwrap.indent(changelog, prefix='    ')
