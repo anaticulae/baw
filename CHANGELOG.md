@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.9.1 (2022-10-10)
+
+### Chore
+
+* ensure that releaser is installed (53518e3378b1)
+
 ## v1.9.0 (2022-10-10)
 
 ### Feature
