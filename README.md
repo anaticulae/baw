@@ -55,6 +55,6 @@ version = os.environ.get(
 )
 name = os.environ.get(
     'BAW_PIPELINE_TEST_ARGS',
-    '--privileged -u root -v $WORKSPACE:/var/workdir:ro',
+    '-v $WORKSPACE:/var/workdir:ro',
 )
 ```
