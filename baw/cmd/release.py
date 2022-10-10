@@ -200,7 +200,7 @@ def publish(root, verbose, release_type, venv: bool = False):
 
 
 @contextlib.contextmanager
-def temp_semantic_config(root: str, verbose, venv: bool = False):
+def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     short = baw.config.shortcut(root)
     replaced = baw.resources.SETUP_CFG.replace('{{SHORT}}', short)
     if replaced == baw.resources.SETUP_CFG:
@@ -220,7 +220,7 @@ def temp_semantic_config(root: str, verbose, venv: bool = False):
     os.unlink(config)
 
 
-def select_release_type(typ, cfg):
+def select_release_type(typ: str, cfg: str) -> str:
     # Only release with type if user select one. If the user does
     # select a release-type let semantic release decide. If only some
     # style are commited but we want the release, we have to overwrite
@@ -231,7 +231,7 @@ def select_release_type(typ, cfg):
     return typ
 
 
-def require_autopatch(changelog: str):
+def require_autopatch(changelog: str) -> bool:
     for item in 'Feature Fix Documentation'.split():
         if f'>>> {item}' in changelog:
             return False
