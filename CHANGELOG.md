@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.10.0 (2022-10-10)
+
+### Feature
+
+* use token to upload to gitea (b5e989616ead)
+* add backup release type selector (db891cd95ced)
+
+### Documentation
+
+* add interface documentation (fda7e81062a1)
+
 ## v1.9.1 (2022-10-10)
 
 ### Chore
