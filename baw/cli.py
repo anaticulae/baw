@@ -13,6 +13,7 @@ import sys
 
 import baw.cmd.doc
 import baw.cmd.ide
+import baw.cmd.info
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.publish
@@ -47,7 +48,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.pipeline.extend_cli(cmds)
     baw.cmd.lint.extend_cli(cmds)
     add_format_option(cmds)
-    add_info_option(cmds)
+    baw.cmd.info.extend_cli(cmds)
     return parser
 
 
@@ -220,14 +221,3 @@ def add_format_option(parser):
         action='store_true',
     )
     test.set_defaults(func=baw.run.run_format)
-
-
-def add_info_option(parser):
-    info = parser.add_parser('info', help='Print project information')
-    info.add_argument(
-        'info',
-        help='Print project information',
-        nargs=1,
-        choices='name shortcut venv tmp covreport requirement'.split(),
-    )
-    info.set_defaults(func=baw.run.run_info)

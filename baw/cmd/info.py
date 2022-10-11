@@ -10,10 +10,22 @@
 import os
 import sys
 
+import baw.cmd.utils
 import baw.config
 import baw.project
 import baw.runtime
 import baw.utils
+
+
+def evaluate(args: dict):
+    root = baw.cmd.utils.get_root(args)
+    value = args['info'][0]
+    prints(
+        root=root,
+        value=value,
+        verbose=args.get('verbose', False),
+    )
+    return baw.utils.SUCCESS
 
 
 def prints(root, value: str, verbose: bool = False):
@@ -83,3 +95,14 @@ def print_requirement_hash(root: str) -> str:
         content += baw.utils.file_read(path)
     hashed = baw.utils.binhash(content)
     return hashed
+
+
+def extend_cli(parser):
+    info = parser.add_parser('info', help='Print project information')
+    info.add_argument(
+        'info',
+        help='Print project information',
+        nargs=1,
+        choices='name shortcut venv tmp covreport requirement'.split(),
+    )
+    info.set_defaults(func=evaluate)
