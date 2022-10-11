@@ -10,9 +10,20 @@
 import concurrent.futures
 import os
 
+import baw.cmd.utils
 import baw.config
 import baw.runtime
 import baw.utils
+
+
+def evaluate(args):
+    root = baw.cmd.utils.get_root(args)
+    result = format_repository(
+        root,
+        verbose=args.get('verbose', False),
+        venv=args.get('venv', False),
+    )
+    return result
 
 
 def format_repository(root: str, verbose: bool = False, venv: bool = False):
@@ -114,3 +125,18 @@ def format_(
                 return baw.utils.FAILURE
     baw.utils.log(f'{info}: complete\n')
     return baw.utils.SUCCESS
+
+
+def extend_cli(parser):
+    test = parser.add_parser('format', help='Format code')
+    test.add_argument(
+        '--imports',
+        help='run isort',
+        action='store_true',
+    )
+    test.add_argument(
+        '--code',
+        help='run yapf',
+        action='store_true',
+    )
+    test.set_defaults(func=evaluate)

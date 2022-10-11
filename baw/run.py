@@ -177,16 +177,6 @@ def run_bisect(args):
     return result
 
 
-def run_format(args):
-    root = get_root(args)
-    result = baw.cmd.format.format_repository(
-        root,
-        verbose=args.get('verbose', False),
-        venv=args.get('venv', False),
-    )
-    return result
-
-
 def run_venv(args):
     root = get_root(args)
     result = baw.runtime.create(

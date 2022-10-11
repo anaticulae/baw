@@ -12,6 +12,7 @@ import argparse
 import sys
 
 import baw.cmd.doc
+import baw.cmd.format
 import baw.cmd.ide
 import baw.cmd.info
 import baw.cmd.lint
@@ -47,7 +48,7 @@ def create_parser():  # noqa: Z21
     add_shell_option(cmds)
     baw.cmd.pipeline.extend_cli(cmds)
     baw.cmd.lint.extend_cli(cmds)
-    add_format_option(cmds)
+    baw.cmd.format.extend_cli(cmds)
     baw.cmd.info.extend_cli(cmds)
     return parser
 
@@ -206,18 +207,3 @@ def add_install_option(parser):
         action='store_true',
     )
     test.set_defaults(func=baw.run.run_install)
-
-
-def add_format_option(parser):
-    test = parser.add_parser('format', help='Format code')
-    test.add_argument(
-        '--imports',
-        help='run isort',
-        action='store_true',
-    )
-    test.add_argument(
-        '--code',
-        help='run yapf',
-        action='store_true',
-    )
-    test.set_defaults(func=baw.run.run_format)
