@@ -26,12 +26,12 @@ DATA = os.path.join(THIS, 'data')
 
 REQUIREMENTS = os.path.join(PROJECT, 'baw/requires/requirements-dev.txt')
 
-LONGRUN = 'LONGRUN' in os.environ.keys()
+LONGRUN = 'LONGRUN' in os.environ
 NO_LONGRUN_REASON = 'Takes to mutch time'
 
-FAST = 'FAST' in os.environ.keys()
-NIGHTLY = 'NIGHTLY' in os.environ.keys()
-VENV = 'VENV' in os.environ.keys()
+FAST = 'FAST' in os.environ
+NIGHTLY = 'NIGHTLY' in os.environ
+VENV = 'VENV' in os.environ
 
 FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 
@@ -114,7 +114,7 @@ def example(testdir, monkeypatch):
     baw.git.update_userdata()
     cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
-        tmpdir = lambda: testdir.tmpdir.join('tmpdir')
+        tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
         context.setattr(baw.config, 'bawtmp', tmpdir)
         with assert_run(cmd, cwd=testdir.tmpdir):
             assert os.path.exists(os.path.join(testdir.tmpdir, '.git'))

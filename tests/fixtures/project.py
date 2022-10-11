@@ -25,7 +25,7 @@ def project_example(testdir, monkeypatch):
     if not baw.git.installed():
         pytest.skip('install git')
     with monkeypatch.context() as context:
-        tmpdir = lambda: testdir.tmpdir.join('tmpdir')
+        tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
         context.setattr(baw.config, 'bawtmp', tmpdir)
         baw.git.update_userdata()
         tests.baaw(['init', 'xcd', '"I Like This Project"'], monkeypatch)
