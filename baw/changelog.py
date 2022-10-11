@@ -61,14 +61,15 @@ def update_changelog_file(version: str, content_to_add: str):
     changelog_placeholder = config.get("changelog_placeholder")
     git_path = pathlib.Path(os.getcwd(), changelog_file)
     if not git_path.exists():
-        original_content = "# Changelog\n\n%s\n" % changelog_placeholder
-        logger.warning("Changelog file not found: %s - creating it." % git_path)  # pylint:disable=W1201
+        original_content = f"# Changelog\n\n{changelog_placeholder}\n"
+        msg = f"Changelog file not found: {git_path} - creating it."
+        logger.warning(msg)
     else:
-        original_content = git_path.read_text()
+        original_content = git_path.read_text(encoding='utf8')
 
     if changelog_placeholder not in original_content:
-        logger.warning("Placeholder %s not found " % changelog_placeholder +
-                       "in changelog file %s - skipping change." % git_path)
+        logger.warning(f"Placeholder {changelog_placeholder} not found " +
+                       f"in changelog file {git_path} - skipping change.")
         return
 
     updated_content = original_content.replace(
@@ -80,7 +81,7 @@ def update_changelog_file(version: str, content_to_add: str):
             content_to_add,
         ]),
     )
-    git_path.write_text(updated_content)
+    git_path.write_text(updated_content, encoding='utf8')
     repo().git.add(str(git_path.relative_to(str(repo().working_dir))))
 
 
@@ -101,8 +102,7 @@ def __patch__():
     def write_text(self, data, encoding=None, errors=None):
         """Open the file in text mode, write to it, and close the file."""
         if not isinstance(data, str):
-            raise TypeError('data must be str, not %s' %
-                            data.__class__.__name__)
+            raise TypeError('data must be str, not {data.__class__.__name__}')
         with self.open(
                 mode='w',
                 encoding=encoding,

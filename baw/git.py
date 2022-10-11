@@ -64,7 +64,7 @@ def add(
 
 def commit(root, source, message, tag: str = None, verbose: int = 0):
     assert os.path.exists(root)
-    message = '"%s"' % message
+    message = f'"{message}"'
     if verbose:
         baw.utils.log('git commit')
     # support multiple files
@@ -72,7 +72,7 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
         source = ' '.join(source)
     process = baw.runtime.run_target(
         root,
-        'git commit %s -m %s' % (source, message),
+        f'git commit {source} -m {message}',
         verbose=verbose,
     )
     if not process.returncode and tag:
@@ -114,11 +114,10 @@ def checkout(
         venv=venv,
     )
     to_reset = ' '.join(files) if not isinstance(files, str) else files
-    baw.utils.log('Reset %s' % to_reset)
-    completed = runner(root, 'git checkout -q %s' % to_reset)
-
+    baw.utils.log(f'Reset {to_reset}')
+    completed = runner(root, f'git checkout -q {to_reset}')
     if completed.returncode:
-        msg = 'while checkout out %s\n%s' % (to_reset, str(completed))
+        msg = f'while checkout out {to_reset}\n{completed}'
         baw.utils.error(msg)
     return completed.returncode
 

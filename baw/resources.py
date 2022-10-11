@@ -24,7 +24,7 @@ FOLDERS = [
 ]
 
 TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
-assert os.path.exists(TEMPLATES), 'No template-dir %s' % TEMPLATES
+assert os.path.exists(TEMPLATES), f'No template-dir {TEMPLATES}'
 
 WORKSPACE_TEMPLATE = os.path.join(TEMPLATES, '.code-workspace')
 assert os.path.exists(WORKSPACE_TEMPLATE), f'No template {WORKSPACE_TEMPLATE}'
@@ -33,13 +33,13 @@ GIT_IGNORE_TEMPLATE = os.path.join(TEMPLATES, '.gitignore')
 assert os.path.exists(GIT_IGNORE_TEMPLATE), f'No gitignore {GIT_IGNORE_TEMPLATE}'  # yapf:disable
 
 RCFILE_PATH = os.path.join(TEMPLATES, '.rcfile')
-assert os.path.exists(RCFILE_PATH), 'No rcfile %s' % RCFILE_PATH
+assert os.path.exists(RCFILE_PATH), f'No rcfile {RCFILE_PATH}'
 
 ISORT_PATH = os.path.join(TEMPLATES, '.isort.cfg')
-assert os.path.exists(ISORT_PATH), 'No isort %s' % ISORT_PATH
+assert os.path.exists(ISORT_PATH), f'No isort {ISORT_PATH}'
 
 CONFTEST_PATH = os.path.join(TEMPLATES, 'conftest.tpy')
-assert os.path.exists(CONFTEST_PATH), 'No testconf %s' % CONFTEST_PATH
+assert os.path.exists(CONFTEST_PATH), f'No testconf {CONFTEST_PATH}'
 
 README = """\
 # {{SHORT}}

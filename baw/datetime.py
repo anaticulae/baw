@@ -9,6 +9,8 @@
 
 import time
 
+# pylint:disable=C0209
+
 
 def today() -> str:
     """Determine date in `german` format"""

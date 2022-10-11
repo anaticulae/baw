@@ -185,7 +185,7 @@ def fail_on_finding(root: str) -> bool:
 @functools.lru_cache()
 def load(path: str):
     if not os.path.exists(path):
-        raise ValueError('Configuration %s does not exists' % path)
+        raise ValueError(f'Configuration {path} does not exists')
     cfg = configparser.ConfigParser()
     with open(path, mode='r', encoding=baw.utils.UTF8) as fp:
         cfg.read_file(fp)
