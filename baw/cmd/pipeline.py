@@ -9,6 +9,7 @@
 
 import os
 
+import baw.cmd.utils
 import baw.git
 import baw.resources
 import baw.run
@@ -124,7 +125,7 @@ def image_args() -> str:
 
 
 def run(args: dict):
-    root = baw.run.get_root(args)
+    root = baw.cmd.utils.get_root(args)
     if args.get('action') == 'init':
         return init(
             root,

@@ -27,6 +27,7 @@ import baw.cmd.publish
 import baw.cmd.release
 import baw.cmd.test
 import baw.cmd.upgrade
+import baw.cmd.utils
 import baw.config
 import baw.project
 import baw.runtime
@@ -132,20 +133,12 @@ def run_ide(args):
     return baw.utils.SUCCESS
 
 
-def determine_root(directory):
-    root = baw.project.determine_root(directory)
-    if not root:
-        baw.utils.error('require .baw file')
-        return None
-    return root
-
-
 def run_bisect(args):
     commits = args['bisect']
     cmds = list(sys.argv)[1:]
     cmds.remove('--bisect')
     cmds.remove(commits)
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     result = baw.cmd.bisect.cli(
         root,
         commits=commits,
@@ -157,7 +150,7 @@ def run_bisect(args):
 
 
 def run_venv(args):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     result = baw.runtime.create(
         root,
         clean=args.get('clean', '') in 'venv all',
@@ -167,7 +160,7 @@ def run_venv(args):
 
 
 def run_upgrade(args):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     result = baw.cmd.upgrade.upgrade(
         root=root,
         verbose=args.get('verbose', False),
@@ -178,7 +171,7 @@ def run_upgrade(args):
 
 
 def run_clean(args):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     clean = args['clean']
     docs = clean == 'docs'
     resources = clean == 'resources'
@@ -204,7 +197,7 @@ def run_clean(args):
 
 
 def run_test(args):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     if not args.get('test', False):
         return baw.utils.SUCCESS
     testconfig = []
@@ -243,7 +236,7 @@ def run_test(args):
 
 
 def run_doc(args: dict):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     result = baw.cmd.doc.doc(
         root=root,
         verbose=args.get('verbose', False),
@@ -253,7 +246,7 @@ def run_doc(args: dict):
 
 
 def run_release(args: dict):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     # always publish after release
     args['publish'] = True
     venv = args.get('venv', True)
@@ -290,7 +283,7 @@ def run_release(args: dict):
 
 
 def run_publish(args: dict):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     venv = args['venv']
     # overwrite venv flag if given
     novenv = args.get('no_venv', False)
@@ -306,7 +299,7 @@ def run_publish(args: dict):
 
 
 def run_lint(args: dict):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     result = baw.cmd.lint.lint(
         root=root,
         scope=args['action'],
@@ -317,7 +310,7 @@ def run_lint(args: dict):
 
 
 def run_plan(args: dict):
-    root = get_root(args)
+    root = baw.cmd.utils.get_root(args)
     result = baw.cmd.plan.action(
         root=root,
         plan=args.get('plan_operation'),
@@ -350,11 +343,3 @@ def main():
         stack_trace = traceback.format_exc()
         baw.utils.log(baw.utils.forward_slash(stack_trace))
     sys.exit(baw.utils.FAILURE)
-
-
-def get_root(args):
-    directory = run_environment(args)
-    root = determine_root(directory)
-    if not root:
-        return sys.exit(baw.utils.FAILURE)
-    return root

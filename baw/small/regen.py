@@ -11,13 +11,14 @@ import argparse
 import functools
 import os
 
+import baw.cmd.utils
 import baw.run
 import baw.runtime
 import baw.utils
 
 
 def main():
-    root = baw.run.determine_root(os.getcwd())
+    root = baw.cmd.utils.determine_root(os.getcwd())
     parser = create_parser()
     cmd, worker = parse_args(parser)
     run(root, cmd, worker)

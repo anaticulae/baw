@@ -9,6 +9,7 @@
 
 import sys
 
+import baw.cmd.utils
 import baw.run
 import baw.runtime
 import baw.utils
@@ -16,7 +17,7 @@ import baw.utils
 
 def run_shell(args: dict):
     cmd = args['cmd']
-    root = baw.run.get_root(args)
+    root = baw.cmd.utils.get_root(args)
     completed = baw.runtime.run_target(
         root=root,
         command=cmd,

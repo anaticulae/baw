@@ -12,6 +12,7 @@ import os
 import sys
 import time
 
+import baw.cmd.utils
 import baw.git
 import baw.run
 import baw.runtime
@@ -21,7 +22,7 @@ import baw.utils
 
 
 def main():
-    root = baw.run.determine_root(os.getcwd())
+    root = baw.cmd.utils.determine_root(os.getcwd())
     if not baw.git.is_clean(root, verbose=False):
         baw.utils.error(f'not clean, abort: {root}')
         sys.exit(baw.utils.FAILURE)
