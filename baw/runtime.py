@@ -232,9 +232,9 @@ def setup_target(
     if not cwd:
         cwd = root
     if not os.path.exists(cwd):
-        raise ValueError('cwd: %s does not exists' % cwd)
+        raise ValueError(f'cwd: {cwd} does not exists')
     if not os.path.isdir(cwd):
-        raise ValueError('cwd: %s is not a directory' % cwd)
+        raise ValueError(f'cwd: {cwd} is not a directory')
     if not skip_error_code:
         skip_error_code = {}
     if isinstance(skip_error_code, int):
@@ -278,7 +278,7 @@ def log_result(  # pylint:disable=R1260,R0912
             # Inform, not writing to stderr
             baw.utils.log(f'Completed: `{command}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
-            baw.utils.log('Env: %s' % os.environ)
+            baw.utils.log(f'Env: {os.environ}')
     error_message = completed.stderr
     # catch stderr is None when running baw --test=pdb because the std-out/err
     # is None
@@ -287,7 +287,7 @@ def log_result(  # pylint:disable=R1260,R0912
     for remove_skip in skip_error_message:
         error_message = error_message.replace(remove_skip, '')
     if reporting and error_message.strip():
-        baw.utils.error('%s' % error_message.strip())
+        baw.utils.error(str(error_message.strip()))
     if verbose:
         if completed.stderr:
             baw.utils.error(completed.stderr)

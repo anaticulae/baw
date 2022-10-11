@@ -54,6 +54,7 @@ def generate_workspace(root: str, packages: tuple = None):
     rcfile = baw.utils.forward_slash(baw.resources.RCFILE_PATH)
     isortfile = sort_configuration(root)
     if packages is None:
+        # pylint:disable=C0209
         folders = """\
             {
                 "name": "%s",
@@ -74,8 +75,8 @@ def generate_workspace(root: str, packages: tuple = None):
             if not os.path.exists(path):
                 baw.utils.error(f'{path} does not exists')
                 continue
-            folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))
-        folders = baw.utils.NEWLINE.join(folders)  # pylint:disable=R0204
+            folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))  # pylint:disable=C0209
+        folders: str = baw.utils.NEWLINE.join(folders)
     # write template
     replaced = baw.resources.template_replace(
         root,

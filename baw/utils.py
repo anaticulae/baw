@@ -74,7 +74,7 @@ def error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
-    print('[ERROR] %s' % msg, file=sys.stderr, flush=True)
+    print(f'[ERROR] {msg}', file=sys.stderr, flush=True)
 
 
 PLAINOUTPUT = 'PLAINOUTPUT'
@@ -147,25 +147,25 @@ def tmpfile() -> str:
 
 def check_root(root: str):
     if not os.path.exists(root):
-        raise ValueError('Project root does not exists' % root)
+        raise ValueError(f'Project root: {root} does not exists')
 
 
 def file_append(path: str, content: str):
     assert os.path.exists(path), str(path)
-    with open(path, mode='a', newline=NEWLINE) as fp:
+    with open(path, mode='a', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
 
 def file_create(path: str, content: str = ''):
     assert not os.path.exists(path), str(path)
     content = normalize_final(content)
-    with open(path, mode='w', newline=NEWLINE) as fp:
+    with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
 
 def file_read(path: str):
     assert os.path.exists(path), str(path)
-    with open(path, mode='r', newline=NEWLINE) as fp:
+    with open(path, mode='r', newline=NEWLINE, encoding=UTF8) as fp:
         return normalize_final(fp.read())
 
 
@@ -199,7 +199,7 @@ def file_replace(path: str, content: str):
     if current_content == content:
         return
 
-    with open(path, mode='w', newline=NEWLINE) as fp:
+    with open(path, mode='w', newline=NEWLINE, encoding=UTF8) as fp:
         fp.write(content)
 
 
@@ -211,7 +211,7 @@ def print_runtime(before: int):
         before(int): time recorded some time before - use time.time()
     """
     time_diff = time.time() - before
-    log('Runtime: %.2f secs\n' % time_diff)
+    log('Runtime: %.2f secs\n' % time_diff)  # pylint:disable=C0209
 
 
 @contextlib.contextmanager
@@ -238,7 +238,7 @@ def remove_tree(path: str):
     try:
         shutil.rmtree(path, onerror=remove_readonly)
     except PermissionError:
-        error('Could not remove %s' % path)
+        error(f'Could not remove {path}')
         sys.exit(FAILURE)
 
 
