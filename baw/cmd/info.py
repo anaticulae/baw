@@ -32,6 +32,12 @@ def prints(root, value: str, verbose: bool = False):
             baw.utils.log(f'{name}-', end='')
         baw.utils.log(print_requirement_hash(root))
         return
+    if value == 'name':
+        baw.utils.log(baw.config.name(root))
+        sys.exit(baw.utils.SUCCESS)
+    if value == 'shortcut':
+        baw.utils.log(baw.config.shortcut(root))
+        sys.exit(baw.utils.SUCCESS)
 
 
 def print_tmp(root: str):

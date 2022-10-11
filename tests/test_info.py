@@ -16,6 +16,8 @@ import tests
     ('covreport', 'report'),
     ('tmp', 'tmp'),
     ('venv', 'venv'),
+    ('shortcut', 'baw'),
+    ('name', 'Black and White'),
 ))
 def test_cmd_info(cmd, expected, monkeypatch, capsys):
     tests.baaw(

@@ -228,6 +228,6 @@ def add_info_option(parser):
         'info',
         help='Print project information',
         nargs=1,
-        choices='venv tmp covreport requirement'.split(),
+        choices='name shortcut venv tmp covreport requirement'.split(),
     )
     info.set_defaults(func=baw.run.run_info)
