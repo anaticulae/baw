@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.10.1 (2022-10-11)
+
+### Feature
+
+* adjust automated release author (64fe7e81ba6e)
+* use gitea as default hvcs (ee3fa757c106)
+
+### Fix
+
+* disable https for gitea publish (331740c8e269)
+
 ## v1.10.0 (2022-10-10)
 
 ### Feature
