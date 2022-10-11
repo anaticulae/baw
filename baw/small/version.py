@@ -59,8 +59,8 @@ def enable_http():
                 server = f"http://{token}@{domain}/{owner}/{name}.git"
 
         try:
-            repo.git.push(server, branch)
-            repo.git.push("--tags", server, branch)
+            repo().git.push(server, branch)
+            repo().git.push("--tags", server, branch)
         except GitCommandError as error:
             message = str(error)
             if auth_token:

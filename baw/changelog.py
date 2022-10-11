@@ -81,7 +81,7 @@ def update_changelog_file(version: str, content_to_add: str):
         ]),
     )
     git_path.write_text(updated_content)
-    repo.git.add(str(git_path.relative_to(str(repo.working_dir))))
+    repo().git.add(str(git_path.relative_to(str(repo().working_dir))))
 
 
 def __patch__():
