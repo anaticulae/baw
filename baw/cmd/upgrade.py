@@ -32,7 +32,7 @@ def upgrade(
 
     force: upgrade dev requirements also
     """
-    with baw.git.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git.stash(root, verbose=verbose, venv=venv):
         returnvalue = check_upgrade(root, packages=packages)
         if returnvalue in (baw.utils.SUCCESS, baw.utils.FAILURE):
             return returnvalue
@@ -54,7 +54,7 @@ def upgrade(
             requirements = (requirements, requirements_dev)
         if failure:
             # reset requirement
-            completed = baw.git.git_checkout(
+            completed = baw.git.checkout(
                 root,
                 requirements,
                 verbose=verbose,

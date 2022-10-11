@@ -21,7 +21,7 @@ GIT_EXT = '.git'
 GIT_REPO_EXCLUDE = '.git/info/exclude'
 
 
-def git_init(root: str):
+def init(root: str):
     """Init git repository. Do nothing if repo already exists.
 
     Args:
@@ -39,7 +39,7 @@ def git_init(root: str):
     evaluate_git_error(command)
 
 
-def git_add(
+def add(
     root: str,
     pattern: str,
     verbose: bool = False,
@@ -60,10 +60,6 @@ def git_add(
         verbose=verbose,
     )
     evaluate_git_error(cmd)
-
-
-def add(root: str, pattern: str):
-    return git_add(root, pattern)
 
 
 def commit(root, source, message, tag: str = None, verbose: int = 0):
@@ -94,7 +90,7 @@ def is_clean(root, verbose: bool = True):
     return 'nothing to commit, working tree clean' in process.stdout
 
 
-def git_checkout(
+def checkout(
     root: str,
     files: str,
     *,
@@ -128,7 +124,7 @@ def git_checkout(
 
 
 @contextlib.contextmanager
-def git_stash(
+def stash(
     root: str,
     *,
     verbose: bool = False,
@@ -193,7 +189,7 @@ def git_stash(
     return completed.returncode
 
 
-def git_headtag(root: str, venv: bool, verbose: bool = False):
+def headtag(root: str, venv: bool, verbose: bool = False):
     command = 'git tag --points-at HEAD'
     completed = baw.runtime.run_target(
         root,
@@ -211,7 +207,7 @@ def git_headtag(root: str, venv: bool, verbose: bool = False):
     return completed.stdout.strip()
 
 
-def git_headhash(root: str) -> str:
+def headhash(root: str) -> str:
     if not installed():
         return None
     cmd = 'git rev-parse --verify HEAD'
@@ -221,7 +217,7 @@ def git_headhash(root: str) -> str:
     return completed.stdout.strip()
 
 
-def git_modified(root: str) -> bool:
+def is_modified(root: str) -> bool:
     cmd = 'git status -z'
     completed = baw.runtime.run_target(root, cmd, verbose=False)
     if completed.returncode:

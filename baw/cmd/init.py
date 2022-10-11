@@ -56,7 +56,7 @@ def init(
         return baw.utils.FAILURE
     # Escape ' to avoid errors in generated code
     name = name.replace("'", r'\'')
-    baw.git.git_init(root)
+    baw.git.init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
@@ -90,7 +90,7 @@ def init(
 def first_commit(root, verbose: bool):
     """This is a replacement for semantic_release cause project setup
     does not worker proper like in the past(4.1.1) anymore."""
-    baw.git.git_add(
+    baw.git.add(
         root,
         '.',
         verbose=verbose,

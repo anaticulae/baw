@@ -39,7 +39,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.utils.log(f'\n{index}|{len(todo)}')
         baw.utils.log(f'>>> {headline}')
         baw.utils.log(f'git checkout {commit} in {root}')
-        if git_checkout(root, commit):
+        if checkout(root, commit):
             sys.exit(baw.utils.FAILURE)
         current = time.time()
         baw.utils.log(f'run: {cmd}')
@@ -61,8 +61,8 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         state = 'X' if state else ' '
         baw.utils.log(f'{commit[0][0:15]}:{state}:   {int(timed)}      '
                       f'{commit[1][0:30]}')
-    # git_checkout(root, commit=todo[0])
-    git_checkout(root, commit='master')
+    # checkout(root, commit=todo[0])
+    checkout(root, commit='master')
     return timed
 
 
@@ -92,7 +92,7 @@ def commits(root, ranges) -> list:
     return result
 
 
-def git_checkout(
+def checkout(
     root: str,
     commit: str,
 ) -> int:

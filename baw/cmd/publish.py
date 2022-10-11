@@ -27,7 +27,7 @@ def publish(root: str, verbose: bool = False, venv: bool = True):
         publish run's always in venv environment
     """
     baw.utils.log('publish start')
-    tag = baw.git.git_headtag(root, venv=False, verbose=verbose)
+    tag = baw.git.headtag(root, venv=False, verbose=verbose)
     if not tag:
         baw.utils.error('Could not find release-git-tag. Aborting publishing.')
         return baw.utils.FAILURE

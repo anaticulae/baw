@@ -97,7 +97,7 @@ def run_test(  # pylint:disable=R0914
         verbose=verbose,
         venv=venv,
     )
-    environment = baw.git.git_stash if stash else baw.utils.empty
+    environment = baw.git.stash if stash else baw.utils.empty
     with environment(root, verbose=verbose, venv=venv):
         completed = baw.runtime.run_target(
             root,
@@ -120,7 +120,7 @@ def run_test(  # pylint:disable=R0914
         # TODO: ADJUST -n6!!!
         # TODO: VERIFY THAT SELECTIVE TESTING WAS NOT USED
         if all_tests(testconfig) and (longrun or nightly):
-            head = baw.git.git_headhash(root)
+            head = baw.git.headhash(root)
             if head:
                 baw.archive.test.mark_tested(root, head)
     if completed.returncode == NO_TEST_TO_RUN:

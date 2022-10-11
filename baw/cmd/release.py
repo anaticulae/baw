@@ -106,7 +106,7 @@ def extend_cli(parser):
 
 
 def require_release(root, venv):
-    current_head = baw.git.git_headtag(root, venv=venv)
+    current_head = baw.git.headtag(root, venv=venv)
     if not current_head:
         return baw.utils.SUCCESS
     if current_head.isnumeric():
@@ -120,7 +120,7 @@ def check_repository(root, require_clean: bool):
     if not require_clean:
         return baw.utils.SUCCESS
     # do not release modified repository
-    if baw.git.git_modified(root=root):
+    if baw.git.is_modified(root=root):
         baw.utils.error('repository is not clean')
         return baw.utils.FAILURE
     return baw.utils.SUCCESS
@@ -155,7 +155,7 @@ def run_test(
         return baw.utils.SUCCESS
     # do not run hashed on first release, cause there is no any tagged
     # version.
-    hashed = baw.git.git_headhash(root)
+    hashed = baw.git.headhash(root)
     require_test = not hashed or not baw.archive.test.tested(root, hashed)
     if require_test:
         ret = baw.cmd.complex.sync_and_test(
@@ -239,7 +239,7 @@ def require_autopatch(changelog: str) -> bool:
 
 
 def firstversion(root: str) -> bool:
-    if not baw.git.git_headhash(root):
+    if not baw.git.headhash(root):
         return True
     return False
 
@@ -342,7 +342,7 @@ def reset_resources(
         return baw.utils.FAILURE  # at least one path does not exist.
     if not to_reset:
         return baw.utils.FAILURE
-    completed = baw.git.git_checkout(
+    completed = baw.git.checkout(
         root,
         to_reset,
         venv=venv,

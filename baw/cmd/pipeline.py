@@ -25,7 +25,7 @@ def init(
         baw.utils.error(f'Jenkinsfile already exists: {source}')
         return baw.utils.FAILURE
     replaced = create_jenkinsfile(root)
-    with baw.git.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git.stash(root, verbose=verbose, venv=venv):
         baw.utils.file_create(
             source,
             content=replaced,
@@ -57,7 +57,7 @@ def upgrade(
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
         return baw.utils.FAILURE
-    with baw.git.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git.stash(root, verbose=verbose, venv=venv):
         baw.utils.file_replace(
             source,
             content=replaced,
