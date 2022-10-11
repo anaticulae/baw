@@ -20,7 +20,6 @@ import baw.cmd.clean
 import baw.cmd.doc
 import baw.cmd.ide
 import baw.cmd.init
-import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.open
 import baw.cmd.plan
@@ -284,18 +283,6 @@ def run_doc(args: dict):
         root=root,
         verbose=args.get('verbose', False),
         venv=args.get('venv', False),
-    )
-    return result
-
-
-def run_install(args: dict):
-    root = get_root(args)
-    result = baw.cmd.install.install(
-        root=root,
-        venv=args.get('venv', False),
-        verbose=args.get('verbose', False),
-        dev=args.get('dev', False),
-        remove=args.get('remove', False),
     )
     return result
 

@@ -12,6 +12,18 @@ import baw.runtime
 import baw.utils
 
 
+def evaluate(args: dict):
+    root = baw.cmd.utils.get_root(args)
+    result = install(
+        root=root,
+        venv=args.get('venv', False),
+        verbose=args.get('verbose', False),
+        dev=args.get('dev', False),
+        remove=args.get('remove', False),
+    )
+    return result
+
+
 def install(
     root: str,
     *,
@@ -57,3 +69,18 @@ def remove_current(root: str, venv: bool = False, verbose: bool = False):
         )
         if completed.stderr:
             break
+
+
+def extend_cli(parser):
+    test = parser.add_parser('install', help='Run install task')
+    test.add_argument(
+        '--remove',
+        help='remove current version before',
+        action='store_true',
+    )
+    test.add_argument(
+        '--dev',
+        help='install in development mode',
+        action='store_true',
+    )
+    test.set_defaults(func=evaluate)

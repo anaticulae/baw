@@ -15,6 +15,7 @@ import baw.cmd.doc
 import baw.cmd.format
 import baw.cmd.ide
 import baw.cmd.info
+import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.publish
@@ -44,7 +45,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.test.extend_cli(cmds)
     baw.cmd.release.extend_cli(cmds)
     baw.cmd.publish.extend_cli(cmds)
-    add_install_option(cmds)
+    baw.cmd.install.extend_cli(cmds)
     add_shell_option(cmds)
     baw.cmd.pipeline.extend_cli(cmds)
     baw.cmd.lint.extend_cli(cmds)
@@ -192,18 +193,3 @@ def add_shell_option(parser):
     init = parser.add_parser('sh', help='Run shell cmd in env')
     init.add_argument('cmd', help='command')
     init.set_defaults(func=baw.cmd.sh.run_shell)
-
-
-def add_install_option(parser):
-    test = parser.add_parser('install', help='Run install task')
-    test.add_argument(
-        '--remove',
-        help='remove current version before',
-        action='store_true',
-    )
-    test.add_argument(
-        '--dev',
-        help='install in development mode',
-        action='store_true',
-    )
-    test.set_defaults(func=baw.run.run_install)
