@@ -30,11 +30,11 @@ def determine(root: str) -> str:
     assert os.path.exists(root)
     short = baw.config.shortcut(root)
 
-    path = os.path.join(root, '%s/__init__.py' % short)
+    path = os.path.join(root, f'{short}/__init__.py')
     content = baw.utils.file_read(path)
     current = re.search(VERSION, content).group(1)
     if not current:
-        raise ValueError('Could not locate __version__ in %s' % path)
+        raise ValueError(f'Could not locate __version__ in {path}')
     return current
 
 

@@ -17,7 +17,7 @@ def main(remove_empty: bool = True):
     splitted = rawinput()
     splitted = set(splitted)
     splitted = sorted(splitted)
-    valid = lambda x: True if not remove_empty else x.strip()
+    valid = lambda x: True if not remove_empty else x.strip()  # pylint:disable=C3001
     unique = ''.join(item for item in splitted if valid(item))
     write_stdout(unique)
 

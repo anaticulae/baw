@@ -71,7 +71,7 @@ def commits(root, ranges) -> list:
     count = len(ranges)
     cmd = 'git log --pretty=format:\"%H %s\" '
     cmd += r'| grep -E "(feat|fix|test|refactor)\(" '
-    cmd += '| head -n %d' % count
+    cmd += f'| head -n {count}'
     # grep detects the first n-commits and close the inpipe ealier bevore
     # all data is processed. This is not a problem for us.
     no_error = ['grep: write error: Illegal seek\n']

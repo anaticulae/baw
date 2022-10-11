@@ -297,7 +297,7 @@ def drop(
     current_release = matched['release']
     # do not remove the first commit/release in the repository
     if current_release == DEFAULT_RELEASE:
-        baw.utils.error('Could not remove %s release' % DEFAULT_RELEASE)
+        baw.utils.error(f'Could not remove {DEFAULT_RELEASE} release')
         return baw.utils.FAILURE
     baw.utils.log(current_release)
     # remove the last release commit
@@ -305,7 +305,7 @@ def drop(
     baw.utils.log('Remove last commit')
     completed = runner(root, 'git reset HEAD~1')
     if completed.returncode:
-        baw.utils.error('while removing the last commit: %s' % str(completed))
+        baw.utils.error(f'while removing the last commit: {completed}')
         return completed.returncode
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
     completed = reset_resources(root, venv=venv, verbose=verbose)
@@ -313,9 +313,9 @@ def drop(
         return completed
     # git tag -d HEAD
     baw.utils.log('Remove release tag')
-    completed = runner(root, 'git tag -d %s' % current_release)
+    completed = runner(root, f'git tag -d {current_release}')
     if completed.returncode:
-        baw.utils.error('while remove tag: %s' % str(completed))
+        baw.utils.error(f'while remove tag: {completed}')
         return completed.returncode
     # TODO: ? remove upstream ? or just overwrite ?
     return baw.utils.SUCCESS
@@ -333,7 +333,7 @@ def reset_resources(
     ret = 0
     for item in [initpath, changelog]:
         if not os.path.exists(os.path.join(root, item)):
-            msg = 'Item %s does not exists' % item
+            msg = f'Item {item} does not exists'
             baw.utils.error(msg)
             ret += 1
             continue
