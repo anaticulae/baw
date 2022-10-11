@@ -67,7 +67,7 @@ def init(
     """
     baw_path = os.path.join(root, baw.utils.BAW_EXT)
     if os.path.exists(baw_path):
-        baw.utils.error('Project %s already exists.' % baw_path)
+        baw.utils.error(f'Project {baw_path} already exists.')
         raise ValueError(baw.utils.FAILURE)
     if not baw.runtime.installed('semantic-release', root):
         return baw.utils.FAILURE
@@ -150,13 +150,11 @@ def create_files(root: str):
     for item, content in baw.resources.FILES:
         create = os.path.join(root, item)
         replaced = baw.resources.template_replace(root, content)
-
         operation_type = 'template' if content != replaced else 'copy'
         if os.path.exists(create):
-            baw.utils.skip('%s %s' % (operation_type, item))
+            baw.utils.skip(f'{operation_type} {item}')
             continue
-
-        baw.utils.log('%s %s' % (operation_type, item))
+        baw.utils.log(f'{operation_type} {item}')
         parent = os.path.dirname(create)
         os.makedirs(parent, exist_ok=True)
         baw.utils.file_create(create, content=replaced)
@@ -209,7 +207,7 @@ def create_python(
             root,
             baw.resources.ENTRY_POINT,
         )
-        entry_point_package = "'%s.cli'," % shortcut
+        entry_point_package = f"'{shortcut}.cli',"
 
         ADDITONAL_REQUIREMENTS.append(f'utila=={utila_current()}')
 

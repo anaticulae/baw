@@ -182,7 +182,7 @@ def sync_dependencies(
     )
     baw.utils.file_remove(requirements)
     if 'NewConnectionError' in completed.stdout:
-        baw.utils.error('Could not reach server: %s' % pip)
+        baw.utils.error(f'Could not reach server: {pip}')
         return completed.returncode
     if completed.stdout:
         for message in completed.stdout.splitlines():
@@ -358,7 +358,7 @@ def connected(internal: str, external: str) -> bool:
                 response.read()
         except urllib.request.URLError:
             result = False
-            baw.utils.error('Could not reach %s' % item)
+            baw.utils.error(f'Could not reach: {item}')
     return result
 
 
