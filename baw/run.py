@@ -25,7 +25,6 @@ import baw.cmd.open
 import baw.cmd.plan
 import baw.cmd.publish
 import baw.cmd.release
-import baw.cmd.sync
 import baw.cmd.test
 import baw.cmd.upgrade
 import baw.config
@@ -219,21 +218,6 @@ def run_clean(args):
         venv=venv,
         all_=all_,
         root=root,
-    )
-    return result
-
-
-def run_sync(args):
-    root = run_environment(args)
-    venv = args.get('venv', False)
-    if venv:
-        run_venv(args)
-    result = baw.cmd.sync.sync(
-        root=root,
-        packages=args.get('packages'),
-        minimal=args.get('minimal', False),
-        verbose=args.get('verbose', False),
-        venv=venv,
     )
     return result
 

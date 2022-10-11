@@ -21,6 +21,7 @@ import baw.cmd.pipeline
 import baw.cmd.publish
 import baw.cmd.release
 import baw.cmd.sh
+import baw.cmd.sync
 import baw.cmd.test
 import baw.run
 import baw.utils
@@ -41,7 +42,7 @@ def create_parser():  # noqa: Z21
     add_upgrade_option(cmds)
     add_init_options(cmds)
     add_plan_options(cmds)
-    add_sync_options(cmds)
+    baw.cmd.sync.extend_cli(cmds)
     baw.cmd.test.extend_cli(cmds)
     baw.cmd.release.extend_cli(cmds)
     baw.cmd.publish.extend_cli(cmds)
@@ -151,24 +152,6 @@ def add_open_options(parser):
         action='store_true',
     )
     plan.set_defaults(func=baw.run.run_open)
-
-
-def add_sync_options(parser):
-    sync = parser.add_parser('sync', help='Synchronize project requirements')
-    sync.add_argument(
-        '--minimal',
-        help='use minimal required requirements',
-        action='store_true',
-    )
-    sync.add_argument(
-        'packages',
-        help='Sync dependencies. Choices: dev(minimal), doc(sphinx), '
-        'packages(requirements.txt only), all(dev, doc, packages)',
-        nargs='?',
-        const='dev',
-        choices=['all', 'dev', 'doc', 'extra', 'requirements'],
-    )
-    sync.set_defaults(func=baw.run.run_sync)
 
 
 def add_plan_options(parser):

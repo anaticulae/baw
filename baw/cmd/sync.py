@@ -18,8 +18,10 @@ from urllib.request import urlopen
 
 from pip import __version__ as pip_version
 
+import baw.cmd.utils
 import baw.config
 import baw.requirements
+import baw.run
 import baw.utils
 from baw.git import update_gitignore
 from baw.runtime import run_target
@@ -28,6 +30,21 @@ from baw.utils import REQUIREMENTS_EXTRA
 from baw.utils import error
 from baw.utils import log
 from baw.utils import package_address
+
+
+def evaluate(args):
+    root = baw.cmd.utils.run_environment(args)
+    venv = args.get('venv', False)
+    if venv:
+        baw.run.run_venv(args)
+    result = sync(
+        root=root,
+        packages=args.get('packages'),
+        minimal=args.get('minimal', False),
+        verbose=args.get('verbose', False),
+        venv=venv,
+    )
+    return result
 
 
 def sync(
@@ -358,3 +375,21 @@ def should_skip(msg: str, verbose: bool = False):
         log('.', end='')
         return True
     return False
+
+
+def extend_cli(parser):
+    synx = parser.add_parser('sync', help='Synchronize project requirements')
+    synx.add_argument(
+        '--minimal',
+        help='use minimal required requirements',
+        action='store_true',
+    )
+    synx.add_argument(
+        'packages',
+        help='Sync dependencies. Choices: dev(minimal), doc(sphinx), '
+        'packages(requirements.txt only), all(dev, doc, packages)',
+        nargs='?',
+        const='dev',
+        choices=['all', 'dev', 'doc', 'extra', 'requirements'],
+    )
+    synx.set_defaults(func=evaluate)
