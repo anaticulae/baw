@@ -117,25 +117,6 @@ def run_open(args):
     sys.exit(baw.utils.SUCCESS)
 
 
-def run_init_project(args):
-    directory = run_environment(args)
-    #  No GIT found, exit 1
-    with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
-        shortcut, description, cmdline = (
-            args['shortcut'],
-            args['description'],
-            args['cmdline'],
-        )
-        completed = baw.cmd.init.init(
-            directory,
-            shortcut,
-            name=description,
-            cmdline=cmdline,
-            verbose=args['verbose'],
-        )
-    return completed
-
-
 def run_ide(args):
     # # create a new git repository with template code
     # open vscode

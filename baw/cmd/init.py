@@ -15,14 +15,31 @@ import os
 
 import baw.cmd
 import baw.cmd.format
-import baw.cmd.plan
-import baw.cmd.release
 import baw.config
 import baw.git
 import baw.resources
 import baw.utils
 
 ADDITONAL_REQUIREMENTS = []
+
+
+def evaluate(args):
+    directory = baw.cmd.utils.run_environment(args)
+    #  No GIT found, exit 1
+    with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
+        shortcut, description, cmdline = (
+            args['shortcut'],
+            args['description'],
+            args['cmdline'],
+        )
+        completed = init(
+            directory,
+            shortcut,
+            name=description,
+            cmdline=cmdline,
+            verbose=args['verbose'],
+        )
+    return completed
 
 
 def init(
@@ -225,3 +242,11 @@ def utila_current() -> str:
         return utila.__version__  # pylint:disable=E1101
     except ImportError:
         return default
+
+
+def extend_cli(parser):
+    inix = parser.add_parser('init', help='Create .baw project')
+    inix.add_argument('shortcut', help='Project name')
+    inix.add_argument('description', help='Project description')
+    inix.add_argument('--cmdline', action='store_true')
+    inix.set_defaults(func=evaluate)

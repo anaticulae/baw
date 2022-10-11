@@ -40,7 +40,7 @@ def create_parser():  # noqa: Z21
     add_open_options(cmds)
     add_clean_options(cmds)
     add_upgrade_option(cmds)
-    add_init_options(cmds)
+    baw.cmd.init.extend_cli(cmds)
     add_plan_options(cmds)
     baw.cmd.sync.extend_cli(cmds)
     baw.cmd.test.extend_cli(cmds)
@@ -162,14 +162,6 @@ def add_plan_options(parser):
         choices=['new', 'close'],
     )
     plan.set_defaults(func=baw.run.run_plan)
-
-
-def add_init_options(parser):
-    init = parser.add_parser('init', help='Create .baw project')
-    init.add_argument('shortcut', help='Project name')
-    init.add_argument('description', help='Project description')
-    init.add_argument('--cmdline', action='store_true')
-    init.set_defaults(func=baw.run.run_init_project)
 
 
 def add_shell_option(parser):
