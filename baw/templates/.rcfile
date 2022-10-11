@@ -1,5 +1,4 @@
 [MASTER]
-
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
 ignore=conf.py,
@@ -10,7 +9,11 @@ ignore=conf.py,
 # Ignore standard python library
 ignore-patterns=Lib
 
-disable=C0111,E1121,C0301,R0903,R0901,C0330,
+disable=C0111,
+    E1121,
+    C0301,
+    R0903,
+    R0901,
     R0401,
     W0603,
     C0415
@@ -85,13 +88,6 @@ max-line-length=85
 
 # Maximum number of arguments for function / method.
 max-args=10
-
-# List of optional constructs for which whitespace checking is disabled. `dict-
-# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
-# `trailing-comma` allows a space between comma and closing bracket: (a, ).
-# `empty-line` allows space-only lines.
-no-space-check=trailing-comma,
-               dict-separator
 
 # Allow the body of a class to be on the same line as the declaration if body
 # contains single statement.
