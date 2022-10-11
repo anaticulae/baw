@@ -11,25 +11,17 @@ import contextlib
 import os
 import re
 import sys
-from os.path import exists
-from os.path import join
-from urllib.request import URLError
-from urllib.request import urlopen
+import urllib.request
 
 from pip import __version__ as pip_version
 
 import baw.cmd.utils
 import baw.config
+import baw.git
 import baw.requirements
 import baw.run
+import baw.runtime
 import baw.utils
-from baw.git import update_gitignore
-from baw.runtime import run_target
-from baw.utils import FAILURE
-from baw.utils import REQUIREMENTS_EXTRA
-from baw.utils import error
-from baw.utils import log
-from baw.utils import package_address
 
 
 def evaluate(args):
@@ -73,8 +65,8 @@ def sync(
     """
     baw.utils.check_root(root)
     ret = 0
-    log()
-    ret += update_gitignore(root, verbose=verbose)
+    baw.utils.log()
+    ret += baw.git.update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
     if venv == 'BOTH':
         for item in [True, False]:
@@ -107,7 +99,7 @@ def check_dependency(
     verbose: bool = False,
 ):
     """Check if packages need an upgrade."""
-    pip_index, extra_url = package_address()
+    pip_index, extra_url = baw.utils.package_address()
     # if not connected(pip_index, extra_url):
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
@@ -116,7 +108,7 @@ def check_dependency(
         if not str(index).startswith('http'):
             index = f'http://{index}'
         pip = f'{python} -mpip search --index {index} {package}'
-        completed = run_target(
+        completed = baw.runtime.run_target(
             root,
             pip,
             verbose=verbose,
@@ -127,12 +119,12 @@ def check_dependency(
             # Package not available
             continue
         if completed.returncode == 2:
-            error(f'not reachable: {index} for package {package}')
-            error(completed.stderr)
+            baw.utils.error(f'not reachable: {index} for package {package}')
+            baw.utils.error(completed.stderr)
             sys.exit(completed.returncode)
             continue
         if completed.returncode and completed.stderr:
-            error(completed.stderr)
+            baw.utils.error(completed.stderr)
         if completed.stdout:
             if f'{package} ' not in completed.stdout:
                 # nltk (3.5)  - 3.5
@@ -152,12 +144,12 @@ def sync_dependencies(
     venv: bool = False,
 ) -> int:
     baw.utils.check_root(root)
-    log('sync venv' if venv else 'sync local')
+    baw.utils.log('sync venv' if venv else 'sync local')
     resources = determine_resources(root, packages)
-    pip_index, extra_url = package_address()
+    pip_index, extra_url = baw.utils.package_address()
     if not connected(pip_index, extra_url):
         baw.utils.error('could not reach package index')
-        return FAILURE
+        return baw.utils.FAILURE
     required = required_installation(
         root,
         resources,
@@ -167,7 +159,7 @@ def sync_dependencies(
     )
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
-    log(f'\nrequire update:\n{required}')
+    baw.utils.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()
     baw.utils.file_replace(requirements, str(required))
@@ -180,8 +172,8 @@ def sync_dependencies(
         venv=venv,
     )
     if verbose:
-        log(cmd)
-    completed = run_target(
+        baw.utils.log(cmd)
+    completed = baw.runtime.run_target(
         root,
         cmd,
         cwd=root,
@@ -190,17 +182,17 @@ def sync_dependencies(
     )
     baw.utils.file_remove(requirements)
     if 'NewConnectionError' in completed.stdout:
-        error('Could not reach server: %s' % pip)
+        baw.utils.error('Could not reach server: %s' % pip)
         return completed.returncode
     if completed.stdout:
         for message in completed.stdout.splitlines():
             if should_skip(message, verbose=verbose):
                 continue
             if verbose:
-                log(message)
+                baw.utils.log(message)
     if completed.returncode and completed.stderr:
-        error(completed.stderr)
-    log()
+        baw.utils.error(completed.stderr)
+    baw.utils.log()
     return completed.returncode
 
 
@@ -264,16 +256,16 @@ def determine_resources(root: str, packages: str) -> list:
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
     # make path absolute in project
-    resources = [join(baw.ROOT, to_install) for to_install in resources]
+    resources = [os.path.join(baw.ROOT, to_install) for to_install in resources]
     if packages in ('dev', 'all'):
         if os.path.exists(os.path.join(root, 'requirements.dev')):
             resources.append(os.path.join(root, 'requirements.dev'))
     if packages in ('extra', 'all'):
-        if os.path.exists(os.path.join(root, REQUIREMENTS_EXTRA)):
-            resources.append(os.path.join(root, REQUIREMENTS_EXTRA))
+        if os.path.exists(os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)):
+            resources.append(os.path.join(root, baw.utils.REQUIREMENTS_EXTRA))
     # local project file
-    local_requirement = join(root, baw.utils.REQUIREMENTS_TXT)
-    if exists(local_requirement):
+    local_requirement = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
+    if os.path.exists(local_requirement):
         resources.append(local_requirement)
     return resources
 
@@ -330,8 +322,8 @@ def pip_list(
     python = baw.config.python(root, venv=venv)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
-        log(cmd)
-    completed = run_target(
+        baw.utils.log(cmd)
+    completed = baw.runtime.run_target(
         root,
         cmd,
         cwd=root,
@@ -339,8 +331,8 @@ def pip_list(
         venv=venv,
     )
     if completed.returncode and completed.stderr:
-        error(f'{cmd}, {verbose}, {venv}')
-        error(completed.stderr)
+        baw.utils.error(f'{cmd}, {verbose}, {venv}')
+        baw.utils.error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
     parsed = baw.requirements.parse(content)
@@ -362,17 +354,17 @@ def connected(internal: str, external: str) -> bool:
     result = True
     for item in [internal, external]:
         try:
-            with urlopen(item) as response:  # nosec
+            with urllib.request.urlopen(item) as response:  # nosec
                 response.read()
-        except URLError:
+        except urllib.request.URLError:
             result = False
-            error('Could not reach %s' % item)
+            baw.utils.error('Could not reach %s' % item)
     return result
 
 
 def should_skip(msg: str, verbose: bool = False):
     if not verbose and 'Requirement already' in msg:
-        log('.', end='')
+        baw.utils.log('.', end='')
         return True
     return False
 
