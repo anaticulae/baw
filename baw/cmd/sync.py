@@ -298,6 +298,9 @@ def require_legacy_solver() -> bool:
     major = baw.project.version.major(pip_version)
     if major < 21:
         return False
+    if major == 22:
+        # TODO: INVESTIGATE LATER
+        return False
     return True
 
 
