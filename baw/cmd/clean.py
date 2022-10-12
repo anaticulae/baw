@@ -84,7 +84,7 @@ def clean_git(root: str):
 def clean_docs(root: str):
     doctmp = baw.config.docpath(root, mkdir=False)
     if not os.path.exists(doctmp):
-        baw.utils.error(f'doc path does not exists: {doctmp}')
+        baw.utils.log(f'already removed: {doctmp}')
         return
     baw.utils.log(f'clean docs {doctmp}')
     try:
