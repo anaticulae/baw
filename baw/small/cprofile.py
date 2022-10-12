@@ -28,8 +28,8 @@ def files(args):
         if not os.path.exists(path):
             baw.utils.error(f'file does not exists: {path}')
             continue
-        path = os.path.abspath(path)
-        result.append(path)
+        abspath = os.path.abspath(path)
+        result.append(abspath)
     return result
 
 

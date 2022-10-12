@@ -59,8 +59,8 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         timed.append(diff)
     baw.utils.log('\n\nDONE:\n========================')
     for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
-        state = 'X' if state else ' '
-        baw.utils.log(f'{commit[0][0:15]}:{state}:   {int(timed)}      '
+        raw = 'X' if state else ' '
+        baw.utils.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
                       f'{commit[1][0:30]}')
     # checkout(root, commit=todo[0])
     checkout(root, commit='master')
