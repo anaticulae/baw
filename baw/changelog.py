@@ -26,7 +26,7 @@ def changelog_headers(  # pylint:disable=W0613
     changelog: dict,
     changelog_sections: list,
     **kwargs,
-) -> typing.Optional[str]:
+) -> typing.Optional[str]:  # pylint:disable=R6003
     import semantic_release.changelog.changelog
     output = ""
     for section in semantic_release.changelog.changelog.get_changelog_sections(
