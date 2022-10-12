@@ -23,11 +23,10 @@ def tested(root: str, hashed: str) -> bool:
     archive = test_archive_path(root)
     if not os.path.exists(archive):
         return False
-
     content = baw.utils.file_read(archive)
-    for line in content.splitlines():
-        if line.strip() == hashed:
-            return True
+    lines = content.splitlines()
+    if any(line.strip() == hashed for line in lines):
+        return True
     return False
 
 

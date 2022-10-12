@@ -257,10 +257,10 @@ def determine_resources(root: str, packages: str) -> list:
     # to the difference of ROOT (baw) and root(project).
     # make path absolute in project
     resources = [os.path.join(baw.ROOT, to_install) for to_install in resources]
-    if packages in ('dev', 'all'):
+    if packages in {'dev', 'all'}:
         if os.path.exists(os.path.join(root, 'requirements.dev')):
             resources.append(os.path.join(root, 'requirements.dev'))
-    if packages in ('extra', 'all'):
+    if packages in {'extra', 'all'}:
         if os.path.exists(os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)):
             resources.append(os.path.join(root, baw.utils.REQUIREMENTS_EXTRA))
     # local project file

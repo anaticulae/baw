@@ -36,15 +36,12 @@ def install(
         remove_current(root, venv=venv, verbose=verbose)
     # -f always install newest one
     python = baw.config.python(root, venv=venv)
-    if dev:
-        # TODO: USE PIP FOR BOTH?
-        command = f'{python} -mpip install -e .'
-    else:
-        command = f'{python} setup.py install -f'
+    cmd = f'{python} '
+    cmd += '-mpip install -e .' if dev else 'setup.py install -f'
     # run target
     completed = baw.runtime.run_target(
         root,
-        command,
+        cmd,
         root,
         verbose=verbose,
         venv=venv,
@@ -59,7 +56,7 @@ def install(
 
 def remove_current(root: str, venv: bool = False, verbose: bool = False):
     package = baw.config.shortcut(root)
-    while range(10):
+    for _ in range(10):
         cmd = f'pip uninstall {package} --yes'
         completed = baw.runtime.run_target(
             root,

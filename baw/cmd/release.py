@@ -232,7 +232,7 @@ def select_release_type(typ: str, cfg: str) -> str:
 
 
 def require_autopatch(changelog: str) -> bool:
-    for item in 'Feature Fix Documentation'.split():
+    for item in 'Feature Fix Documentation'.split():  # pylint:disable=C0501
         if f'>>> {item}' in changelog:
             return False
     return True

@@ -170,13 +170,11 @@ def diff(current: Requirements, requested: Requirements, minimal: bool = False):
 
 def replace(requirements: str, update: NewRequirements) -> str:
     for package, [old, new] in update.equal.items():
+        # no version was given for old package
+        pattern = f'{package}'
         if old:
-            pattern = f'{package}=={old}'
-        else:
-            # no version was given for old package
-            pattern = f'{package}'
+            pattern += f'=={old}'
         replacement = f'{package}=={new}'
-
         baw.utils.log(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
 

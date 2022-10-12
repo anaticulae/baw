@@ -25,7 +25,6 @@ import functools
 import io
 import os
 import sys
-import typing
 
 import baw
 import baw.resources
@@ -193,7 +192,7 @@ def load(path: str):
 
 
 @functools.lru_cache()
-def project(path: str) -> typing.Tuple[str, str]:
+def project(path: str) -> 'Tuple[str, str]':
     """Determine tuple of `shortcut` and `project name` current `path`
     project.
 
@@ -216,10 +215,7 @@ def sources(root: str) -> list:
         list with source folder of project
     """
     # support accessing the config directly or due the project path
-    if os.path.isfile(root):
-        path = root
-    else:
-        path = config_path(root)
+    path = root if os.path.isfile(root) else config_path(root)
     assert os.path.exists(path), path
     cfg = load(path)
     try:
@@ -332,10 +328,7 @@ def pip_parallel_worker(root: str) -> bool:
 
 
 def default_config(root: str, access: callable, default=None) -> bool:
-    if os.path.isfile(root):
-        path = root
-    else:
-        path = config_path(root)
+    path = root if os.path.isfile(root) else config_path(root)
     if not os.path.exists(path):
         return default
     cfg = load(path)
