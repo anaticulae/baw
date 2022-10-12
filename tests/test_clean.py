@@ -26,11 +26,11 @@ def test_clean_files_and_dirs(tmpdir):
     """
     assert not tests.file_count(tmpdir)  # clean directory
 
-    for item in ['.git', 'build', baw.utils.TMP]:
+    for item in ('.git', 'build', baw.utils.TMP):
         os.makedirs(os.path.join(tmpdir, item))
     assert tests.file_count(tmpdir) == 3
 
-    for item in ['.coverage', 'do_not_clean.txt']:
+    for item in ('.coverage', 'do_not_clean.txt'):
         baw.utils.file_create(os.path.join(tmpdir, item))
     assert tests.file_count(tmpdir) == 5
 
