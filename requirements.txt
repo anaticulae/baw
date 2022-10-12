@@ -8,6 +8,6 @@
 # =============================================================================
 
 semver>=2.13.0<3.0.0
-python_semantic_release==7.25.2
+python_semantic_release==7.32.1
 # required for resource generation
 utila>=2.89.0<4.0.0
