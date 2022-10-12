@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.11.0 (2022-10-12)
+
+### Feature
+
+* increase minimal pytest version (6bf1cb911af5)
+* add more extensions (75659f0fd311)
+* add baw info name and shortcut (e82f948e01bc)
+
+### Fix
+
+* clarify log message (0c7a86ea1da1)
+* disable legacy solver for pip v22 (a2916e2e71e1)
+* cleanup linter config after upgrade (54d0f818559d)
+* adjust interface after upgrade (eb25387ab1aa)
+
+### Chore
+
+* upgrade dev requirements (32a3c70765b5)
+* upgrade env (1f5b9770163e)
+* upgrade requirements.txt (e28472aa15ee)
+
 ## v1.10.1 (2022-10-11)
 
 ### Feature
