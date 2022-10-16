@@ -10,6 +10,6 @@
 import os
 
 
-def test_cmd_pipeline_init(simple):  # pylint:disable=W0621
+def test_cmd_pipeline_init(simple):
     simple[0]('pipe init')
     assert os.path.exists(simple[1].join('Jenkinsfile'))
