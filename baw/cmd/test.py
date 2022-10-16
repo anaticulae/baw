@@ -167,7 +167,7 @@ def setup_testenvironment(
         env['FAST'] = 'True'  # Skip all tests wich are long or medium
     if nightly:
         env['NIGHTLY'] = 'True'  # Very long running test
-        markers += '-m nightly '
+        markers += '-m longrun -m nightly '
     if generate:
         env['GENERATE'] = 'True'  # Generate test resources
     if noinstall:
