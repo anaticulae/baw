@@ -11,6 +11,10 @@ pipeline{
         booleanParam(name: 'RELEASE', defaultValue: false)
     }
 
+    environment{
+        GITEA_SERVER_URL = '169.254.149.20:6300'
+    }
+
     stages{
         stage('sync'){
             steps{
