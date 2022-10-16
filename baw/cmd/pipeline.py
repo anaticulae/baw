@@ -71,7 +71,7 @@ def upgrade(
             root,
             source=source,
             message='chore(ci): upgrade Jenkinsfile',
-            verbose=False,
+            verbose=verbose,
         )
         if failure:
             return failure
@@ -96,13 +96,13 @@ LIBRARY = "@Library('caelum@"
 LIBRARY_END = "') _"
 
 
-def library(root: str):
+def library(root: str, verbose: False):
     path = jenkinsfile(root)
     if not os.path.exists(path):
         baw.utils.error(f'could not find Jenkinsfile: {path}')
         return baw.utils.FAILURE
     current = baw.utils.file_read(path)
-    newest = library_newest()
+    newest = library_newest(verbose=verbose)
     if newest in current:
         baw.utils.error(f'already newst caelum: {newest}')
         return baw.utils.FAILURE
@@ -153,13 +153,15 @@ def image_newest() -> str:
     return result
 
 
-def library_newest() -> str:
+def library_newest(verbose: bool = False) -> str:
     base = baw.config.gitea_server()
     user = 'caelum'
     repo = 'jenkins'
     branch = 'master'
     url = f'{base}/api/v1/repos/{user}/{repo}/branches/{branch}'
     cmd = f'curl {url}'
+    if verbose:
+        baw.utils.log(cmd)
     completed = baw.runtime.run(command=cmd, cwd=os.getcwd())
     if baw.config.testing():
         return 'd84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d'
@@ -201,7 +203,10 @@ def run(args: dict):
             venv=args.get('venv'),
         )
     if action == 'library':
-        return library(root)
+        return library(
+            root,
+            verbose=args['verbose'],
+        )
     if action == 'test':
         baw.utils.error('not implemented')
     return baw.utils.FAILURE
