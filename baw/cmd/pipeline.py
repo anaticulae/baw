@@ -8,11 +8,14 @@
 # =============================================================================
 
 import os
+import re
+import sys
 
 import baw.cmd.utils
 import baw.git
 import baw.resources
 import baw.run
+import baw.runtime
 import baw.utils
 
 
@@ -87,6 +90,43 @@ def create_jenkinsfile(root: str):
     return replaced
 
 
+# @Library('caelum@d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d') _
+LIBRARY = "@Library('caelum@"
+LIBRARY_END = "') _"
+
+
+def library(root: str):
+    path = jenkinsfile(root)
+    if not os.path.exists(path):
+        baw.utils.error(f'could not find Jenkinsfile: {path}')
+        return baw.utils.FAILURE
+    current = baw.utils.file_read(path)
+    newest = library_newest()
+    if newest in current:
+        baw.utils.error(f'already newst caelum: {newest}')
+        return baw.utils.FAILURE
+    init_lib = LIBRARY not in current
+    header = f'{LIBRARY}{newest}{LIBRARY_END}\n\n'
+    if init_lib:
+        baw.utils.log(f'caelum library: init {newest}')
+        current = header + current
+    else:
+        baw.utils.log(f'caelum library: upgrade {newest}')
+        # remove old library
+        _, current = current.split(LIBRARY_END, 1)
+        # append new library
+        current = header + current.lstrip()
+    baw.utils.file_replace(
+        path,
+        content=current,
+    )
+    msg = 'chore(Jenkins): upgrade pipe library'
+    if init_lib:
+        msg = 'chore(Jenkins): add pipe library'
+    baw.git.commit(root, source=path, message=msg)
+    return baw.utils.SUCCESS
+
+
 def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
 
@@ -110,6 +150,26 @@ def image_newest() -> str:
     )
     result = f'{repository}/{imagename}:{version}'
     return result
+
+
+def library_newest() -> str:
+    base = 'http://169.254.149.20:6300'
+    user = 'caelum'
+    repo = 'jenkins'
+    branch = 'master'
+    url = f'{base}/api/v1/repos/{user}/{repo}/branches/{branch}'
+    cmd = f'curl {url}'
+    completed = baw.runtime.run(command=cmd, cwd=os.getcwd())
+    if baw.config.testing():
+        return 'd84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d'
+    if completed.returncode:
+        baw.utils.error(completed)
+        sys.exit(completed.returncode)
+    stdout = completed.stdout
+    # "id":"d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d"
+    matched = re.search(r'"id"\:"(\w{40})"', stdout)
+    commit = matched[1]
+    return commit
 
 
 def image_args() -> str:
@@ -139,6 +199,8 @@ def run(args: dict):
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
+    if action == 'library':
+        return library(root)
     if action == 'test':
         baw.utils.error('not implemented')
     return baw.utils.FAILURE
@@ -151,6 +213,6 @@ def extend_cli(parser):
         help='manage the jenkins file',
         nargs='?',
         const='test',
-        choices='init upgrade test'.split(),
+        choices='init upgrade test library'.split(),
     )
     cli.set_defaults(func=run)
