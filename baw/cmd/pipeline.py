@@ -126,19 +126,20 @@ def image_args() -> str:
 
 def run(args: dict):
     root = baw.cmd.utils.get_root(args)
-    if args.get('action') == 'init':
+    action = args.get('action')
+    if action == 'init':
         return init(
             root,
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
-    if args.get('action') == 'upgrade':
+    if action == 'upgrade':
         return upgrade(
             root,
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
-    if args.get('action') == 'test':
+    if action == 'test':
         baw.utils.error('not implemented')
     return baw.utils.FAILURE
 
