@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.12.0 (2022-10-16)
+
+### Feature
+
+* use verbose flag to debug gitea access (29ada513dc84)
+* add library upgrade command (fd019656d67d)
+
+### Fix
+
+* do not skip longrun if running nightly (398156a99a3b)
+
+### Chore
+
+* add gitea env variable (a46e4c297a78)
+
 ## v1.11.0 (2022-10-12)
 
 ### Feature
