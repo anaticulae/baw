@@ -12,6 +12,7 @@ import re
 import sys
 
 import baw.cmd.utils
+import baw.config
 import baw.git
 import baw.resources
 import baw.run
@@ -153,7 +154,7 @@ def image_newest() -> str:
 
 
 def library_newest() -> str:
-    base = 'http://169.254.149.20:6300'
+    base = baw.config.gitea_server()
     user = 'caelum'
     repo = 'jenkins'
     branch = 'master'

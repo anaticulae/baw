@@ -71,6 +71,20 @@ def venv_always() -> bool:
     return False
 
 
+def gitea_server() -> str:
+    """\
+    >>> gitea_server()
+    '...'
+    """
+    try:
+        server = os.environ['GITEA_SERVER_URL']
+    except KeyError:
+        baw.utils.error('missing GITEA_SERVER_URL')
+        sys.exit(baw.utils.FAILURE)
+    server = str(server)
+    return server
+
+
 @functools.lru_cache()
 def name(root: str):
     assert os.path.exists(root)
