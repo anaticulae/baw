@@ -107,10 +107,7 @@ def create_pattern(
     if tmp:
         selected.extend(TMP)
     if tests:
-        selected.extend([
-            '.pytest_cache',
-            '.tmp/pytest_cache',
-        ])
+        selected.extend(TESTS)
     return selected
 
 
@@ -147,6 +144,11 @@ build
 dist
 nano.save
 pytest.ini
+""".strip().splitlines()
+
+TESTS = """
+.pytest_cache
+.tmp/pytest_cache
 """.strip().splitlines()
 
 ResourceDir = collections.namedtuple('ResourceDir', 'path')
