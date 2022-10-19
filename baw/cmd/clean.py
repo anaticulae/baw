@@ -84,7 +84,7 @@ def clean_git(root: str):
 def clean_docs(root: str):
     doctmp = baw.config.docpath(root, mkdir=False)
     if not os.path.exists(doctmp):
-        baw.utils.log(f'already removed: {doctmp}')
+        baw.utils.log(f'no docs generated: {doctmp}')
         return
     baw.utils.log(f'clean docs {doctmp}')
     try:
@@ -92,7 +92,7 @@ def clean_docs(root: str):
     except OSError as fail:
         baw.utils.error(fail)
         sys.exit(baw.utils.FAILURE)
-    baw.utils.log('Finished')
+    baw.utils.log('finished')
 
 
 def create_pattern(
@@ -159,13 +159,13 @@ def clean_venv(root: str):
     if not os.path.exists(venv_path):
         baw.utils.log(f'venv environment does not exist {venv_path}')
         return
-    baw.utils.log(f'Try to clean venv environment {venv_path}')
+    baw.utils.log(f'clean venv: {venv_path}')
     try:
         shutil.rmtree(venv_path)
     except OSError as fail:
         baw.utils.error(fail)
         sys.exit(baw.utils.FAILURE)
-    baw.utils.log('Finished')
+    baw.utils.log('done')
 
 
 def remove_readonly(func, path, _):  # pylint:disable=W0613
