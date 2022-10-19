@@ -103,14 +103,7 @@ def create_pattern(
 ) -> list:
     selected = []
     if resources:
-        # TODO: HACK
-        try:
-            import power  # pylint:disable=import-outside-toplevel
-            tmpdir = power.generated(project=os.path.split(root)[1])
-            if os.path.exists(tmpdir):
-                selected.append(ResourceDir(tmpdir))
-        except ModuleNotFoundError as error:
-            baw.utils.error(f'install power to clean resources: {error}')
+        selected.extend(generated(root))
     if tmp:
         selected.extend(TMP)
     if tests:
@@ -118,6 +111,20 @@ def create_pattern(
             '.pytest_cache',
             '.tmp/pytest_cache',
         ])
+    return selected
+
+
+def generated(root) -> list:
+    try:
+        import power  # pylint:disable=import-outside-toplevel
+    except ModuleNotFoundError as error:
+        baw.utils.error(f'install `power` to clean resources: {error}')
+        return []
+    project = os.path.split(root)[1]
+    tmpdir = power.generated(project=project)
+    selected = []
+    if os.path.exists(tmpdir):
+        selected.append(ResourceDir(tmpdir))
     return selected
 
 
