@@ -176,7 +176,7 @@ def run_test(
 
 
 def publish(root, verbose, release_type, venv: bool = False):
-    baw.utils.log("Update version tag")
+    baw.utils.log('update version tag')
     with temp_semantic_config(root, verbose, venv=venv) as cfg:
         release_type = select_release_type(release_type, cfg=cfg)
         cmd = f'baw_semantic_release -v DEBUG publish {release_type}'
