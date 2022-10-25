@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.13.0 (2022-10-25)
+
+### Feature
+
+* disable new pylint (21c9515bfefc)
+
+### Fix
+
+* adjust log message (cfd5f96246ac)
+
 ## v1.12.0 (2022-10-16)
 
 ### Feature
