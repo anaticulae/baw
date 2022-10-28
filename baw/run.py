@@ -198,8 +198,6 @@ def run_clean(args):
 
 def run_test(args):
     root = baw.cmd.utils.get_root(args)
-    if not args.get('test', False):
-        return baw.utils.SUCCESS
     testconfig = []
     if args['n'] != '1':
         testconfig += [f'-n={args["n"]}']
