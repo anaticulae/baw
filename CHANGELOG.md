@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.15.0 (2022-10-28)
+
+### Feature
+
+* replace power with smaller resinf (3f1bfd15cf6f)
+* move pattern definition into a separate file (77c1d074d870)
+* upgrade baw shortcuts (fa8c179ff78e)
+* add separate test generator step (517a6f077d96)
+
+### Chore
+
+* sort requirements (8cd1b289f748)
+* add resinf (326e686c9ac8)
+
 ## v1.14.0 (2022-10-28)
 
 ### Feature
