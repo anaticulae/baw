@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.14.0 (2022-10-28)
+
+### Feature
+
+* add typing converter (d66b2af16741)
+* increase refactor list (b114e5b36bdf)
+* add refactor cmd (a43ed26e196d)
+
+### Chore
+
+* upgrade requirements.txt (a8dc80b2a3b9)
+
 ## v1.13.0 (2022-10-25)
 
 ### Feature
