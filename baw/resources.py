@@ -180,6 +180,8 @@ SETUP_PY = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.tpy'))
 SETUP_CFG = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.cfg'))
 RELEASE_PLAN = baw.utils.file_read(os.path.join(TEMPLATES, 'docs/plan.rst'))
 
+REFACTOR = baw.utils.file_read(os.path.join(TEMPLATES, 'refactor'))
+
 DOC_CONF = baw.utils.file_read(os.path.join(TEMPLATES, 'conf.py'))
 
 ISORT_TEMPLATE = baw.utils.file_read(ISORT_PATH)

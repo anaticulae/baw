@@ -14,6 +14,7 @@ import utila
 
 import baw.cmd.utils
 import baw.git
+import baw.resources
 import baw.utils
 
 
@@ -40,53 +41,6 @@ def run(
     sys.exit(baw.utils.SUCCESS)
 
 
-TODO = """\
-assert_type_list(                            asserts_types(
-iflatten(                                    iflat(
-intersecting_rectangle(                      rect_intersecting(
-intersecting_rectangle_cluster(              rect_intersecting_cluster(
-islist(                                      iterable(
-level_temp(                                  level_tmp(
-log_stacktrace(                              print_stacktrace(
-make_unique(                                 unique(
-manhatten(                                   manhattan(
-not_none(                                    notnone(
-parse_numbers(                               parse_ints(
-ranged_list(                                 rlist(
-ranged_tuple(                                rtuple(
-rectangle_border_points(                     rect_border_points(
-rectangle_center(                            rect_center(
-rectangle_ensure_bounding(                   rect_ensure_bounding(
-rectangle_height(                            rect_height(
-rectangle_height(                            rect_height(
-rectangle_inside(                            rect_inside(
-rectangle_intersecting(                      rect_intersecting(
-rectangle_max(                               rect_max(
-rectangle_merge(                             rect_merge(
-rectangle_overlapping(                       rect_overlapping(
-rectangle_roundsmall(                        rect_roundsmall(
-rectangle_scale(                             rect_scale(
-rectangle_size(                              rect_size(
-rectangle_width(                             rect_width(
-utila.flatten(                               utila.flat(
-yaml_from_raw_or_path(                       yaml_load(
-
-FixedFooterInformation(                      FixedFooterInfo(
-FixedHeaderInformation(                      FixedHeaderInfo(
-FootRawNote(                                 FootNoteRaw(
-FooterInformation(                           FooterInfo(
-HeaderInformation(                           HeaderInfo(
-MovingFooterInformation(                     MovingFooterInfo(
-PagesFooterInformation(                      PagesFooterInfo(
-
-typing.List                                  list
-typing.Tuple                                 tuple
-typing.Dict                                  dict
-
-typing.Iterable                              collections.abc.Iterable
-"""
-
-
 def pattern_run(root: str, verbose: bool) -> bool:
     splitted = todo()
     changed = False
@@ -109,7 +63,7 @@ def todo() -> dict:
     True
     """
     result = {}
-    for line in TODO.splitlines():
+    for line in baw.resources.REFACTOR.splitlines():
         line = line.strip()
         if not line:
             continue
