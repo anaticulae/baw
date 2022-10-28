@@ -36,7 +36,7 @@ def publish(root: str, verbose: bool = False, venv: bool = True):
     python = baw.config.python(root)
     command = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
-        baw.utils.log(f'build distribution: {command}')
+        baw.utils.log(f'build dist: {command}')
     completed = baw.runtime.run_target(
         root,
         command,
