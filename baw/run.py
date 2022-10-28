@@ -198,21 +198,7 @@ def run_clean(args):
 
 def run_test(args):
     root = baw.cmd.utils.get_root(args)
-    testconfig = []
-    if args['n'] != '1':
-        testconfig += [f'-n={args["n"]}']
-    if args['k']:
-        kselected = args["k"]
-        if '.' in kselected:
-            testconfig += [f'--pyargs {kselected}']
-        else:
-            testconfig += [f'-k {kselected}']
-    if args['x']:
-        testconfig += ['-x ']
-    if args['config']:
-        testconfig += args['config']
-    if args['junit_xml']:
-        testconfig += [f'--junit-xml="{args["junit_xml"]}"']
+    testconfig = create_testconfig(args)
     selected = args['test']
     generate = selected == 'generate'
     generate |= args['generate']  # TODO: REMOVE LEGACY
@@ -234,6 +220,25 @@ def run_test(args):
         venv=args.get('venv', False),
     )
     return result
+
+
+def create_testconfig(args: dict) -> list:
+    testconfig = []
+    if args['n'] != '1':
+        testconfig += [f'-n={args["n"]}']
+    if args['k']:
+        kselected = args["k"]
+        if '.' in kselected:
+            testconfig += [f'--pyargs {kselected}']
+        else:
+            testconfig += [f'-k {kselected}']
+    if args['x']:
+        testconfig += ['-x ']
+    if args['config']:
+        testconfig += args['config']
+    if args['junit_xml']:
+        testconfig += [f'--junit-xml="{args["junit_xml"]}"']
+    return testconfig
 
 
 def run_doc(args: dict):
