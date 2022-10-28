@@ -78,6 +78,12 @@ FooterInformation(                           FooterInfo(
 HeaderInformation(                           HeaderInfo(
 MovingFooterInformation(                     MovingFooterInfo(
 PagesFooterInformation(                      PagesFooterInfo(
+
+typing.List                                  list
+typing.Tuple                                 tuple
+typing.Dict                                  dict
+
+typing.Iterable                              collections.abc.Iterable
 """
 
 
