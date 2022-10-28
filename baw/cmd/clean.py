@@ -14,6 +14,8 @@ import shutil
 import stat
 import sys
 
+import resinf
+
 import baw.config
 import baw.runtime
 
@@ -112,13 +114,8 @@ def create_pattern(
 
 
 def generated(root) -> list:
-    try:
-        import power  # pylint:disable=import-outside-toplevel
-    except ModuleNotFoundError as error:
-        baw.utils.error(f'install `power` to clean resources: {error}')
-        return []
     project = os.path.split(root)[1]
-    tmpdir = power.generated(project=project)
+    tmpdir = resinf.generated(project=project)
     selected = []
     if os.path.exists(tmpdir):
         selected.append(ResourceDir(tmpdir))

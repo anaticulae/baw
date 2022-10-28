@@ -11,6 +11,8 @@ import argparse
 import functools
 import os
 
+import resinf
+
 import baw.cmd.utils
 import baw.run
 import baw.runtime
@@ -26,8 +28,7 @@ def main():
 
 
 def run(root, cmd, worker: int = 1):
-    import power
-    generated = power.generated(project=root)
+    generated = resinf.generated(project=root)
     assert os.path.exists(generated), str(generated)
     todo = []
     files = [str(item) for item in os.listdir(generated) if '_' in str(item)]

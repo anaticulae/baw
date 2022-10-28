@@ -11,6 +11,8 @@ import glob
 import os
 import sys
 
+import resinf
+
 import baw.config
 import baw.project
 import baw.runtime
@@ -36,13 +38,8 @@ def openme(root: str, path: str = None, prints: bool = False):
 
 
 def open_generated(root: str, console: bool = False):
-    try:
-        import power  # pylint:disable=C0415
-    except ImportError:
-        baw.utils.error('require power')
-        sys.exit(baw.utils.FAILURE)
     name = os.path.split(root)[1]
-    generated = power.generated(project=name)
+    generated = resinf.generated(project=name)
     if console:
         baw.utils.log(generated)
         return
