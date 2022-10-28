@@ -41,6 +41,19 @@ def run(
 
 
 TODO = """\
+assert_type_list(                            asserts_types(
+iflatten(                                    iflat(
+intersecting_rectangle(                      rect_intersecting(
+intersecting_rectangle_cluster(              rect_intersecting_cluster(
+islist(                                      iterable(
+level_temp(                                  level_tmp(
+log_stacktrace(                              print_stacktrace(
+make_unique(                                 unique(
+manhatten(                                   manhattan(
+not_none(                                    notnone(
+parse_numbers(                               parse_ints(
+ranged_list(                                 rlist(
+ranged_tuple(                                rtuple(
 rectangle_border_points(                     rect_border_points(
 rectangle_center(                            rect_center(
 rectangle_ensure_bounding(                   rect_ensure_bounding(
@@ -55,7 +68,16 @@ rectangle_roundsmall(                        rect_roundsmall(
 rectangle_scale(                             rect_scale(
 rectangle_size(                              rect_size(
 rectangle_width(                             rect_width(
-utila.flatten_content(                       utila.flatten(
+utila.flatten(                               utila.flat(
+yaml_from_raw_or_path(                       yaml_load(
+
+FixedFooterInformation(                      FixedFooterInfo(
+FixedHeaderInformation(                      FixedHeaderInfo(
+FootRawNote(                                 FootNoteRaw(
+FooterInformation(                           FooterInfo(
+HeaderInformation(                           HeaderInfo(
+MovingFooterInformation(                     MovingFooterInfo(
+PagesFooterInformation(                      PagesFooterInfo(
 """
 
 
