@@ -19,6 +19,7 @@ import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.publish
+import baw.cmd.refactor
 import baw.cmd.release
 import baw.cmd.sh
 import baw.cmd.sync
@@ -52,6 +53,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.lint.extend_cli(cmds)
     baw.cmd.format.extend_cli(cmds)
     baw.cmd.info.extend_cli(cmds)
+    baw.cmd.refactor.extend_cli(cmds)
     return parser
 
 
