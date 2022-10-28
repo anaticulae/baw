@@ -401,6 +401,6 @@ def extend_cli(parser):
         help='',
         nargs='?',
         default='fast',
-        choices='skip docs fast long nightly all'.split(),
+        choices='skip docs fast long generate nightly all'.split(),
     )
     test.set_defaults(func=baw.run.run_test)
