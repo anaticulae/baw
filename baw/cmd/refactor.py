@@ -24,24 +24,15 @@ def run(
     if not baw.git.is_clean(root, verbose=False):
         baw.utils.error(f'clean before refactor: {root}')
         sys.exit(baw.utils.FAILURE)
-    splitted = todo()
-    changed = False
-    for path in files(root):
-        content = baw.utils.file_read(path)
-        before = hash(content)
-        for key, value in splitted.items():
-            content = content.replace(key, value)
-        if hash(content) != before:
-            if verbose:
-                baw.utils.log(f'refactor: {path}')
-            changed = True
-        baw.utils.file_replace(path, content)
+    changed = pattern_run(
+        root,
+        verbose=verbose,
+    )
     if changed:
-        msg = 'refactor(replace): automated replacement'
         baw.git.commit(
             root,
             source='.',
-            message=msg,
+            message='refactor(replace): automated replacement',
             verbose=False,
         )
     else:
@@ -66,6 +57,22 @@ rectangle_size(                              rect_size(
 rectangle_width(                             rect_width(
 utila.flatten_content(                       utila.flatten(
 """
+
+
+def pattern_run(root: str, verbose: bool) -> bool:
+    splitted = todo()
+    changed = False
+    for path in files(root):
+        content = baw.utils.file_read(path)
+        before = hash(content)
+        for key, value in splitted.items():
+            content = content.replace(key, value)
+        if hash(content) != before:
+            if verbose:
+                baw.utils.log(f'refactor: {path}')
+            changed = True
+        baw.utils.file_replace(path, content)
+    return changed
 
 
 def todo() -> dict:
