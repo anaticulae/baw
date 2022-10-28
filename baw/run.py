@@ -213,16 +213,19 @@ def run_test(args):
         testconfig += args['config']
     if args['junit_xml']:
         testconfig += [f'--junit-xml="{args["junit_xml"]}"']
+    selected = args['test']
+    generate = selected == 'generate'
+    generate |= args['generate']  # TODO: REMOVE LEGACY
     result = baw.cmd.test.run_test(
         root=root,
         coverage=args['cov'],
-        docs='docs' in args['test'],
-        fast='fast' in args['test'],
-        longrun='long' in args['test'],
-        nightly='nightly' in args['test'],
-        alls='all' in args['test'],
+        docs=selected == 'docs',
+        fast=selected == 'fast',
+        longrun=selected == 'long',
+        nightly=selected == 'nightly',
+        alls=selected == 'all',
         pdb=args['pdb'],
-        generate=args['generate'],
+        generate=generate,
         stash=args['stash'],
         instafail=args['instafail'],
         testconfig=testconfig,
