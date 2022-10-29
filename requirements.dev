@@ -8,3 +8,5 @@
 # =============================================================================
 
 power>=2.17.0<3.0.0
+# ensure that baw works if hardcore is installed
+hardcore>=0.8.0<1.0.0
