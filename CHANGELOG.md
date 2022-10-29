@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.15.1 (2022-10-29)
+
+### Chore
+
+* add hardcore to verify usage (7480a30d2c89)
+* upgrade requirements.txt (5d5a877a7a7c)
+
 ## v1.15.0 (2022-10-28)
 
 ### Feature
