@@ -41,3 +41,12 @@ typing.Tuple                                 tuple
 typing.Dict                                  dict
 
 typing.Iterable                              collections.abc.Iterable
+
+list[texmex.PageTextNavigator]               texmex.PTNs
+
+PageTextContentNavigators                    PTCNs
+PageTextContentNavigator                     PTCN
+PageTextNavigatorMode                        PTNMode
+PageTextNavigators                           PTNs
+PageTextNavigator                            PTN
+HIGHNOTE_MIN_RISE                            HIGHNOTE_RISE_MIN
