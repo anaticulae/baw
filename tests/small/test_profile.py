@@ -22,6 +22,7 @@ def test_commits():
         expected = (5,)
         if os.environ.get('JENKINS_HOME', False):
             # reduced checkout may only check out a single version or may
-            # a single non feature commit(0)
-            expected = (5, 1, 0)
+            # a single non feature commit(0).
+            # Skip testing result cause it is repository dependent.
+            return
     assert len(commits) in expected
