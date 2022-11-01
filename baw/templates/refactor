@@ -50,3 +50,12 @@ PageTextNavigatorMode                        PTNMode
 PageTextNavigators                           PTNs
 PageTextNavigator                            PTN
 HIGHNOTE_MIN_RISE                            HIGHNOTE_RISE_MIN
+
+create_pagetextcontentnavigators_fromfile                   ptcn_fromfile
+create_pagetextcontentnavigators_frompath                   ptcn_frompath
+create_pagetextnavigators_fromfile                          ptn_fromfile
+create_pagetextnavigators_frompath                          ptn_frompath
+create_fontstore_frompath                                   fs_frompath
+
+create_pagetextnavigators                                   create_ptns
+create_pagetextcontentnavigators                            create_ptcns
