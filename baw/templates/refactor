@@ -59,3 +59,5 @@ create_fontstore_frompath                                   fs_frompath
 
 create_pagetextnavigators                                   create_ptns
 create_pagetextcontentnavigators                            create_ptcns
+
+dict()                                                      {}
