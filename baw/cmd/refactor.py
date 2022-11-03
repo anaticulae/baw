@@ -68,7 +68,11 @@ def todo() -> dict:
         if not line:
             continue
         splitted = re.split(r'(.*?)[ ]{10,}(.*?)', line)
-        result[splitted[1]] = splitted[3]
+        try:
+            result[splitted[1]] = splitted[3]
+        except IndexError:
+            baw.utils.error(f'not enough spaces between: {line}')
+            sys.exit(baw.utils.FAILURE)
     return result
 
 
