@@ -14,6 +14,7 @@ import sys
 import baw.cmd.info
 import baw.cmd.utils
 import baw.config
+import baw.runtime
 import baw.utils
 
 
@@ -22,6 +23,9 @@ def create(  # pylint:disable=W0613
     verbose: bool = False,
     venv: bool = False,
 ):
+    if not baw.runtime.hasprog('docker'):
+        baw.utils.error('require docker')
+        return baw.utils.FAILURE
     root = baw.cmd.utils.determine_root(root)
     tag_new = tag(root)
     with dockerfile(root) as path:
