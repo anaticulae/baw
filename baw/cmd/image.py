@@ -7,6 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+import os
+import sys
+
 import baw.cmd.utils
 import baw.utils
 
@@ -16,7 +20,39 @@ def create(
     verbose: bool = False,
     venv: bool = False,
 ):
+    with dockerfile(root) as path:
+        pass
     return baw.utils.SUCCESS
+
+
+@contextlib.contextmanager
+def dockerfile(root: str):
+    name = baw.cmd.info.requirement_hash(root, verbose=True)
+    # use own tmpfile cause TemporaryFile(delete=True) seems no supported
+    # at linux, parameter delete is missing.
+    config = os.path.join(root, name)
+    content = requirements(root)
+    baw.utils.file_replace(config, content)
+    yield config
+    # remove file
+    os.unlink(config)
+
+
+def requirements(root: str) -> str:
+    r"""\
+    >>> requirements(__file__)
+    'COPY requirements.txt .\nCOPY requirements.dev .\n'
+    """
+    root = baw.cmd.utils.determine_root(root)
+    if not root:
+        sys.exit(baw.utils.FAILURE)
+    result = ''
+    for item in 'requirements.txt requirements.dev requirements.all'.split():
+        path = os.path.join(root, item)
+        if not os.path.exists(path):
+            continue
+        result += f'COPY {item} .{baw.utils.NEWLINE}'
+    return result
 
 
 def run(args: dict):
@@ -44,7 +80,7 @@ def extend_cli(parser):
         'action',
         help='manage the docker image',
         nargs='?',
-        const='test',
+        const='create',
         choices='create update delete'.split(),
     )
     cli.set_defaults(func=run)
