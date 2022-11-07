@@ -39,10 +39,10 @@ def prints(root, value: str, verbose: bool = False):
         print_covreport(root)
         return
     if value == 'requirement':
-        if verbose:
-            name = baw.config.shortcut(root)
-            baw.utils.log(f'{name}-', end='')
-        baw.utils.log(print_requirement_hash(root))
+        baw.utils.log(print_requirement_hash(
+            root,
+            verbose=verbose,
+        ))
         return
     if value == 'name':
         baw.utils.log(baw.config.name(root))
@@ -80,11 +80,13 @@ def print_covreport(root: str):
     sys.exit(baw.utils.SUCCESS)
 
 
-def print_requirement_hash(root: str) -> str:
+def print_requirement_hash(root: str, verbose: bool = False) -> str:
     """\
     >>> import baw
-    >>> str(print_requirement_hash(baw.ROOT))
+    >>> print_requirement_hash(baw.ROOT)
     '...'
+    >>> print_requirement_hash(baw.ROOT, verbose=True)
+    'baw-...'
     """
     todo = 'Jenkinsfile requirements.txt requirements.dev requirements.extra'.split()  # yapf:disable
     content = ''
@@ -93,7 +95,10 @@ def print_requirement_hash(root: str) -> str:
         if not os.path.exists(path):
             continue
         content += baw.utils.file_read(path)
-    hashed = baw.utils.binhash(content)
+    hashed = str(baw.utils.binhash(content))
+    if verbose:
+        name = baw.config.shortcut(root)
+        hashed = f'{name}-{hashed}'
     return hashed
 
 
