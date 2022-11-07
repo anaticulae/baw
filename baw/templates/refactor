@@ -61,3 +61,8 @@ create_pagetextnavigators                                   create_ptns
 create_pagetextcontentnavigators                            create_ptcns
 
 dict()                                                      {}
+
+monkeypatch                                                 mp
+testdir                                                     td
+success=True                                                expect=True
+success=False                                               expect=False
