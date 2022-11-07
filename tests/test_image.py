@@ -10,8 +10,10 @@
 import os
 
 import baw.cmd.image
+import tests
 
 
+@tests.hasdocker
 def test_cmd_image_create(simple, capsys):  # pylint:disable=W0621,W0613
     simple[0]('image create')
 

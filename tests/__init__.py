@@ -64,6 +64,7 @@ def hasprog(program: str):
 
 hasgit = hasprog('git')
 hasbaw = hasprog('baw')
+hasdocker = hasprog('docker')
 
 
 def run(command: str, cwd: str = None):
