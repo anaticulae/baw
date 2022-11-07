@@ -12,6 +12,7 @@ import os
 import sys
 
 import baw.cmd.utils
+import baw.config
 import baw.utils
 
 
@@ -31,11 +32,24 @@ def dockerfile(root: str):
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = os.path.join(root, name)
-    content = requirements(root)
+    content = header(root) + baw.utils.NEWLINE * 2 + requirements(root)
     baw.utils.file_replace(config, content)
     yield config
     # remove file
     os.unlink(config)
+
+
+def header(root: str) -> str:
+    """\
+    >>> header(__file__)
+    'FROM .../...'
+    """
+    root = baw.cmd.utils.determine_root(root)
+    if not root:
+        sys.exit(baw.utils.FAILURE)
+    image = baw.config.docker_image(root)
+    result = f'FROM {image}'
+    return result
 
 
 def requirements(root: str) -> str:
