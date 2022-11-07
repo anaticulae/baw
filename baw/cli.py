@@ -14,6 +14,7 @@ import sys
 import baw.cmd.doc
 import baw.cmd.format
 import baw.cmd.ide
+import baw.cmd.image
 import baw.cmd.info
 import baw.cmd.install
 import baw.cmd.lint
@@ -54,6 +55,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.format.extend_cli(cmds)
     baw.cmd.info.extend_cli(cmds)
     baw.cmd.refactor.extend_cli(cmds)
+    baw.cmd.image.extend_cli(cmds)
     return parser
 
 
