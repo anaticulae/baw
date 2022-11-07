@@ -10,6 +10,6 @@
 semver>=2.13.0<3.0.0
 python_semantic_release==7.32.1
 
-utila>=2.92.0<4.0.0
+utila>=2.93.0<4.0.0
 # required for resource generation
 resinf>=0.2.0<1.0.0
