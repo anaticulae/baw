@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.16.0 (2022-11-07)
+
+### Feature
+
+* add dict replacement (36af6c259234)
+* inform user about wrong refactoring template (d9152d85567f)
+* add ptn creator (76858f9257dd)
+* add texmex refactor rules (6decb36558ce)
+
+### Chore
+
+* upgrade utilatest (db88e2a0a2c2)
+* upgrade requirements.txt (90134a6254d3)
+
 ## v1.15.1 (2022-10-29)
 
 ### Chore
