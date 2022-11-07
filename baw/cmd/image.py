@@ -14,6 +14,7 @@ import sys
 import baw.cmd.utils
 import baw.config
 import baw.utils
+import baw.cmd.info
 
 
 def create(
@@ -24,6 +25,18 @@ def create(
     with dockerfile(root) as path:
         pass
     return baw.utils.SUCCESS
+
+
+def tag(root: str) -> str:
+    """\
+    >>> tag(__file__)
+    '.../TRY_baw-...'
+    """
+    root = baw.cmd.utils.determine_root(root)
+    testing = baw.config.docker_testing()
+    name = baw.cmd.info.requirement_hash(root, verbose=True)
+    result = f'{testing}/TRY_{name}'
+    return result
 
 
 @contextlib.contextmanager
