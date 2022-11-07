@@ -11,19 +11,34 @@ import contextlib
 import os
 import sys
 
+import baw.cmd.info
 import baw.cmd.utils
 import baw.config
 import baw.utils
-import baw.cmd.info
 
 
-def create(
+def create(  # pylint:disable=W0613
     root: str,
     verbose: bool = False,
     venv: bool = False,
 ):
+    root = baw.cmd.utils.determine_root(root)
+    tag_new = tag(root)
     with dockerfile(root) as path:
-        pass
+        cmd = f'docker build -t {tag_new} -f {path} .'
+        completed = baw.runtime.run(cmd, cwd=root)
+        if completed.returncode:
+            if completed.stdout:
+                baw.utils.error(completed.stdout)
+            baw.utils.error(completed.stderr)
+            return baw.utils.FAILURE
+        cmd = f'docker push {tag_new}'
+        completed = baw.runtime.run(cmd, cwd=root)
+        if completed.returncode:
+            if completed.stdout:
+                baw.utils.error(completed.stdout)
+            baw.utils.error(completed.stderr)
+            return baw.utils.FAILURE
     return baw.utils.SUCCESS
 
 
