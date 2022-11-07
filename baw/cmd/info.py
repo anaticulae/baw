@@ -39,7 +39,7 @@ def prints(root, value: str, verbose: bool = False):
         print_covreport(root)
         return
     if value == 'requirement':
-        baw.utils.log(print_requirement_hash(
+        baw.utils.log(requirement_hash(
             root,
             verbose=verbose,
         ))
@@ -80,12 +80,12 @@ def print_covreport(root: str):
     sys.exit(baw.utils.SUCCESS)
 
 
-def print_requirement_hash(root: str, verbose: bool = False) -> str:
+def requirement_hash(root: str, verbose: bool = False) -> str:
     """\
     >>> import baw
-    >>> print_requirement_hash(baw.ROOT)
+    >>> requirement_hash(baw.ROOT)
     '...'
-    >>> print_requirement_hash(baw.ROOT, verbose=True)
+    >>> requirement_hash(baw.ROOT, verbose=True)
     'baw-...'
     """
     todo = 'Jenkinsfile requirements.txt requirements.dev requirements.extra'.split()  # yapf:disable
