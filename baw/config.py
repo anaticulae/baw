@@ -85,6 +85,21 @@ def gitea_server() -> str:
     return server
 
 
+def docker_testing() -> str:
+    """\
+    >>> docker_testing()
+    '...'
+    """
+    try:
+        server = os.environ['CAELUM_DOCKER_TEST']
+    except KeyError:
+        baw.utils.error('missing CAELUM_DOCKER_TEST')
+        sys.exit(baw.utils.FAILURE)
+    else:
+        server = str(server)
+    return server
+
+
 @functools.lru_cache()
 def name(root: str):
     assert os.path.exists(root)
