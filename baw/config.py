@@ -100,6 +100,21 @@ def docker_testing() -> str:
     return server
 
 
+def docker_runtime() -> str:
+    """\
+    >>> docker_runtime()
+    '...'
+    """
+    try:
+        host = os.environ['CAELUM_DOCKER_RUNTIME']
+    except KeyError:
+        baw.utils.error('missing CAELUM_DOCKER_RUNTIME')
+        sys.exit(baw.utils.FAILURE)
+    else:
+        host = str(host)
+    return host
+
+
 @functools.lru_cache()
 def name(root: str):
     assert os.path.exists(root)
