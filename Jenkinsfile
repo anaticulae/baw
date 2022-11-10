@@ -14,6 +14,7 @@ pipeline{
     environment{
         GITEA_SERVER_URL = '169.254.149.20:6300'
         CAELUM_DOCKER_TEST = '169.254.149.20:6001'
+        CAELUM_DOCKER_RUNTIME='169.254.149.20:2375'
     }
 
     stages{
