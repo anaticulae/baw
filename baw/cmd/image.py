@@ -23,26 +23,42 @@ def create(  # pylint:disable=W0613
     verbose: bool = False,
     venv: bool = False,
 ):
-    if not baw.runtime.hasprog('docker'):
-        baw.utils.error('require docker')
-        return baw.utils.FAILURE
     root = baw.cmd.utils.determine_root(root)
     tag_new = tag(root)
     with dockerfile(root) as path:
-        cmd = f'docker build -t {tag_new} -f {path} .'
+        todo = [
+            f'build -t {tag_new} -f {path} .',
+            f'push {tag_new}',
+        ]
+        if returncode := docker_run(todo, root):
+            return returncode
+    return baw.utils.SUCCESS
+
+
+def docker_run(
+    todo: list,
+    root: str,
+    service: bool = True,
+) -> int:
+    if isinstance(todo, str):
+        todo = [todo]
+    if service:
+        return docker_service(todo, root)
+    if not baw.runtime.hasprog('docker'):
+        baw.utils.error('require docker')
+        return baw.utils.FAILURE
+    for job in todo:
+        cmd = f'docker {job}'
         completed = baw.runtime.run(cmd, cwd=root)
         if completed.returncode:
             if completed.stdout:
                 baw.utils.error(completed.stdout)
             baw.utils.error(completed.stderr)
             return baw.utils.FAILURE
-        cmd = f'docker push {tag_new}'
-        completed = baw.runtime.run(cmd, cwd=root)
-        if completed.returncode:
-            if completed.stdout:
-                baw.utils.error(completed.stdout)
-            baw.utils.error(completed.stderr)
-            return baw.utils.FAILURE
+    return baw.utils.SUCCESS
+
+
+def docker_service(todo: list, root: str) -> int:  # pylint:disable=W0613
     return baw.utils.SUCCESS
 
 
