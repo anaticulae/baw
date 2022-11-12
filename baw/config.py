@@ -371,6 +371,14 @@ def pip_parallel_worker(root: str) -> bool:
     return result
 
 
+def changelog(root: str) -> str:
+    for name in 'CHANGELOG CHANGELOG.md'.split():
+        path = os.path.join(root, name)
+        if os.path.exists(path):
+            return name
+    raise ValueError(f'could not locate changelog: {root}')
+
+
 def default_config(root: str, access: callable, default=None) -> bool:
     path = root if os.path.isfile(root) else config_path(root)
     if not os.path.exists(path):
