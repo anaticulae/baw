@@ -13,8 +13,11 @@ import re
 import baw.config
 import baw.utils
 
-# support __version__ = "1.0.0" and __version__ = '1.0.0'
-VERSION = r'__version__ = [\'\"](.*?)[\'\"]'
+# support __version__ = "1.0.0" and __version__ = '1.0.0' and '1.0.0'
+VERSION = (
+    r'__version__ = [\'\"](.*?)[\'\"]',
+    r'[\'\"](.*?)[\'\"]',
+)
 
 
 def determine(root: str) -> str:
@@ -26,13 +29,22 @@ def determine(root: str) -> str:
         version number in format (x.y.z)
     Raises:
         ValueError: if no __version__ can be located
+
+    >>> import baw.project
+    >>> determine(baw.project.determine_root(__file__))
+    '...'
     """
     assert os.path.exists(root)
-    short = baw.config.shortcut(root)
-
-    path = os.path.join(root, f'{short}/__init__.py')
+    # f'{short}/__init__.py:__version__'
+    version_path = baw.config.version(root).rstrip(':__version__')
+    path = os.path.join(root, version_path)
     content = baw.utils.file_read(path)
-    current = re.search(VERSION, content).group(1)
+    for pattern in VERSION:
+        parsed = re.search(pattern, content)
+        if not parsed:
+            continue
+        current = parsed.group(1)
+        return current
     if not current:
         raise ValueError(f'Could not locate __version__ in {path}')
     return current

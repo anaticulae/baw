@@ -201,9 +201,9 @@ def publish(root, verbose, release_type, venv: bool = False):
 
 @contextlib.contextmanager
 def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
-    short = baw.config.shortcut(root)
+    version = baw.config.version(root)
+    replaced = baw.resources.SETUP_CFG.replace('{{VERSION}}', version)
     changelog_path = baw.config.changelog(root)
-    replaced = baw.resources.SETUP_CFG.replace('{{SHORT}}', short)
     replaced = replaced.replace('{{CHANGELOG}}', changelog_path)
     if replaced == baw.resources.SETUP_CFG:
         baw.utils.error('while replacing template')

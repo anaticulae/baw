@@ -384,6 +384,20 @@ def changelog(root: str) -> str:
     raise ValueError(f'could not locate changelog: {root}')
 
 
+def version(root: str) -> str:
+    """\
+    >>> import baw.project
+    >>> version(baw.project.determine_root(__file__))
+    'baw/__init__.py:__version__'
+    """
+    path = os.path.join(root, 'VERSION')
+    if os.path.exists(path):
+        return path
+    short = shortcut(root)
+    result = f'{short}/__init__.py:__version__'
+    return result
+
+
 def default_config(root: str, access: callable, default=None) -> bool:
     path = root if os.path.isfile(root) else config_path(root)
     if not os.path.exists(path):
