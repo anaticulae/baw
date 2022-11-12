@@ -7,9 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import baw.cmd.test
 import baw.cmd.utils
 import baw.utils
-import baw.cmd.test
 
 
 def run(args: dict):

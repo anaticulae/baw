@@ -13,6 +13,7 @@ import sys
 
 import baw.cmd.doc
 import baw.cmd.format
+import baw.cmd.generate
 import baw.cmd.ide
 import baw.cmd.image
 import baw.cmd.info
@@ -25,7 +26,6 @@ import baw.cmd.release
 import baw.cmd.sh
 import baw.cmd.sync
 import baw.cmd.test
-import baw.cmd.generate
 import baw.run
 import baw.utils
 
