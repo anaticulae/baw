@@ -202,7 +202,9 @@ def publish(root, verbose, release_type, venv: bool = False):
 @contextlib.contextmanager
 def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     short = baw.config.shortcut(root)
+    changelog_path = baw.config.changelog(root)
     replaced = baw.resources.SETUP_CFG.replace('{{SHORT}}', short)
+    replaced = replaced.replace('{{CHANGELOG}}', changelog_path)
     if replaced == baw.resources.SETUP_CFG:
         baw.utils.error('while replacing template')
         sys.exit(baw.utils.FAILURE)
@@ -328,7 +330,7 @@ def reset_resources(
 ):
     short = baw.config.shortcut(root)
     initpath = os.path.join(short, '__init__.py')
-    changelog = 'CHANGELOG.md'
+    changelog = baw.config.changelog(root)
     to_reset = []
     ret = 0
     for item in [initpath, changelog]:

@@ -372,10 +372,15 @@ def pip_parallel_worker(root: str) -> bool:
 
 
 def changelog(root: str) -> str:
-    for name in 'CHANGELOG CHANGELOG.md'.split():
-        path = os.path.join(root, name)
+    """\
+    >>> import baw.project
+    >>> changelog(baw.project.determine_root(__file__))
+    'CHANGELOG.md'
+    """
+    for fname in 'CHANGELOG CHANGELOG.md'.split():
+        path = os.path.join(root, fname)
         if os.path.exists(path):
-            return name
+            return fname
     raise ValueError(f'could not locate changelog: {root}')
 
 
