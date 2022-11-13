@@ -199,6 +199,10 @@ def publish(root, verbose, release_type, venv: bool = False):
     return baw.utils.SUCCESS
 
 
+AUTO = 'commit_author = Automated Release <automated_release@ostia.la>'
+ME = 'commit_author = Helmut Konrad Fahrendholz <helmutus@outlook.com>'
+
+
 @contextlib.contextmanager
 def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     version = baw.config.version(root)
@@ -208,6 +212,10 @@ def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     if replaced == baw.resources.SETUP_CFG:
         baw.utils.error('while replacing template')
         sys.exit(baw.utils.FAILURE)
+    if 'VERSION' in version:
+        replaced = replaced.replace(AUTO, ME)
+        # do not use gitea token
+        replaced = replaced.replace('gitea_token_var=GITEA_TOKEN', '')
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = os.path.join(root, 'setup.cfg')
@@ -266,8 +274,8 @@ def determine_changelog(root: str, verbose: bool, venv: bool = False) -> str:
 
 
 def version_variables(root: str) -> str:
-    short = baw.config.shortcut(root)
-    result = f'-D "version_variable={short}/__init__.py:__version__" '
+    short = baw.config.version(root)
+    result = f'-D "version_variable={short}" '
     return result
 
 

@@ -392,7 +392,7 @@ def version(root: str) -> str:
     """
     path = os.path.join(root, 'VERSION')
     if os.path.exists(path):
-        return path
+        return 'VERSION:__version__'
     short = shortcut(root)
     result = f'{short}/__init__.py:__version__'
     return result
