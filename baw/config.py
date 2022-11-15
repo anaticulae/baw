@@ -85,6 +85,34 @@ def gitea_server() -> str:
     return server
 
 
+def git_author_name() -> str:
+    """\
+    >>> git_author_name()
+    '...'
+    """
+    try:
+        result = os.environ['GIT_AUTHOR_NAME']
+    except KeyError:
+        baw.utils.error('missing GIT_AUTHOR_NAME')
+        sys.exit(baw.utils.FAILURE)
+    result = str(result)
+    return result
+
+
+def git_author_email() -> str:
+    """\
+    >>> git_author_email()
+    '...'
+    """
+    try:
+        email = os.environ['GIT_AUTHOR_EMAIL']
+    except KeyError:
+        baw.utils.error('missing GIT_AUTHOR_EMAIL')
+        sys.exit(baw.utils.FAILURE)
+    email = str(email)
+    return email
+
+
 def docker_testing() -> str:
     """\
     >>> docker_testing()
