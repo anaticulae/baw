@@ -2,6 +2,48 @@
 
 Every noteable change is logged here.
 
+## v1.17.0 (2022-11-15)
+
+### Feature
+
+* use new config generator (6ddee3eab3be)
+* add static configuration, add changelog (85b275dff620)
+* extend config beautifier (ed0e1b51c1b5)
+* add class to write smarter release config (359015e637e6)
+* add method to determine git author and email (afad87fb6095)
+* add check that project is a basic project (dafed3066caa)
+* enable VERSION as possible version file (e71ae6e3f84e)
+* make version variable configurable (06e91aadb09d)
+* enable different changelog (bfe2bfbdf870)
+* add method to determine changelog (aa0625983f1b)
+* add test refactoring rule (2397333cc596)
+* add docker runtime (eb511fbd96ad)
+* add option to run docker over web service (2c77eaf4ea9b)
+* add separate generate cmd (a606fcb42254)
+* sort cli logical (299c2f8ba840)
+* ensure that docker is installed (69faac18530f)
+* add method to publish image (6feefaba2700)
+* add method to determine current git tag (c533828d4880)
+* add method to access docker test repository (2af0c56f7833)
+* add sync tool (4cfe09192ab5)
+* add header determiner (f364e44f1ca7)
+* add method to create dockerfile (a389d063e830)
+* extend refactor template (d773c31e41b1)
+* add docker image creation step (cbb5c7406d39)
+
+### Fix
+
+* do not run linter in non pythonic project (16d42c619177)
+
+### Chore
+
+* add docker runtime (50665391044d)
+* add docker (fab6bc10d633)
+* add docker testing repository (2d4e73f33d5b)
+* upgrade env (14fa2f29dcef)
+* upgrade dev tools (f3e7843c72aa)
+* upgrade requirements.txt (14ab074904a8)
+
 ## v1.16.0 (2022-11-07)
 
 ### Feature
