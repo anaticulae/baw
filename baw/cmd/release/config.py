@@ -27,7 +27,7 @@ class ReleaseConfig:
     def __init__(self, root: str):
         r"""\
         >>> str(ReleaseConfig(__file__))
-        'commit_author=Automated Release <automated_release@ostia.la>\n'
+        'commit_author=Autom...<...@ostia.la>\nversion_variable=baw/__init__.py:__version__\nchangelog_file=CHANGELOG.md\n...=GITEA_TOKEN\n'
         """
         self.root = baw.project.determine_root(root)
 
@@ -40,8 +40,31 @@ class ReleaseConfig:
             author = f'{author_name} <{author_email}>'
         return f'commit_author={author}'
 
+    @property
+    def version_variable(self) -> str:
+        value = baw.config.version(self.root)
+        return f'version_variable={value}'
+
+    @property
+    def changelog_file(self) -> str:
+        value = baw.config.changelog(self.root)
+        return f'changelog_file={value}'
+
+    @property
+    def gitea_token_var(self) -> str:
+        if not baw.config.basic(self.root):
+            return ''
+        return 'gitea_token_var=GITEA_TOKEN'
+
     def __str__(self) -> str:
-        result = self.commit_author + baw.utils.NEWLINE
+        todo = (
+            self.commit_author,
+            self.version_variable,
+            self.changelog_file,
+            self.gitea_token_var,
+            '',
+        )
+        result = baw.utils.NEWLINE.join(todo)
         return result
 
 
