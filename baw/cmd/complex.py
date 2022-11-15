@@ -7,10 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from baw.cmd.sync import sync as run_sync
-from baw.cmd.test import run_test
-from baw.utils import SUCCESS
-from baw.utils import error
+import baw.cmd.sync
+import baw.cmd.test
+import baw.utils
 
 
 def sync_and_test(
@@ -29,18 +28,18 @@ def sync_and_test(
 ):
     verbose = False if quiet else verbose
     if sync:
-        ret = run_sync(
+        ret = baw.cmd.sync.sync(
             root,
             packages=packages,
             verbose=verbose,
             venv=venv,
         )
         if ret:
-            error('\nSync failed, could not release.\n')
+            baw.utils.error('\nSync failed, could not release.\n')
             return ret
     if not test:
-        return SUCCESS
-    ret = run_test(
+        return baw.utils.SUCCESS
+    ret = baw.cmd.test.run_test(
         root,
         generate=generate,
         fast=test,
@@ -53,6 +52,6 @@ def sync_and_test(
     )
     if ret:
         if not quiet:
-            error('Tests failed.')
+            baw.utils.error('Tests failed.')
         return ret
-    return SUCCESS
+    return baw.utils.SUCCESS
