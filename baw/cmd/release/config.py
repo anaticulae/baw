@@ -8,6 +8,7 @@
 # =============================================================================
 
 import contextlib
+import functools
 import os
 import sys
 import textwrap
@@ -21,15 +22,35 @@ import baw.utils
 AUTOMATED = 'Automated Release <automated_release@ostia.la>'
 ME = 'commit_author = Helmut Konrad Fahrendholz <helmutus@outlook.com>'
 
+BASIC = """\
+[semantic_release]
+commit_changelog=True
+commit_subject={version} auto generated release
+version_source=commit
+changelog_sections=feature,fix,breaking,documentation,performance,chore
+changelog_components=baw.changelog.changelog_headers
+changelog_placeholder=# Changelog
+
+    Every noteable change is logged here.
+
+upload_to_repository=true
+upload_to_pypi=false
+upload_to_release=false
+
+hvcs=gitea
+"""
+
 
 class ReleaseConfig:
 
-    def __init__(self, root: str):
+    def __init__(self, root: str, verbose: bool = False, venv: bool = False):
         r"""\
         >>> str(ReleaseConfig(__file__))
-        'commit_author=Autom...<...@ostia.la>\nversion_variable=baw/__init__.py:__version__\nchangelog_file=CHANGELOG.md\n...=GITEA_TOKEN\n'
+        '[semantic_release]\n...commit_author=Autom...<...@ostia.la>\nversion_variable=...:__version__\nchangelog_file=CHANGELOG.md\n...=GITEA_TOKEN\ncommit_message=...'
         """
         self.root = baw.project.determine_root(root)
+        self.verbose = verbose
+        self.venv = venv
 
     @property
     def commit_author(self) -> str:
@@ -56,12 +77,29 @@ class ReleaseConfig:
             return ''
         return 'gitea_token_var=GITEA_TOKEN'
 
+    @functools.cached_property
+    def commit_message(self) -> str:
+        """\
+        >>> ReleaseConfig(__file__).commit_message
+        'commit_message=...'
+        """
+        if firstversion(self.root):
+            return 'commit_message=Initial Release'
+        changelog = determine_changelog(
+            self.root,
+            self.verbose,
+            venv=self.venv,
+        )
+        return f'commit_message={changelog}'
+
     def __str__(self) -> str:
         todo = (
+            BASIC,
             self.commit_author,
             self.version_variable,
             self.changelog_file,
             self.gitea_token_var,
+            self.commit_message,
             '',
         )
         result = baw.utils.NEWLINE.join(todo)
