@@ -14,11 +14,35 @@ import textwrap
 
 import baw.config
 import baw.git
+import baw.project
 import baw.resources
 import baw.utils
 
-AUTO = 'commit_author = Automated Release <automated_release@ostia.la>'
+AUTOMATED = 'Automated Release <automated_release@ostia.la>'
 ME = 'commit_author = Helmut Konrad Fahrendholz <helmutus@outlook.com>'
+
+
+class ReleaseConfig:
+
+    def __init__(self, root: str):
+        r"""\
+        >>> str(ReleaseConfig(__file__))
+        'commit_author=Automated Release <automated_release@ostia.la>\n'
+        """
+        self.root = baw.project.determine_root(root)
+
+    @property
+    def commit_author(self) -> str:
+        author = AUTOMATED
+        if not baw.config.basic(self.root):
+            author_name = baw.config.git_author_name()
+            author_email = baw.config.git_author_email()
+            author = f'{author_name} <{author_email}>'
+        return f'commit_author={author}'
+
+    def __str__(self) -> str:
+        result = self.commit_author + baw.utils.NEWLINE
+        return result
 
 
 @contextlib.contextmanager
@@ -31,7 +55,7 @@ def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
         baw.utils.error('while replacing template')
         sys.exit(baw.utils.FAILURE)
     if 'VERSION' in version:
-        replaced = replaced.replace(AUTO, ME)
+        replaced = replaced.replace(AUTOMATED, ME)
         # do not use gitea token
         replaced = replaced.replace('gitea_token_var=GITEA_TOKEN', '')
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
