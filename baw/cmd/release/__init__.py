@@ -124,6 +124,8 @@ def check_repository(root, require_clean: bool):
 
 
 def run_linter(root: str, verbose: bool, venv: bool) -> int:
+    if not baw.config.basic(root):
+        return baw.utils.SUCCESS
     if not baw.config.fail_on_finding(root):
         return baw.utils.SUCCESS
     # run linter step before running test and release
