@@ -7,19 +7,16 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import contextlib
 import functools
 import os
 import re
-import sys
-import textwrap
 
 import baw.archive.test
 import baw.cmd.complex
 import baw.cmd.lint
+import baw.cmd.release.config
 import baw.config
 import baw.git
-import baw.resources
 import baw.runtime
 import baw.utils
 
@@ -177,7 +174,11 @@ def run_test(
 
 def publish(root, verbose, release_type, venv: bool = False):
     baw.utils.log('update version tag')
-    with temp_semantic_config(root, verbose, venv=venv) as cfg:
+    with baw.cmd.release.config.temp_semantic_config(
+            root,
+            verbose,
+            venv=venv,
+    ) as cfg:
         release_type = select_release_type(release_type, cfg=cfg)
         cmd = f'baw_semantic_release -v DEBUG publish {release_type}'
         completed = baw.runtime.run_target(
@@ -199,37 +200,6 @@ def publish(root, verbose, release_type, venv: bool = False):
     return baw.utils.SUCCESS
 
 
-AUTO = 'commit_author = Automated Release <automated_release@ostia.la>'
-ME = 'commit_author = Helmut Konrad Fahrendholz <helmutus@outlook.com>'
-
-
-@contextlib.contextmanager
-def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
-    version = baw.config.version(root)
-    replaced = baw.resources.SETUP_CFG.replace('{{VERSION}}', version)
-    changelog_path = baw.config.changelog(root)
-    replaced = replaced.replace('{{CHANGELOG}}', changelog_path)
-    if replaced == baw.resources.SETUP_CFG:
-        baw.utils.error('while replacing template')
-        sys.exit(baw.utils.FAILURE)
-    if 'VERSION' in version:
-        replaced = replaced.replace(AUTO, ME)
-        # do not use gitea token
-        replaced = replaced.replace('gitea_token_var=GITEA_TOKEN', '')
-    # use own tmpfile cause TemporaryFile(delete=True) seems no supported
-    # at linux, parameter delete is missing.
-    config = os.path.join(root, 'setup.cfg')
-    baw.utils.file_replace(config, replaced)
-    if not firstversion(root):
-        changelog = determine_changelog(root, verbose, venv=venv)
-        baw.utils.file_append(config, f'commit_message={changelog}')
-    else:
-        baw.utils.file_append(config, 'commit_message=Initial Release')
-    yield config
-    # remove file
-    os.unlink(config)
-
-
 def select_release_type(typ: str, cfg: str) -> str:
     # Only release with type if user select one. If the user does
     # select a release-type let semantic release decide. If only some
@@ -246,31 +216,6 @@ def require_autopatch(changelog: str) -> bool:
         if f'>>> {item}' in changelog:
             return False
     return True
-
-
-def firstversion(root: str) -> bool:
-    if not baw.git.headhash(root):
-        return True
-    return False
-
-
-def determine_changelog(root: str, verbose: bool, venv: bool = False) -> str:
-    cmd = 'baw_semantic_release changelog '
-    cmd += version_variables(root)
-    cmd += '-D "changelog_components=baw.changelog.changelog_headers" '
-    cmd += '--unreleased'
-    completed = baw.runtime.run_target(
-        root,
-        cmd,
-        verbose=verbose,
-        venv=venv,
-    )
-    changelog = completed.stdout
-    result = textwrap.indent(changelog, prefix='    ')
-    result = result.strip()
-    result = result.replace('###', '>>>')
-    result = result.replace('##', '>>')
-    return result
 
 
 def version_variables(root: str) -> str:
