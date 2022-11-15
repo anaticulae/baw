@@ -10,7 +10,6 @@
 import contextlib
 import functools
 import os
-import sys
 import textwrap
 
 import baw.config
@@ -20,25 +19,18 @@ import baw.resources
 import baw.utils
 
 AUTOMATED = 'Automated Release <automated_release@ostia.la>'
-ME = 'commit_author = Helmut Konrad Fahrendholz <helmutus@outlook.com>'
 
-BASIC = """\
-[semantic_release]
-commit_changelog=True
-commit_subject={version} auto generated release
-version_source=commit
-changelog_sections=feature,fix,breaking,documentation,performance,chore
-changelog_components=baw.changelog.changelog_headers
-changelog_placeholder=# Changelog
 
-    Every noteable change is logged here.
-
-upload_to_repository=true
-upload_to_pypi=false
-upload_to_release=false
-
-hvcs=gitea
-"""
+@contextlib.contextmanager
+def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
+    generated = str(ReleaseConfig(root, verbose, venv))
+    # use own tmpfile cause TemporaryFile(delete=True) seems no supported
+    # at linux, parameter delete is missing.
+    config = os.path.join(root, 'setup.cfg')
+    baw.utils.file_replace(config, generated)
+    yield config
+    # remove file
+    os.unlink(config)
 
 
 class ReleaseConfig:
@@ -106,31 +98,23 @@ class ReleaseConfig:
         return result
 
 
-@contextlib.contextmanager
-def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
-    version = baw.config.version(root)
-    replaced = baw.resources.SETUP_CFG.replace('{{VERSION}}', version)
-    changelog_path = baw.config.changelog(root)
-    replaced = replaced.replace('{{CHANGELOG}}', changelog_path)
-    if replaced == baw.resources.SETUP_CFG:
-        baw.utils.error('while replacing template')
-        sys.exit(baw.utils.FAILURE)
-    if 'VERSION' in version:
-        replaced = replaced.replace(AUTOMATED, ME)
-        # do not use gitea token
-        replaced = replaced.replace('gitea_token_var=GITEA_TOKEN', '')
-    # use own tmpfile cause TemporaryFile(delete=True) seems no supported
-    # at linux, parameter delete is missing.
-    config = os.path.join(root, 'setup.cfg')
-    baw.utils.file_replace(config, replaced)
-    if not firstversion(root):
-        changelog = determine_changelog(root, verbose, venv=venv)
-        baw.utils.file_append(config, f'commit_message={changelog}')
-    else:
-        baw.utils.file_append(config, 'commit_message=Initial Release')
-    yield config
-    # remove file
-    os.unlink(config)
+BASIC = """\
+[semantic_release]
+commit_changelog=True
+commit_subject={version} auto generated release
+version_source=commit
+changelog_sections=feature,fix,breaking,documentation,performance,chore
+changelog_components=baw.changelog.changelog_headers
+changelog_placeholder=# Changelog
+
+    Every noteable change is logged here.
+
+upload_to_repository=true
+upload_to_pypi=false
+upload_to_release=false
+
+hvcs=gitea
+"""
 
 
 def determine_changelog(root: str, verbose: bool, venv: bool = False) -> str:
