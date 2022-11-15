@@ -398,6 +398,19 @@ def version(root: str) -> str:
     return result
 
 
+def basic(root: str) -> bool:
+    """A python project is the default baw project, but also other
+    languages are possible.
+
+    >>> import baw.project
+    >>> basic(baw.project.determine_root(__file__))
+    True
+    """
+    if 'VERSION' in version(root):
+        return False
+    return True
+
+
 def default_config(root: str, access: callable, default=None) -> bool:
     path = root if os.path.isfile(root) else config_path(root)
     if not os.path.exists(path):
