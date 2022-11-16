@@ -108,14 +108,14 @@ def checkout(
         0 if baw.utils.SUCCESS else FAILURE
     """
     # TODO: RENAME TO GIT_RESET
-    runner = functools.partial(
-        baw.runtime.run_target,
+    to_reset = ' '.join(files) if not isinstance(files, str) else files
+    baw.utils.log(f'Reset {to_reset}')
+    completed = baw.runtime.run_target(
+        root,
+        command=f'git checkout -q {to_reset}',
         verbose=verbose,
         venv=venv,
     )
-    to_reset = ' '.join(files) if not isinstance(files, str) else files
-    baw.utils.log(f'Reset {to_reset}')
-    completed = runner(root, f'git checkout -q {to_reset}')
     if completed.returncode:
         msg = f'while checkout out {to_reset}\n{completed}'
         baw.utils.error(msg)

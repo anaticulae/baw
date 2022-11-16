@@ -58,11 +58,9 @@ def lint(
     if isinstance(scope, str):
         scope = Scope[scope.upper()]
     code = ' '.join(sources(root))
-
     testpath = os.path.join(root, 'tests')
     linttest = testpath if os.path.exists(testpath) else ''
     run_in = f'{code} {linttest} '
-
     # TODO: ADD TO RETURNCODE LATER
     bandit_ = functools.partial(bandit, root, run_in, venv, log_always, verbose)
     pylint_ = functools.partial(pylint, root, scope, run_in, venv, log_always,
