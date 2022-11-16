@@ -95,7 +95,7 @@ def header(root: str) -> str:
     root = baw.cmd.utils.determine_root(root)
     if not root:
         sys.exit(baw.utils.FAILURE)
-    image = baw.config.docker_image(root)
+    image = baw.cmd.pipeline.docker_image(root)
     result = f'FROM {image}'
     return result
 
