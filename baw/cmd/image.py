@@ -65,12 +65,12 @@ def docker_service(todo: list, root: str) -> int:  # pylint:disable=W0613
 def tag(root: str) -> str:
     """\
     >>> tag(__file__)
-    '.../TRY_baw-...'
+    '.../try_baw_...'
     """
     root = baw.cmd.utils.determine_root(root)
     testing = baw.config.docker_testing()
     name = baw.cmd.info.requirement_hash(root, verbose=True)
-    result = f'{testing}/TRY_{name}'
+    result = f'{testing}/try_{name}'
     return result
 
 
