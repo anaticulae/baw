@@ -128,6 +128,27 @@ def library(root: str, verbose: False):
     return baw.utils.SUCCESS
 
 
+IMAGE = re.compile(r"image[ ]'(.{5,}/.{5,}\:.{3,})'")
+
+
+def docker_image(root: str) -> str:
+    """Parse dockerimage from Jenkinsfile.
+
+    image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
+
+    >>> import baw.project
+    >>> docker_image(baw.project.determine_root(__file__))
+    '...'
+    """
+    path = jenkinsfile(root)
+    jenkins = baw.utils.file_read(path)
+    parsed = IMAGE.search(jenkins)
+    if not parsed:
+        return None
+    result = parsed[1]
+    return result
+
+
 def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
 
