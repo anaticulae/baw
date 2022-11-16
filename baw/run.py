@@ -24,7 +24,6 @@ import baw.cmd.lint
 import baw.cmd.open
 import baw.cmd.plan
 import baw.cmd.publish
-import baw.cmd.release
 import baw.cmd.test
 import baw.cmd.upgrade
 import baw.cmd.utils
@@ -247,43 +246,6 @@ def run_doc(args: dict):
         root=root,
         verbose=args.get('verbose', False),
         venv=args.get('venv', False),
-    )
-    return result
-
-
-def run_release(args: dict):
-    root = baw.cmd.utils.get_root(args)
-    # always publish after release
-    args['publish'] = True
-    venv = args.get('venv', True)
-    # overwrite venv flag if given
-    novenv = args.get('no_venv', False)
-    no_linter = args.get('no_linter', False)
-    if novenv:
-        baw.utils.log('do not use venv')
-        venv = False
-    if not baw.runtime.installed('semantic-release', root, venv=venv):
-        return baw.utils.FAILURE
-    test = True
-    # do not test before releasing
-    notest = args.get('no_test', False)
-    if notest:
-        test = False
-    if args.get('release') == 'drop':
-        result = baw.cmd.release.drop(
-            root,
-            venv=venv,
-            verbose=args['verbose'],
-        )
-        return result
-    # run release
-    result = baw.cmd.release.release(
-        root=root,
-        release_type=args['release'],
-        verbose=args['verbose'],
-        test=test,
-        venv=venv,
-        no_linter=no_linter,
     )
     return result
 
