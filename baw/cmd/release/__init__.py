@@ -62,21 +62,17 @@ def release(  # pylint:disable=R1260
         2. Run Semantic release to create changelog, commit the changelog as
            release-message and create a version tag.
     """
-    if verbose:
-        baw.utils.log('require release?')
+    baw.utils.verbose('require release?', verbose=verbose)
     if returncode := require_release(root, venv):
         return returncode
-    if verbose:
-        baw.utils.log('check repository')
+    baw.utils.verbose('check repository', verbose=verbose)
     if returncode := check_repository(root, require_clean):
         return returncode
     if not no_linter:
-        if verbose:
-            baw.utils.log('run linter')
+        baw.utils.verbose('run linter', verbose=verbose)
         if returncode := baw.cmd.lint.run_linter(root, verbose, venv):
             return returncode
-    if verbose:
-        baw.utils.log('run test')
+    baw.utils.verbose('run test', verbose=verbose)
     if returncode := run_test(root, sync, test, stash, verbose, venv):
         return returncode
     if returncode := publish(root, verbose, release_type, venv=venv):

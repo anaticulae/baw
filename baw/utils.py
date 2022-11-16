@@ -70,6 +70,12 @@ def log(msg: str = '', end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
+def verbose(msg: str = '', end: str = NEWLINE, verbose: bool = False):  # pylint:disable=W0621
+    if not verbose:
+        return
+    log(msg=msg, end=end)
+
+
 def error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
