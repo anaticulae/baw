@@ -141,6 +141,9 @@ def docker_image(root: str) -> str:
     '...'
     """
     path = jenkinsfile(root)
+    if not os.path.exists(path):
+        baw.utils.error(f'require Jenkinsfile in {root}')
+        sys.exit(baw.utils.FAILURE)
     jenkins = baw.utils.file_read(path)
     parsed = IMAGE.search(jenkins)
     if not parsed:
