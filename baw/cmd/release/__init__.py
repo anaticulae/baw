@@ -157,7 +157,7 @@ def run_test(
     hashed = baw.git.headhash(root)
     require_test = not hashed or not baw.archive.test.tested(root, hashed)
     if require_test:
-        ret = baw.cmd.complex.sync_and_test(
+        returncode = baw.cmd.complex.sync_and_test(
             root,
             generate=True,
             longrun=True,
@@ -169,7 +169,7 @@ def run_test(
             verbose=verbose,
             venv=venv,
         )
-        return ret
+        return returncode
     baw.utils.log('release was already tested successfully')
     return baw.utils.SUCCESS
 
@@ -292,15 +292,15 @@ def reset_resources(
     initpath = os.path.join(short, '__init__.py')
     changelog = baw.config.changelog(root)
     to_reset = []
-    ret = 0
+    returncode = 0
     for item in [initpath, changelog]:
         if not os.path.exists(os.path.join(root, item)):
             msg = f'Item {item} does not exists'
             baw.utils.error(msg)
-            ret += 1
+            returncode += 1
             continue
         to_reset.append(item)
-    if ret:
+    if returncode:
         return baw.utils.FAILURE  # at least one path does not exist.
     if not to_reset:
         return baw.utils.FAILURE
