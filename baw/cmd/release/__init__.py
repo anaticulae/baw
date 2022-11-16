@@ -73,7 +73,7 @@ def release(  # pylint:disable=R1260
     if not no_linter:
         if verbose:
             baw.utils.log('run linter')
-        if returncode := run_linter(root, verbose, venv):
+        if returncode := baw.cmd.lint.run_linter(root, verbose, venv):
             return returncode
     if verbose:
         baw.utils.log('run test')
@@ -120,25 +120,6 @@ def check_repository(root, require_clean: bool):
     if baw.git.is_modified(root=root):
         baw.utils.error('repository is not clean')
         return baw.utils.FAILURE
-    return baw.utils.SUCCESS
-
-
-def run_linter(root: str, verbose: bool, venv: bool) -> int:
-    if not baw.config.basic(root):
-        return baw.utils.SUCCESS
-    if not baw.config.fail_on_finding(root):
-        return baw.utils.SUCCESS
-    # run linter step before running test and release
-    if returncode := baw.cmd.lint.lint(
-            root,
-            baw.cmd.lint.Scope.MINIMAL,
-            verbose=verbose,
-            venv=venv,
-            log_always=False,
-    ):
-        baw.utils.error('could not release, solve this errors first.')
-        baw.utils.error('turn `fail_on_finding` off to release with errors')
-        return returncode
     return baw.utils.SUCCESS
 
 

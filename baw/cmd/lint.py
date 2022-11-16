@@ -22,6 +22,7 @@ import os
 import sys
 
 import baw.utils
+import baw.config
 from baw.config import sources
 from baw.resources import RCFILE_PATH
 from baw.runtime import run_target
@@ -32,6 +33,25 @@ class Scope(enum.Enum):
     ALL = enum.auto()
     MINIMAL = enum.auto()
     TODO = enum.auto()
+
+
+def run_linter(root: str, verbose: bool, venv: bool) -> int:
+    if not baw.config.basic(root):
+        return baw.utils.SUCCESS
+    if not baw.config.fail_on_finding(root):
+        return baw.utils.SUCCESS
+    # run linter step before running test and release
+    if returncode := lint(
+            root,
+            scope=Scope.MINIMAL,
+            verbose=verbose,
+            venv=venv,
+            log_always=False,
+    ):
+        baw.utils.error('could not release, solve this errors first.')
+        baw.utils.error('turn `fail_on_finding` off to release with errors')
+        return returncode
+    return baw.utils.SUCCESS
 
 
 def lint(
