@@ -117,22 +117,6 @@ def run_release(args: dict) -> int:
     return result
 
 
-def extend_cli(parser):
-    parser = parser.add_parser('release', help='Test, commit, tag and publish')
-    parser.add_argument(
-        'release',
-        help='Test, commit, tag and publish',
-        nargs='?',
-        choices='major minor patch noop auto drop'.split(),
-        default='auto',
-    )
-    parser.add_argument('--no_install', action='store_true', help='skip insta')
-    parser.add_argument('--no_test', action='store_true', help='skip tests')
-    parser.add_argument('--no_venv', action='store_true', help='skip venv')
-    parser.add_argument('--no_linter', action='store_true', help='skip linter')
-    parser.set_defaults(func=run_release)
-
-
 def require_release(root, venv):
     current_head = baw.git.headtag(root, venv=venv)
     if not current_head:
@@ -323,3 +307,19 @@ def reset_resources(
         verbose=verbose,
     )
     return completed
+
+
+def extend_cli(parser):
+    parser = parser.add_parser('release', help='Test, commit, tag and publish')
+    parser.add_argument(
+        'release',
+        help='Test, commit, tag and publish',
+        nargs='?',
+        choices='major minor patch noop auto drop'.split(),
+        default='auto',
+    )
+    parser.add_argument('--no_install', action='store_true', help='skip insta')
+    parser.add_argument('--no_test', action='store_true', help='skip tests')
+    parser.add_argument('--no_venv', action='store_true', help='skip venv')
+    parser.add_argument('--no_linter', action='store_true', help='skip linter')
+    parser.set_defaults(func=run_release)
