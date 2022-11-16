@@ -11,6 +11,8 @@ import contextlib
 import os
 import sys
 
+import docker
+
 import baw.cmd.info
 import baw.cmd.utils
 import baw.config
@@ -28,7 +30,7 @@ def create(  # pylint:disable=W0613
     with dockerfile(root) as path:
         todo = [
             f'build -t {tag_new} -f {path} .',
-            f'push {tag_new}',
+            # f'push {tag_new}',
         ]
         if returncode := docker_run(todo, root):
             return returncode
@@ -58,8 +60,41 @@ def docker_run(
     return baw.utils.SUCCESS
 
 
-def docker_service(todo: list, root: str) -> int:  # pylint:disable=W0613
+def docker_service(todo: list, root: str) -> int:
+    # base_url = 'tcp://' + baw.config.docker_runtime()
+    base_url = 'http://169.254.149.20:2375'
+    client = docker.DockerClient(base_url=base_url)
+    for cmd in todo:
+        baw.utils.log(cmd)
+        cmd, *items = cmd.split()
+        if cmd == 'build':
+            tagname = items[1]
+            dockerfile_path = items[3]
+            done = client.images.build(
+                path=root,
+                dockerfile=dockerfile_path,
+                tag=tagname,
+            )
+            log_service(done)
+        elif cmd == 'push':
+            baw.utils.log('PUSH IS WIP')
+            return baw.utils.FAILURE
+            # TODO: PUSH IS BROKEN
+            # repository, tag = items[0].split('/')
+            # repository = '169.254.149.20:6001:try_baw_96697096'
+            # tag = 'latest'
+            # done = client.images.push(repository=repository, tag=tag)
+            # log_service(done)
     return baw.utils.SUCCESS
+
+
+def log_service(done):
+    done = done[1]
+    for line in done:
+        try:
+            baw.utils.log(line['stream'], end='')
+        except KeyError:
+            pass
 
 
 def tag(root: str) -> str:
@@ -103,7 +138,7 @@ def header(root: str) -> str:
 def requirements(root: str) -> str:
     r"""\
     >>> requirements(__file__)
-    'COPY requirements.txt .\nCOPY requirements.dev .\n'
+    'COPY requirements.txt /var/workdir/requirements.txt\nCOPY requirements.dev /var/workdir/requirements.dev\n'
     """
     root = baw.cmd.utils.determine_root(root)
     if not root:
@@ -113,7 +148,7 @@ def requirements(root: str) -> str:
         path = os.path.join(root, item)
         if not os.path.exists(path):
             continue
-        result += f'COPY {item} .{baw.utils.NEWLINE}'
+        result += f'COPY {item} /var/workdir/{item}{baw.utils.NEWLINE}'
     return result
 
 
