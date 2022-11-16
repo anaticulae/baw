@@ -10,6 +10,7 @@
 import os
 import sys
 
+import baw.cmd.image
 import baw.cmd.utils
 import baw.config
 import baw.project
@@ -49,6 +50,9 @@ def prints(root, value: str, verbose: bool = False):
         sys.exit(baw.utils.SUCCESS)
     if value == 'shortcut':
         baw.utils.log(baw.config.shortcut(root))
+        sys.exit(baw.utils.SUCCESS)
+    if value == 'image':
+        baw.utils.log(baw.cmd.image.tag(root))
         sys.exit(baw.utils.SUCCESS)
 
 
@@ -102,7 +106,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     return hashed
 
 
-CHOISES = 'name shortcut venv tmp covreport requirement'.split()
+CHOISES = 'name shortcut venv tmp covreport requirement image'.split()
 
 
 def extend_cli(parser):
