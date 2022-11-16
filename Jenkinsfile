@@ -22,7 +22,6 @@ pipeline{
     stages{
         stage('sync'){
             steps{
-                sh 'ls -al /tmp'
                 sh 'baw sync all'
                 sh 'pip install -e .'
                 sh 'baw sync all'
@@ -48,13 +47,7 @@ pipeline{
                 sh 'baw lint'
             }
         }
-        stage('nightly'){
-            steps{
-                sh 'baw test nightly -n16 --cov --junit_xml=report.xml'
-                junit '**/report.xml'
-            }
-        }
-        stage('cov'){
+        stage('all'){
             steps{
                 sh 'baw test all --cov --junit_xml=report.xml'
                 junit '**/report.xml'
