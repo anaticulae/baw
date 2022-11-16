@@ -226,7 +226,7 @@ def version_variables(root: str) -> str:
     return result
 
 
-RELEASE_PATTERN = r'(?P<release>v\d+\.\d+\.\d+)'
+RELEASE_PATTERN = re.compile(r'(?P<release>v\d+\.\d+\.\d+)')
 
 DEFAULT_RELEASE = 'v0.0.0'
 
@@ -252,7 +252,7 @@ def drop(
         venv=venv,
     )
     completed = runner(root, 'git tag --contains HEAD')
-    matched = re.match(RELEASE_PATTERN, completed.stdout)
+    matched = RELEASE_PATTERN.match(completed.stdout)
     if not matched:
         baw.utils.error('No release tag detected')
         return baw.utils.FAILURE
