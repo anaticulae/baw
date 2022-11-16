@@ -21,12 +21,10 @@ import functools
 import os
 import sys
 
-import baw.utils
 import baw.config
-from baw.config import sources
-from baw.resources import RCFILE_PATH
-from baw.runtime import run_target
-from baw.utils import log
+import baw.resources
+import baw.runtime
+import baw.utils
 
 
 class Scope(enum.Enum):
@@ -77,7 +75,7 @@ def lint(
     """
     if isinstance(scope, str):
         scope = Scope[scope.upper()]
-    code = ' '.join(sources(root))
+    code = ' '.join(baw.config.sources(root))
     testpath = os.path.join(root, 'tests')
     linttest = testpath if os.path.exists(testpath) else ''
     run_in = f'{code} {linttest} '
@@ -95,7 +93,7 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     pylint_ = baw.config.pylint(root)
     cmd = f'{python} -mpylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
-        cmd += f'--rcfile={RCFILE_PATH} '
+        cmd += f'--rcfile={baw.resources.RCFILE_PATH} '
     cmd += '-d R0801 '  # disable duplicated code check
     cmd += '-d R0902 '  # too many instance attributes
     cmd += '-d R0912 '  # too many branches
@@ -116,7 +114,7 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     if pylint_:
         cmd += f'{pylint_} '
     cmd = cmd.strip()
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         cmd,
         cwd=root,
@@ -124,8 +122,8 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
         verbose=verbose,
     )
     if log_always or completed.returncode:
-        log(completed.stderr)
-        log(completed.stdout)
+        baw.utils.log(completed.stderr)
+        baw.utils.log(completed.stdout)
     return completed.returncode
 
 
@@ -135,7 +133,7 @@ def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
     cmd += '--skip B101'  # skip assert is used
     cmd += ',B404'  # import subprocess
 
-    completed = run_target(
+    completed = baw.runtime.run_target(
         root,
         cmd,
         cwd=root,
@@ -143,10 +141,10 @@ def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
         verbose=verbose,
     )
     if completed.returncode:
-        log(completed.stderr)
-        log(completed.stdout)
+        baw.utils.log(completed.stderr)
+        baw.utils.log(completed.stdout)
     elif log_always:
-        log('bandit complete')
+        baw.utils.log('bandit complete')
     return completed.returncode
 
 
