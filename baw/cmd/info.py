@@ -102,12 +102,15 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     return hashed
 
 
+CHOISES = 'name shortcut venv tmp covreport requirement'.split()
+
+
 def extend_cli(parser):
     info = parser.add_parser('info', help='Print project information')
     info.add_argument(
         'info',
         help='Print project information',
         nargs=1,
-        choices='name shortcut venv tmp covreport requirement'.split(),
+        choices=CHOISES,
     )
     info.set_defaults(func=evaluate)
