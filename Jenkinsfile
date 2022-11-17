@@ -2,11 +2,6 @@ pipeline{
     agent any
     // image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
 
-    parameters{
-        string(name: 'BRANCH', defaultValue: 'master')
-        booleanParam(name: 'RELEASE', defaultValue: false)
-    }
-
     environment{
         BAW='/tmp/dev'
         PIP_TRUSTED_HOST='169.254.149.20'
