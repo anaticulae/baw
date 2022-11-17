@@ -28,6 +28,7 @@ tmp
 .coverage*
 setup.cfg
 pytest.ini
+report.xml
 # vscode tmp file
 *.py.*.py
 
