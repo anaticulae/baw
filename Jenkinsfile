@@ -1,10 +1,6 @@
 pipeline{
-    agent{
-        docker{
-            image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
-            args  '-v $WORKSPACE:/var/workdir'
-        }
-    }
+    agent any
+    // image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
 
     parameters{
         string(name: 'BRANCH', defaultValue: 'master')
@@ -26,38 +22,32 @@ pipeline{
     stages{
         stage('sync'){
             steps{
-                sh 'baw sync all'
-                sh 'pip install -e .'
-                sh 'baw sync all'
-                script{
-                    env.IMAGE_NAME = sh(script: 'baw info image', returnStdout: true).trim()
-                }
-                sh 'baw image create'
+                image_setup()
             }
         }
         stage('doctest'){
             steps{
-                sh 'baw test docs -n1'
+                baw('test docs -n1')
             }
         }
         stage('fast'){
             steps{
-                sh 'baw test fast -n5'
+                baw('test fast -n5')
             }
         }
         stage('long'){
             steps{
-                sh 'baw test long -n8'
+                baw('test long -n8')
             }
         }
         stage('lint'){
             steps{
-                sh 'baw lint'
+                baw('lint')
             }
         }
         stage('all'){
             steps{
-                sh 'baw test all --cov --junit_xml=report.xml'
+                baw('test all --cov --junit_xml=report.xml')
                 junit '**/report.xml'
             }
         }
@@ -74,6 +64,13 @@ pipeline{
 }
 
 @NonCPS
-def get_image_name() {
+def image_name() {
     return sh(script: "baw image info")
+}
+def image_setup(){
+    env.IMAGE_NAME = sh(script: 'baw info image', returnStdout: true).trim()
+    sh 'baw image create'
+}
+def baw(cmd){
+    sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} baw" ' + cmd + '"'
 }
