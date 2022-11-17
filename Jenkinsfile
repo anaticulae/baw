@@ -25,6 +25,10 @@ pipeline{
                 sh 'baw sync all'
                 sh 'pip install -e .'
                 sh 'baw sync all'
+                script{
+                    env.IMAGE_NAME = sh(script: 'baw info image', returnStdout: true).trim()
+                }
+                sh 'baw image create'
             }
         }
         stage('doctest'){
@@ -63,4 +67,9 @@ pipeline{
             }
         }
     }
+}
+
+@NonCPS
+def get_image_name() {
+    return sh(script: "baw image info")
 }
