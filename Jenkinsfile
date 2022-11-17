@@ -22,8 +22,7 @@ pipeline{
         }
         stage('doctest'){
             steps{
-                baw('test docs -n1 --junit_xml=docs.xml')
-                junit '**/docs.xml'
+                doctest()
             }
         }
         stage('fast'){
@@ -43,8 +42,7 @@ pipeline{
         }
         stage('all'){
             steps{
-                baw('test all --junit_xml=all.xml')
-                junit '**/all.xml'
+                alls()
             }
         }
         stage('release'){
@@ -66,4 +64,12 @@ def image_setup(){
 }
 def baw(cmd){
     sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} "baw ' + cmd + '"'
+}
+def doctest(){
+    baw('test docs -n1 --junit_xml=docs.xml')
+    junit '**/docs.xml'
+}
+def alls(){
+    baw('test all --junit_xml=all.xml')
+    junit '**/all.xml'
 }
