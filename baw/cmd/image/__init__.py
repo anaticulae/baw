@@ -14,6 +14,7 @@ import sys
 import docker
 import docker.errors
 
+import baw.cmd.image.clean
 import baw.cmd.image.dockerfiles
 import baw.cmd.info
 import baw.cmd.utils
@@ -113,6 +114,9 @@ def log_service(done):
             pass
 
 
+TEST_TAG = '/try_'
+
+
 def tag(root: str) -> str:
     """\
     >>> tag(__file__)
@@ -121,7 +125,7 @@ def tag(root: str) -> str:
     root = baw.cmd.utils.determine_root(root)
     testing = baw.config.docker_testing()
     name = baw.cmd.info.requirement_hash(root, verbose=True)
-    result = f'{testing}/try_{name}'
+    result = f'{testing}{TEST_TAG}{name}'
     return result
 
 
@@ -148,6 +152,8 @@ def run(args: dict):
         baw.utils.error('not implemented')
     if action == 'delete':
         baw.utils.error('not implemented')
+    if action == 'clean':
+        return baw.cmd.image.clean.images()
     return baw.utils.FAILURE
 
 
@@ -161,6 +167,6 @@ def extend_cli(parser):
         help='manage the docker image',
         nargs='?',
         const='create',
-        choices='create update delete'.split(),
+        choices='create update delete clean'.split(),
     )
     cli.set_defaults(func=run)
