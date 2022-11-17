@@ -52,12 +52,9 @@ pipeline{
             }
         }
         stage('release'){
-            when {
-                expression { return params.RELEASE }
-            }
+            when {branch 'master'}
             steps{
-                sh 'baw install && baw release && baw publish'
-                // TODO: GIT COMMIT?
+                sh 'baw release --no_test --no_linter'
             }
         }
     }
