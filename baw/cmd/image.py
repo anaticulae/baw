@@ -73,35 +73,33 @@ def docker_service(todo: list, root: str) -> int:
     if imagename := check_baseimage(root):
         baw.utils.error(f'missing baseimage: {imagename}')
         return baw.utils.FAILURE
-    # base_url = 'tcp://' + baw.config.docker_runtime()
-    base_url = 'http://169.254.149.20:2375'
-    client = docker.DockerClient(base_url=base_url)
-    for cmd in todo:
-        baw.utils.log(cmd)
-        cmd, *items = cmd.split()
-        if cmd == 'build':
-            tagname = items[1]
-            dockerfile_path = items[3]
-            try:
-                done = client.images.build(
-                    path=root,
-                    dockerfile=dockerfile_path,
-                    tag=tagname,
-                )
-            except docker.errors.BuildError as error:
-                for line in error.build_log:
-                    baw.utils.error(line)
+    with docker_client() as client:
+        for cmd in todo:
+            baw.utils.log(cmd)
+            cmd, *items = cmd.split()
+            if cmd == 'build':
+                tagname = items[1]
+                dockerfile_path = items[3]
+                try:
+                    done = client.images.build(
+                        path=root,
+                        dockerfile=dockerfile_path,
+                        tag=tagname,
+                    )
+                except docker.errors.BuildError as error:
+                    for line in error.build_log:
+                        baw.utils.error(line)
+                    return baw.utils.FAILURE
+                log_service(done)
+            elif cmd == 'push':
+                baw.utils.log('PUSH IS WIP')
                 return baw.utils.FAILURE
-            log_service(done)
-        elif cmd == 'push':
-            baw.utils.log('PUSH IS WIP')
-            return baw.utils.FAILURE
-            # TODO: PUSH IS BROKEN
-            # repository, tag = items[0].split('/')
-            # repository = '169.254.149.20:6001:try_baw_96697096'
-            # tag = 'latest'
-            # done = client.images.push(repository=repository, tag=tag)
-            # log_service(done)
+                # TODO: PUSH IS BROKEN
+                # repository, tag = items[0].split('/')
+                # repository = '169.254.149.20:6001:try_baw_96697096'
+                # tag = 'latest'
+                # done = client.images.push(repository=repository, tag=tag)
+                # log_service(done)
     return baw.utils.SUCCESS
 
 
