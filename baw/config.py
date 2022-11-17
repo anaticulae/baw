@@ -403,7 +403,7 @@ def changelog(root: str) -> str:
     """\
     >>> import baw.project
     >>> changelog(baw.project.determine_root(__file__))
-    'CHANGELOG.md'
+    'CHANGELOG'
     """
     for fname in 'CHANGELOG CHANGELOG.md'.split():
         path = os.path.join(root, fname)

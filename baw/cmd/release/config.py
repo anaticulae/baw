@@ -38,7 +38,7 @@ class ReleaseConfig:
     def __init__(self, root: str, verbose: bool = False, venv: bool = False):
         r"""\
         >>> str(ReleaseConfig(__file__))
-        '[semantic_release]\n...commit_author=Autom...<...@ostia.la>\nversion_variable=...:__version__\nchangelog_file=CHANGELOG.md\n...=GITEA_TOKEN\ncommit_message=...'
+        '[semantic_release]\n...commit_author=Autom...<...@ostia.la>\nversion_variable=...:__version__\nchangelog_file=CHANGELOG\n...=GITEA_TOKEN\ncommit_message=...'
         """
         self.root = baw.project.determine_root(root)
         self.verbose = verbose
