@@ -85,7 +85,6 @@ def run_test(  # pylint:disable=R0914
                                       alls)
     cmd = create_test_cmd(
         root,
-        alls=alls,
         coverage=coverage,
         doctest=docs,
         generate_only=generate_only,
@@ -193,7 +192,6 @@ def create_test_cmd(  # pylint:disable=R0914
     generate_only,
     markers: str,
     doctest: bool = True,
-    alls=False,
     verbose: bool = False,
     venv: bool = False,
 ):
@@ -226,7 +224,7 @@ def create_test_cmd(  # pylint:disable=R0914
            f'{override_testconfig} {debugger} {cov} {generate_only} '
            f'--basetemp={tmp_testpath} {plugins} '
            f'-o cache_dir={cachedir} {sources}')
-    if doctest or generate_only or coverage or alls:
+    if doctest or generate_only or coverage:
         cmd += '--doctest-modules '
     if markers:
         cmd += f'{markers} '
