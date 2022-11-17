@@ -12,6 +12,7 @@ import os
 import sys
 
 import docker
+import docker.errors
 
 import baw.cmd.info
 import baw.cmd.utils
@@ -70,11 +71,16 @@ def docker_service(todo: list, root: str) -> int:
         if cmd == 'build':
             tagname = items[1]
             dockerfile_path = items[3]
-            done = client.images.build(
-                path=root,
-                dockerfile=dockerfile_path,
-                tag=tagname,
-            )
+            try:
+                done = client.images.build(
+                    path=root,
+                    dockerfile=dockerfile_path,
+                    tag=tagname,
+                )
+            except docker.errors.BuildError as error:
+                for line in error.build_log:
+                    baw.utils.error(line)
+                return baw.utils.FAILURE
             log_service(done)
         elif cmd == 'push':
             baw.utils.log('PUSH IS WIP')
