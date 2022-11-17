@@ -14,6 +14,7 @@ import sys
 import docker
 import docker.errors
 
+import baw.cmd.image.dockerfiles
 import baw.cmd.info
 import baw.cmd.utils
 import baw.config
@@ -28,7 +29,7 @@ def create(  # pylint:disable=W0613
 ):
     root = baw.cmd.utils.determine_root(root)
     tag_new = tag(root)
-    with dockerfile(root) as path:
+    with baw.cmd.image.dockerfiles.generate(root) as path:
         todo = [
             f'build -t {tag_new} -f {path} .',
             # f'push {tag_new}',
@@ -124,32 +125,6 @@ def tag(root: str) -> str:
     return result
 
 
-@contextlib.contextmanager
-def dockerfile(root: str):
-    name = baw.cmd.info.requirement_hash(root, verbose=True)
-    # use own tmpfile cause TemporaryFile(delete=True) seems no supported
-    # at linux, parameter delete is missing.
-    config = os.path.join(root, name)
-    content = (header(root) + baw.utils.NEWLINE * 2 + requirements(root) + SYNC)
-    baw.utils.file_replace(config, content)
-    yield config
-    # remove file
-    os.unlink(config)
-
-
-def header(root: str) -> str:
-    """\
-    >>> header(__file__)
-    'FROM .../...'
-    """
-    root = baw.cmd.utils.determine_root(root)
-    if not root:
-        sys.exit(baw.utils.FAILURE)
-    image = baw.cmd.pipeline.docker_image(root)
-    result = f'FROM {image}'
-    return result
-
-
 def check_baseimage(root: str):
     image = baw.cmd.pipeline.docker_image(root)
     with docker_client() as client:
@@ -158,28 +133,6 @@ def check_baseimage(root: str):
         except docker.errors.ImageNotFound:
             return image
     return None
-
-
-def requirements(root: str) -> str:
-    r"""\
-    >>> requirements(__file__)
-    'COPY requirements.txt /var/workdir/requirements.txt\nCOPY requirements.dev /var/workdir/requirements.dev\n'
-    """
-    root = baw.cmd.utils.determine_root(root)
-    if not root:
-        sys.exit(baw.utils.FAILURE)
-    result = ''
-    for item in 'requirements.txt requirements.dev requirements.all'.split():
-        path = os.path.join(root, item)
-        if not os.path.exists(path):
-            continue
-        result += f'COPY {item} /var/workdir/{item}{baw.utils.NEWLINE}'
-    return result
-
-
-SYNC = """
-RUN baw sync all
-"""
 
 
 def run(args: dict):

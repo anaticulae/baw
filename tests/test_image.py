@@ -9,7 +9,7 @@
 
 import os
 
-import baw.cmd.image
+import baw.cmd.image.dockerfiles
 
 
 def test_cmd_image_create(simple, capsys):  # pylint:disable=W0621,W0613
@@ -20,5 +20,5 @@ def test_cmd_image_create(simple, capsys):  # pylint:disable=W0621,W0613
 def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
     # docker file requires existing Jenkinsfile
     simple[0]('pipe init')
-    with baw.cmd.image.dockerfile(simple[1]) as path:
+    with baw.cmd.image.dockerfiles.generate(simple[1]) as path:
         assert os.path.exists(path)
