@@ -23,8 +23,15 @@ def generate(root: str):
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = os.path.join(root, name)
-    content = (header(root) + baw.utils.NEWLINE * 2 + requirements(root) + SYNC)
-    baw.utils.file_replace(config, content)
+    content = header(root)
+    content += baw.utils.NEWLINE * 2
+    content += environments(root)
+    content += requirements(root)
+    content += SYNC
+    baw.utils.file_replace(
+        config,
+        content,
+    )
     yield config
     # remove file
     os.unlink(config)
