@@ -12,6 +12,10 @@ pipeline{
     }
 
     environment{
+        BAW='/tmp/dev'
+        PIP_TRUSTED_HOST='169.254.149.20'
+        PIP_INDEX_URL='http://169.254.149.20:6101'
+        PIP_EXTRA_INDEX_URL='http://169.254.149.20:6103'
         GITEA_SERVER_URL = '169.254.149.20:6300'
         GIT_AUTHOR_NAME='Automated Release'
         GIT_AUTHOR_EMAIL='automated_release@ostia.la'

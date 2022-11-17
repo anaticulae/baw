@@ -71,7 +71,7 @@ def environments(root: str) -> str:
     r"""\
     ENV RUNJOB="exit 1"
     >>> environments(__file__)
-    'ENV GITEA_SERVER_URL=...\n'
+    '...ENV GITEA_SERVER_URL=...\n'
     """
     root = baw.cmd.utils.determine_root(root)
     if not root:
