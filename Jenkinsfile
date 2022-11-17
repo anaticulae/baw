@@ -64,5 +64,5 @@ def image_setup(){
     sh 'baw image create'
 }
 def baw(cmd){
-    sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} baw" ' + cmd + '"'
+    sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} "baw ' + cmd + '"'
 }
