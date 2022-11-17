@@ -22,7 +22,8 @@ pipeline{
         }
         stage('doctest'){
             steps{
-                baw('test docs -n1')
+                baw('test docs -n1 --junit_xml=docs.xml')
+                junit '**/docs.xml'
             }
         }
         stage('fast'){
@@ -42,8 +43,8 @@ pipeline{
         }
         stage('all'){
             steps{
-                baw('test all --cov --junit_xml=report.xml')
-                junit '**/report.xml'
+                baw('test all --junit_xml=all.xml')
+                junit '**/all.xml'
             }
         }
         stage('release'){
