@@ -43,6 +43,7 @@ if __name__ == "__main__":
             'baw',
             'baw.archive',
             'baw.cmd',
+            'baw.cmd.image',
             'baw.cmd.release',
             'baw.project',
             'baw.requires',
