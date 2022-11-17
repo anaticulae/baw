@@ -26,7 +26,7 @@ with open(os.path.join(ROOT, "requirements.txt"), encoding='utf8') as fp:
 if __name__ == "__main__":
     setuptools.setup(
         author='Helmut Konrad Fahrendholz',
-        author_email='helmi3000@outlook.com',
+        author_email='helmutus@outlook.com',
         description='A simple console-application to manage project complexity.',
         include_package_data=True,
         install_requires=REQUIRES,
