@@ -49,7 +49,7 @@ pipeline{
         stage('release'){
             when {branch 'master'}
             steps{
-                sh 'baw release --no_test --no_linter'
+                sh 'baw release --no_test --no_linter --no_install --no_venv'
             }
         }
     }
