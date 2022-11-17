@@ -61,7 +61,18 @@ def docker_run(
     return baw.utils.SUCCESS
 
 
+@contextlib.contextmanager
+def docker_client():
+    base_url = 'http://169.254.149.20:2375'
+    client = docker.DockerClient(base_url=base_url)
+    yield client
+    client.close()
+
+
 def docker_service(todo: list, root: str) -> int:
+    if imagename := check_baseimage(root):
+        baw.utils.error(f'missing baseimage: {imagename}')
+        return baw.utils.FAILURE
     # base_url = 'tcp://' + baw.config.docker_runtime()
     base_url = 'http://169.254.149.20:2375'
     client = docker.DockerClient(base_url=base_url)
@@ -139,6 +150,16 @@ def header(root: str) -> str:
     image = baw.cmd.pipeline.docker_image(root)
     result = f'FROM {image}'
     return result
+
+
+def check_baseimage(root: str):
+    image = baw.cmd.pipeline.docker_image(root)
+    with docker_client() as client:
+        try:
+            client.images.get(image)
+        except docker.errors.ImageNotFound:
+            return image
+    return None
 
 
 def requirements(root: str) -> str:
