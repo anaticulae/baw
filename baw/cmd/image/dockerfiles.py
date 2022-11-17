@@ -12,8 +12,8 @@ import os
 import sys
 
 import baw.cmd.info
-import baw.cmd.utils
 import baw.cmd.pipeline
+import baw.cmd.utils
 import baw.utils
 
 
