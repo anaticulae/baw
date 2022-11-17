@@ -171,7 +171,7 @@ def image_newest() -> str:
     )
     version = os.environ.get(
         'BAW_PIPELINE_VERSION',
-        '0.8.1',
+        '0.15.1',
     )
     result = f'{repository}/{imagename}:{version}'
     return result
