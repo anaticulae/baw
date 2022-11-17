@@ -13,6 +13,7 @@ import sys
 
 import baw.cmd.info
 import baw.cmd.utils
+import baw.cmd.pipeline
 import baw.utils
 
 
@@ -56,6 +57,24 @@ def requirements(root: str) -> str:
         if not os.path.exists(path):
             continue
         result += f'COPY {item} /var/workdir/{item}{baw.utils.NEWLINE}'
+    return result
+
+
+def environments(root: str) -> str:
+    r"""\
+    ENV RUNJOB="exit 1"
+    >>> environments(__file__)
+    'ENV GITEA_SERVER_URL=...\n'
+    """
+    root = baw.cmd.utils.determine_root(root)
+    if not root:
+        sys.exit(baw.utils.FAILURE)
+    env = baw.cmd.pipeline.docker_env(root)
+    if not env:
+        return ''
+    result = ''
+    for key, value in env.items():
+        result += f'ENV {key}="{value}"{baw.utils.NEWLINE}'
     return result
 
 
