@@ -2,6 +2,38 @@
 
 Every noteable change is logged here.
 
+## v1.18.0 (2022-11-17)
+
+### Feature
+
+* break release cycle on master (12a8a8612ed6)
+* skip report file (dca1f5752046)
+* add env vars to docker file (12ce96350b49)
+* add method to convert Jenkinsfile env to Dockerfile env (870449821658)
+* add pipeline env parser (df3a422cfc0e)
+* verify base image before build (b9074e62e8ee)
+* inform user about build error (d9c88a0e3f8e)
+* add image info name (d23f9bb45f30)
+* quit if Jenkinsfile is not given (5b270eb05157)
+* create docker image via docker API (a8b6a4e886be)
+* use docker image from jenkinsfile (6c98b783a298)
+* add method to parse docker image from Jenkinsfile (6be205b5072a)
+* add verbose logger to improve code style (3758ec88664f)
+
+### Fix
+
+* increase default version to pass unit test (d8cbe2633ca5)
+* only lower case names are allowed (ea6623276694)
+
+### Chore
+
+* try to release on master with Jenkins (6b761af5e7f1)
+* use baw image cache to reduce sync time (1358f3930d1d)
+* add missing pip env (3aa0ca80a432)
+* make requirement less strict (07ac2206df4a)
+* try to use synced container (d625dfb43944)
+* cleanup Jenkinsfile (c5f301690c38)
+
 ## v1.17.0 (2022-11-15)
 
 ### Feature
