@@ -11,7 +11,6 @@ import contextlib
 import os
 import sys
 
-import docker
 import docker.errors
 
 import baw.cmd.image.clean
@@ -19,6 +18,7 @@ import baw.cmd.image.dockerfiles
 import baw.cmd.info
 import baw.cmd.utils
 import baw.config
+import baw.dockers
 import baw.runtime
 import baw.utils
 
@@ -63,19 +63,11 @@ def docker_run(
     return baw.utils.SUCCESS
 
 
-@contextlib.contextmanager
-def docker_client():
-    base_url = 'http://169.254.149.20:2375'
-    client = docker.DockerClient(base_url=base_url)
-    yield client
-    client.close()
-
-
 def docker_service(todo: list, root: str) -> int:
     if imagename := check_baseimage(root):
         baw.utils.error(f'missing baseimage: {imagename}')
         return baw.utils.FAILURE
-    with docker_client() as client:
+    with baw.dockers.client() as client:
         for cmd in todo:
             baw.utils.log(cmd)
             cmd, *items = cmd.split()
@@ -131,7 +123,7 @@ def tag(root: str) -> str:
 
 def check_baseimage(root: str):
     image = baw.cmd.pipeline.docker_image(root)
-    with docker_client() as client:
+    with baw.dockers.client() as client:
         try:
             client.images.get(image)
         except docker.errors.ImageNotFound:

@@ -7,12 +7,23 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import os
 import sys
+
+import docker
 
 import baw.config
 import baw.run
 import baw.utils
+
+
+@contextlib.contextmanager
+def client():
+    base_url = 'http://169.254.149.20:2375'
+    result = docker.DockerClient(base_url=base_url)
+    yield result
+    result.close()
 
 
 def switch_docker():
@@ -24,10 +35,10 @@ def switch_docker():
     image = baw.config.docker_image(root=root)
     usercmd = prepare_cmd(sys.argv)
     volume = determine_volume()
-    docker = f'docker run --rm {volume} {image} "{usercmd}"'
-    completed = baw.runtime.run(docker, cwd=root)
+    cmd = f'docker run --rm {volume} {image} "{usercmd}"'
+    completed = baw.runtime.run(cmd, cwd=root)
     if completed.returncode:
-        baw.utils.error(docker)
+        baw.utils.error(cmd)
         if completed.stdout:
             baw.utils.error(completed.stdout)
         baw.utils.error(completed.stderr)

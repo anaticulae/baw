@@ -8,11 +8,12 @@
 # =============================================================================
 
 import baw.cmd.image
+import baw.dockers
 import baw.utils
 
 
 def images() -> int:
-    with baw.cmd.image.docker_client() as client:
+    with baw.dockers.client() as client:
         for image in client.images.list():
             if baw.cmd.image.TEST_TAG not in str(image):
                 continue
