@@ -39,11 +39,22 @@ def switch_docker():
     return completed.returncode
 
 
-def prepare_cmd(argv) -> str:
+def prepare_cmd(argv: list) -> str:
+    r"""\
+    >>> prepare_cmd(['C:\\usr\\python\\310\\Scripts\\baw', '--docker', 'test', '-n1'])
+    'baw test -n1'
+    >>> prepare_cmd(['/var/tmp/baw', '--docker', 'test', '-n1'])
+    'baw test -n1'
+    """
     # use docker to run cmd
     argv = [item for item in argv if item != '--docker']
     if argv:
         # TODO: REMOVE THIS HACK
-        argv[0] = argv[0].split('/')[-1]
+        if '\\' in argv[0]:
+            # windows
+            argv[0] = argv[0].split('\\')[-1]
+        else:
+            # linux
+            argv[0] = argv[0].split('/')[-1]
     usercmd = ' '.join(argv)
     return usercmd
