@@ -29,6 +29,8 @@ tmp
 setup.cfg
 pytest.ini
 report.xml
+docs.xml
+all.xml
 # vscode tmp file
 *.py.*.py
 
