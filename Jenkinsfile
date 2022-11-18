@@ -20,29 +20,37 @@ pipeline{
                 image_setup()
             }
         }
-        stage('doctest'){
-            steps{
-                doctest()
+        stage('test'){
+            parallel{
+                stage('doctest'){
+                    steps{
+                        doctest()
+                    }
+                }
+                stage('fast'){
+                    steps{
+                        baw('test fast -n5')
+                    }
+                }
+                stage('long'){
+                    steps{
+                        baw('test long -n8')
+                    }
+                }
             }
         }
-        stage('fast'){
-            steps{
-                baw('test fast -n5')
-            }
-        }
-        stage('long'){
-            steps{
-                baw('test long -n8')
-            }
-        }
-        stage('lint'){
-            steps{
-                baw('lint')
-            }
-        }
-        stage('all'){
-            steps{
-                alls()
+        stage('ready?'){
+            parallel{
+                stage('lint'){
+                    steps{
+                        baw('lint')
+                    }
+                }
+                stage('all'){
+                    steps{
+                        alls()
+                    }
+                }
             }
         }
         stage('release'){
