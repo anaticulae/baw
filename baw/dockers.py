@@ -23,8 +23,7 @@ def switch_docker():
     root = os.getcwd()
     image = baw.config.docker_image(root=root)
     usercmd = prepare_cmd(sys.argv)
-    # TODO: MOVE TO CONFIG OR SOMETHING ELSE
-    volume = f'-v {os.getcwd()}:/var/test'
+    volume = determine_volume()
     docker = f'docker run --rm {volume} {image} "{usercmd}"'
     completed = baw.runtime.run(docker, cwd=root)
     if completed.returncode:
@@ -58,3 +57,9 @@ def prepare_cmd(argv: list) -> str:
             argv[0] = argv[0].split('/')[-1]
     usercmd = ' '.join(argv)
     return usercmd
+
+
+def determine_volume() -> str:
+    # TODO: MOVE TO CONFIG OR SOMETHING ELSE
+    volume = f'-v {os.getcwd()}:/var/test'
+    return volume
