@@ -61,5 +61,5 @@ def prepare_cmd(argv: list) -> str:
 
 def determine_volume() -> str:
     # TODO: MOVE TO CONFIG OR SOMETHING ELSE
-    volume = f'-v {os.getcwd()}:/var/test'
+    volume = f'-v {os.getcwd()}:/var/workdir'
     return volume
