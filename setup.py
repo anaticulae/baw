@@ -7,7 +7,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-""" Run this setup script to install baw on your local maschine or
+"""Run this setup script to install baw on your local machine or
 venv environment."""
 
 import os
