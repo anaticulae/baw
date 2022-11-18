@@ -97,3 +97,30 @@ def determine_volume() -> str:
     # TODO: MOVE TO CONFIG OR SOMETHING ELSE
     volume = f'-v {os.getcwd()}:/var/workdir'
     return volume
+
+
+IGNORE = '--exclude=build/* --exclude=.git/*'
+IGNORE += '--one-file-system -P '
+
+
+def tar_content(content) -> str:
+    assert os.path.exists(content), str(content)
+    if not baw.runtime.hasprog('tar'):
+        baw.utils.error('tar is not installed, could not tar')
+        sys.exit(baw.utils.FAILURE)
+    # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
+    with baw.utils.tmpdir() as tmp:
+        base = os.path.join(tmp, 'content.tar')
+        tar = baw.utils.forward_slash(base, save_newline=False)
+        tar = tar.replace('C:/', '/c/')
+        content = baw.utils.forward_slash(content, save_newline=False)
+        cmd = f'tar cvf {tar} {IGNORE} .'
+        completed = baw.runtime.run(cmd, content)
+        if completed.returncode:
+            baw.utils.error(f'tar failed: {cmd}')
+            if completed.stdout:
+                baw.utils.error(completed.stdout)
+            if completed.stdout:
+                baw.utils.error(completed.stderr)
+        content = baw.utils.file_read_binary(base)
+    return content
