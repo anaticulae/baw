@@ -34,6 +34,6 @@ def test_create_venv(example, monkeypatch):
 def test_run_test_in_venv(project_with_test):
     """Running test-example in venv environment"""
     # install requirements first and run test later
-    cmd = 'baw --venv sync' + ' && baw test'  #python -mpytest tests -v'
+    cmd = 'baw --venv sync all && baw --venv test'  #python -mpytest tests -v'
     completed = tests.run(cmd, project_with_test)
     assert completed.returncode == baw.utils.SUCCESS, completed.stderr
