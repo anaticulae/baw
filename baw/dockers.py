@@ -21,13 +21,8 @@ def switch_docker():
     if not usedocker:
         return baw.run.run_main()
     root = os.getcwd()
-    # use docker to run cmd
-    argv = [item for item in sys.argv if item != '--docker']
-    if argv:
-        # TODO: REMOVE THIS HACK
-        argv[0] = argv[0].split('/')[-1]
-    usercmd = ' '.join(argv)
     image = baw.config.docker_image(root=root)
+    usercmd = prepare_cmd(sys.argv)
     # TODO: MOVE TO CONFIG OR SOMETHING ELSE
     volume = f'-v {os.getcwd()}:/var/test'
     docker = f'docker run --rm {volume} {image} "{usercmd}"'
@@ -42,3 +37,13 @@ def switch_docker():
         if completed.stderr:
             baw.utils.error(completed.stderr)
     return completed.returncode
+
+
+def prepare_cmd(argv) -> str:
+    # use docker to run cmd
+    argv = [item for item in argv if item != '--docker']
+    if argv:
+        # TODO: REMOVE THIS HACK
+        argv[0] = argv[0].split('/')[-1]
+    usercmd = ' '.join(argv)
+    return usercmd
