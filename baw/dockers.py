@@ -12,6 +12,7 @@ import os
 import sys
 
 import docker
+import docker.errors
 
 import baw.config
 import baw.run
@@ -24,6 +25,28 @@ def client():
     result = docker.DockerClient(base_url=base_url)
     yield result
     result.close()
+
+
+def image_run(  # pylint:disable=W0613
+    cmd,
+    image: str,
+    volume: str = '/var/workspace/',
+) -> int:
+    with client() as connected:
+        try:
+            result = connected.containers.run(
+                image,
+                command=f'"{cmd}"',
+                stderr=True,
+                remove=True,
+            )
+        except docker.errors.ContainerError as error:
+            baw.utils.error(error.stderr.decode('utf8'))
+            return baw.utils.FAILURE
+        else:
+            log = result.decode('utf8')
+            baw.utils.log(log)
+        return baw.utils.SUCCESS
 
 
 def switch_docker():
