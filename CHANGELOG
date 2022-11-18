@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.19.0 (2022-11-18)
+
+### Feature
+
+* add image clean option (2ee2a123bcbe)
+* do not run doc-test on all (06ed6a9ebcf0)
+
+### Chore
+
+* ignore test results (b574d78a5c6f)
+* run tests in parallel (d468c4395ec9)
+* remove file type (84c1f90f319a)
+* adjust email (c3c8ea01eece)
+* use without file type (fe9c2545c811)
+* extract to methods (8c9ee9c87118)
+* split docs and all test (583cf781f758)
+* skip more tasks on release (1e8f6ba0756b)
+* adjust baw call (99a49778d30e)
+* remove useless parameter (162a913d45a5)
+* upgrade requirements.txt (46c4c09b0f1a)
+
 ## v1.18.0 (2022-11-17)
 
 ### Feature
