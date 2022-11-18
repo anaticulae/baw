@@ -16,7 +16,7 @@ import re
 import setuptools
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(ROOT, 'README.md'), 'rt', encoding='utf8') as fp:
+with open(os.path.join(ROOT, 'README'), 'rt', encoding='utf8') as fp:
     README = fp.read()
 with open(os.path.join(ROOT, 'baw/__init__.py'), 'rt', encoding='utf8') as fp:
     VERSION = re.search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
