@@ -182,6 +182,12 @@ def file_read(path: str):
         return normalize_final(fp.read())
 
 
+def file_read_binary(path: str):
+    assert os.path.exists(path), str(path)
+    with open(path, mode='rb') as fp:
+        return fp.read()
+
+
 def file_remove(path: str):
     assert os.path.exists(path), str(path)
     assert os.path.isfile(path), str(path)
