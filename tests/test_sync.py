@@ -13,7 +13,6 @@ import baw
 import baw.cmd.sync
 import baw.runtime
 import tests
-from baw.cmd.sync import sync
 
 
 @tests.longrun
@@ -21,7 +20,7 @@ from baw.cmd.sync import sync
 def test_sync(venv):
     if venv and not baw.runtime.has_virtual(baw.ROOT):
         pytest.skip('generate venv')
-    sync(baw.ROOT, venv=venv, verbose=False)
+    baw.cmd.sync.sync(baw.ROOT, venv=venv, verbose=False)
 
 
 def test_pip_list():
