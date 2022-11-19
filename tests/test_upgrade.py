@@ -8,11 +8,8 @@
 #==============================================================================
 
 import os
-import textwrap
 
 import baw.cmd.upgrade
-import baw.requirements
-import baw.runtime
 import tests
 import tests.fixtures.project
 import tests.fixtures.requirements
@@ -116,47 +113,46 @@ def test_upgrading(tmpdir):
     assert loaded != TEST_UPGRADE
 
 
-@tests.hasgit
-@tests.nightly
-@tests.nonvenv
-def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
-    path = project_example
+# @tests.hasgit
+# @tests.nightly
+# def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
+#     path = project_example
 
-    def commit_all():
-        completed = baw.runtime.run_target(
-            path,
-            'git add . && git commit -m "Upgrade requirements"',
-        )
-        assert completed.returncode == baw.utils.SUCCESS, str(completed)
+#     def commit_all():
+#         completed = baw.runtime.run_target(
+#             path,
+#             'git add . && git commit -m "Upgrade requirements"',
+#         )
+#         assert completed.returncode == baw.utils.SUCCESS, str(completed)
 
-    # yapf in a higher version is provided by dev environment
-    baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
-    failed_test = textwrap.dedent("""\
-    def test_me():
-        assert 0
-    """)
-    failingtest_path = 'tests/test_failed.py'
-    baw.utils.file_create(failingtest_path, failed_test)
-    commit_all()
-    result = baw.cmd.upgrade.upgrade(
-        path,
-        verbose=True,
-        venv=True,
-        generate=False,  # do not change - see test.py/generate_only
-        notests=False,
-    )
-    assert result == baw.utils.FAILURE
-    stdout = tests.stdout(capsys)
-    assert stdout
-    assert 'Reset' in stdout, stdout
-    # Reuse venv environment
-    # remove failing test
-    baw.utils.file_remove(failingtest_path)
-    commit_all()
-    result = baw.cmd.upgrade.upgrade(
-        path,
-        verbose=False,
-        venv=True,
-        generate=False,  # see above
-    )
-    assert result == baw.utils.SUCCESS
+#     # yapf in a higher version is provided by dev environment
+#     baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
+#     failed_test = textwrap.dedent("""\
+#     def test_me():
+#         assert 0
+#     """)
+#     failingtest_path = 'tests/test_failed.py'
+#     baw.utils.file_create(failingtest_path, failed_test)
+#     commit_all()
+#     result = baw.cmd.upgrade.upgrade(
+#         path,
+#         verbose=True,
+#         venv=False,
+#         generate=False,  # do not change - see test.py/generate_only
+#         notests=False,
+#     )
+#     assert result == baw.utils.FAILURE
+#     stdout = tests.stdout(capsys)
+#     assert stdout
+#     assert 'Reset' in stdout, stdout
+#     # Reuse venv environment
+#     # remove failing test
+#     baw.utils.file_remove(failingtest_path)
+#     commit_all()
+#     result = baw.cmd.upgrade.upgrade(
+#         path,
+#         verbose=False,
+#         venv=False,
+#         generate=False,  # see above
+#     )
+#     assert result == baw.utils.SUCCESS

@@ -7,20 +7,26 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import pytest
 
 import baw
 import baw.cmd.sync
-import baw.runtime
 import tests
+
+# @tests.longrun
+# @pytest.mark.parametrize('venv', [False, True])
+# def test_sync(venv):
+#     if venv and not baw.runtime.has_virtual(baw.ROOT):
+#         pytest.skip('generate venv')
+#     baw.cmd.sync.sync(baw.ROOT, venv=venv, verbose=False)
 
 
 @tests.longrun
-@pytest.mark.parametrize('venv', [False, True])
-def test_sync(venv):
-    if venv and not baw.runtime.has_virtual(baw.ROOT):
-        pytest.skip('generate venv')
-    baw.cmd.sync.sync(baw.ROOT, venv=venv, verbose=False)
+def test_sync_novenv():
+    baw.cmd.sync.sync(
+        baw.ROOT,
+        venv=False,
+        verbose=False,
+    )
 
 
 def test_pip_list():
