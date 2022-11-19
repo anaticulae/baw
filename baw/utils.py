@@ -67,6 +67,7 @@ def log(msg: str = '', end: str = NEWLINE):
         Logging with default arguments will log a newline
     """
     msg = forward_slash(msg)
+    msg = fix_encoding(msg)
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
@@ -80,6 +81,7 @@ def error(msg: str):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
+    msg = fix_encoding(msg)
     print(f'[ERROR] {msg}', file=sys.stderr, flush=True)
 
 
