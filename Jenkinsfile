@@ -53,6 +53,11 @@ pipeline{
                 }
             }
         }
+        stage('clean workspace'){
+            steps{
+                sh 'baw info clean'
+            }
+        }
         stage('release'){
             when {branch 'master'}
             steps{
