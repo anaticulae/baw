@@ -30,7 +30,6 @@ def project_example(testdir, monkeypatch):
         baw.git.update_userdata()
         tests.baaw(['init', 'xcd', '"I Like This Project"'], monkeypatch)
         tests.baaw('plan new', monkeypatch)
-        tests.baaw(['--venv'], monkeypatch)
         yield testdir.tmpdir
 
 
