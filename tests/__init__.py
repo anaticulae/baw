@@ -39,7 +39,7 @@ FAST_TESTS = FAST or (not LONGRUN and not NIGHTLY)
 longrun = pytest.mark.skipif(FAST_TESTS, reason='test requires long time')
 nightly = pytest.mark.skipif(not NIGHTLY, reason='require long, long time')
 skip_missing_packages = pytest.mark.skip(reason='package(s) not available')
-nonvenv = pytest.mark.skipif(not VENV, reason='erquire venv')
+nonvenv = pytest.mark.skipif(not VENV, reason='require venv')
 skip_venv = pytest.mark.skipif(VENV, reason='do not run in venv env')
 
 
