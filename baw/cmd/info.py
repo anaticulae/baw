@@ -13,6 +13,7 @@ import sys
 import baw.cmd.image
 import baw.cmd.utils
 import baw.config
+import baw.git
 import baw.project
 import baw.runtime
 import baw.utils
@@ -54,6 +55,14 @@ def prints(root, value: str, verbose: bool = False):
     if value == 'image':
         baw.utils.log(baw.cmd.image.tag(root))
         sys.exit(baw.utils.SUCCESS)
+    if value == 'clean':
+        if baw.git.is_clean(root, verbose=False):
+            baw.utils.log('very clean')
+            sys.exit(baw.utils.SUCCESS)
+        baw.utils.log('not clean\n')
+        # log data
+        baw.utils.log(baw.runtime.run('git status', root).stdout)
+        sys.exit(baw.utils.FAILURE)
 
 
 def print_tmp(root: str):
@@ -106,7 +115,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     return hashed
 
 
-CHOISES = 'name shortcut venv tmp covreport requirement image'.split()
+CHOISES = 'name shortcut venv tmp covreport requirement image clean'.split()
 
 
 def extend_cli(parser):

@@ -60,3 +60,11 @@ def test_cmd_info_venv_fix(monkeypatch, capsys):
     stdout = tests.stdout(capsys)
     assert 'venv:' not in stdout
     assert ' ' not in stdout.strip()
+
+
+def test_cmd_info_clean(simple, capsys):  # pylint:disable=W0621,W0613
+    """Ensure that workspace is clean."""
+    simple[0]('info clean')
+    stdout = tests.stdout(capsys)
+    # ensure that workspace is clean
+    assert 'clean' in stdout
