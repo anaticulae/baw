@@ -33,13 +33,10 @@ def image_run(
     image: str,
     volumes: str = '/var/workdir',
 ) -> int:
+    content = tar_content(os.getcwd())
     with client() as connected:
+        container = container_create(image, cmd, connected)
         try:
-            container = connected.containers.create(
-                image,
-                command=f'"{cmd}"',
-            )
-            content = tar_content(os.getcwd())
             container.put_archive(
                 path=volumes,
                 data=content,
@@ -56,6 +53,27 @@ def image_run(
             baw.utils.error(error.stderr.decode('utf8'))
             return baw.utils.FAILURE
         return baw.utils.SUCCESS
+
+
+def container_create(image: str, cmd: str, connected):
+    try:
+        container = connected.containers.create(
+            image,
+            command=f'"{cmd}"',
+        )
+    except docker.errors.ImageNotFound:
+        root = os.getcwd()
+        baw.utils.log('baw image create')
+        completed = baw.runtime.run('baw image create', cwd=root)
+        if completed.returncode:
+            baw.utils.error(f'could not create image: {root}')
+            baw.utils.error(completed)
+            sys.exit(baw.utils.FAILURE)
+        container = connected.containers.create(
+            image,
+            command=f'"{cmd}"',
+        )
+    return container
 
 
 def switch_docker():
