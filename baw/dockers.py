@@ -14,6 +14,7 @@ import sys
 import docker
 import docker.errors
 
+import baw.cmd.image
 import baw.config
 import baw.run
 import baw.utils
@@ -27,25 +28,33 @@ def client():
     result.close()
 
 
-def image_run(  # pylint:disable=W0613
+def image_run(
     cmd,
     image: str,
-    volume: str = '/var/workspace/',
+    volumes: str = '/var/workdir',
 ) -> int:
     with client() as connected:
         try:
-            result = connected.containers.run(
+            container = connected.containers.create(
                 image,
                 command=f'"{cmd}"',
-                stderr=True,
-                remove=True,
             )
+            content = tar_content(os.getcwd())
+            container.put_archive(
+                path=volumes,
+                data=content,
+            )
+            baw.utils.log('start container')
+            container.start()
+            out = container.logs(stdout=True, stderr=True, stream=True)
+            for line in out:
+                baw.utils.log(line.decode('utf8'), end='')
+            # TODO: VERIFY THIS
+            container.stop()
+            container.remove()
         except docker.errors.ContainerError as error:
             baw.utils.error(error.stderr.decode('utf8'))
             return baw.utils.FAILURE
-        else:
-            log = result.decode('utf8')
-            baw.utils.log(log)
         return baw.utils.SUCCESS
 
 
@@ -55,21 +64,15 @@ def switch_docker():
     if not usedocker:
         return baw.run.run_main()
     root = os.getcwd()
-    image = baw.config.docker_image(root=root)
+    image = baw.cmd.image.tag(root)
     usercmd = prepare_cmd(sys.argv)
-    volume = determine_volume()
-    cmd = f'docker run --rm {volume} {image} "{usercmd}"'
-    completed = baw.runtime.run(cmd, cwd=root)
-    if completed.returncode:
-        baw.utils.error(cmd)
-        if completed.stdout:
-            baw.utils.error(completed.stdout)
-        baw.utils.error(completed.stderr)
-    else:
-        baw.utils.log(completed.stdout)
-        if completed.stderr:
-            baw.utils.error(completed.stderr)
-    return completed.returncode
+    volumes = determine_volumes()
+    result = image_run(
+        cmd=usercmd,
+        image=image,
+        volumes=volumes,
+    )
+    return result
 
 
 def prepare_cmd(argv: list) -> str:
@@ -93,10 +96,9 @@ def prepare_cmd(argv: list) -> str:
     return usercmd
 
 
-def determine_volume() -> str:
+def determine_volumes() -> str:
     # TODO: MOVE TO CONFIG OR SOMETHING ELSE
-    volume = f'-v {os.getcwd()}:/var/workdir'
-    return volume
+    return '/var/workdir'
 
 
 IGNORE = '--exclude=build/* --exclude=.git/*'
