@@ -47,7 +47,7 @@ def upgrade(
             test=not notests,
             testconfig=None,
             verbose=verbose,
-            venv='BOTH',  # sync venv and non venv environment
+            venv=venv,
         )
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
