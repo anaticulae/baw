@@ -83,6 +83,23 @@ def error(msg: str):
     print(f'[ERROR] {msg}', file=sys.stderr, flush=True)
 
 
+def fix_encoding(msg: str) -> str:
+    """Remove invalid character to display on console
+
+    Args:
+        msg(str): message with invalid character
+    Returns:
+        message `without` invalid character
+    """
+    # ensure to have str
+    msg = str(msg)
+    # convert for windows console
+    encoding = 'cp1252' if 'win' in sys.platform else 'utf-8'
+    # remove non valid char to avoid errors on win-console
+    msg = msg.encode(encoding, errors='xmlcharrefreplace').decode(encoding)
+    return msg
+
+
 PLAINOUTPUT = 'PLAINOUTPUT'
 SAVEGUARD = 'IAMTHESAVEGUARDXYXYXYXYXYXYXYXYXYXYXY'
 SECOND_GUARD = 'OHMANIHAVETGOLEARNMOREPYTHONTHATS'
