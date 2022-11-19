@@ -40,6 +40,21 @@ def create(  # pylint:disable=W0613
     return baw.utils.SUCCESS
 
 
+def create_git_hash(root: str):
+    root = baw.cmd.utils.determine_root(root)
+    path = os.path.join(root, 'Dockerfile')
+    if not os.path.exists(path):
+        baw.utils.error(f'missing Dockerfile: {path}')
+        sys.exit(baw.utils.FAILURE)
+    tag_new = baw.runtime.run('git describe', cwd=root).stdout.strip()
+    todo = [
+        f'build -t {tag_new} -f {path} .',
+    ]
+    if returncode := docker_run(todo, root):
+        return returncode
+    return baw.utils.SUCCESS
+
+
 def docker_run(
     todo: list,
     root: str,
@@ -146,6 +161,8 @@ def run(args: dict):
         baw.utils.error('not implemented')
     if action == 'clean':
         return baw.cmd.image.clean.images()
+    if action == 'githash':
+        return baw.cmd.image.create_git_hash(root)
     return baw.utils.FAILURE
 
 
@@ -159,6 +176,6 @@ def extend_cli(parser):
         help='manage the docker image',
         nargs='?',
         const='create',
-        choices='create update delete clean'.split(),
+        choices='create update delete clean githash'.split(),
     )
     cli.set_defaults(func=run)
