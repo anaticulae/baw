@@ -12,6 +12,7 @@ import textwrap
 
 import baw.utils
 import tests
+import tests.fixtures.project
 
 
 @tests.hasbaw
@@ -45,11 +46,14 @@ def test_test_with_import(example):
     test_me = textwrap.dedent("""\
         def test_me():
             import %s.%s
-    """) % (tests.EXAMPLE_PROJECT_NAME, python_file)
+    """) % (tests.fixtures.project.EXAMPLE_PROJECT_NAME, python_file)
     write = example.join('tests/my_test.py')
     baw.utils.file_create(write, test_me)
     assert os.path.exists(write)
-    empty_python = example.join(tests.EXAMPLE_PROJECT_NAME, f'{python_file}.py')
+    empty_python = example.join(
+        tests.fixtures.project.EXAMPLE_PROJECT_NAME,
+        f'{python_file}.py',
+    )
     baw.utils.file_create(empty_python)
     assert os.path.exists(empty_python)
     # install requirements first and run test later

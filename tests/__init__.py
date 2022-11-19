@@ -8,7 +8,6 @@
 # =============================================================================
 
 import contextlib
-import functools
 import os
 import subprocess
 import sys
@@ -100,35 +99,6 @@ def assert_run_fail(command: str, cwd: str = None):
     msg = f'{completed.stderr}\n{completed.stdout}'
     assert completed.returncode, msg
     yield completed
-
-
-EXAMPLE_PROJECT_NAME = 'xkcd'
-
-
-@pytest.fixture
-def example(testdir, monkeypatch):
-    """Creating example project due console"""
-    if run('which baw').returncode:
-        pytest.skip('install baw')
-    if not baw.git.installed():
-        pytest.skip('install git')
-    baw.git.update_userdata()
-    cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
-    with monkeypatch.context() as context:
-        tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
-        context.setattr(baw.config, 'bawtmp', tmpdir)
-        with assert_run(cmd, cwd=testdir.tmpdir):
-            assert os.path.exists(os.path.join(testdir.tmpdir, '.git'))
-            yield testdir.tmpdir
-
-
-@pytest.fixture
-def simple(example, monkeypatch):  # pylint:disable=W0621
-    runner = functools.partial(
-        baaw,
-        monkeypatch=monkeypatch,
-    )
-    yield runner, example
 
 
 def file_count(path: str):
