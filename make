@@ -10,13 +10,12 @@
 
 REPO="169.254.149.20:6001"
 NAME="arch_python_git_baw"
-VERSION="$(git describe)"
-TAG="${REPO}/${NAME}:${VERSION}"
+TAG="${REPO}/${NAME}"
 
-docker build -t $TAG .
+baw image githash --name $TAG
 
 if [ $? -ne 0 ]
 then
-    echo "could not run docker build: ${file}"
+    echo "could not run docker build: ${TAG}"
     exit 1
 fi

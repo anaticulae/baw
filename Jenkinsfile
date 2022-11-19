@@ -55,6 +55,11 @@ pipeline{
                 }
             }
         }
+        stage('docker'){
+            steps{
+                sh './make'
+            }
+        }
         stage('clean workspace'){
             steps{
                 sh 'baw info clean'
