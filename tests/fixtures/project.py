@@ -25,10 +25,7 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 @pytest.fixture
 def example(testdir, monkeypatch):
     """Creating example project due console"""
-    if tests.run('which baw').returncode:
-        pytest.skip('install baw')
-    if not baw.git.installed():
-        pytest.skip('install git')
+    require_baw_git()
     baw.git.update_userdata()
     cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
@@ -50,10 +47,7 @@ def simple(example, monkeypatch):  # pylint:disable=W0621
 
 @pytest.fixture
 def project_example(testdir, monkeypatch):
-    if baw.runtime.run('which baw', cwd=testdir.tmpdir).returncode:
-        pytest.skip('install baw')
-    if not baw.git.installed():
-        pytest.skip('install git')
+    require_baw_git()
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
         context.setattr(baw.config, 'bawtmp', tmpdir)
@@ -109,3 +103,10 @@ def project_with_test(example):  # pylint:disable=W0621
     baw.utils.file_create(write, test_me)
     assert os.path.exists(write)
     return example
+
+
+def require_baw_git():
+    if tests.run('which baw').returncode:
+        pytest.skip('install baw')
+    if not baw.git.installed():
+        pytest.skip('install git')
