@@ -18,18 +18,15 @@ import tests
 
 
 @pytest.fixture
-def simpleproject(testdir):
-    root = str(testdir)
-    baw.config.create(root, 'abc', 'alphabet')
+def minimal(testdir):
+    baw.config.create(testdir.tmpdir, 'abc', 'alphabet')
     baw.utils.file_create('setup.py', '# setup')
-
-    abc = os.path.join(root, 'abc')
-    os.makedirs(abc)
-    return root
+    os.makedirs(testdir.tmpdir.join('abc'))
+    return testdir.tmpdir
 
 
 @tests.hasbaw
-def test_regression_format_keep_single_list(simpleproject, monkeypatch):  # pylint:disable=W0621
+def test_regression_format_keep_single_list(minimal, monkeypatch):  # pylint:disable=W0621
     """Do not use -k, as a result renaming does not work propper.
 
     import hello.abc as ha produces:
@@ -40,12 +37,9 @@ def test_regression_format_keep_single_list(simpleproject, monkeypatch):  # pyli
     We do not want this first line.
     """
     source = 'import baw.utils as bu\n'
-
-    path = os.path.join(simpleproject, 'abc/hello.py')
+    path = os.path.join(minimal, 'abc/hello.py')
     baw.utils.file_create(path, source)
     assert os.path.exists(path)
-
     tests.baaw('format', monkeypatch=monkeypatch)
-
     read = baw.utils.file_read(path)
     assert read == source
