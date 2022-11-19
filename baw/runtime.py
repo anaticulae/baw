@@ -85,8 +85,9 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
             baw.utils.log(f'venv: {venv}')
         return baw.utils.SUCCESS
     python = baw.config.python(root, venv=False)
-    # '--system-site-packages'
-    cmd = f'{python} -m virtualenv . --copies '
+    # use system site packages in docker env
+    action = '--copies' if baw.runtime.iswin() else '--system-site-packages'
+    cmd = f'{python} -m virtualenv . {action}'
     if clean:
         cmd = f'{cmd} --clear'
     if verbose:
