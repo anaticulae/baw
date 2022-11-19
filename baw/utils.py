@@ -143,12 +143,19 @@ def tmpfile() -> str:
     '...'
     """
     name = str(int(random.random() * 10000000000)).zfill(10)  # nosec
-    tmpdir = tmp(baw.ROOT)
-    result = os.path.join(tmpdir, name)
+    tmps = tmp(baw.ROOT)
+    result = os.path.join(tmps, name)
     if os.path.exists(result):
         # try again
         return tmpfile()
     return result
+
+
+@contextlib.contextmanager
+def tmpdir(delete: bool = False) -> str:  # pylint:disable=W0613
+    path = tmpfile()
+    os.makedirs(path)
+    yield path
 
 
 def check_root(root: str):
