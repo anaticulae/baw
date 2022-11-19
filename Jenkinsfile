@@ -1,5 +1,7 @@
 pipeline{
-    agent any
+    agent{
+        dockerfile{filename 'Dockerfile'}
+    }
     // image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
 
     environment{
@@ -76,13 +78,14 @@ def image_setup(){
     sh 'baw image create'
 }
 def baw(cmd){
-    sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} "baw ' + cmd + '"'
+    sh 'baw --docker '+cmd
+    //#sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} "baw ' + cmd + '"'
 }
 def doctest(){
     baw('test docs -n1 --junit_xml=docs.xml')
-    junit '**/docs.xml'
+    //junit '**/docs.xml'
 }
 def alls(){
     baw('test all --junit_xml=all.xml')
-    junit '**/all.xml'
+    //junit '**/all.xml'
 }
