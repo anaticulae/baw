@@ -13,3 +13,4 @@ __version__ = '1.20.0'
 
 # pylint:disable=wrong-import-position
 import baw.__root__
+import baw.__patch__
