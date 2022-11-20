@@ -31,16 +31,17 @@ def client():
 def image_run(
     cmd,
     image: str,
-    volumes: str = '/var/workdir',
+    volumes: str = None,
 ) -> int:
-    content = tar_content(os.getcwd())
     with client() as connected:
         container = container_create(image, cmd, connected)
         try:
-            container.put_archive(
-                path=volumes,
-                data=content,
-            )
+            if volumes:
+                content = tar_content(os.getcwd())
+                container.put_archive(
+                    path=volumes,
+                    data=content,
+                )
             baw.utils.log('start container')
             container.start()
             out = container.logs(stdout=True, stderr=True, stream=True)
