@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import contextlib
 import os
 import sys
 
@@ -39,7 +38,7 @@ def create(  # pylint:disable=W0613
             f'build -t {tag_new} -f {path} .',
             # f'push {tag_new}',
         ]
-        if returncode := docker_run(todo, root):
+        if returncode := docker_service(todo, root):
             return returncode
     return baw.utils.SUCCESS
 
@@ -51,7 +50,7 @@ def dockerfile_build(root, dockerfile, name=None) -> int:
             sys.exit(baw.utils.FAILURE)
         name = baw.runtime.run('git describe', cwd=root).stdout.strip()
     todo = [f'build -t {name} -f {dockerfile} .']
-    if returncode := docker_run(todo, root):
+    if returncode := docker_service(todo, root):
         return returncode
     return baw.utils.SUCCESS
 
@@ -68,35 +67,14 @@ def create_git_hash(root: str, name: str = None):
     todo = [
         f'build -t {tagname} -f {path} .',
     ]
-    if returncode := docker_run(todo, root):
+    if returncode := docker_service(todo, root):
         return returncode
     return baw.utils.SUCCESS
 
 
-def docker_run(
-    todo: list,
-    root: str,
-    service: bool = True,
-) -> int:
+def docker_service(todo: list, root: str) -> int:
     if isinstance(todo, str):
         todo = [todo]
-    if service:
-        return docker_service(todo, root)
-    if not baw.runtime.hasprog('docker'):
-        baw.utils.error('require docker')
-        return baw.utils.FAILURE
-    for job in todo:
-        cmd = f'docker {job}'
-        completed = baw.runtime.run(cmd, cwd=root)
-        if completed.returncode:
-            if completed.stdout:
-                baw.utils.error(completed.stdout)
-            baw.utils.error(completed.stderr)
-            return baw.utils.FAILURE
-    return baw.utils.SUCCESS
-
-
-def docker_service(todo: list, root: str) -> int:
     if imagename := check_baseimage(root):
         baw.utils.error(f'missing baseimage: {imagename}')
         return baw.utils.FAILURE
