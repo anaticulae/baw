@@ -157,10 +157,8 @@ ENVIRONMENT = re.compile(r'environment\{(.{5,}?)\}', flags=re.DOTALL)
 
 def docker_env(root: str) -> dict:
     """\
-    >>> import baw.project
-    >>> docker_env(baw.project.determine_root(__file__))
-    {'...': '...', ...}
-
+    >>> import baw.project; docker_env(baw.project.determine_root(__file__)) is None
+    True
     """
     path = jenkinsfile(root)
     if not os.path.exists(path):
