@@ -48,6 +48,11 @@ pipeline{
                         baw('lint')
                     }
                 }
+                stage('format'){
+                    steps{
+                        baw('format && baw info clean')
+                    }
+                }
                 stage('all'){
                     steps{
                         alls()
