@@ -31,16 +31,17 @@ def create(  # pylint:disable=W0613
 ):
     root = baw.cmd.utils.determine_root(root)
     if dockerfile:
+        dockerfile = baw.utils.forward_slash(dockerfile)
+        if '/' not in dockerfile:
+            dockerfile = os.path.join(os.getcwd(), dockerfile)
         return dockerfile_build(root, dockerfile, name)
-    tag_new = tag(root)
+    tagname = tag(root)
     with baw.cmd.image.dockerfiles.generate(root) as path:
-        todo = [
-            f'build -t {tag_new} -f {path} .',
-            # f'push {tag_new}',
-        ]
-        if returncode := docker_service(todo, root):
-            return returncode
-    return baw.utils.SUCCESS
+        result = docker_build(
+            dockerfile=path,
+            tagname=tagname,
+        )
+    return result
 
 
 def dockerfile_build(root, dockerfile, name=None) -> int:
@@ -49,62 +50,41 @@ def dockerfile_build(root, dockerfile, name=None) -> int:
             baw.utils.error('install git')
             sys.exit(baw.utils.FAILURE)
         name = baw.runtime.run('git describe', cwd=root).stdout.strip()
-    todo = [f'build -t {name} -f {dockerfile} .']
-    if returncode := docker_service(todo, root):
-        return returncode
-    return baw.utils.SUCCESS
+    result = docker_build(
+        dockerfile=dockerfile,
+        tagname=name,
+    )
+    return result
 
 
-def create_git_hash(root: str, name: str = None):
+def create_git_hash(root: str, name=None):  # pylint:disable=W0613
     root = baw.cmd.utils.determine_root(root)
     path = os.path.join(root, 'Dockerfile')
     if not os.path.exists(path):
         baw.utils.error(f'missing Dockerfile: {path}')
         sys.exit(baw.utils.FAILURE)
     tagname = baw.runtime.run('git describe', cwd=root).stdout.strip()
-    if name:
-        tagname = f'{name}:{tagname}'
-    todo = [
-        f'build -t {tagname} -f {path} .',
-    ]
-    if returncode := docker_service(todo, root):
-        return returncode
-    return baw.utils.SUCCESS
+    result = docker_build(
+        dockerfile=path,
+        tagname=tagname,
+    )
+    return result
 
 
-def docker_service(todo: list, root: str) -> int:
-    if isinstance(todo, str):
-        todo = [todo]
-    if imagename := check_baseimage(root):
-        baw.utils.error(f'missing baseimage: {imagename}')
+def docker_build(dockerfile: str, tagname: str) -> int:
+    path = os.path.split(dockerfile)[0]
+    try:
+        with baw.dockers.client() as client:
+            done = client.images.build(
+                path=path,
+                dockerfile=dockerfile,
+                tag=tagname,
+            )
+            log_service(done)
+    except docker.errors.BuildError as error:
+        for line in error.build_log:
+            baw.utils.error(line)
         return baw.utils.FAILURE
-    with baw.dockers.client() as client:
-        for cmd in todo:
-            baw.utils.log(cmd)
-            cmd, *items = cmd.split()
-            if cmd == 'build':
-                tagname = items[1]
-                dockerfile_path = items[3]
-                try:
-                    done = client.images.build(
-                        path=root,
-                        dockerfile=dockerfile_path,
-                        tag=tagname,
-                    )
-                except docker.errors.BuildError as error:
-                    for line in error.build_log:
-                        baw.utils.error(line)
-                    return baw.utils.FAILURE
-                log_service(done)
-            elif cmd == 'push':
-                baw.utils.log('PUSH IS WIP')
-                return baw.utils.FAILURE
-                # TODO: PUSH IS BROKEN
-                # repository, tag = items[0].split('/')
-                # repository = '169.254.149.20:6001:try_baw_96697096'
-                # tag = 'latest'
-                # done = client.images.push(repository=repository, tag=tag)
-                # log_service(done)
     return baw.utils.SUCCESS
 
 
