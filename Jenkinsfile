@@ -2,7 +2,7 @@ pipeline{
     agent{
         dockerfile{filename 'Dockerfile'}
     }
-    // image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
+    // image '169.254.149.20:6001/arch_python_git_baw:v1.20.0'
 
     stages{
         stage('sync'){
