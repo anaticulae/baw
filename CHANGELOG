@@ -2,6 +2,40 @@
 
 Every noteable change is logged here.
 
+## v1.20.0 (2022-11-20)
+
+### Feature
+
+* use system site packages in docker env (b6db3b6cdd7b)
+* add name to build name githash (e1d839ba98a9)
+* add method to prepare log to print on windows console (5180b05c3d6b)
+* add method to build Dockerfile in project (c2ba49716b89)
+* add option to verify that workspace is clean (11988d19456a)
+* use python API to run docker cmd (433b2f6c2a76)
+* add method to tar workspace data (4891f0fc1322)
+* add method to run cmd inside docker container (ae2a8f3af8ba)
+* add method to read binary files (88ea15ca6ce0)
+* add context manager to create tmpdir (e63002318ac5)
+* extend debugging information (7871b0d529d0)
+
+### Fix
+
+* do not fail on unsupported chars (102742452047)
+* do not sync venv and normal (fdbea06caea1)
+* create image if image is not created yet (90459d36ddd6)
+* adjust workdir (1347c575982a)
+* remove program prefix correctly (11cdee8dcf79)
+
+### Chore
+
+* ensure that code is formatted correctly (7b77c5af6d7d)
+* do not always use VENV in docker env (92b3003149b4)
+* add stage to build docker image (e0949a4d2e5d)
+* build Dockerfile for current run (5836a7195ca4)
+* add dockerfile (00c52efd40f3)
+* ensure that venv is installed (347de9d6ba99)
+* ensure that workspace is clean (4cd7fb20f8d8)
+
 ## v1.19.0 (2022-11-18)
 
 ### Feature
