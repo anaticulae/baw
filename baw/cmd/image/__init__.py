@@ -173,6 +173,9 @@ def run(args: dict):
     return baw.utils.FAILURE
 
 
+CHOICES = 'create update delete clean githash'.split()
+
+
 def extend_cli(parser):
     cli = parser.add_parser(
         'image',
@@ -183,7 +186,7 @@ def extend_cli(parser):
         help='manage the docker image',
         nargs='?',
         const='create',
-        choices='create update delete clean githash'.split(),
+        choices=CHOICES,
     )
     cli.add_argument(
         '--name',
