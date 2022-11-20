@@ -11,6 +11,7 @@
 REPO="169.254.149.20:6001"
 NAME="arch_python_git_baw"
 TAG="${REPO}/${NAME}"
+CURRENT=$(git describe)
 
 baw image githash --name $TAG
 
@@ -19,3 +20,6 @@ then
     echo "could not run docker build: ${TAG}"
     exit 1
 fi
+
+# verify that image is create properly
+baw image run --name $TAG:$CURRENT --cmd "ls /var/install"
