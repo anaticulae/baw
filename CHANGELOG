@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v1.21.0 (2022-11-20)
+
+### Feature
+
+* add option to build different dockerfiles (a88f65771b8b)
+* add option to run image with cmd (e283fc3bc177)
+* allow image run without volume (09f375f98ede)
+
+### Fix
+
+* skip user warning (0adbb124a9a4)
+
+### Chore
+
+* use generalized image creator (35014391a08f)
+* upgrade env (efdd1fef690e)
+* env vars are stored in Dockerfile (86cab16e8491)
+* publish baw package to repository (daeb7c4b6371)
+
 ## v1.20.0 (2022-11-20)
 
 ### Feature
