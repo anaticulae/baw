@@ -170,10 +170,18 @@ def run(args: dict):
             root,
             name=name,
         )
+    if action == 'run':
+        name = args['name']
+        cmd = args['cmd']
+        baw.utils.log(f'run name: {name}; cmd: {cmd}')
+        return baw.dockers.image_run(
+            cmd=cmd,
+            image=name,
+        )
     return baw.utils.FAILURE
 
 
-CHOICES = 'create update delete clean githash'.split()
+CHOICES = 'create update delete clean githash run'.split()
 
 
 def extend_cli(parser):
@@ -191,5 +199,9 @@ def extend_cli(parser):
     cli.add_argument(
         '--name',
         help='add image name',
+    )
+    cli.add_argument(
+        '--cmd',
+        help='run cmd inside container',
     )
     cli.set_defaults(func=run)
