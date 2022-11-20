@@ -13,7 +13,7 @@ NAME="arch_python_git_baw"
 TAG="${REPO}/${NAME}"
 CURRENT=$(git describe)
 
-baw image githash --name $TAG
+baw image create --name $TAG:$CURRENT --dockerfile Dockerfile
 
 if [ $? -ne 0 ]
 then
