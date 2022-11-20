@@ -72,7 +72,8 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
 
 
 def docker_build(dockerfile: str, tagname: str) -> int:
-    if not check_baseimage(dockerfile):
+    image = parse_dockerfile(dockerfile)
+    if check_baseimage(image):
         baw.utils.error(f'could not find base image: {dockerfile}')
         baw.utils.error(parse_dockerfile(dockerfile))
         baw.utils.error(baw.utils.file_read(dockerfile))
@@ -117,8 +118,7 @@ def tag(root: str) -> str:
     return result
 
 
-def check_baseimage(dockerfile: str):
-    image = parse_dockerfile(dockerfile)
+def check_baseimage(image: str):
     with baw.dockers.client() as client:
         try:
             client.images.get(image)
@@ -167,10 +167,19 @@ def run(args: dict):
             cmd=cmd,
             image=name,
         )
+    if action == 'check':
+        name = args['name']
+        baw.utils.log(f'check: {name}')
+        if check_baseimage(name):
+            baw.utils.error(f'could not find {name}')
+            sys.exit(baw.utils.FAILURE)
+            return baw.utils.FAILURE
+        baw.utils.log('OK')
+        return baw.utils.SUCCESS
     return baw.utils.FAILURE
 
 
-CHOICES = 'create update delete clean githash run'.split()
+CHOICES = 'create update delete clean githash run check'.split()
 
 
 def extend_cli(parser):
