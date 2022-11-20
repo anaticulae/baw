@@ -25,10 +25,14 @@ import baw.utils
 
 def create(  # pylint:disable=W0613
     root: str,
+    name: str = None,
+    dockerfile: str = None,
     verbose: bool = False,
     venv: bool = False,
 ):
     root = baw.cmd.utils.determine_root(root)
+    if dockerfile:
+        return dockerfile_build(root, dockerfile, name)
     tag_new = tag(root)
     with baw.cmd.image.dockerfiles.generate(root) as path:
         todo = [
@@ -37,6 +41,18 @@ def create(  # pylint:disable=W0613
         ]
         if returncode := docker_run(todo, root):
             return returncode
+    return baw.utils.SUCCESS
+
+
+def dockerfile_build(root, dockerfile, name=None) -> int:
+    if not name:
+        if not baw.runtime.hasprog('git'):
+            baw.utils.error('install git')
+            sys.exit(baw.utils.FAILURE)
+        name = baw.runtime.run('git describe', cwd=root).stdout.strip()
+    todo = [f'build -t {name} -f {dockerfile} .']
+    if returncode := docker_run(todo, root):
+        return returncode
     return baw.utils.SUCCESS
 
 
@@ -154,6 +170,8 @@ def run(args: dict):
     if action == 'create':
         return create(
             root,
+            dockerfile=args['dockerfile'],
+            name=args['name'],
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
@@ -203,5 +221,9 @@ def extend_cli(parser):
     cli.add_argument(
         '--cmd',
         help='run cmd inside container',
+    )
+    cli.add_argument(
+        '--dockerfile',
+        help='use this dockerfile',
     )
     cli.set_defaults(func=run)
