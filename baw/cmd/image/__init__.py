@@ -72,6 +72,11 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
 
 
 def docker_build(dockerfile: str, tagname: str) -> int:
+    if not check_baseimage(dockerfile):
+        baw.utils.error(f'could not find base image: {dockerfile}')
+        baw.utils.error(parse_dockerfile(dockerfile))
+        baw.utils.error(baw.utils.file_read(dockerfile))
+        sys.exit(baw.utils.FAILURE)
     path = os.path.split(dockerfile)[0]
     try:
         with baw.dockers.client() as client:
@@ -112,14 +117,22 @@ def tag(root: str) -> str:
     return result
 
 
-def check_baseimage(root: str):
-    image = baw.cmd.pipeline.docker_image(root)
+def check_baseimage(dockerfile: str):
+    image = parse_dockerfile(dockerfile)
     with baw.dockers.client() as client:
         try:
             client.images.get(image)
         except docker.errors.ImageNotFound:
             return image
     return None
+
+
+def parse_dockerfile(path: str):
+    lines = baw.utils.file_read(path).splitlines()
+    for line in lines:
+        if line.startswith('FROM '):
+            return line.split(' ')[1].strip()
+    raise ValueError(f'could not find `FROM ` in {path}')
 
 
 def run(args: dict):
