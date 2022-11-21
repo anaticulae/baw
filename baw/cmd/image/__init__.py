@@ -18,6 +18,7 @@ import baw.cmd.info
 import baw.cmd.utils
 import baw.config
 import baw.dockers
+import baw.git
 import baw.runtime
 import baw.utils
 
@@ -49,7 +50,7 @@ def dockerfile_build(root, dockerfile, name=None) -> int:
         if not baw.runtime.hasprog('git'):
             baw.utils.error('install git')
             sys.exit(baw.utils.FAILURE)
-        name = baw.runtime.run('git describe', cwd=root).stdout.strip()
+        name = baw.git.describe(root)
     result = docker_build(
         dockerfile=dockerfile,
         tagname=name,
@@ -63,7 +64,7 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
     if not os.path.exists(path):
         baw.utils.error(f'missing Dockerfile: {path}')
         sys.exit(baw.utils.FAILURE)
-    tagname = baw.runtime.run('git describe', cwd=root).stdout.strip()
+    tagname = baw.git.describe(root)
     result = docker_build(
         dockerfile=path,
         tagname=tagname,
