@@ -227,7 +227,7 @@ def is_modified(root: str) -> bool:
 
 
 def describe(root: str) -> str:
-    if not baw.runtime.hasprog('git'):
+    if not installed():
         baw.utils.error('install git')
         sys.exit(baw.utils.FAILURE)
     name = baw.runtime.run('git describe', cwd=root).stdout.strip()
