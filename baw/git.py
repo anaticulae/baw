@@ -226,6 +226,14 @@ def is_modified(root: str) -> bool:
     return False
 
 
+def describe(root: str) -> str:
+    if not baw.runtime.hasprog('git'):
+        baw.utils.error('install git')
+        sys.exit(baw.utils.FAILURE)
+    name = baw.runtime.run('git describe', cwd=root).stdout.strip()
+    return name
+
+
 def update_gitignore(root: str, verbose: bool = False):
     if verbose:
         baw.utils.log('sync gitexclude')
