@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
 import os
 import sys
 
@@ -35,7 +36,13 @@ def create(  # pylint:disable=W0613
         dockerfile = baw.utils.forward_slash(dockerfile)
         if '/' not in dockerfile:
             dockerfile = os.path.join(os.getcwd(), dockerfile)
-        return dockerfile_build(root, dockerfile, name)
+        with dockerfile_resolve_gitdescribe(dockerfile, root) as dock:
+            result = dockerfile_build(
+                root,
+                dockerfile=dock,
+                name=name,
+            )
+        return result
     tagname = tag(root)
     with baw.cmd.image.dockerfiles.generate(root) as path:
         result = docker_build(
@@ -56,6 +63,28 @@ def dockerfile_build(root, dockerfile, name=None) -> int:
         tagname=name,
     )
     return result
+
+
+REFRENCE = '<<GITDESCRIBE>>'
+
+
+@contextlib.contextmanager
+def dockerfile_resolve_gitdescribe(dockerfile: str, root: str):
+    content = baw.utils.file_read(dockerfile)
+    if REFRENCE not in content:
+        yield dockerfile
+        return
+    current = baw.git.describe(root)
+    baw.utils.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
+    content = content.replace(REFRENCE, current)
+    # tmp file must be in the same path as dockerfile to COPY correctly
+    newpath = os.path.join(os.path.split(dockerfile)[0], 'dockertmp')
+    baw.utils.file_create(
+        newpath,
+        content=content,
+    )
+    yield newpath
+    os.unlink(newpath)
 
 
 def create_git_hash(root: str, name=None):  # pylint:disable=W0613
