@@ -11,6 +11,7 @@ pipeline{
             }
         }
         stage('test'){
+            failFast true
             parallel{
                 stage('doctest'){
                     steps{
@@ -30,6 +31,7 @@ pipeline{
             }
         }
         stage('ready?'){
+            failFast true
             parallel{
                 stage('lint'){
                     steps{
