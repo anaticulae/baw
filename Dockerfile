@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM 169.254.149.20:6001/arch_python_git:0.15.1
+FROM 169.254.149.20:6001/arch_python_git:v0.16.0
 
 MAINTAINER HELMUT KONRAD FAHRENDHOLZ
 
