@@ -127,6 +127,16 @@ def check_baseimage(image: str):
     return None
 
 
+def image_check(name: str) -> int:
+    baw.utils.log(f'check: {name}')
+    if check_baseimage(name):
+        baw.utils.error(f'could not find {name}')
+        sys.exit(baw.utils.FAILURE)
+        return baw.utils.FAILURE
+    baw.utils.log('OK')
+    return baw.utils.SUCCESS
+
+
 def parse_dockerfile(path: str):
     lines = baw.utils.file_read(path).splitlines()
     for line in lines:
@@ -169,13 +179,7 @@ def run(args: dict):
         )
     if action == 'check':
         name = args['name']
-        baw.utils.log(f'check: {name}')
-        if check_baseimage(name):
-            baw.utils.error(f'could not find {name}')
-            sys.exit(baw.utils.FAILURE)
-            return baw.utils.FAILURE
-        baw.utils.log('OK')
-        return baw.utils.SUCCESS
+        return image_check(name)
     return baw.utils.FAILURE
 
 
