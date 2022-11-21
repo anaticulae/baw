@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.22.0 (2022-11-21)
+
+### Feature
+
+* replace reference in docker file (3f941f5947a2)
+* add method to determine current version (ef45cb8c0ab1)
+* add method to run git describe (b359c2231d5b)
+* add method to check image (c368a186f9ab)
+* verify base image of docker file (388376ab9af0)
+
+### Chore
+
+* improve image builder (5b089e19c19b)
+* upgrade python base image (917dd8562ecf)
+
 ## v1.21.0 (2022-11-20)
 
 ### Feature
