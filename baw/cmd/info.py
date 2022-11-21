@@ -22,50 +22,51 @@ import baw.utils
 def evaluate(args: dict):
     root = baw.cmd.utils.get_root(args)
     value = args['info'][0]
-    prints(
+    returncode = prints(
         root=root,
         value=value,
         verbose=args.get('verbose', False),
     )
-    return baw.utils.SUCCESS
+    return returncode
 
 
-def prints(root, value: str, verbose: bool = False):  # pylint:disable=R1260
+def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1260,R0911
     if value == 'tmp':
         print_tmp(root)
-        return
+        return baw.utils.SUCCESS
     if value == 'venv':
         print_venv(root)
-        return
+        return baw.utils.SUCCESS
     if value == 'covreport':
         print_covreport(root)
-        return
+        return baw.utils.SUCCESS
     if value == 'requirement':
         baw.utils.log(requirement_hash(
             root,
             verbose=verbose,
         ))
-        return
+        return baw.utils.SUCCESS
     if value == 'name':
         baw.utils.log(baw.config.name(root))
-        sys.exit(baw.utils.SUCCESS)
+        return baw.utils.SUCCESS
     if value == 'shortcut':
         baw.utils.log(baw.config.shortcut(root))
-        sys.exit(baw.utils.SUCCESS)
+        return baw.utils.SUCCESS
     if value == 'image':
         baw.utils.log(baw.cmd.image.tag(root))
-        sys.exit(baw.utils.SUCCESS)
+        return baw.utils.SUCCESS
     if value == 'describe':
         baw.utils.log(baw.git.describe(root))
-        sys.exit(baw.utils.SUCCESS)
+        return baw.utils.SUCCESS
     if value == 'clean':
         if baw.git.is_clean(root, verbose=False):
             baw.utils.log('very clean')
-            sys.exit(baw.utils.SUCCESS)
+            return baw.utils.SUCCESS
         baw.utils.log('not clean\n')
         # log data
         baw.utils.log(baw.runtime.run('git status', root).stdout)
-        sys.exit(baw.utils.FAILURE)
+        return baw.utils.FAILURE
+    return baw.utils.FAILURE
 
 
 def print_tmp(root: str):
