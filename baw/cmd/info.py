@@ -30,7 +30,7 @@ def evaluate(args: dict):
     return baw.utils.SUCCESS
 
 
-def prints(root, value: str, verbose: bool = False):
+def prints(root, value: str, verbose: bool = False):  # pylint:disable=R1260
     if value == 'tmp':
         print_tmp(root)
         return
@@ -54,6 +54,9 @@ def prints(root, value: str, verbose: bool = False):
         sys.exit(baw.utils.SUCCESS)
     if value == 'image':
         baw.utils.log(baw.cmd.image.tag(root))
+        sys.exit(baw.utils.SUCCESS)
+    if value == 'describe':
+        baw.utils.log(baw.git.describe(root))
         sys.exit(baw.utils.SUCCESS)
     if value == 'clean':
         if baw.git.is_clean(root, verbose=False):
@@ -115,7 +118,8 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     return hashed
 
 
-CHOISES = 'name shortcut venv tmp covreport requirement image clean'.split()
+CHOISES = 'name shortcut venv tmp covreport requirement image clean describe'.split(
+)
 
 
 def extend_cli(parser):
