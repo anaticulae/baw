@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.24.0 (2022-11-22)
+
+### Feature
+
+* add option to skip sync before release (3eaecd80fe1d)
+
+### Chore
+
+* add global git ignore (ba59b26ee015)
+* do not sync while release (8e5c928fb057)
+
 ## v1.23.0 (2022-11-22)
 
 ### Feature
