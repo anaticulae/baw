@@ -13,6 +13,6 @@ docker>=6.0.1<7.0.0
 
 virtualenv>=20.16.6<21.0.0
 
-utila>=2.93.0<4.0.0
+utila>=2.94.1<4.0.0
 # required for resource generation
 resinf>=0.3.0<1.0.0
