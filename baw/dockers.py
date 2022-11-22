@@ -46,8 +46,10 @@ def image_run(
             baw.utils.log('start container')
             container.start()
             failure = verify(container)
+            baw.utils.log('stop container')
             # TODO: VERIFY THIS
             container.stop()
+            baw.utils.log('remove container')
             container.remove()
         except docker.errors.ContainerError as error:
             baw.utils.error(error.stderr.decode('utf8'))
