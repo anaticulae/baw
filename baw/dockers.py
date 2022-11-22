@@ -33,6 +33,7 @@ def image_run(
     image: str,
     volumes: str = None,
 ) -> int:
+    failure = False
     with client() as connected:
         container = container_create(image, cmd, connected)
         try:
@@ -44,16 +45,31 @@ def image_run(
                 )
             baw.utils.log('start container')
             container.start()
-            out = container.logs(stdout=True, stderr=True, stream=True)
-            for line in out:
-                baw.utils.log(line.decode('utf8'), end='')
+            failure = verify(container)
             # TODO: VERIFY THIS
             container.stop()
             container.remove()
         except docker.errors.ContainerError as error:
             baw.utils.error(error.stderr.decode('utf8'))
             return baw.utils.FAILURE
-        return baw.utils.SUCCESS
+    if failure:
+        return baw.utils.FAILURE
+    return baw.utils.SUCCESS
+
+
+def verify(container) -> bool:
+    failure = False
+    out = container.logs(
+        stdout=True,
+        stderr=True,
+        stream=True,
+    )
+    for line in out:
+        decoded = line.decode('utf8')
+        # TODO: IMPROVE THIS CHECK
+        failure |= '[ERROR] Completed:' in decoded
+        baw.utils.log(decoded, end='')
+    return failure
 
 
 def container_create(image: str, cmd: str, connected):

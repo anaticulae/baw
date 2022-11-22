@@ -109,6 +109,7 @@ def baaw(
     command,
     monkeypatch,
     verbose: bool = True,
+    expect=True,
 ):
     command = cmd_split(command)
     with monkeypatch.context() as context:
@@ -122,7 +123,10 @@ def baaw(
         with pytest.raises(SystemExit) as result:
             baw.run.main()
         result = str(result)
-        assert 'SystemExit(0)' in result, result
+        if expect:
+            assert 'SystemExit(0)' in result, result
+        else:
+            assert 'SystemExit(0)' not in result, result
 
 
 def cmd_split(cmd: str) -> list:
