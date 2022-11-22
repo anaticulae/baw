@@ -85,7 +85,12 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
 
 
 def is_clean(root, verbose: bool = True):
-    process = baw.runtime.run_target(root, 'git status', verbose=verbose)
+    update_gitignore(root, verbose=verbose)
+    process = baw.runtime.run_target(
+        root,
+        'git status',
+        verbose=verbose,
+    )
     assert not process.returncode
     return 'nothing to commit, working tree clean' in process.stdout
 
@@ -217,8 +222,13 @@ def headhash(root: str) -> str:
 
 
 def is_modified(root: str) -> bool:
+    update_gitignore(root)
     cmd = 'git status -z'
-    completed = baw.runtime.run_target(root, cmd, verbose=False)
+    completed = baw.runtime.run_target(
+        root,
+        cmd,
+        verbose=False,
+    )
     if completed.returncode:
         return True
     if completed.stdout.strip():
