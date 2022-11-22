@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.24.1 (2022-11-22)
+
+### Fix
+
+* ensure that exclude is always up-to-date (7899b4ef46df)
+
 ## v1.24.0 (2022-11-22)
 
 ### Feature
