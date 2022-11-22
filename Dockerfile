@@ -30,6 +30,9 @@ ENV GIT_AUTHOR_EMAIL='automated_release@ostia.la'
 ENV CAELUM_DOCKER_TEST='169.254.149.20:6001'
 ENV CAELUM_DOCKER_RUNTIME='169.254.149.20:2375'
 
+COPY /baw/templates/.gitignore /var/install/.gitignore
+RUN git config --global --add core.excludesFile /var/install/.gitignore
+
 RUN /usr/sbin/python -m pip install --upgrade pip
 
 COPY /requirements.txt\
