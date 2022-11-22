@@ -89,6 +89,7 @@ def run_release(args: dict) -> int:
     # overwrite venv flag if given
     novenv = args.get('no_venv', False)
     no_linter = args.get('no_linter', False)
+    sync = not args.get('no_sync', False)
     if novenv:
         baw.utils.log('do not use venv')
         venv = False
@@ -114,6 +115,7 @@ def run_release(args: dict) -> int:
         test=test,
         venv=venv,
         no_linter=no_linter,
+        sync=sync,
     )
     return result
 
@@ -323,4 +325,5 @@ def extend_cli(parser):
     parser.add_argument('--no_test', action='store_true', help='skip tests')
     parser.add_argument('--no_venv', action='store_true', help='skip venv')
     parser.add_argument('--no_linter', action='store_true', help='skip linter')
+    parser.add_argument('--no_sync', action='store_true', help='skip sync')
     parser.set_defaults(func=run_release)
