@@ -103,6 +103,7 @@ BASIC = """\
 commit_changelog=True
 commit_subject={version} auto generated release
 version_source=commit
+parser_angular_patch_types=fix,perf,chore
 changelog_sections=feature,fix,breaking,documentation,performance,chore
 changelog_components=baw.changelog.changelog_headers
 changelog_placeholder=# Changelog
