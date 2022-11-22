@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.25.0 (2022-11-22)
+
+### Feature
+
+* make logging more verbose (2d835b6872ef)
+
+### Fix
+
+* ensure that return code is distributed (69d068cc2453)
+
 ## v1.24.1 (2022-11-22)
 
 ### Fix
