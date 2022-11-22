@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.22.1 (2022-11-22)
+
+### Chore
+
+* upgrade requirements.txt (3464439839c1)
+* ensure that failing is passed to job result (79a125f815a1)
+
 ## v1.22.0 (2022-11-21)
 
 ### Feature
