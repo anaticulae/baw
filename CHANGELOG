@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.23.0 (2022-11-22)
+
+### Feature
+
+* integrate chore into patch category (07095dcf4666)
+
 ## v1.22.1 (2022-11-22)
 
 ### Chore
