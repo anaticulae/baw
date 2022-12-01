@@ -3,8 +3,13 @@ pipeline{
         dockerfile{filename 'Dockerfile'}
     }
     // image '169.254.149.20:6001/arch_python_git_baw:v1.20.0'
-
     stages{
+        stage('integrate'){
+            when {branch 'integrate'}
+            steps{
+                integrate()
+            }
+        }
         stage('sync'){
             steps{
                 image_setup()
@@ -60,6 +65,12 @@ pipeline{
                 sh 'baw info clean'
             }
         }
+        stage('upgrade'){
+            when {branch 'integrate'}
+            steps{
+                sh 'git push origin/integrate'
+            }
+        }
         stage('release'){
             when {branch 'master'}
             steps{
@@ -89,4 +100,8 @@ def doctest(){
 def alls(){
     baw('test all --junit_xml=all.xml')
     //junit '**/all.xml'
+}
+def integrate(){
+    sh 'git rebase origin/master'
+    sh 'baw upgrade all'
 }
