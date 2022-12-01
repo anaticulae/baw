@@ -129,7 +129,7 @@ def tags(matched: str) -> list:
     return collected
 
 
-def version_max(taglist):
+def version_max(taglist, prerelease: bool = False):
     """\
     >>> version_max(['169.254.149.20:6001/arch_python_git_baw:v1.25.0-2-gafbfdd0',
     ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0-1-g7d87b32',
@@ -140,8 +140,9 @@ def version_max(taglist):
     ['v1.25.0', '1.24.1']
     """
     taglist = [item.rsplit(':', 1)[1] for item in taglist]
-    # remove pre releases
-    taglist = [item for item in taglist if '-' not in item]
+    if not prerelease:
+        # remove pre releases
+        taglist = [item for item in taglist if '-' not in item]
     taglist.sort(
         key=parse,
         reverse=True,
