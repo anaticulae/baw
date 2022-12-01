@@ -302,3 +302,13 @@ def installed() -> bool:
     if process.returncode == baw.utils.SUCCESS:
         return True
     return False
+
+
+def ensure_git(error: str = None):
+    if baw.runtime.hasprog('git'):
+        return
+    if error:
+        baw.utils.error(f'git is not installed: {error}')
+    else:
+        baw.utils.error('git is not installed')
+    sys.exit(baw.utils.FAILURE)
