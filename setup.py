@@ -45,6 +45,7 @@ if __name__ == "__main__":
             'baw.cmd',
             'baw.cmd.image',
             'baw.cmd.release',
+            'baw.dockers',
             'baw.project',
             'baw.requires',
             'baw.small',
