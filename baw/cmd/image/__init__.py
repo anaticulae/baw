@@ -20,6 +20,7 @@ import baw.cmd.utils
 import baw.config
 import baw.dockers
 import baw.dockers.container
+import baw.dockers.image
 import baw.git
 import baw.runtime
 import baw.utils
@@ -104,7 +105,7 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
 
 def docker_build(dockerfile: str, tagname: str) -> int:
     image = parse_dockerfile(dockerfile)
-    if check_baseimage(image):
+    if baw.dockers.image.check_baseimage(image):
         baw.utils.error(f'could not find base image: {dockerfile}')
         baw.utils.error(parse_dockerfile(dockerfile))
         baw.utils.error(baw.utils.file_read(dockerfile))
@@ -149,25 +150,6 @@ def tag(root: str) -> str:
     return result
 
 
-def check_baseimage(image: str):
-    with baw.dockers.client() as client:
-        try:
-            client.images.get(image)
-        except docker.errors.ImageNotFound:
-            return image
-    return None
-
-
-def image_check(name: str) -> int:
-    baw.utils.log(f'check: {name}')
-    if check_baseimage(name):
-        baw.utils.error(f'could not find {name}')
-        sys.exit(baw.utils.FAILURE)
-        return baw.utils.FAILURE
-    baw.utils.log('OK')
-    return baw.utils.SUCCESS
-
-
 def parse_dockerfile(path: str):
     lines = baw.utils.file_read(path).splitlines()
     for line in lines:
@@ -210,7 +192,7 @@ def run(args: dict):
         )
     if action == 'check':
         name = args['name']
-        return image_check(name)
+        return baw.dockers.image.exists(name)
     return baw.utils.FAILURE
 
 

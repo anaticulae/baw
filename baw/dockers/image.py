@@ -7,9 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import sys
+
+import docker.errors
 import semver
 
 import baw.dockers
+import baw.utils
 
 
 def tags(matched: str) -> list:
@@ -24,6 +28,16 @@ def tags(matched: str) -> list:
                 continue
             collected.extend(item.tags)
     return collected
+
+
+def exists(name: str) -> int:
+    baw.utils.log(f'check: {name}')
+    if check_baseimage(name):
+        baw.utils.error(f'could not find {name}')
+        sys.exit(baw.utils.FAILURE)
+        return baw.utils.FAILURE
+    baw.utils.log('OK')
+    return baw.utils.SUCCESS
 
 
 def version_max(taglist, prerelease: bool = False):
@@ -56,3 +70,12 @@ def parse(item: str):
         item = item[1:]
     parsed = semver.VersionInfo.parse(item)
     return parsed
+
+
+def check_baseimage(image: str):
+    with baw.dockers.client() as client:
+        try:
+            client.images.get(image)
+        except docker.errors.ImageNotFound:
+            return image
+    return None
