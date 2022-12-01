@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.26.0 (2022-12-01)
+
+### Feature
+
+* add parameter to use pre releases (a00015a18ee4)
+* add method to determine newest docker image (c7eb81938d90)
+
+### Chore
+
+* add integrate step (037fc764eb30)
+
 ## v1.25.0 (2022-11-22)
 
 ### Feature
