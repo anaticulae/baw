@@ -30,6 +30,7 @@ def generate(root: str):
     content += environments(root)
     content += requirements(root)
     content += SYNC
+    content += resources(root)
     baw.utils.file_replace(
         config,
         content,
@@ -72,6 +73,40 @@ def requirements(root: str) -> str:
     return result
 
 
+RESOURCES = ('.baw setup.py '
+             'README.md README CHANGELOG.md CHANGELOG'
+             ' tests').split()
+# RESOURCES += ['.git']
+
+
+def resources(root: str) -> str:
+    r"""Copy resources to generate test data.
+
+    >>> resources(__file__)
+    ''
+    """
+    root = baw.cmd.utils.determine_root(root)
+    if not root:
+        sys.exit(baw.utils.FAILURE)
+    conftest = os.path.join(root, 'tests/conftest.py')
+    if not os.path.exists(conftest):
+        return ''
+    if 'RESOURCES' not in baw.utils.file_read(conftest):
+        # resource generator step is not required
+        return ''
+    result = ''
+    for item in baw.config.sources(root) + RESOURCES:
+        path = os.path.join(root, item)
+        if not os.path.exists(path):
+            continue
+        if os.path.isfile(path):
+            result += f'COPY {item} /var/workdir/{item}{baw.utils.NEWLINE}'
+        else:
+            result += f'COPY {item}/ /var/workdir/{item}/{baw.utils.NEWLINE}'
+    result += GENERATE
+    return result
+
+
 def environments(root: str) -> str:
     r"""\
     ENV RUNJOB="exit 1"
@@ -92,4 +127,8 @@ def environments(root: str) -> str:
 
 SYNC = """
 RUN baw sync all
+"""
+
+GENERATE = """
+RUN baw generate all
 """
