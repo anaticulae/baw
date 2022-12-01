@@ -24,7 +24,7 @@ def run(
 ) -> int:
     failure = False
     with baw.dockers.client() as connected:
-        container = container_create(image, cmd, connected)
+        container = create(image, cmd, connected)
         try:
             if volumes:
                 content = tar_content(os.getcwd())
@@ -48,7 +48,7 @@ def run(
     return baw.utils.SUCCESS
 
 
-def container_create(image: str, cmd: str, connected):
+def create(image: str, cmd: str, connected):
     try:
         container = connected.containers.create(
             image,
