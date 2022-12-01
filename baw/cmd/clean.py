@@ -68,9 +68,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
 
 
 def clean_git(root: str):
-    if not baw.runtime.hasprog('git'):
-        baw.utils.error('git is not installed, could not clean')
-        return
+    baw.git.ensure_git('could not clean')
     completed = baw.runtime.run_target(
         root=root,
         command='git clean -xf',

@@ -15,7 +15,6 @@ import pytest
 
 import baw.config
 import baw.git
-import baw.runtime
 import baw.utils
 import tests
 

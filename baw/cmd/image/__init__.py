@@ -21,7 +21,6 @@ import baw.dockers.container
 import baw.dockers.dockfile
 import baw.dockers.image
 import baw.git
-import baw.runtime
 import baw.utils
 
 
@@ -55,9 +54,7 @@ def create(  # pylint:disable=W0613
 
 def dockerfile_build(root, dockerfile, name=None) -> int:
     if not name:
-        if not baw.runtime.hasprog('git'):
-            baw.utils.error('install git')
-            sys.exit(baw.utils.FAILURE)
+        baw.git.ensure_git()
         name = baw.git.describe(root)
     result = baw.dockers.dockfile.build(
         dockerfile=dockerfile,

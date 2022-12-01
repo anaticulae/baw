@@ -12,7 +12,6 @@ import os
 import pytest
 
 import baw.config
-import baw.runtime
 import baw.utils
 import tests
 
