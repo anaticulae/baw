@@ -18,10 +18,10 @@ import baw.utils
 
 
 def build(dockerfile: str, tagname: str) -> int:
-    image = parse_dockerfile(dockerfile)
+    image = parse_baseimage(dockerfile)
     if baw.dockers.image.check_baseimage(image):
         baw.utils.error(f'could not find base image: {dockerfile}')
-        baw.utils.error(parse_dockerfile(dockerfile))
+        baw.utils.error(parse_baseimage(dockerfile))
         baw.utils.error(baw.utils.file_read(dockerfile))
         sys.exit(baw.utils.FAILURE)
     path = os.path.split(dockerfile)[0]
@@ -49,7 +49,7 @@ def log_service(done):
             pass
 
 
-def parse_dockerfile(path: str):
+def parse_baseimage(path: str):
     lines = baw.utils.file_read(path).splitlines()
     for line in lines:
         if line.startswith('FROM '):
