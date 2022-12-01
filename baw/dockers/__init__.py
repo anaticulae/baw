@@ -12,12 +12,10 @@ import os
 import sys
 
 import docker
-import docker.errors
 
 import baw.cmd.image
-import baw.config
+import baw.dockers.container
 import baw.run
-import baw.utils
 
 
 @contextlib.contextmanager
@@ -26,73 +24,6 @@ def client():
     result = docker.DockerClient(base_url=base_url)
     yield result
     result.close()
-
-
-def image_run(
-    cmd,
-    image: str,
-    volumes: str = None,
-) -> int:
-    failure = False
-    with client() as connected:
-        container = container_create(image, cmd, connected)
-        try:
-            if volumes:
-                content = tar_content(os.getcwd())
-                container.put_archive(
-                    path=volumes,
-                    data=content,
-                )
-            baw.utils.log('start container')
-            container.start()
-            failure = verify(container)
-            baw.utils.log('stop container')
-            # TODO: VERIFY THIS
-            container.stop()
-            baw.utils.log('remove container')
-            container.remove()
-        except docker.errors.ContainerError as error:
-            baw.utils.error(error.stderr.decode('utf8'))
-            return baw.utils.FAILURE
-    if failure:
-        return baw.utils.FAILURE
-    return baw.utils.SUCCESS
-
-
-def verify(container) -> bool:
-    failure = False
-    out = container.logs(
-        stdout=True,
-        stderr=True,
-        stream=True,
-    )
-    for line in out:
-        decoded = line.decode('utf8')
-        # TODO: IMPROVE THIS CHECK
-        failure |= '[ERROR] Completed:' in decoded
-        baw.utils.log(decoded, end='')
-    return failure
-
-
-def container_create(image: str, cmd: str, connected):
-    try:
-        container = connected.containers.create(
-            image,
-            command=f'"{cmd}"',
-        )
-    except docker.errors.ImageNotFound:
-        root = os.getcwd()
-        baw.utils.log('baw image create')
-        completed = baw.runtime.run('baw image create', cwd=root)
-        if completed.returncode:
-            baw.utils.error(f'could not create image: {root}')
-            baw.utils.error(completed)
-            sys.exit(baw.utils.FAILURE)
-        container = connected.containers.create(
-            image,
-            command=f'"{cmd}"',
-        )
-    return container
 
 
 def switch_docker():
@@ -104,7 +35,7 @@ def switch_docker():
     image = baw.cmd.image.tag(root)
     usercmd = prepare_cmd(sys.argv)
     volumes = determine_volumes()
-    result = image_run(
+    result = baw.dockers.container.run(
         cmd=usercmd,
         image=image,
         volumes=volumes,
@@ -136,30 +67,3 @@ def prepare_cmd(argv: list) -> str:
 def determine_volumes() -> str:
     # TODO: MOVE TO CONFIG OR SOMETHING ELSE
     return '/var/workdir'
-
-
-IGNORE = '--exclude=build/* --exclude=.git/*'
-IGNORE += '--one-file-system -P '
-
-
-def tar_content(content) -> str:
-    assert os.path.exists(content), str(content)
-    if not baw.runtime.hasprog('tar'):
-        baw.utils.error('tar is not installed, could not tar')
-        sys.exit(baw.utils.FAILURE)
-    # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
-    with baw.utils.tmpdir() as tmp:
-        base = os.path.join(tmp, 'content.tar')
-        tar = baw.utils.forward_slash(base, save_newline=False)
-        tar = tar.replace('C:/', '/c/')
-        content = baw.utils.forward_slash(content, save_newline=False)
-        cmd = f'tar cvf {tar} {IGNORE} .'
-        completed = baw.runtime.run(cmd, content)
-        if completed.returncode:
-            baw.utils.error(f'tar failed: {cmd}')
-            if completed.stdout:
-                baw.utils.error(completed.stdout)
-            if completed.stdout:
-                baw.utils.error(completed.stderr)
-        content = baw.utils.file_read_binary(base)
-    return content

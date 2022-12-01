@@ -19,6 +19,7 @@ import baw.cmd.info
 import baw.cmd.utils
 import baw.config
 import baw.dockers
+import baw.dockers.container
 import baw.git
 import baw.runtime
 import baw.utils
@@ -203,7 +204,7 @@ def run(args: dict):
         name = args['name']
         cmd = args['cmd']
         baw.utils.log(f'run name: {name}; cmd: {cmd}')
-        return baw.dockers.image_run(
+        return baw.dockers.container.run(
             cmd=cmd,
             image=name,
         )
