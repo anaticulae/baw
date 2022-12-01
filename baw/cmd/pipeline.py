@@ -15,6 +15,7 @@ import baw.cmd.utils
 import baw.config
 import baw.dockers.image
 import baw.git
+import baw.jenkins
 import baw.project
 import baw.resources
 import baw.run
@@ -27,7 +28,7 @@ def init(
     verbose: bool = False,
     venv: bool = False,
 ):
-    source = jenkinsfile(root)
+    source = baw.jenkins.jenkinsfile(root)
     if os.path.exists(source):
         baw.utils.error(f'Jenkinsfile already exists: {source}')
         return baw.utils.FAILURE
@@ -55,11 +56,11 @@ def upgrade(
     verbose: bool = False,
     venv: bool = False,
 ):
-    source = jenkinsfile(root)
+    source = baw.jenkins.jenkinsfile(root)
     if not os.path.exists(source):
         baw.utils.error(f'Jenkinsfile does not exists: {source}')
         return baw.utils.FAILURE
-    replaced = docker_image_upgrade(root)
+    replaced = baw.jenkins.docker_image_upgrade(root)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
@@ -93,34 +94,13 @@ def create_jenkinsfile(root: str):
     return replaced
 
 
-def docker_image_upgrade(root: str) -> str:
-    """\
-    >>> docker_image_upgrade(__file__)
-    '.../arch_python_git_baw:v...'
-    """
-    jenkins = baw.utils.file_read(jenkinsfile(root))
-    parsed = IMAGE.search(jenkins)
-    if not parsed:
-        return None
-    repo, image, _ = parsed[2], parsed[3], parsed[4]
-    matched = f'{repo}/{image}'
-    tagx = baw.dockers.image.tags(matched)
-    maxed = baw.dockers.image.version_max(tagx)
-    if not maxed:
-        baw.utils.error(f'could not upgrade docker image: {matched}')
-        sys.exit(baw.utils.FAILURE)
-    version_new = f'{matched}:{maxed[0]}'
-    result = jenkins.replace(parsed[1], version_new)
-    return result
-
-
 # @Library('caelum@d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d') _
 LIBRARY = "@Library('caelum@"
 LIBRARY_END = "') _"
 
 
 def library(root: str, verbose: False):
-    path = jenkinsfile(root)
+    path = baw.jenkins.jenkinsfile(root)
     if not os.path.exists(path):
         baw.utils.error(f'could not find Jenkinsfile: {path}')
         return baw.utils.FAILURE
@@ -151,30 +131,6 @@ def library(root: str, verbose: False):
     return baw.utils.SUCCESS
 
 
-IMAGE = re.compile(r"image[ ]'((.{5,})/(.{5,})\:(.{3,}))'")
-
-
-def docker_image(root: str) -> str:
-    """Parse dockerimage from Jenkinsfile.
-
-    image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
-
-    >>> import baw.project
-    >>> docker_image(baw.project.determine_root(__file__))
-    '...'
-    """
-    path = jenkinsfile(root)
-    if not os.path.exists(path):
-        baw.utils.error(f'require Jenkinsfile in {root}')
-        sys.exit(baw.utils.FAILURE)
-    jenkins = baw.utils.file_read(path)
-    parsed = IMAGE.search(jenkins)
-    if not parsed:
-        return None
-    result = parsed[1]
-    return result
-
-
 ENVIRONMENT = re.compile(r'environment\{(.{5,}?)\}', flags=re.DOTALL)
 
 
@@ -183,7 +139,7 @@ def docker_env(root: str) -> dict:
     >>> import baw.project; docker_env(baw.project.determine_root(__file__)) is None
     True
     """
-    path = jenkinsfile(root)
+    path = baw.jenkins.jenkinsfile(root)
     if not os.path.exists(path):
         baw.utils.error(f'require Jenkinsfile in {root}')
         sys.exit(baw.utils.FAILURE)
@@ -206,15 +162,6 @@ def docker_env(root: str) -> dict:
             continue
         result[value.strip()] = var.strip("' ")
     return result
-
-
-def jenkinsfile(root: str):
-    """\
-    >>> jenkinsfile(__file__)
-    '...Jenkinsfile'
-    """
-    root = baw.project.determine_root(root)
-    return os.path.join(root, 'Jenkinsfile')
 
 
 def image_newest() -> str:
