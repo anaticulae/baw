@@ -131,39 +131,6 @@ def library(root: str, verbose: False):
     return baw.utils.SUCCESS
 
 
-ENVIRONMENT = re.compile(r'environment\{(.{5,}?)\}', flags=re.DOTALL)
-
-
-def docker_env(root: str) -> dict:
-    """\
-    >>> import baw.project; docker_env(baw.project.determine_root(__file__)) is None
-    True
-    """
-    path = baw.jenkins.jenkinsfile(root)
-    if not os.path.exists(path):
-        baw.utils.error(f'require Jenkinsfile in {root}')
-        sys.exit(baw.utils.FAILURE)
-    jenkins = baw.utils.file_read(path)
-    parsed = ENVIRONMENT.search(jenkins)
-    if not parsed:
-        return None
-    content = parsed[1]
-    result = {}
-    for line in content.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        if line[0:2] == '//':
-            continue
-        try:
-            value, var = line.split('=', maxsplit=1)
-        except ValueError:
-            baw.utils.error(f'could not parse: {line}')
-            continue
-        result[value.strip()] = var.strip("' ")
-    return result
-
-
 def image_newest() -> str:
     """\
     >>> image_newest()

@@ -77,7 +77,7 @@ def environments(root: str) -> str:
     root = baw.cmd.utils.determine_root(root)
     if not root:
         sys.exit(baw.utils.FAILURE)
-    env = baw.cmd.pipeline.docker_env(root)
+    env = baw.jenkins.docker_env(root)
     if not env:
         return ''
     result = ''
