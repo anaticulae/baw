@@ -22,6 +22,7 @@ def run(args: dict):
             venv=args['venv'],
             verbose=args['verbose'],
         )
+    baw.utils.error(f'pattern not supported: {pattern}')
     return baw.utils.FAILURE
 
 
