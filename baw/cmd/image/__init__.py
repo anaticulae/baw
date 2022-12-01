@@ -11,8 +11,6 @@ import contextlib
 import os
 import sys
 
-import docker.errors
-
 import baw.cmd.image.clean
 import baw.cmd.image.dockerfiles
 import baw.cmd.info
@@ -20,6 +18,7 @@ import baw.cmd.utils
 import baw.config
 import baw.dockers
 import baw.dockers.container
+import baw.dockers.dockfile
 import baw.dockers.image
 import baw.git
 import baw.runtime
@@ -47,7 +46,7 @@ def create(  # pylint:disable=W0613
         return result
     tagname = tag(root)
     with baw.cmd.image.dockerfiles.generate(root) as path:
-        result = docker_build(
+        result = baw.dockers.dockfile.build(
             dockerfile=path,
             tagname=tagname,
         )
@@ -60,7 +59,7 @@ def dockerfile_build(root, dockerfile, name=None) -> int:
             baw.utils.error('install git')
             sys.exit(baw.utils.FAILURE)
         name = baw.git.describe(root)
-    result = docker_build(
+    result = baw.dockers.dockfile.build(
         dockerfile=dockerfile,
         tagname=name,
     )
@@ -96,43 +95,11 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
         baw.utils.error(f'missing Dockerfile: {path}')
         sys.exit(baw.utils.FAILURE)
     tagname = baw.git.describe(root)
-    result = docker_build(
+    result = baw.dockers.dockfile.build(
         dockerfile=path,
         tagname=tagname,
     )
     return result
-
-
-def docker_build(dockerfile: str, tagname: str) -> int:
-    image = parse_dockerfile(dockerfile)
-    if baw.dockers.image.check_baseimage(image):
-        baw.utils.error(f'could not find base image: {dockerfile}')
-        baw.utils.error(parse_dockerfile(dockerfile))
-        baw.utils.error(baw.utils.file_read(dockerfile))
-        sys.exit(baw.utils.FAILURE)
-    path = os.path.split(dockerfile)[0]
-    try:
-        with baw.dockers.client() as client:
-            done = client.images.build(
-                path=path,
-                dockerfile=dockerfile,
-                tag=tagname,
-            )
-            log_service(done)
-    except docker.errors.BuildError as error:
-        for line in error.build_log:
-            baw.utils.error(line)
-        return baw.utils.FAILURE
-    return baw.utils.SUCCESS
-
-
-def log_service(done):
-    done = done[1]
-    for line in done:
-        try:
-            baw.utils.log(line['stream'], end='')
-        except KeyError:
-            pass
 
 
 TEST_TAG = '/try_'
@@ -148,14 +115,6 @@ def tag(root: str) -> str:
     name = baw.cmd.info.requirement_hash(root, verbose=True)
     result = f'{testing}{TEST_TAG}{name}'
     return result
-
-
-def parse_dockerfile(path: str):
-    lines = baw.utils.file_read(path).splitlines()
-    for line in lines:
-        if line.startswith('FROM '):
-            return line.split(' ')[1].strip()
-    raise ValueError(f'could not find `FROM ` in {path}')
 
 
 def run(args: dict):
