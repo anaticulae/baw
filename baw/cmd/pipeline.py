@@ -11,10 +11,9 @@ import os
 import re
 import sys
 
-import semver
-
 import baw.cmd.utils
 import baw.config
+import baw.dockers.image
 import baw.git
 import baw.project
 import baw.resources
@@ -105,60 +104,14 @@ def docker_image_upgrade(root: str) -> str:
         return None
     repo, image, _ = parsed[2], parsed[3], parsed[4]
     matched = f'{repo}/{image}'
-    tagx = tags(matched)
-    maxed = version_max(tagx)
+    tagx = baw.dockers.image.tags(matched)
+    maxed = baw.dockers.image.version_max(tagx)
     if not maxed:
         baw.utils.error(f'could not upgrade docker image: {matched}')
         sys.exit(baw.utils.FAILURE)
     version_new = f'{matched}:{maxed[0]}'
     result = jenkins.replace(parsed[1], version_new)
     return result
-
-
-def tags(matched: str) -> list:
-    matched = matched + ':'
-    collected = []
-    with baw.dockers.client() as connected:
-        images = connected.images.list()
-        for item in images:
-            if not item.tags:
-                continue
-            if not any(matched in item for item in item.tags):
-                continue
-            collected.extend(item.tags)
-    return collected
-
-
-def version_max(taglist, prerelease: bool = False):
-    """\
-    >>> version_max(['169.254.149.20:6001/arch_python_git_baw:v1.25.0-2-gafbfdd0',
-    ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0-1-g7d87b32',
-    ... '169.254.149.20:6001/arch_python_git_baw:1.24.1',
-    ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0',
-    ... '169.254.149.20:6001/arch_python_git_baw:v1.24.1-2-g2d835b6',
-    ... ])
-    ['v1.25.0', '1.24.1']
-    """
-    taglist = [item.rsplit(':', 1)[1] for item in taglist]
-    if not prerelease:
-        # remove pre releases
-        taglist = [item for item in taglist if '-' not in item]
-    taglist.sort(
-        key=parse,
-        reverse=True,
-    )
-    return taglist
-
-
-def parse(item: str):
-    """\
-    >>> parse('v1.2.3')
-    VersionInfo(major=1, minor=2, patch=3, prerelease=None, build=None)
-    """
-    if item[0] == 'v':
-        item = item[1:]
-    parsed = semver.VersionInfo.parse(item)
-    return parsed
 
 
 # @Library('caelum@d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d') _
