@@ -14,6 +14,28 @@ import sys
 import baw.project
 import baw.utils
 
+
+def docker_image_upgrade(root: str) -> str:
+    """\
+    >>> docker_image_upgrade(__file__)
+    '.../arch_python_git_baw:v...'
+    """
+    jenkins = baw.utils.file_read(baw.jenkins.jenkinsfile(root))
+    parsed = IMAGE.search(jenkins)
+    if not parsed:
+        return None
+    repo, image, _ = parsed[2], parsed[3], parsed[4]
+    matched = f'{repo}/{image}'
+    tagx = baw.dockers.image.tags(matched)
+    maxed = baw.dockers.image.version_max(tagx)
+    if not maxed:
+        baw.utils.error(f'could not upgrade docker image: {matched}')
+        sys.exit(baw.utils.FAILURE)
+    version_new = f'{matched}:{maxed[0]}'
+    result = jenkins.replace(parsed[1], version_new)
+    return result
+
+
 IMAGE = re.compile(r"image[ ]'((.{5,})/(.{5,})\:(.{3,}))'")
 
 
@@ -35,27 +57,6 @@ def docker_image(root: str) -> str:
     if not parsed:
         return None
     result = parsed[1]
-    return result
-
-
-def docker_image_upgrade(root: str) -> str:
-    """\
-    >>> docker_image_upgrade(__file__)
-    '.../arch_python_git_baw:v...'
-    """
-    jenkins = baw.utils.file_read(baw.jenkins.jenkinsfile(root))
-    parsed = IMAGE.search(jenkins)
-    if not parsed:
-        return None
-    repo, image, _ = parsed[2], parsed[3], parsed[4]
-    matched = f'{repo}/{image}'
-    tagx = baw.dockers.image.tags(matched)
-    maxed = baw.dockers.image.version_max(tagx)
-    if not maxed:
-        baw.utils.error(f'could not upgrade docker image: {matched}')
-        sys.exit(baw.utils.FAILURE)
-    version_new = f'{matched}:{maxed[0]}'
-    result = jenkins.replace(parsed[1], version_new)
     return result
 
 
