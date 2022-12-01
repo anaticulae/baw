@@ -51,6 +51,9 @@ def header(root: str) -> str:
     return result
 
 
+FILES = 'requirements.txt requirements.dev requirements.all'.split()
+
+
 def requirements(root: str) -> str:
     r"""\
     >>> requirements(__file__)
@@ -60,7 +63,7 @@ def requirements(root: str) -> str:
     if not root:
         sys.exit(baw.utils.FAILURE)
     result = ''
-    for item in 'requirements.txt requirements.dev requirements.all'.split():
+    for item in FILES:
         path = os.path.join(root, item)
         if not os.path.exists(path):
             continue
