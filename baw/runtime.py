@@ -183,7 +183,7 @@ def run_target(
             skip_error_message,
         )
     except ValueError as fail:
-        baw.utils.error(str(fail))
+        baw.utils.error(fail)
         return baw.utils.FAILURE
     if verbose:
         baw.utils.log(command)
@@ -288,7 +288,7 @@ def log_result(  # pylint:disable=R1260,R0912
     for remove_skip in skip_error_message:
         error_message = error_message.replace(remove_skip, '')
     if reporting and error_message.strip():
-        baw.utils.error(str(error_message.strip()))
+        baw.utils.error(error_message.strip())
     if verbose:
         if completed.stderr:
             baw.utils.error(completed.stderr)
