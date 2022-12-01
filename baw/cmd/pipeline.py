@@ -11,9 +11,12 @@ import os
 import re
 import sys
 
+import semver
+
 import baw.cmd.utils
 import baw.config
 import baw.git
+import baw.project
 import baw.resources
 import baw.run
 import baw.runtime
@@ -57,7 +60,7 @@ def upgrade(
     if not os.path.exists(source):
         baw.utils.error(f'Jenkinsfile does not exists: {source}')
         return baw.utils.FAILURE
-    replaced = create_jenkinsfile(root)
+    replaced = docker_image_upgrade(root)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
@@ -89,6 +92,72 @@ def create_jenkinsfile(root: str):
         docker_image_test_args=args,
     )
     return replaced
+
+
+def docker_image_upgrade(root: str) -> str:
+    """\
+    >>> docker_image_upgrade(__file__)
+    '.../arch_python_git_baw:v...'
+    """
+    jenkins = baw.utils.file_read(jenkinsfile(root))
+    parsed = IMAGE.search(jenkins)
+    if not parsed:
+        return None
+    repo, image, _ = parsed[2], parsed[3], parsed[4]
+    matched = f'{repo}/{image}'
+    tagx = tags(matched)
+    maxed = version_max(tagx)
+    if not maxed:
+        baw.utils.error(f'could not upgrade docker image: {matched}')
+        sys.exit(baw.utils.FAILURE)
+    version_new = f'{matched}:{maxed[0]}'
+    result = jenkins.replace(parsed[1], version_new)
+    return result
+
+
+def tags(matched: str) -> list:
+    matched = matched + ':'
+    collected = []
+    with baw.dockers.client() as connected:
+        images = connected.images.list()
+        for item in images:
+            if not item.tags:
+                continue
+            if not any(matched in item for item in item.tags):
+                continue
+            collected.extend(item.tags)
+    return collected
+
+
+def version_max(taglist):
+    """\
+    >>> version_max(['169.254.149.20:6001/arch_python_git_baw:v1.25.0-2-gafbfdd0',
+    ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0-1-g7d87b32',
+    ... '169.254.149.20:6001/arch_python_git_baw:1.24.1',
+    ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0',
+    ... '169.254.149.20:6001/arch_python_git_baw:v1.24.1-2-g2d835b6',
+    ... ])
+    ['v1.25.0', '1.24.1']
+    """
+    taglist = [item.rsplit(':', 1)[1] for item in taglist]
+    # remove pre releases
+    taglist = [item for item in taglist if '-' not in item]
+    taglist.sort(
+        key=parse,
+        reverse=True,
+    )
+    return taglist
+
+
+def parse(item: str):
+    """\
+    >>> parse('v1.2.3')
+    VersionInfo(major=1, minor=2, patch=3, prerelease=None, build=None)
+    """
+    if item[0] == 'v':
+        item = item[1:]
+    parsed = semver.VersionInfo.parse(item)
+    return parsed
 
 
 # @Library('caelum@d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d') _
@@ -128,7 +197,7 @@ def library(root: str, verbose: False):
     return baw.utils.SUCCESS
 
 
-IMAGE = re.compile(r"image[ ]'(.{5,}/.{5,}\:.{3,})'")
+IMAGE = re.compile(r"image[ ]'((.{5,})/(.{5,})\:(.{3,}))'")
 
 
 def docker_image(root: str) -> str:
@@ -186,6 +255,11 @@ def docker_env(root: str) -> dict:
 
 
 def jenkinsfile(root: str):
+    """\
+    >>> jenkinsfile(__file__)
+    '...Jenkinsfile'
+    """
+    root = baw.project.determine_root(root)
     return os.path.join(root, 'Jenkinsfile')
 
 
