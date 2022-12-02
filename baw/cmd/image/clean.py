@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import docker.errors
+
 import baw.cmd.image
 import baw.dockers
 import baw.utils
@@ -17,6 +19,9 @@ def images() -> int:
         for image in client.images.list():
             if baw.cmd.image.TEST_TAG not in str(image):
                 continue
-            baw.utils.log(f'remove: {image.id}')
-            image.remove(force=True)
+            baw.utils.log(f'try to remove: {image.id}')
+            try:
+                image.remove(force=True)
+            except docker.errors.APIError:
+                baw.utils.error(f'could not remove {image.id}')
     return baw.utils.SUCCESS
