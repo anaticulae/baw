@@ -122,8 +122,8 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     return hashed
 
 
-CHOISES = 'name shortcut sources venv tmp covreport requirement image clean describe'.split(
-)
+CHOISES = ('name shortcut sources venv tmp '
+           'covreport requirement image clean describe').split()
 
 
 def extend_cli(parser):
