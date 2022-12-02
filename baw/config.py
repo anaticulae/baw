@@ -27,6 +27,7 @@ import os
 import sys
 
 import baw
+import baw.project
 import baw.resources
 import baw.utils
 
@@ -281,13 +282,18 @@ def project(path: str) -> 'Tuple[str, str]':
 def sources(root: str) -> list:
     """Read `source` form configuration `path`.
 
+    >>> sources(__file__)
+    ['baw']
+
     Args:
         root(str): path to project configuration
     Returns:
         list with source folder of project
     """
     # support accessing the config directly or due the project path
-    path = root if os.path.isfile(root) else config_path(root)
+    assert os.path.exists(root), root
+    root = baw.project.determine_root(root)
+    path = config_path(root)
     assert os.path.exists(path), path
     cfg = load(path)
     try:
