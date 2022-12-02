@@ -73,6 +73,7 @@ def parse(item: str):
 
 
 def check_baseimage(image: str):
+    # TODO: FIX THIS INTERFACE
     with baw.dockers.client() as client:
         try:
             client.images.get(image)
