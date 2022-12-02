@@ -60,8 +60,14 @@ def create(image: str, cmd: str, connected):
         completed = baw.runtime.run('baw image create', cwd=root)
         if completed.returncode:
             baw.utils.error(f'could not create image: {root}')
-            baw.utils.error(completed)
+            if completed.stdout.strip():
+                baw.utils.log(completed.stdout)
+            baw.utils.error(completed.stderr)
             sys.exit(baw.utils.FAILURE)
+        else:
+            baw.utils.log(completed.stdout)
+            if completed.stderr.strip():
+                baw.utils.error(completed.stderr)
         container = connected.containers.create(
             image,
             command=f'"{cmd}"',
