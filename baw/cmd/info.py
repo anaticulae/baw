@@ -52,6 +52,9 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
     if value == 'shortcut':
         baw.utils.log(baw.config.shortcut(root))
         return baw.utils.SUCCESS
+    if value == 'sources':
+        baw.utils.log(' '.join(baw.config.sources(root) + ['tests']))
+        return baw.utils.SUCCESS
     if value == 'image':
         baw.utils.log(baw.cmd.image.tag(root))
         return baw.utils.SUCCESS
@@ -119,7 +122,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     return hashed
 
 
-CHOISES = 'name shortcut venv tmp covreport requirement image clean describe'.split(
+CHOISES = 'name shortcut sources venv tmp covreport requirement image clean describe'.split(
 )
 
 
