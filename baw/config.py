@@ -307,7 +307,7 @@ def sources(root: str) -> list:
         baw.utils.log(f'subproject does not exists: {subproject}')
     if failure:
         sys.exit(baw.utils.FAILURE)
-
+    # put project name to the front
     source.insert(0, cfg['project']['short'])
     return source
 
