@@ -106,7 +106,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     >>> requirement_hash(baw.ROOT)
     '...'
     >>> requirement_hash(baw.ROOT, verbose=True)
-    'baw_...'
+    'baw:...'
     """
     todo = 'Jenkinsfile requirements.txt requirements.dev requirements.extra'.split()  # yapf:disable
     content = ''
@@ -118,7 +118,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     hashed = str(baw.utils.binhash(content))
     if verbose:
         name = baw.config.shortcut(root)
-        hashed = f'{name}_{hashed}'
+        hashed = f'{name}:{hashed}'
     return hashed
 
 

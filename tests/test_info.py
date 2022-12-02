@@ -45,8 +45,8 @@ def test_cmd_requirement_verbose_info(monkeypatch, capsys):
         monkeypatch,
     )
     stdout = tests.stdout(capsys)
-    assert stdout.startswith('baw_')
-    assert len(stdout.split('_')) == 2
+    assert stdout.startswith('baw:')
+    assert len(stdout.split('_')) == 1
 
 
 def test_cmd_info_venv_fix(monkeypatch, capsys):

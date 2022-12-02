@@ -21,6 +21,7 @@ import baw.utils
 @contextlib.contextmanager
 def generate(root: str):
     name = baw.cmd.info.requirement_hash(root, verbose=True)
+    name = name.replace(':', '_')
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = os.path.join(root, name)
