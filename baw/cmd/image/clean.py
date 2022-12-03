@@ -17,7 +17,9 @@ import baw.utils
 def images() -> int:
     with baw.dockers.client() as client:
         for image in client.images.list():
-            if baw.cmd.image.TEST_TAG not in str(image):
+            imagename = str(image)
+            delete = baw.cmd.image.TEST_TAG in imagename
+            if not delete:
                 continue
             baw.utils.log(f'try to remove: {image.id}')
             try:
