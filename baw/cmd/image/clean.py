@@ -19,6 +19,7 @@ def images() -> int:
         for image in client.images.list():
             imagename = str(image)
             delete = baw.cmd.image.TEST_TAG in imagename
+            delete |= imagename == "<Image: ''>"
             if not delete:
                 continue
             baw.utils.log(f'try to remove: {image.id}')
