@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.27.0 (2022-12-03)
+
+### Feature
+
+* add option to generate required test data (abec71c65015)
+* add method to generate resources (f803d0ba32a0)
+* improve logging (f69ae0de354a)
+* use hashes as docker image version (c29d3eb95350)
+* add option to print project sources (e4e5b437e03e)
+* add option to determine sources from every project file (037f889c5f16)
+* add method to ensure that git is installed (b125c3644a44)
+* log not supported resource pattern (628bac1c268d)
+
+### Fix
+
+* ensure to run with max generator (cf2147574bf9)
+* do not fail if image is not remove able (c5da1c755d84)
+
 ## v1.26.0 (2022-12-01)
 
 ### Feature
