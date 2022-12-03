@@ -130,5 +130,7 @@ RUN baw sync all
 """
 
 GENERATE = """
+# ensure to run with maximum computing power
+ENV JENKINS_HOME="TRUE"
 RUN baw generate all
 """
