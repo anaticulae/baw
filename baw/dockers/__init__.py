@@ -28,17 +28,22 @@ def client():
 
 def switch_docker():
     """Use docker environment to run command."""
-    usedocker = '--docker' in sys.argv
-    if not usedocker:
+    dockerx = '--docker' in sys.argv
+    dockenx = '--docken' in sys.argv
+    if not dockerx and not dockenx:
         return baw.run.run_main()
     root = os.getcwd()
-    image = baw.cmd.image.tag(root)
+    image = baw.cmd.image.tag(
+        root,
+        generate=dockenx,
+    )
     usercmd = prepare_cmd(sys.argv)
     volumes = determine_volumes()
     result = baw.dockers.container.run(
         cmd=usercmd,
         image=image,
         volumes=volumes,
+        generate=dockenx,
     )
     return result
 
@@ -51,7 +56,7 @@ def prepare_cmd(argv: list) -> str:
     'baw test -n1'
     """
     # use docker to run cmd
-    argv = [item for item in argv if item != '--docker']
+    argv = [item for item in argv if item not in '--docker --docken']
     if argv:
         # TODO: REMOVE THIS HACK
         if '\\' in argv[0]:

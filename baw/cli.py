@@ -91,6 +91,11 @@ def add_parameter(parser):
         help='Use docker environment',
     )
     parser.add_argument(
+        '--docken',
+        action='store_true',
+        help='Use docker generated environment',
+    )
+    parser.add_argument(
         '--raw',
         action='store_true',
         help='Do not modify stdout/stderr',

@@ -21,10 +21,11 @@ def run(
     cmd,
     image: str,
     volumes: str = None,
+    generate: bool = False,
 ) -> int:
     failure = False
     with baw.dockers.client() as connected:
-        container = create(image, cmd, connected)
+        container = create(image, cmd, connected, generate)
         try:
             if volumes:
                 content = tar_content(os.getcwd())
@@ -48,16 +49,22 @@ def run(
     return baw.utils.SUCCESS
 
 
-def create(image: str, cmd: str, connected):
+def create(image: str, cmd: str, connected, generate: bool = False):
     try:
         container = connected.containers.create(
             image,
             command=f'"{cmd}"',
         )
     except docker.errors.ImageNotFound:
+        baw_image_create = 'baw image create'
+        if generate:
+            baw_image_create += ' --generate'
         root = os.getcwd()
-        baw.utils.log('baw image create')
-        completed = baw.runtime.run('baw image create', cwd=root)
+        baw.utils.log(baw_image_create)
+        completed = baw.runtime.run(
+            command=baw_image_create,
+            cwd=root,
+        )
         if completed.returncode:
             baw.utils.error(f'could not create image: {root}')
             if completed.stdout.strip():

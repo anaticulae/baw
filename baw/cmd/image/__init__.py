@@ -28,6 +28,7 @@ def create(  # pylint:disable=W0613
     root: str,
     name: str = None,
     dockerfile: str = None,
+    generate: bool = False,
     verbose: bool = False,
     venv: bool = False,
 ):
@@ -43,8 +44,11 @@ def create(  # pylint:disable=W0613
                 name=name,
             )
         return result
-    tagname = tag(root)
-    with baw.cmd.image.dockerfiles.generate(root) as path:
+    tagname = tag(root, generate)
+    with baw.cmd.image.dockerfiles.generate(
+            root,
+            inject=generate,
+    ) as path:
         result = baw.dockers.dockfile.build(
             dockerfile=path,
             tagname=tagname,
@@ -102,15 +106,19 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
 TEST_TAG = '/try_'
 
 
-def tag(root: str) -> str:
+def tag(root: str, generate: bool = False) -> str:
     """\
     >>> tag(__file__)
-    '.../try_baw_...'
+    '.../try_baw:...'
+    >>> tag(__file__, generate=True)
+    '.../try_gen_baw:...'
     """
     root = baw.cmd.utils.determine_root(root)
     testing = baw.config.docker_testing()
     name = baw.cmd.info.requirement_hash(root, verbose=True)
-    result = f'{testing}{TEST_TAG}{name}'
+    # use different hash if data generation is enabled
+    gen = 'gen_' if generate else ''
+    result = f'{testing}{TEST_TAG}{gen}{name}'
     return result
 
 
@@ -122,6 +130,7 @@ def run(args: dict):
             root,
             dockerfile=args['dockerfile'],
             name=args['name'],
+            generate=args.get('generate'),
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
@@ -145,6 +154,7 @@ def run(args: dict):
         return baw.dockers.container.run(
             cmd=cmd,
             image=name,
+            generate=args.get('generate'),
         )
     if action == 'check':
         name = args['name']
@@ -178,5 +188,10 @@ def extend_cli(parser):
     cli.add_argument(
         '--dockerfile',
         help='use this dockerfile',
+    )
+    cli.add_argument(
+        '--generate',
+        action='store_true',
+        help='generate test data',
     )
     cli.set_defaults(func=run)

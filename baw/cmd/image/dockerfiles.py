@@ -19,7 +19,7 @@ import baw.utils
 
 
 @contextlib.contextmanager
-def generate(root: str):
+def generate(root: str, inject: bool = False):
     name = baw.cmd.info.requirement_hash(root, verbose=True)
     name = name.replace(':', '_')
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
@@ -30,7 +30,8 @@ def generate(root: str):
     content += environments(root)
     content += requirements(root)
     content += SYNC
-    content += resources(root)
+    if inject:
+        content += resources(root)
     baw.utils.file_replace(
         config,
         content,
