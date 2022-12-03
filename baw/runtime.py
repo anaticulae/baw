@@ -346,7 +346,13 @@ def _run_venv(
     return process
 
 
-def run(cmd: str, cwd: str, env=None, debugging: bool = False):
+def run(
+    cmd: str,
+    cwd: str,
+    env=None,
+    debugging: bool = False,
+    live: bool = False,
+):
     """Run process.
 
     Hint:
@@ -357,6 +363,8 @@ def run(cmd: str, cwd: str, env=None, debugging: bool = False):
         cmd = ' '.join(cmd)
     if env is None:  # None: Empty dict is allowed.
         env = dict(os.environ.items())
+    if live:
+        debugging = True
     # Capturering stdout and stderr reuqires PIPE in completed process.
     # Debugging with pdb due console requires no PIPE.
     process = subprocess.run(  # pylint:disable=W1510 # nosec
