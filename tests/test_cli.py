@@ -6,21 +6,21 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""Test runnig commands with --command."""
+"""Test runnig cmds with --cmd."""
 
 import tests
 
 
 @tests.longrun
-def test_baaws_with_ls(project_with_command):
+def test_baaws_with_ls(project_with_cmd):
     """Running --run with ls."""
-    tmpdir = project_with_command
+    tmpdir = project_with_cmd
     tests.assert_run('baw --run', cwd=tmpdir)
 
 
 @tests.longrun
-def test_run_without_commands_in_project(example):
-    """Running --run without any registered command in project."""
+def test_run_without_cmds_in_project(example):
+    """Running --run without any registered cmd in project."""
     tests.assert_run_fail(
         'baw --run',
         cwd=example,

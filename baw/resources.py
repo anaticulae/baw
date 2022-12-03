@@ -149,7 +149,7 @@ import utila.cli
 
 from {{SHORT}} import __version__
 
-COMMANDS = [] # add additional commands here
+COMMANDS = [] # add additional cmds here
 
 @utila.saveme
 def main():

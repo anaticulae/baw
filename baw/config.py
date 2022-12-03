@@ -200,13 +200,13 @@ def project_tmpdir(root: str, ensure: bool = True) -> str:
     return path
 
 
-def commands(root: str) -> dict:
-    """Determine commands to run out of project config.
+def cmds(root: str) -> dict:
+    """Determine cmds to run out of project config.
 
     Args:
         root(str): project root
     Returns:
-        dict{name, command}: dict with commands to execute
+        dict{name, cmd}: dict with cmds to execute
     """
     assert os.path.exists(root), root
 

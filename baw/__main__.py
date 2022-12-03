@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Evaluate cmd-args and execute commands"""
+"""Evaluate cmd-args and execute cmds"""
 
 import baw.run
 

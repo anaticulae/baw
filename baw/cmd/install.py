@@ -60,7 +60,7 @@ def remove_current(root: str, venv: bool = False, verbose: bool = False):
         cmd = f'pip uninstall {package} --yes'
         completed = baw.runtime.run_target(
             root,
-            command=cmd,
+            cmd=cmd,
             verbose=verbose,
             venv=venv,
         )

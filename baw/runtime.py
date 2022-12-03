@@ -92,7 +92,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
         cmd = f'{cmd} --clear'
     if verbose:
         baw.utils.log(f'{cmd} in {venv}')
-    process = run(command=cmd, cwd=venv)
+    process = run(cmd=cmd, cwd=venv)
     if iswin():
         patch_pip(root, verbose=verbose)
         if sys.version_info.major == 3 and sys.version_info.minor == 7:
@@ -142,7 +142,7 @@ def patch_env(root):
 
 def run_target(
     root: str,
-    command: str,
+    cmd: str,
     cwd: str = None,
     env=None,
     *,
@@ -157,8 +157,8 @@ def run_target(
 
     Args:
         root(str): project root of generated project
-        command(str): command to run
-        cwd(str): location where command is executed, if nothing is provided,
+        cmd(str): cmd to run
+        cwd(str): location where cmd is executed, if nothing is provided,
                   root is used.
         env(dict): environment variable, if nothing is passed, the global env
                    vars ared used
@@ -186,12 +186,12 @@ def run_target(
         baw.utils.error(fail)
         return baw.utils.FAILURE
     if verbose:
-        baw.utils.log(command)
+        baw.utils.log(cmd)
     if venv:
         try:
             completed = _run_venv(
                 root,
-                cmd=command,
+                cmd=cmd,
                 cwd=root,
                 debugging=debugging,
                 env=env,
@@ -199,7 +199,7 @@ def run_target(
         except RuntimeError as fail:
             message = str(fail)
             process = subprocess.CompletedProcess(
-                command,
+                cmd,
                 NO_EXECUTABLE,
                 stdout=message,
                 stderr=message,
@@ -208,7 +208,7 @@ def run_target(
     else:
         # run local
         completed = run(
-            command=command,
+            cmd=cmd,
             cwd=cwd,
             debugging=debugging,
             env=env,
@@ -264,20 +264,20 @@ def log_result(  # pylint:disable=R1260,R0912
                     None, no time exection log will be printed.
         verbose(int): state of verbosity. Verbose starts at the level 1.
     """
-    command = completed.args
+    cmd = completed.args
     returncode = completed.returncode
     if isinstance(skip_error_code, int):
         skip_error_code = {skip_error_code}
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
-        msg = f'Completed: `{command}` in `{cwd}` returncode: {returncode}\n'
+        msg = f'Completed: `{cmd}` in `{cwd}` returncode: {returncode}\n'
         baw.utils.error(msg)
     if completed.stdout and verbose:
         baw.utils.log(completed.stdout)
     if verbose:
         if not reporting:
             # Inform, not writing to stderr
-            baw.utils.log(f'Completed: `{command}` in `{cwd}`\n')
+            baw.utils.log(f'Completed: `{cmd}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
             baw.utils.log(f'Env: {os.environ}')
     error_message = completed.stderr
@@ -305,12 +305,12 @@ def _run_venv(
     env: dict = None,
     debugging: bool = False,
 ) -> subprocess.CompletedProcess:
-    """Run command with venv environment
+    """Run cmd with venv environment
 
     Args:
         root(str): project root to locate `venv`-folder
-        cmd(str): command to execute
-        cwd(str): working directory where command is executed
+        cmd(str): cmd to execute
+        cwd(str): working directory where cmd is executed
         env(dict): replace enviroment variables
         debugging(bool): run pdb when error occurs
     Raises:
@@ -346,21 +346,21 @@ def _run_venv(
     return process
 
 
-def run(command: str, cwd: str, env=None, debugging: bool = False):
+def run(cmd: str, cwd: str, env=None, debugging: bool = False):
     """Run process.
 
     Hint:
         Do not use stdout/stderr=PIPE, after this, running pdb with
-        commandline is not feasible :) anymore. TODO: Investigate why.
+        cmdline is not feasible :) anymore. TODO: Investigate why.
     """
-    if not isinstance(command, str):
-        command = ' '.join(command)
+    if not isinstance(cmd, str):
+        cmd = ' '.join(cmd)
     if env is None:  # None: Empty dict is allowed.
         env = dict(os.environ.items())
     # Capturering stdout and stderr reuqires PIPE in completed process.
     # Debugging with pdb due console requires no PIPE.
     process = subprocess.run(  # pylint:disable=W1510 # nosec
-        command,
+        cmd,
         cwd=cwd,
         encoding=baw.utils.UTF8,
         env=env,
@@ -377,7 +377,7 @@ def run(command: str, cwd: str, env=None, debugging: bool = False):
 def installed(program: str, root: str, venv: bool = False):
     done = run_target(
         root,
-        command=f'which {program}',
+        cmd=f'which {program}',
         venv=venv,
         verbose=False,
     )

@@ -67,7 +67,7 @@ def lint(
                     minimal, exclude todos from analysis; todo, exclude
                     all expect todos.
         verbose(bool): increase logging
-        venv(bool): run command in venv environment
+        venv(bool): run cmd in venv environment
         log_always(bool): suppress logging if False and process completed
                           successful
     Returns:

@@ -173,7 +173,7 @@ def library_newest(verbose: bool = False) -> str:
     cmd = f'curl {url}'
     if verbose:
         baw.utils.log(cmd)
-    completed = baw.runtime.run(command=cmd, cwd=os.getcwd())
+    completed = baw.runtime.run(cmd=cmd, cwd=os.getcwd())
     if baw.config.testing():
         return 'd84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d'
     if completed.returncode:

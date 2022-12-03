@@ -15,7 +15,7 @@ import baw.runtime
 import baw.utils
 
 # TODO: Use twine for uploading packages
-SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this command is deprecated, '
+SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this cmd is deprecated, '
                         'use twine to upload instead '
                         '(https://pypi.org/p/twine/)')
 
@@ -34,12 +34,12 @@ def publish(root: str, verbose: bool = False, venv: bool = True):
     url, _ = baw.utils.package_address()
     distribution = distribution_format()
     python = baw.config.python(root)
-    command = f'{python} setup.py {distribution} upload -r {url}'
+    cmd = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
-        baw.utils.log(f'build dist: {command}')
+        baw.utils.log(f'build dist: {cmd}')
     completed = baw.runtime.run_target(
         root,
-        command,
+        cmd,
         root,
         verbose=verbose,
         skip_error_message=[SDIST_UPLOAD_WARNING],

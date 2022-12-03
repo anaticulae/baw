@@ -27,7 +27,7 @@ def client():
 
 
 def switch_docker():
-    """Use docker environment to run command."""
+    """Use docker environment to run cmd."""
     dockerx = '--docker' in sys.argv
     dockenx = '--docken' in sys.argv
     if not dockerx and not dockenx:

@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Init command of command line utility
+"""Init cmd of cmd line utility
 
 Initialize a new repository due init. Add content afterwards and stash it.
 """
@@ -172,7 +172,7 @@ def create_python(
         root(str): project root of generated project
         shortcut(str): short name of generated project. Init file is located
                        in root/shortcut/__init__.py
-        cmdline(bool): if True, create command line template
+        cmdline(bool): if True, create cmd line template
     """
     # TODO: DIRTY
     python_project = os.path.join(root, shortcut)

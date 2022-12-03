@@ -62,7 +62,7 @@ def create(image: str, cmd: str, connected, generate: bool = False):
         root = os.getcwd()
         baw.utils.log(baw_image_create)
         completed = baw.runtime.run(
-            command=baw_image_create,
+            cmd=baw_image_create,
             cwd=root,
         )
         if completed.returncode:

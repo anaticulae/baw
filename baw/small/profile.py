@@ -46,7 +46,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.utils.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
         if processed.returncode == 127:
-            baw.utils.error(f'invalid command: {cmd}')
+            baw.utils.error(f'invalid cmd: {cmd}')
             sys.exit(baw.utils.FAILURE)
         if processed.returncode:
             # the head is not important, we what to see the tail
@@ -77,7 +77,7 @@ def commits(root, ranges) -> list:
     no_error = ['grep: write error: Illegal seek\n']
     completed = baw.runtime.run_target(
         root,
-        command=cmd,
+        cmd=cmd,
         cwd=root,
         skip_error_message=no_error,
         verbose=False,
@@ -124,7 +124,7 @@ def parse_args(parser) -> tuple:
 def create_parser():
     parser = argparse.ArgumentParser(prog='baw_profile')
     # TODO: ADD VERBOSE AND FAIL FAST FLAG
-    parser.add_argument('cmd', help='command to profile')
+    parser.add_argument('cmd', help='cmd to profile')
     parser.add_argument(
         'range',
         help='commit to verify',

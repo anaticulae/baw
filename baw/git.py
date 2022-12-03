@@ -31,12 +31,12 @@ def init(root: str):
         baw.utils.skip('git init')
         return
     baw.utils.log('git init')
-    command = subprocess.run(  # nosec
+    cmd = subprocess.run(  # nosec
         ['git', 'init'],
         check=False,
         capture_output=True,
     )
-    evaluate_git_error(command)
+    evaluate_git_error(cmd)
 
 
 def add(
@@ -117,7 +117,7 @@ def checkout(
     baw.utils.log(f'Reset {to_reset}')
     completed = baw.runtime.run_target(
         root,
-        command=f'git checkout -q {to_reset}',
+        cmd=f'git checkout -q {to_reset}',
         verbose=verbose,
         venv=venv,
     )
@@ -194,10 +194,10 @@ def stash(
 
 
 def headtag(root: str, venv: bool, verbose: bool = False):
-    command = 'git tag --points-at HEAD'
+    cmd = 'git tag --points-at HEAD'
     completed = baw.runtime.run_target(
         root,
-        command,
+        cmd,
         root,
         # ignore error when collecting head on empty repository
         skip_error_code={129},

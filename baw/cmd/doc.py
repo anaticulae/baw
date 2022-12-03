@@ -56,14 +56,14 @@ def generate_docs(root: str, verbose: bool, venv: bool) -> int:
     # -f overwrite existing files
     # -e put each module on its own page
     configuration = '-d 10 -M -f -e'
-    command = 'sphinx-apidoc %s -o %s %s %s'
-    command = command % (configuration, doctmp, sources, ignore)
+    cmd = 'sphinx-apidoc %s -o %s %s %s'
+    cmd = cmd % (configuration, doctmp, sources, ignore)
     baw.utils.log('generate docs')
     if verbose:
-        baw.utils.log(command)
+        baw.utils.log(cmd)
     completed = baw.runtime.run_target(
         root,
-        command=command,
+        cmd=cmd,
         cwd=root,
         verbose=verbose,
         venv=venv,
@@ -106,13 +106,13 @@ def build_html(root: str, verbose: bool, venv: bool) -> int:
     ])
     doctmp = baw.config.docpath(root)
     htmloutput = os.path.join(doctmp, 'html')
-    command = f'sphinx-build {doctmp} {htmloutput} {build_options}'
+    cmd = f'sphinx-build {doctmp} {htmloutput} {build_options}'
     baw.utils.log('make html')
     if verbose:
-        baw.utils.log(command)
+        baw.utils.log(cmd)
     result = baw.runtime.run_target(
         root,
-        command=command,
+        cmd=cmd,
         cwd=root,
         venv=venv,
         verbose=verbose,
@@ -135,10 +135,10 @@ def open_docs(root: str):
 
 def is_sphinx_installed(root: str, venv: bool) -> bool:
     """Use `pip` to verify that documentation tool `sphinx` is installed."""
-    command = 'pip show sphinx'
+    cmd = 'pip show sphinx'
     completed = baw.runtime.run_target(
         root,
-        command=command,
+        cmd=cmd,
         cwd=root,
         venv=venv,
         skip_error_code=[1],  # sphinx is not installed

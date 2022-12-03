@@ -20,7 +20,7 @@ def run_shell(args: dict):
     root = baw.cmd.utils.get_root(args)
     completed = baw.runtime.run_target(
         root=root,
-        command=cmd,
+        cmd=cmd,
         cwd=root,
         verbose=False,
         debugging=True,

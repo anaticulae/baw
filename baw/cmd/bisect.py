@@ -55,7 +55,7 @@ def bisect(
     cmd = f'git bisect start {bad} {good} && git bisect run sh -c "baw {verify}"'
     completed = baw.runtime.run_target(
         root,
-        command=cmd,
+        cmd=cmd,
         cwd=root,
         verbose=verbose,
         venv=venv,
@@ -67,7 +67,7 @@ def bisect(
     # finish bisect
     baw.runtime.run_target(
         root,
-        command='git bisect reset',
+        cmd='git bisect reset',
         cwd=root,
         verbose=verbose,
         venv=venv,

@@ -78,13 +78,13 @@ def project_example_done(project_example):  # pylint:disable=W0621
 
 RUN = """
 [run]
-command = ls
+cmd = ls
 """
 
 
 @pytest.fixture
-def project_with_command(example):  # pylint:disable=W0621
-    """Create testproject which contains --run-command ls."""
+def project_with_cmd(example):  # pylint:disable=W0621
+    """Create testproject which contains --run-cmd ls."""
     path = baw.config.config_path(example)
     baw.utils.file_append(path, RUN)
     return example

@@ -71,7 +71,7 @@ def clean_git(root: str):
     baw.git.ensure_git('could not clean')
     completed = baw.runtime.run_target(
         root=root,
-        command='git clean -xf',
+        cmd='git clean -xf',
         cwd=root,
         verbose=False,
     )

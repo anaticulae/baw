@@ -30,8 +30,8 @@ def test_init_project_in_empty_folder(project_example):
     reason='python 3.10, update Sphinx',
 )
 @tests.nightly
-def test_doc_command(project_example, monkeypatch):
-    """Run doc command to generate documentation."""
+def test_doc_cmd(project_example, monkeypatch):
+    """Run doc cmd to generate documentation."""
     tests.baaw('doc', monkeypatch)
     created = project_example.join('tmpdir/docs/xcd/html/index.html')
     assert os.path.exists(created)
@@ -48,7 +48,7 @@ def test_escaping_single_collon(monkeypatch):
     tests.assert_run('.', 'pip install --editable .')
 
 
-@pytest.mark.parametrize('command', [
+@pytest.mark.parametrize('cmd', [
     'init myroject "This is a beautyful project"',
     'init myroject "This is a beautyful project" --cmdline',
 ])
@@ -56,6 +56,6 @@ def test_escaping_single_collon(monkeypatch):
 @tests.hasgit
 @tests.longrun
 @pytest.mark.usefixtures('testdir')
-def test_run_complex_command(monkeypatch, command):
-    """Run help and version and format command to reach basic test coverage"""
-    tests.baaw(command, monkeypatch)
+def test_run_complex_cmd(monkeypatch, cmd):
+    """Run help and version and format cmd to reach basic test coverage"""
+    tests.baaw(cmd, monkeypatch)

@@ -106,14 +106,14 @@ def format_(
         waitfor = []
         for item in folder:
             source = os.path.join(root, item)
-            command = f'{cmd} {source}'
+            cmdx = f'{cmd} {source}'
             if verbose:
-                baw.utils.log(command)
+                baw.utils.log(cmdx)
             waitfor.append(
                 executor.submit(
                     baw.runtime.run_target,
                     root=root,
-                    command=command,
+                    cmd=cmdx,
                     cwd=source,
                     venv=venv,
                     verbose=verbose,

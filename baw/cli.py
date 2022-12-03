@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Define structure of command line interface."""
+"""Define structure of cmd line interface."""
 
 import argparse
 import sys
@@ -31,13 +31,13 @@ import baw.utils
 
 
 def create_parser():  # noqa: Z21
-    """Create parser out of defined dictionary with command-line-definition.
+    """Create parser out of defined dictionary with cmd-line-definition.
 
     Returns created argparser
     """
     parser = argparse.ArgumentParser(prog='baw')
     add_parameter(parser)
-    cmds = parser.add_subparsers(help='sub-command help')
+    cmds = parser.add_subparsers(help='sub-cmd help')
     baw.cmd.init.extend_cli(cmds)
     baw.cmd.ide.extend_cli(cmds)
     add_open_options(cmds)
@@ -177,5 +177,5 @@ def add_plan_options(parser):
 
 def add_shell_option(parser):
     init = parser.add_parser('sh', help='Run shell cmd in env')
-    init.add_argument('cmd', help='command')
+    init.add_argument('cmd', help='cmd')
     init.set_defaults(func=baw.cmd.sh.run_shell)

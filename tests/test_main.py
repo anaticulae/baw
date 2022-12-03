@@ -15,24 +15,24 @@ import baw.run
 
 
 @pytest.mark.parametrize(
-    'command',
+    'cmd',
     [
         '',
         '-h',
         '-v',
         # ['--format'], problem with multiprocessing tests/xdist
     ])
-def test_baaw(monkeypatch, command):
-    """Run help and version and format command to reach basic test coverage"""
+def test_baaw(monkeypatch, cmd):
+    """Run help and version and format cmd to reach basic test coverage"""
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
-        context.setattr(sys, 'argv', ['baw'] + command.split())
+        context.setattr(sys, 'argv', ['baw'] + cmd.split())
         with pytest.raises(SystemExit) as result:
             baw.run.main()
         result = str(result)
-        # if no command is selected print help message and return code 1
-        expected = 'SystemExit(0)' if command else 'SystemExit(1)'
+        # if no cmd is selected print help message and return code 1
+        expected = 'SystemExit(0)' if cmd else 'SystemExit(1)'
         assert expected in result, result
 
 

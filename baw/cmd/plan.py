@@ -198,7 +198,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Your code has been rated at 9.24/10
     completed = baw.runtime.run_target(
         root,
-        command='baw lint',
+        cmd='baw lint',
         skip_error_code=set(range(100)),
         verbose=verbose,
     )
@@ -214,7 +214,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Total coverage: 0.00
     # completed = baw.runtime.run_target(
     #     root,
-    #     command='baw test long --cov -n=1',  # TODO: INCREASE AFTER FIXING PYCOV
+    #     cmd='baw test long --cov -n=1',  # TODO: INCREASE AFTER FIXING PYCOV
     #     skip_error_code={1},
     #     verbose=verbose,
     # coverage = re.search(

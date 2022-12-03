@@ -13,7 +13,7 @@ import baw.utils
 from tests.fixtures.project import example  # pylint:disable=W0611
 from tests.fixtures.project import project_example  # pylint:disable=W0611
 from tests.fixtures.project import project_example_done  # pylint:disable=W0611
-from tests.fixtures.project import project_with_command  # pylint:disable=W0611
+from tests.fixtures.project import project_with_cmd  # pylint:disable=W0611
 from tests.fixtures.project import project_with_test  # pylint:disable=W0611
 from tests.fixtures.project import simple  # pylint:disable=W0611
 

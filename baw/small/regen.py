@@ -48,7 +48,7 @@ def run(root, cmd, worker: int = 1):
 def single(cmd, cwd, progress: str):
     logmsg = f'"{progress} {cmd}" in {cwd}'
     baw.utils.log(logmsg)
-    completed = baw.runtime.run(command=cmd, cwd=cwd)
+    completed = baw.runtime.run(cmd=cmd, cwd=cwd)
     append_log(completed=completed, cwd=cwd)
     if not completed.returncode:
         return
@@ -76,7 +76,7 @@ def parse_args(parser) -> tuple:
 def create_parser():
     parser = argparse.ArgumentParser(prog='baw_regen')
     # TODO: ADD VERBOSE AND FAIL FAST FLAG
-    parser.add_argument('cmd', help='command to run')
+    parser.add_argument('cmd', help='cmd to run')
     parser.add_argument(
         'worker',
         help='number of parallel executor',

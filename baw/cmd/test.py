@@ -63,7 +63,7 @@ def run_test(  # pylint:disable=R0914
         stash(bool): stash all changes to test commited-change in repository
         noinstall(bool): do not run install step before testing
         verbose(bool): extend logging
-        venv(bool): run command in venv environment
+        venv(bool): run cmd in venv environment
     Returns:
         returncode(int): 0 if successful else > 0
     """
@@ -299,7 +299,7 @@ def cov_args(root: str, *, pdb: bool) -> str:
         root(str): project root
         pdb(bool): using debugger on running tests
     Returns:
-        args for coverage command
+        args for coverage cmd
     """
     output = os.path.join(baw.utils.tmp(root), 'report')
     cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')

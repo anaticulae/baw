@@ -66,11 +66,11 @@ hasbaw = hasprog('baw')
 hasdocker = hasprog('docker')
 
 
-def run(command: str, cwd: str = None):
+def run(cmd: str, cwd: str = None):
     """Run external process."""
     cwd = cwd if cwd else os.getcwd()
     completed = subprocess.run(  # nosec
-        command,
+        cmd,
         cwd=cwd,
         shell=True,
         stdout=subprocess.PIPE,
@@ -82,11 +82,11 @@ def run(command: str, cwd: str = None):
 
 
 @contextlib.contextmanager
-def assert_run(command: str, cwd: str = None):
-    completed = run(command, cwd)
+def assert_run(cmd: str, cwd: str = None):
+    completed = run(cmd, cwd)
     msg = f'{completed.stderr}\n{completed.stdout}'
     assert not completed.returncode, msg
-    baw.utils.log(command)
+    baw.utils.log(cmd)
     baw.utils.log(completed.stdout)
     if completed.stderr:
         baw.utils.error(completed.stderr)
@@ -94,8 +94,8 @@ def assert_run(command: str, cwd: str = None):
 
 
 @contextlib.contextmanager
-def assert_run_fail(command: str, cwd: str = None):
-    completed = run(command, cwd)
+def assert_run_fail(cmd: str, cwd: str = None):
+    completed = run(cmd, cwd)
     msg = f'{completed.stderr}\n{completed.stdout}'
     assert completed.returncode, msg
     yield completed
@@ -106,20 +106,20 @@ def file_count(path: str):
 
 
 def baaw(
-    command,
+    cmd,
     monkeypatch,
     verbose: bool = True,
     expect=True,
 ):
-    command = cmd_split(command)
+    cmd = cmd_split(cmd)
     with monkeypatch.context() as context:
         # Remove all environment vars
         # baw is removed as first arg
-        cmd = ['baw']
+        cmdx = ['baw']
         if verbose:
-            cmd += ['--verbose']
-        cmd += command
-        context.setattr(sys, 'argv', cmd)
+            cmdx += ['--verbose']
+        cmdx += cmd
+        context.setattr(sys, 'argv', cmdx)
         with pytest.raises(SystemExit) as result:
             baw.run.main()
         result = str(result)

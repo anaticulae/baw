@@ -286,7 +286,7 @@ def get_install_cmd(
     if require_legacy_solver():
         config += '--use-deprecated=legacy-resolver '
     python = baw.config.python(root, venv=venv)
-    # prepare command
+    # prepare cmd
     cmd = f'{python} -mpip install {warning} {pip} '
     cmd += f'-U {config} '
     cmd += f'-r {to_install} '
