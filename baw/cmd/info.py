@@ -61,6 +61,9 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
     if value == 'describe':
         baw.utils.log(baw.git.describe(root))
         return baw.utils.SUCCESS
+    if value == 'stable':
+        baw.utils.log(baw.project.version.determine(root))
+        return baw.utils.SUCCESS
     if value == 'clean':
         if baw.git.is_clean(root, verbose=False):
             baw.utils.log('very clean')
@@ -123,7 +126,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
 
 
 CHOISES = ('name shortcut sources venv tmp '
-           'covreport requirement image clean describe').split()
+           'covreport requirement image clean describe stable').split()
 
 
 def extend_cli(parser):
