@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v1.28.0 (2022-12-04)
+
+### Feature
+
+* add option to print last stable .baw version (89c887050517)
+* remove intermediate layer (0ec5cfe65dd2)
+* log image creation to console (9929fc175a4a)
+* add live parameter to live log to console (f3d28f8e334d)
+
 ## v1.27.0 (2022-12-03)
 
 ### Feature
