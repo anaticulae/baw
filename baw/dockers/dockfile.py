@@ -20,7 +20,7 @@ import baw.utils
 def build(dockerfile: str, tagname: str) -> int:
     image = parse_baseimage(dockerfile)
     if baw.dockers.image.check_baseimage(image):
-        baw.utils.error(f'could not find base image: {dockerfile}')
+        baw.utils.error(f'could not find baseimage {image} in {dockerfile}')
         baw.utils.error(parse_baseimage(dockerfile))
         baw.utils.error(baw.utils.file_read(dockerfile))
         sys.exit(baw.utils.FAILURE)
