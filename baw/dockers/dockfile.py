@@ -58,7 +58,15 @@ def parse_baseimage(path: str):
     raise ValueError(f'could not find `FROM ` in {path}')
 
 
-IMAGE = re.compile(r"image[\:]?[ ]{1,3}'{0,1}((.{5,})/(.{5,})\:(.{3,}))'{0,1}")
+# yapf:disable
+IMAGE = re.compile(r"""
+    image
+    [\:]?[\ ]{1,3}
+    '{0,1}
+        ((.{5,})/(.{5,})\:(.{3,}))
+    '{0,1}
+""", flags=re.VERBOSE)
+# yapf:enable
 
 
 def docker_image_upgrade(path: str) -> str:
