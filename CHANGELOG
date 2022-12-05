@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.30.0 (2022-12-05)
+
+### Feature
+
+* add option to determine newest image (fdbd7cfe69e2)
+
+### Chore
+
+* upgrade requirements.txt (f61635a52710)
+
 ## v1.29.0 (2022-12-05)
 
 ### Feature
