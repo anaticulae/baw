@@ -8,6 +8,7 @@
 # =============================================================================
 
 import os
+import re
 import sys
 
 import docker.errors
@@ -55,3 +56,27 @@ def parse_baseimage(path: str):
         if line.startswith('FROM '):
             return line.split(' ')[1].strip()
     raise ValueError(f'could not find `FROM ` in {path}')
+
+
+IMAGE = re.compile(r"image[ ]'((.{5,})/(.{5,})\:(.{3,}))'")
+
+
+def docker_image_upgrade(path: str) -> str:
+    r"""\
+    >>> import baw; docker_image_upgrade(baw.jenkinsfile(__file__))
+    'pipeline{...}\n'
+    """
+    content = baw.utils.file_read(path)
+    parsed = IMAGE.search(content)
+    if not parsed:
+        return None
+    repo, image, _ = parsed[2], parsed[3], parsed[4]
+    matched = f'{repo}/{image}'
+    tagx = baw.dockers.image.tags(matched)
+    maxed = baw.dockers.image.version_max(tagx)
+    if not maxed:
+        baw.utils.error(f'could not upgrade docker image: {matched}')
+        sys.exit(baw.utils.FAILURE)
+    version_new = f'{matched}:{maxed[0]}'
+    result = content.replace(parsed[1], version_new)
+    return result

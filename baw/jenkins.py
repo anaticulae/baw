@@ -11,6 +11,7 @@ import os
 import re
 import sys
 
+import baw
 import baw.config
 import baw.dockers.image
 import baw.git
@@ -24,19 +25,8 @@ def docker_image_upgrade(root: str) -> str:
     >>> docker_image_upgrade(__file__)
     '.../arch_python_git_baw:v...'
     """
-    jenkins = baw.utils.file_read(jenkinsfile(root))
-    parsed = IMAGE.search(jenkins)
-    if not parsed:
-        return None
-    repo, image, _ = parsed[2], parsed[3], parsed[4]
-    matched = f'{repo}/{image}'
-    tagx = baw.dockers.image.tags(matched)
-    maxed = baw.dockers.image.version_max(tagx)
-    if not maxed:
-        baw.utils.error(f'could not upgrade docker image: {matched}')
-        sys.exit(baw.utils.FAILURE)
-    version_new = f'{matched}:{maxed[0]}'
-    result = jenkins.replace(parsed[1], version_new)
+    path = jenkinsfile(root)
+    result = baw.docker_image_upgrade(path)
     return result
 
 

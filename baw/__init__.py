@@ -11,5 +11,8 @@ ROOT = None
 
 __version__ = '1.30.0'
 
-import baw.__patch__  # pylint:disable=wrong-import-position
-import baw.__root__  # pylint:disable=wrong-import-position
+# pylint:disable=wrong-import-position
+import baw.__patch__
+import baw.__root__
+from baw.dockers.dockfile import docker_image_upgrade
+from baw.jenkins import jenkinsfile
