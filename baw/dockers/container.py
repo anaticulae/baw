@@ -64,7 +64,7 @@ def create(image: str, cmd: str, connected, generate: bool = False):
         completed = baw.runtime.run(
             cmd=baw_image_create,
             cwd=root,
-            live=True,
+            # live=True, # live does not return completed
         )
         if completed.returncode:
             baw.utils.error(f'could not create image: {root}')
