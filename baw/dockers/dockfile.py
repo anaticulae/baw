@@ -62,9 +62,9 @@ def parse_baseimage(path: str):
 IMAGE = re.compile(r"""
     image
     [\:]?[\ ]{1,3}
-    '{0,1}
-        ((.{5,})/(.{5,})\:(.{3,}))
-    '{0,1}
+    (?P<quote_opt>'{0,1})
+        ((?P<repo>.{5,})/(?P<image>.{5,})\:(?P<version>.{3,}))
+    (?P=quote_opt)
 """, flags=re.VERBOSE)
 # yapf:enable
 
@@ -80,7 +80,9 @@ def docker_image_upgrade(path: str) -> str:
         return None
     result = content
     for find in parsed:
-        repo, image, _ = find[1], find[2], find[3]
+        # ("'", '169.254.149.20:6001/arch_python_git_baw:v1.20.0',
+        # '169.254.149.20:6001', 'arch_python_git_baw', 'v1.20.0')
+        repo, image = find[2], find[3]
         matched = f'{repo}/{image}'
         tagx = baw.dockers.image.tags(matched)
         maxed = baw.dockers.image.version_max(tagx)
@@ -88,7 +90,7 @@ def docker_image_upgrade(path: str) -> str:
             baw.utils.error(f'could not upgrade docker image: {matched}')
             sys.exit(baw.utils.FAILURE)
         version_new = f'{matched}:{maxed[0]}'
-        result = result.replace(find[0], version_new, 1)
+        result = result.replace(find[1], version_new, 1)
     if result == content:
         # nothing changed
         return None
