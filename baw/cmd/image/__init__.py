@@ -133,6 +133,26 @@ def newest(name: str) -> int:
     return baw.utils.SUCCESS
 
 
+def upgrade(args: dict) -> int:
+    path = os.path.abspath(args['dockerfile'])
+    baw.utils.log(f'start upgrading: {path}')
+    replaced = baw.docker_image_upgrade(path)
+    if not replaced:
+        baw.utils.error(f'already up-to-date: {path}')
+        return baw.utils.FAILURE
+    root = baw.cmd.utils.get_root(args)
+    stash = baw.utils.empty if baw.git.is_clean(root, verbose=False) else baw.git.stash # yapf:disable
+    with stash(root):
+        baw.utils.file_replace(path, replaced)
+        baw.git.commit(
+            root,
+            path,
+            message='chore(upgrade): upgrade images',
+        )
+        baw.utils.log(f'upgraded: {path}')
+    return baw.utils.SUCCESS
+
+
 def run(args: dict):  # pylint:disable=R0911
     root = baw.cmd.utils.get_root(args)
     action = args.get('action')
@@ -145,8 +165,8 @@ def run(args: dict):  # pylint:disable=R0911
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
-    if action == 'update':
-        baw.utils.error('not implemented')
+    if action == 'upgrade':
+        return upgrade(args)
     if action == 'delete':
         baw.utils.error('not implemented')
     if action == 'clean':
@@ -175,7 +195,7 @@ def run(args: dict):  # pylint:disable=R0911
     return baw.utils.FAILURE
 
 
-CHOICES = 'create update delete clean githash run check newest'.split()
+CHOICES = 'create upgrade delete clean githash run check newest'.split()
 
 
 def extend_cli(parser):
