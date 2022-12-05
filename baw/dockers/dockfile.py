@@ -67,16 +67,21 @@ def docker_image_upgrade(path: str) -> str:
     'pipeline{...}\n'
     """
     content = baw.utils.file_read(path)
-    parsed = IMAGE.search(content)
+    parsed = IMAGE.findall(content)
     if not parsed:
         return None
-    repo, image, _ = parsed[2], parsed[3], parsed[4]
-    matched = f'{repo}/{image}'
-    tagx = baw.dockers.image.tags(matched)
-    maxed = baw.dockers.image.version_max(tagx)
-    if not maxed:
-        baw.utils.error(f'could not upgrade docker image: {matched}')
-        sys.exit(baw.utils.FAILURE)
-    version_new = f'{matched}:{maxed[0]}'
-    result = content.replace(parsed[1], version_new)
+    result = content
+    for find in parsed:
+        repo, image, _ = find[1], find[2], find[3]
+        matched = f'{repo}/{image}'
+        tagx = baw.dockers.image.tags(matched)
+        maxed = baw.dockers.image.version_max(tagx)
+        if not maxed:
+            baw.utils.error(f'could not upgrade docker image: {matched}')
+            sys.exit(baw.utils.FAILURE)
+        version_new = f'{matched}:{maxed[0]}'
+        result = result.replace(find[0], version_new, 1)
+    if result == content:
+        # nothing changed
+        return None
     return result
