@@ -122,7 +122,18 @@ def tag(root: str, generate: bool = False) -> str:
     return result
 
 
-def run(args: dict):
+def newest(name: str) -> int:
+    if baw.dockers.image.check_baseimage(name):
+        return baw.utils.FAILURE
+    name = name.rsplit(':', maxsplit=1)[0]
+    tags = baw.dockers.image.tags(name)
+    maxtag = baw.dockers.image.version_max(tags)
+    result = f'{name}:{maxtag[0]}'
+    baw.utils.log(result)
+    return baw.utils.SUCCESS
+
+
+def run(args: dict):  # pylint:disable=R0911
     root = baw.cmd.utils.get_root(args)
     action = args.get('action')
     if action == 'create':
@@ -159,10 +170,12 @@ def run(args: dict):
     if action == 'check':
         name = args['name']
         return baw.dockers.image.exists(name)
+    if action == 'newest':
+        return newest(args['name'])
     return baw.utils.FAILURE
 
 
-CHOICES = 'create update delete clean githash run check'.split()
+CHOICES = 'create update delete clean githash run check newest'.split()
 
 
 def extend_cli(parser):

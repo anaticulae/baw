@@ -10,6 +10,7 @@
 import os
 
 import baw.cmd.image.dockerfiles
+import tests
 
 
 def test_cmd_image_create(simple, capsys):  # pylint:disable=W0621,W0613
@@ -22,3 +23,11 @@ def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
     simple[0]('pipe init')
     with baw.cmd.image.dockerfiles.generate(simple[1]) as path:
         assert os.path.exists(path)
+
+
+def test_cmd_image_newest(monkeypatch, capsys):
+    name = '169.254.149.20:6001/arch_python_git_baw:v1.26.0'
+    cmd = f'image newest --name {name}'
+    tests.baaw(cmd, monkeypatch=monkeypatch)
+    stdout = tests.stdout(capsys)
+    assert '169.254.149.20:6001/arch_python_git_baw:v' in stdout
