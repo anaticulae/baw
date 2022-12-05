@@ -33,7 +33,7 @@ def tags(matched: str) -> list:
 def exists(name: str) -> int:
     baw.utils.log(f'check: {name}')
     if check_baseimage(name):
-        baw.utils.error(f'could not find {name}')
+        baw.utils.error(f'could not find image: {name}')
         sys.exit(baw.utils.FAILURE)
         return baw.utils.FAILURE
     baw.utils.log('OK')

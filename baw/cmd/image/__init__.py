@@ -179,7 +179,7 @@ def extend_cli(parser):
     )
     cli.add_argument(
         '--name',
-        help='add image name',
+        help='tag generated image',
     )
     cli.add_argument(
         '--cmd',
