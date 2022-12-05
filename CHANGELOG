@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.29.0 (2022-12-05)
+
+### Feature
+
+* increase debugging information (2e9eeeb7143f)
+
+### Fix
+
+* disable live, enable later (2ec831505629)
+
 ## v1.28.0 (2022-12-04)
 
 ### Feature
