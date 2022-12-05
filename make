@@ -30,7 +30,7 @@ build(){
         exit 1
     fi
 
-    # verify that image is create properly
+    # verify that image is created properly
     baw image run --name "${TAG}" --cmd "ls /var/install"
 
     if [ $? -ne 0 ]
