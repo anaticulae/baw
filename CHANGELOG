@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.31.0 (2022-12-06)
+
+### Feature
+
+* implement image upgrade (74211073e48d)
+* allow multiple replacements (8b1d859da200)
+* make parser more flexible (f3309d5edd7d)
+
+### Fix
+
+* do not skip end quote if given (67d888971f42)
+
 ## v1.30.0 (2022-12-05)
 
 ### Feature
