@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.32.0 (2022-12-06)
+
+### Feature
+
+* add method to pop stashed git data (8f5a40a8f621)
+* do not stash if repo is already clean (20b68eaafb9f)
+
+### Fix
+
+* do not fail on non required upgrade (327b188a776a)
+
 ## v1.31.0 (2022-12-06)
 
 ### Feature
