@@ -69,7 +69,7 @@ IMAGE = re.compile(r"""
 # yapf:enable
 
 
-def docker_image_upgrade(path: str) -> str:
+def docker_image_upgrade(path: str, prerelease: bool = False) -> str:
     r"""\
     >>> import baw; docker_image_upgrade(baw.jenkinsfile(__file__))
     'pipeline{...}\n'
@@ -85,7 +85,10 @@ def docker_image_upgrade(path: str) -> str:
         repo, image = find[2], find[3]
         matched = f'{repo}/{image}'
         tagx = baw.dockers.image.tags(matched)
-        maxed = baw.dockers.image.version_max(tagx)
+        maxed = baw.dockers.image.version_max(
+            tagx,
+            prerelease=prerelease,
+        )
         if not maxed:
             baw.utils.error(f'could not upgrade docker image: {matched}')
             sys.exit(baw.utils.FAILURE)

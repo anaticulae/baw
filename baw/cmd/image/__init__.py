@@ -133,10 +133,17 @@ def newest(name: str) -> int:
     return baw.utils.SUCCESS
 
 
-def upgrade(dockerfile: str, root: str) -> int:
+def upgrade(
+    root: str,
+    dockerfile: str,
+    prerelease: bool = False,
+) -> int:
     path = os.path.abspath(dockerfile)
     baw.utils.log(f'start upgrading: {path}')
-    replaced = baw.docker_image_upgrade(path)
+    replaced = baw.docker_image_upgrade(
+        path,
+        prerelease=prerelease,
+    )
     if not replaced:
         baw.utils.log(f'already up-to-date: {path}')
         return baw.utils.SUCCESS
@@ -167,6 +174,7 @@ def run(args: dict):  # pylint:disable=R0911
         return upgrade(
             dockerfile=args['dockerfile'],
             root=root,
+            prerelease=args['prerelease'],
         )
     if action == 'delete':
         baw.utils.error('not implemented')
@@ -227,5 +235,10 @@ def extend_cli(parser):
         '--generate',
         action='store_true',
         help='generate test data',
+    )
+    cli.add_argument(
+        '--prerelease',
+        action='store_true',
+        help='use pre-releases while upgrading',
     )
     cli.set_defaults(func=run)
