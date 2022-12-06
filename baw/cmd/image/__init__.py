@@ -140,8 +140,7 @@ def upgrade(dockerfile: str, root: str) -> int:
     if not replaced:
         baw.utils.error(f'already up-to-date: {path}')
         return baw.utils.SUCCESS
-    stash = baw.utils.empty if baw.git.is_clean(root, verbose=False) else baw.git.stash # yapf:disable
-    with stash(root):
+    with baw.git.stash(root):
         baw.utils.file_replace(path, replaced)
         baw.git.commit(
             root,
