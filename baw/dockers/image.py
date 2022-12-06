@@ -49,6 +49,13 @@ def version_max(taglist, prerelease: bool = False):
     ... '169.254.149.20:6001/arch_python_git_baw:v1.24.1-2-g2d835b6',
     ... ])
     ['v1.25.0', '1.24.1']
+    >>> version_max(['169.254.149.20:6001/arch_python_git_baw:v1.25.0-2-gafbfdd0',
+    ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0-1-g7d87b32',
+    ... '169.254.149.20:6001/arch_python_git_baw:1.24.1',
+    ... '169.254.149.20:6001/arch_python_git_baw:v1.25.0',
+    ... '169.254.149.20:6001/arch_python_git_baw:v1.24.1-2-g2d835b6',
+    ... ], prerelease=True)
+    ['v1.25.0', 'v1.25.0-2-gafbfdd0', 'v1.25.0-1-g7d87b32', '1.24.1', 'v1.24.1-2-g2d835b6']
     """
     taglist = [item.rsplit(':', 1)[1] for item in taglist]
     if not prerelease:
