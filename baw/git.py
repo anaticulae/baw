@@ -196,6 +196,19 @@ def stash(
     return completed.returncode
 
 
+def stash_pop(root: str, venv: bool, verbose: bool = False) -> int:
+    cmd = 'git stash pop'
+    completed = baw.runtime.run_target(
+        root,
+        cmd,
+        verbose=verbose,
+        venv=venv,
+    )
+    if completed.returncode:
+        baw.utils.error(completed.stderr)
+    return completed.returncode
+
+
 def headtag(root: str, venv: bool, verbose: bool = False):
     cmd = 'git tag --points-at HEAD'
     completed = baw.runtime.run_target(
