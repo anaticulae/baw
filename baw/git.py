@@ -161,7 +161,7 @@ def stash(
     if completed.returncode:
         baw.utils.error(completed.stdout)
         baw.utils.error(completed.stderr)
-        # Stashing an repository with not commit, produces an error
+        # Stashing an repository with no commit, produces an error
         sys.exit(completed.returncode)
 
     nostash = (not completed.returncode and
