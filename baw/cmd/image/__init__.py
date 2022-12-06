@@ -139,7 +139,7 @@ def upgrade(args: dict) -> int:
     replaced = baw.docker_image_upgrade(path)
     if not replaced:
         baw.utils.error(f'already up-to-date: {path}')
-        return baw.utils.FAILURE
+        return baw.utils.SUCCESS
     root = baw.cmd.utils.get_root(args)
     stash = baw.utils.empty if baw.git.is_clean(root, verbose=False) else baw.git.stash # yapf:disable
     with stash(root):
