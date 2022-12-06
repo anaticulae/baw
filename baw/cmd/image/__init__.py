@@ -133,14 +133,13 @@ def newest(name: str) -> int:
     return baw.utils.SUCCESS
 
 
-def upgrade(args: dict) -> int:
-    path = os.path.abspath(args['dockerfile'])
+def upgrade(dockerfile: str, root: str) -> int:
+    path = os.path.abspath(dockerfile)
     baw.utils.log(f'start upgrading: {path}')
     replaced = baw.docker_image_upgrade(path)
     if not replaced:
         baw.utils.error(f'already up-to-date: {path}')
         return baw.utils.SUCCESS
-    root = baw.cmd.utils.get_root(args)
     stash = baw.utils.empty if baw.git.is_clean(root, verbose=False) else baw.git.stash # yapf:disable
     with stash(root):
         baw.utils.file_replace(path, replaced)
@@ -166,7 +165,10 @@ def run(args: dict):  # pylint:disable=R0911
             venv=args.get('venv'),
         )
     if action == 'upgrade':
-        return upgrade(args)
+        return upgrade(
+            dockerfile=args['dockerfile'],
+            root=root,
+        )
     if action == 'delete':
         baw.utils.error('not implemented')
     if action == 'clean':
