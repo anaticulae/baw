@@ -138,7 +138,7 @@ def upgrade(dockerfile: str, root: str) -> int:
     baw.utils.log(f'start upgrading: {path}')
     replaced = baw.docker_image_upgrade(path)
     if not replaced:
-        baw.utils.error(f'already up-to-date: {path}')
+        baw.utils.log(f'already up-to-date: {path}')
         return baw.utils.SUCCESS
     with baw.git.stash(root):
         baw.utils.file_replace(path, replaced)
