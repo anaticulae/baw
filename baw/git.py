@@ -181,15 +181,7 @@ def stash(
             raise err
         return baw.utils.SUCCESS
     # unstash to recreate dirty environment
-    cmd = 'git stash pop'
-    completed = baw.runtime.run_target(
-        root,
-        cmd,
-        verbose=verbose,
-        venv=venv,
-    )
-    if completed.returncode:
-        baw.utils.error(completed.stderr)
+    stash_pop(root, venv, verbose)
     # reraise except from user code
     if err:
         raise err
