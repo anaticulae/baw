@@ -134,7 +134,7 @@ def stash(
     verbose: bool = False,
     venv: bool = False,
 ) -> int:
-    """Save uncommited/not versonied content to improve testability
+    """Save uncommited/not versonied content to improve testability.
 
     Args:
         root(str): root of execution
@@ -147,6 +147,9 @@ def stash(
     Raises:
         Reraises all user execeptions
     """
+    if is_clean(root, verbose=verbose):
+        yield
+        return baw.utils.SUCCESS
     baw.utils.log('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = baw.runtime.run_target(
