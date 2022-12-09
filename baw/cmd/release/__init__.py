@@ -81,45 +81,6 @@ def release(  # pylint:disable=R1260
     return baw.utils.SUCCESS
 
 
-def run_release(args: dict) -> int:
-    root = baw.cmd.utils.get_root(args)
-    # always publish after release
-    args['publish'] = True
-    venv = args.get('venv', True)
-    # overwrite venv flag if given
-    novenv = args.get('no_venv', False)
-    no_linter = args.get('no_linter', False)
-    sync = not args.get('no_sync', False)
-    if novenv:
-        baw.utils.log('do not use venv')
-        venv = False
-    if not baw.runtime.installed('semantic-release', root, venv=venv):
-        return baw.utils.FAILURE
-    test = True
-    # do not test before releasing
-    notest = args.get('no_test', False)
-    if notest:
-        test = False
-    if args.get('release') == 'drop':
-        result = drop(
-            root,
-            venv=venv,
-            verbose=args['verbose'],
-        )
-        return result
-    # run release
-    result = release(
-        root=root,
-        release_type=args['release'],
-        verbose=args['verbose'],
-        test=test,
-        venv=venv,
-        no_linter=no_linter,
-        sync=sync,
-    )
-    return result
-
-
 def require_release(root, venv):
     current_head = baw.git.headtag(root, venv=venv)
     if not current_head:
@@ -312,6 +273,45 @@ def reset_resources(
     return completed
 
 
+def run(args: dict) -> int:
+    root = baw.cmd.utils.get_root(args)
+    # always publish after release
+    args['publish'] = True
+    venv = args.get('venv', True)
+    # overwrite venv flag if given
+    novenv = args.get('no_venv', False)
+    no_linter = args.get('no_linter', False)
+    sync = not args.get('no_sync', False)
+    if novenv:
+        baw.utils.log('do not use venv')
+        venv = False
+    if not baw.runtime.installed('semantic-release', root, venv=venv):
+        return baw.utils.FAILURE
+    test = True
+    # do not test before releasing
+    notest = args.get('no_test', False)
+    if notest:
+        test = False
+    if args.get('release') == 'drop':
+        result = drop(
+            root,
+            venv=venv,
+            verbose=args['verbose'],
+        )
+        return result
+    # run release
+    result = release(
+        root=root,
+        release_type=args['release'],
+        verbose=args['verbose'],
+        test=test,
+        venv=venv,
+        no_linter=no_linter,
+        sync=sync,
+    )
+    return result
+
+
 def extend_cli(parser):
     parser = parser.add_parser('release', help='Test, commit, tag and publish')
     parser.add_argument(
@@ -326,4 +326,4 @@ def extend_cli(parser):
     parser.add_argument('--no_venv', action='store_true', help='skip venv')
     parser.add_argument('--no_linter', action='store_true', help='skip linter')
     parser.add_argument('--no_sync', action='store_true', help='skip sync')
-    parser.set_defaults(func=run_release)
+    parser.set_defaults(func=run)
