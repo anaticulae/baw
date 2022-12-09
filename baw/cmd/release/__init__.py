@@ -7,20 +7,15 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-
 import baw.archive.test
 import baw.cmd.complex
 import baw.cmd.lint
-import baw.cmd.release.config
 import baw.cmd.release.drop
+import baw.cmd.release.pack
 import baw.config
 import baw.git
 import baw.runtime
 import baw.utils
-
-# semantic release returns this message if no new release is provided, cause
-# of the absent of new features/bugfixes.
-NO_RELEASE_MESSAGE = 'No release will be made.'
 
 
 def release(  # pylint:disable=R1260
@@ -74,7 +69,12 @@ def release(  # pylint:disable=R1260
     baw.utils.verbose('run test', verbose=verbose)
     if returncode := run_test(root, sync, test, stash, verbose, venv):
         return returncode
-    if returncode := publish(root, verbose, release_type, venv=venv):
+    if returncode := baw.cmd.release.pack.run(
+            root,
+            verbose,
+            release_type,
+            venv=venv,
+    ):
         return returncode
     return baw.utils.SUCCESS
 
@@ -130,52 +130,6 @@ def run_test(
         return returncode
     baw.utils.log('release was already tested successfully')
     return baw.utils.SUCCESS
-
-
-def publish(root, verbose, release_type, venv: bool = False):
-    baw.utils.log('update version tag')
-    with baw.cmd.release.config.temp_semantic_config(
-            root,
-            verbose,
-            venv=venv,
-    ) as cfg:
-        release_type = select_release_type(release_type, cfg=cfg)
-        cmd = f'baw_semantic_release -v DEBUG publish {release_type}'
-        completed = baw.runtime.run_target(
-            root,
-            cmd,
-            verbose=verbose,
-            venv=venv,
-        )
-        baw.utils.log(completed.stdout)
-        if NO_RELEASE_MESSAGE in completed.stdout:
-            baw.utils.error('abort release')
-            baw.utils.log('ensure that some (feat) are commited')
-            baw.utils.log('use: `baw release minor` to force release')
-            return baw.utils.FAILURE
-    if completed.returncode:
-        baw.utils.error('while running semantic-release')
-        baw.utils.error(completed.stderr)
-        return completed.returncode
-    return baw.utils.SUCCESS
-
-
-def select_release_type(typ: str, cfg: str) -> str:
-    # Only release with type if user select one. If the user does
-    # select a release-type let semantic release decide. If only some
-    # style are commited but we want the release, we have to overwrite
-    # default action.
-    if require_autopatch(baw.utils.file_read(cfg)):
-        typ = 'patch'
-    typ = '' if typ == 'auto' else f'--{typ}'
-    return typ
-
-
-def require_autopatch(changelog: str) -> bool:
-    for item in 'Feature Fix Documentation'.split():  # pylint:disable=C0501
-        if f'>>> {item}' in changelog:
-            return False
-    return True
 
 
 def version_variables(root: str) -> str:
