@@ -56,11 +56,19 @@ def publish(
         venv=venv,
     )
     if completed.returncode == baw.utils.SUCCESS:
+        if pre:
+            log_prerelease(root)
         baw.utils.log('publish completed')
     else:
         baw.utils.error(completed.stderr)
         baw.utils.error('publish failed')
     return completed.returncode
+
+
+def log_prerelease(root):
+    import utila.quick
+    baw.utils.log(baw.config.shortcut(root) + '-', end='')
+    baw.utils.log(utila.quick.git_hash(root))
 
 
 def distribution_format() -> str:
