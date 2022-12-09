@@ -12,7 +12,7 @@ import os
 import baw.cmd.utils
 import baw.dockers.image
 import baw.git
-import baw.jenkins
+import baw.pipelinefile
 import baw.project
 import baw.resources
 import baw.run
@@ -24,7 +24,7 @@ def init(
     verbose: bool = False,
     venv: bool = False,
 ):
-    source = baw.jenkins.jenkinsfile(root)
+    source = baw.jenkinsfile(root)
     if os.path.exists(source):
         baw.utils.error(f'Jenkinsfile already exists: {source}')
         return baw.utils.FAILURE
@@ -52,11 +52,11 @@ def upgrade(
     verbose: bool = False,
     venv: bool = False,
 ):
-    source = baw.jenkins.jenkinsfile(root)
+    source = baw.jenkinsfile(root)
     if not os.path.exists(source):
         baw.utils.error(f'Jenkinsfile does not exists: {source}')
         return baw.utils.FAILURE
-    replaced = baw.jenkins.upgrade(root)
+    replaced = baw.pipelinefile.upgrade(root)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
@@ -79,7 +79,7 @@ def upgrade(
 
 
 def create_jenkinsfile(root: str):
-    newest = baw.jenkins.image_newest()
+    newest = baw.pipelinefile.image_newest()
     args = image_args()
     replaced = baw.resources.template_replace(
         root,
@@ -118,7 +118,7 @@ def run(args: dict):
             venv=args.get('venv'),
         )
     if action == 'library':
-        return baw.jenkins.library(
+        return baw.pipelinefile.library(
             root,
             verbose=args['verbose'],
         )

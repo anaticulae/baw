@@ -15,4 +15,4 @@ __version__ = '1.32.0'
 import baw.__patch__
 import baw.__root__
 from baw.dockers.dockfile import docker_image_upgrade
-from baw.jenkins import jenkinsfile
+from baw.pipelinefile import jenkinsfile
