@@ -69,9 +69,14 @@ IMAGE = re.compile(r"""
 # yapf:enable
 
 
-def docker_image_upgrade(path: str, prerelease: bool = False) -> str:
+def docker_image_upgrade(
+    path: str,
+    prerelease: bool = False,
+    always: bool = False,
+) -> str:
     r"""\
-    >>> import baw; docker_image_upgrade(baw.jenkinsfile(__file__))
+    >>> import baw;
+    >>> docker_image_upgrade(baw.jenkinsfile(__file__), always=True)
     'pipeline{...}\n'
     """
     content = baw.utils.file_read(path)
@@ -94,7 +99,7 @@ def docker_image_upgrade(path: str, prerelease: bool = False) -> str:
             sys.exit(baw.utils.FAILURE)
         version_new = f'{matched}:{maxed[0]}'
         result = result.replace(find[1], version_new, 1)
-    if result == content:
+    if result == content and not always:
         # nothing changed
         return None
     return result
