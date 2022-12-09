@@ -131,7 +131,6 @@ def run_test(
     return baw.utils.SUCCESS
 
 
-
 def run(args: dict) -> int:
     root = baw.cmd.utils.get_root(args)
     # always publish after release

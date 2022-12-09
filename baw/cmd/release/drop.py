@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import functools
 import os
 import re
 
 import baw.config
+import baw.git
 import baw.runtime
 import baw.utils
 
@@ -31,28 +31,14 @@ def run(
     4. Remove tag
     """
     baw.utils.log('Start dropping release')
-    # git tag --contains HEAD -> Answer the last commit
-    baw.utils.log('Detect current release:')
-    runner = functools.partial(
-        baw.runtime.run_target,
-        verbose=verbose,
-        venv=venv,
-    )
-    completed = runner(root, 'git tag --contains HEAD')
-    matched = RELEASE_PATTERN.match(completed.stdout)
-    if not matched:
-        baw.utils.error('No release tag detected')
+    if not can_drop(root, venv, verbose):
         return baw.utils.FAILURE
-    current_release = matched['release']
-    # do not remove the first commit/release in the repository
-    if current_release == DEFAULT_RELEASE:
-        baw.utils.error(f'Could not remove {DEFAULT_RELEASE} release')
-        return baw.utils.FAILURE
+    current_release = baw.git.headtag(root, venv, verbose)
     baw.utils.log(current_release)
     # remove the last release commit
     # git reset HEAD~1
     baw.utils.log('Remove last commit')
-    completed = runner(root, 'git reset HEAD~1')
+    completed = baw.runtime.run_target(root, 'git reset HEAD~1')
     if completed.returncode:
         baw.utils.error(f'while removing the last commit: {completed}')
         return completed.returncode
@@ -61,13 +47,25 @@ def run(
     if completed:
         return completed
     # git tag -d HEAD
-    baw.utils.log('Remove release tag')
-    completed = runner(root, f'git tag -d {current_release}')
-    if completed.returncode:
-        baw.utils.error(f'while remove tag: {completed}')
-        return completed.returncode
+    if not baw.git.tag_drop(current_release, root, venv=venv, verbose=verbose):
+        return baw.utils.FAILURE
     # TODO: ? remove upstream ? or just overwrite ?
     return baw.utils.SUCCESS
+
+
+def can_drop(root: str, venv: bool, verbose: bool) -> bool:
+    baw.utils.log('Detect current release:')
+    if not (headtag := baw.git.headtag(root, venv, verbose)):
+        baw.utils.error('No tag detected')
+        return False
+    matched = RELEASE_PATTERN.match(headtag)
+    if not matched:
+        baw.utils.error(f'No release tag detected: {headtag}')
+        return False
+    if headtag == DEFAULT_RELEASE:
+        baw.utils.error(f'Could not remove {DEFAULT_RELEASE} release')
+        return False
+    return True
 
 
 DEFAULT_RELEASE = 'v0.0.0'
