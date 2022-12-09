@@ -12,7 +12,6 @@ import baw.cmd.complex
 import baw.cmd.lint
 import baw.cmd.release.drop
 import baw.cmd.release.pack
-import baw.config
 import baw.git
 import baw.runtime
 import baw.utils
@@ -131,11 +130,6 @@ def run_test(
     baw.utils.log('release was already tested successfully')
     return baw.utils.SUCCESS
 
-
-def version_variables(root: str) -> str:
-    short = baw.config.version(root)
-    result = f'-D "version_variable={short}" '
-    return result
 
 
 def run(args: dict) -> int:
