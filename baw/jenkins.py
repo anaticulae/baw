@@ -162,11 +162,13 @@ def image_newest() -> str:
     return result
 
 
-def library_newest(verbose: bool = False) -> str:
+def library_newest(
+    branch: str = 'master',
+    repo: str = 'jenkins',
+    user: str = 'caelum',
+    verbose: bool = False,
+) -> str:
     base = baw.config.gitea_server()
-    user = 'caelum'
-    repo = 'jenkins'
-    branch = 'master'
     url = f'{base}/api/v1/repos/{user}/{repo}/branches/{branch}'
     cmd = f'curl {url}'
     if verbose:
