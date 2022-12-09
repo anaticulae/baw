@@ -24,6 +24,7 @@ SDIST_UPLOAD_WARNING = ('WARNING: Uploading via this cmd is deprecated, '
 def publish(
     root: str,
     *,
+    pre: bool = False,
     venv: bool = True,
     verbose: bool = False,
 ):
@@ -34,7 +35,10 @@ def publish(
     """
     baw.utils.log('publish start')
     tag = baw.git.headtag(root, venv=False, verbose=verbose)
-    if not tag:
+    if tag and pre:
+        baw.utils.error('Stable release already published')
+        return baw.utils.FAILURE
+    if not tag and not pre:
         baw.utils.error('Could not find release-git-tag. Aborting publishing.')
         return baw.utils.FAILURE
     url, _ = baw.utils.package_address()
@@ -77,8 +81,9 @@ def run(args: dict):
         venv = False
     result = publish(
         root=root,
-        verbose=args.get('verbose', False),
+        pre=args['pre'],
         venv=venv,
+        verbose=args['verbose'],
     )
     return result
 
@@ -91,5 +96,6 @@ def extend_cli(parser):
         default='dest',
         help='Push release to this repository',
     )
+    created.add_argument('--pre', action='store_true')
     created.add_argument('--no_venv', action='store_true')
     created.set_defaults(func=run)
