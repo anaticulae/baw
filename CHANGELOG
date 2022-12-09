@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.33.0 (2022-12-09)
+
+### Feature
+
+* allow pre-release for upgrading Jenkinsfile (fec7250cdef3)
+
+### Fix
+
+* ensure that tests works (ae85f85a016d)
+* do not log up-to-date as error (8db2d9f7aa7b)
+
+### Chore
+
+* upgrade images (837ed91db098)
+
 ## v1.32.0 (2022-12-06)
 
 ### Feature
