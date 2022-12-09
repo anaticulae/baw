@@ -31,3 +31,13 @@ def test_cmd_image_newest(monkeypatch, capsys):
     tests.baaw(cmd, monkeypatch=monkeypatch)
     stdout = tests.stdout(capsys)
     assert '169.254.149.20:6001/arch_python_git_baw:v' in stdout
+
+
+def test_cmd_image_upgrade_prerelease(simple, capsys):
+    simple[0]('pipe init')
+    simple[0]('image upgrade --prerelease --dockerfile Jenkinsfile')
+    stdout = tests.stdout(capsys)
+    assert 'start upgrading:' in stdout
+    upgraded = 'upgraded:' in stdout
+    upgraded |= 'up-to-date:' in stdout
+    assert upgraded, str(stdout)
