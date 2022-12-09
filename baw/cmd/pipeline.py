@@ -38,7 +38,7 @@ def init(
         failure = baw.git.commit(
             root,
             source=source,
-            message='chore(ci): add Jenkinsfile',
+            message='chore(Jenkins): add Jenkinsfile',
             verbose=verbose,
         )
         if failure:
@@ -69,7 +69,7 @@ def upgrade(
         failure = baw.git.commit(
             root,
             source=source,
-            message='chore(ci): upgrade Jenkinsfile',
+            message='chore(Jenkins): upgrade Jenkinsfile',
             verbose=verbose,
         )
         if failure:
