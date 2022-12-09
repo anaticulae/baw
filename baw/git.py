@@ -127,6 +127,25 @@ def checkout(
     return completed.returncode
 
 
+def tag_drop(
+    tag: str,
+    root: str,
+    venv: bool = False,
+    verbose: bool = False,
+) -> bool:
+    baw.utils.log(f'Remove tag: {tag}')
+    completed = baw.runtime.run_target(
+        root=root,
+        cmd=f'git tag -d {tag}',
+        venv=venv,
+        verbose=verbose,
+    )
+    if completed.returncode:
+        baw.utils.error(f'while remove tag: {completed}')
+        return False
+    return True
+
+
 @contextlib.contextmanager
 def stash(
     root: str,
@@ -202,6 +221,10 @@ def stash_pop(root: str, venv: bool, verbose: bool = False) -> int:
 
 
 def headtag(root: str, venv: bool, verbose: bool = False):
+    """Determine tag of current head of branch.
+
+    Return None if no Tag is given.
+    """
     cmd = 'git tag --points-at HEAD'
     completed = baw.runtime.run_target(
         root,
