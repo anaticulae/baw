@@ -20,13 +20,13 @@ import baw.runtime
 import baw.utils
 
 
-def docker_image_upgrade(
+def upgrade(
     root: str,
     prerelease: bool = False,
     always: bool = False,
 ) -> str:
     """\
-    >>> docker_image_upgrade(__file__, always=True)
+    >>> upgrade(__file__, always=True)
     '.../arch_python_git_baw:v...'
     """
     path = jenkinsfile(root)
