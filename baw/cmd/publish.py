@@ -34,13 +34,8 @@ def publish(
         publish run's always in venv environment
     """
     baw.utils.log('publish start')
-    tag = baw.git.headtag(root, venv=False, verbose=verbose)
-    if tag and pre:
-        baw.utils.error('Stable release already published')
-        return baw.utils.FAILURE
-    if not tag and not pre:
-        baw.utils.error('Could not find release-git-tag. Aborting publishing.')
-        return baw.utils.FAILURE
+    if failure := can_publish(root, pre=pre, verbose=verbose):
+        return failure
     url, _ = baw.utils.package_address()
     distribution = distribution_format()
     python = baw.config.python(root)
@@ -63,6 +58,21 @@ def publish(
         baw.utils.error(completed.stderr)
         baw.utils.error('publish failed')
     return completed.returncode
+
+
+def can_publish(
+    root: str,
+    pre: bool = False,
+    verbose: bool = False,
+) -> int:
+    tag = baw.git.headtag(root, venv=False, verbose=verbose)
+    if tag and pre:
+        baw.utils.error('Stable release already published')
+        return baw.utils.FAILURE
+    if not tag and not pre:
+        baw.utils.error('Could not find release-git-tag. Aborting publishing.')
+        return baw.utils.FAILURE
+    return baw.utils.SUCCESS
 
 
 def log_prerelease(root):
