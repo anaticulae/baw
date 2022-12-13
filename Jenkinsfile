@@ -71,6 +71,12 @@ pipeline{
                 sh 'git push origin/integrate'
             }
         }
+        stage('pre-release'){
+            when{not{branch 'master'}}
+            steps{
+                sh 'baw publish --pre'
+            }
+        }
         stage('release'){
             when {branch 'master'}
             steps{
