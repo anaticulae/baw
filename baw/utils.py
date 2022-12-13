@@ -126,6 +126,10 @@ def forward_slash(content: str, save_newline=True):
 
 
 def package_address():
+    """\
+    >>> package_address()
+    ('http...', 'http...')
+    """
     try:
         internal = os.environ['PIP_INDEX_URL']
         external = os.environ['PIP_EXTRA_INDEX_URL']
