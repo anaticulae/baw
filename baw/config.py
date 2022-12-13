@@ -296,9 +296,9 @@ def sources(root: str) -> list:
     path = config_path(root)
     assert os.path.exists(path), path
     cfg = load(path)
+    assert 'tests' not in cfg, 'use `test` instead of `tests`'
     try:
-        assert 'sources' not in cfg['project'], 'use `source` instead of `sources`' # yapf:disable
-        assert 'tests' not in cfg, 'use `test` instead of `tests`'
+        assert 'sources' not in cfg['project'], '`source` instead of `sources`'
         source = cfg['project']['source'].splitlines()
     except KeyError:
         source = []

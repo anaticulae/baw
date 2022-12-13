@@ -111,7 +111,8 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     >>> requirement_hash(baw.ROOT, verbose=True)
     'baw:...'
     """
-    todo = 'Jenkinsfile requirements.txt requirements.dev requirements.extra'.split()  # yapf:disable
+    todo = ('Jenkinsfile requirements.txt requirements.dev '
+            'requirements.extra').split()
     content = ''
     for fname in todo:
         path = os.path.join(root, fname)
