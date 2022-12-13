@@ -72,7 +72,7 @@ class NewRequirements(Requirements):
         raise IndexError(f'{index} not supported')
 
 
-def parse(content: str) -> Requirements:  # pylint:disable=R1260,R0912
+def parse(content: str) -> Requirements:
     """\
     >>> parse('Flask_Login==0.1.1')
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
@@ -87,45 +87,57 @@ def parse(content: str) -> Requirements:  # pylint:disable=R1260,R0912
     greater = {}
     error = False
     for line in content.splitlines():
-        line = line.strip()
-        if not line or line[0] == '#':
-            continue
-        with contextlib.suppress(ValueError):
-            # remove right side comment: 'rawmaker==1.0.0 # this is rawmaker'
-            line = line.split('#')[0]
-            # remove whitespace between comment and version sign
-            line = line.strip()
-        line = re.sub(r'\[\w{2,}\]', '', line)
         try:
-            if '==' in line:
-                package, version = line.split('==')
-                equal[package] = fix_version(version)
-            elif '>=' in line:
-                package, version = line.split('>=')
-                version = fix_version(version)
-                if '<' in version:
-                    version = version.split('<')
-                if isinstance(version, str):
-                    greater[package] = fix_version(version)
-                else:
-                    greater[package] = [fix_version(item) for item in version]
-            else:
-                # package without version
-                equal[line] = ''
+            if not (parsed := line_parse(line)):
+                continue
         except ValueError:
             baw.utils.error(f'could not parse: "{line}"')
             error = True
+        else:
+            equal.update(parsed[0])
+            greater.update(parsed[1])
     if error:
         return None
-
     common_keys = set(equal.keys()) | set(greater.keys())
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
         baw.utils.error('duplicated package definition')
         baw.utils.error(content)
         sys.exit(baw.utils.FAILURE)
-
     result = Requirements(equal=equal, greater=greater)
     return result
+
+
+def line_parse(line: str) -> tuple:
+    """\
+    >>> line_parse('nltk==3.5')
+    ({'nltk': '3.5.0'}, {})
+    """
+    line = line.strip()
+    if not line or line.lstrip()[0] == '#':
+        return None
+    with contextlib.suppress(ValueError):
+        # remove right side comment: 'rawmaker==1.0.0 # this is rawmaker'
+        line = line.split('#')[0]
+        # remove whitespace between comment and version sign
+        line = line.strip()
+    line = re.sub(r'\[\w{2,}\]', '', line)
+    equal, greater = {}, {}
+    if '==' in line:
+        package, version = line.split('==')
+        equal[package] = fix_version(version)
+    elif '>=' in line:
+        package, version = line.split('>=')
+        version = fix_version(version)
+        if '<' in version:
+            version = version.split('<')
+        if isinstance(version, str):
+            greater[package] = fix_version(version)
+        else:
+            greater[package] = [fix_version(item) for item in version]
+    else:
+        # package without version
+        equal[line] = ''
+    return equal, greater
 
 
 def fix_version(item: str, semver: bool = False) -> str:
