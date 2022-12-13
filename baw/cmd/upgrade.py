@@ -204,13 +204,25 @@ def determine_new_requirements(
     equal = {}
     greater = {}
     for source, sink in [(parsed.equal, equal), (parsed.greater, greater)]:
-        sync_error |= collect_new_packages(root, source, sink, venv)
+        sync_error |= collect_new_packages(
+            root,
+            source,
+            sink,
+            venv=venv,
+        )
     if sync_error:
         return None
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(root, source, sink, venv, verbose=False) -> bool:
+def collect_new_packages(
+    root,
+    source,
+    sink,
+    *,
+    venv=False,
+    verbose=False,
+) -> bool:
     sync_error = False
     worker = baw.config.pip_parallel_worker(root)
     with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
