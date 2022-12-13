@@ -150,8 +150,16 @@ def fix_version(item: str, semver: bool = False) -> str:
     '20181108'
     >>> fix_version('3.3.7.1', semver=True) # TODO: IMPROVE LATER
     '3.3.7'
+    >>> fix_version('2.97.0.post5+7356925')
+    '2.97.0.post5+7356925'
+    >>> fix_version('2.97.0.post5+7356925', semver=True)
+    '2.97.0+build5'
     """
     if '.' not in item:
+        return item
+    if semver and '.post' in item:
+        item = item.split('+')[0]
+        item = item.replace('.post', '+build')
         return item
     item = item.strip()
     if item.count('.') == 1:
@@ -296,6 +304,12 @@ def lower(current: str, new: str) -> bool:
     False
     >>> lower('3.3.7.1', '4.0.0') # TODO: INVESTIGATE LATER
     False
+    >>> lower('2.97.0.post5+7356925', '2.97.0')
+    True
+    >>> lower('2.97.0.post5+abcde', '2.97.0.post5+abcde')
+    False
+    >>> lower('2.97.0.post5+abcde', '2.97.0.post4+bcde')
+    True
     """
     import semver
     current, new = fix_version(current, True), fix_version(new, True)
@@ -307,4 +321,15 @@ def lower(current: str, new: str) -> bool:
         new = semver.VersionInfo.parse(new)
     except ValueError:
         new: int = int(new)
+    if new == current:
+        if current.build and new.build:
+            curr = current.build.split('+')[0][4:]
+            neww = new.build.split('+')[0][4:]
+            return neww < curr
+        if current.build:
+            # post5+7356925
+            return True
+        if new.build:
+            # post5+7356925
+            return False
     return new < current

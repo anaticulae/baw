@@ -161,17 +161,20 @@ def upgrade_requirements(
 
 
 def installed_version(content: str):
-    searched = re.search(r'INSTALLED: (?P<installed>[\w|\d|\.]+)', content)
+    searched = re.search(
+        r'INSTALLED: (?P<installed>[\w|\d|\.]+(\+[\d\w]{1,10})?)',
+        content,
+    )
     if not searched:
         return None
     return searched.group('installed')
 
 
 def available_version(content: str, package: str = None):
-    pattern = r'\w+\s\((?P<available>[\w|\d|\.]+)'
+    pattern = r'\w+\s\((?P<available>[\w\d\.\+]+)\)'
     if package:
         package = re.escape(package)
-        pattern = rf'\b{package}[ ]\((?P<available>[\w|\d|\.]+)'
+        pattern = rf'\b{package}[ ]\((?P<available>[\w\d\.\+]+)\)'
     searched = re.search(pattern, content)
     if not searched:
         return None

@@ -85,6 +85,18 @@ def test_out_of_date():
     assert installed == "0.5.3"
 
 
+AVAILABLE_POST = """
+utila (2.97.0.post5+7356925)  - 2.97.0.post5+7356925
+  INSTALLED: 2.97.0
+  LATEST:    2.97.0.post5+7356925
+"""
+
+
+def test_available_post():
+    post = baw.cmd.upgrade.available_version(AVAILABLE_POST)
+    assert post == "2.97.0.post5+7356925"
+
+
 @tests.longrun
 def test_new_requirements():
     result = baw.cmd.upgrade.determine_new_requirements(
