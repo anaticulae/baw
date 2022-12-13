@@ -24,7 +24,6 @@ def replace(requirements: str, update: 'NewRequirements') -> str:
         replacement = f'{package}=={new}'
         baw.utils.log(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
-
     for package, [old, new] in update.greater.items():
         if isinstance(old, str):
             if baw.requirements.check.lower(old, new):
@@ -39,7 +38,6 @@ def replace(requirements: str, update: 'NewRequirements') -> str:
             # TODO: first approach of greater equal replacement
             pattern = f'{package}>={old[0]}<{old[1]}'
             replacement = f'{package}>={new}<{old[1]}'
-
         if pattern == replacement:
             continue
         baw.utils.log(f'replace requirement:\n{pattern}\n{replacement}')
@@ -50,11 +48,10 @@ def replace(requirements: str, update: 'NewRequirements') -> str:
 def smart_replace(requirements: str, old: str, new: str):
     """Ensure that `PyYAML==5.1.0` matches with `PyYAML==5.1` as `old`
     requirement line."""
-    result = requirements
     result = [
         line
         if not difflib.get_close_matches(line, [old], n=1, cutoff=0.9) else new
-        for line in result.splitlines()
+        for line in requirements.splitlines()
     ]
     result = baw.utils.NEWLINE.join(result) + baw.utils.NEWLINE
     assert requirements != result, f'replacement does not work: {old}; {new}; {requirements}'
