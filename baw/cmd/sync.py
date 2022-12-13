@@ -19,6 +19,8 @@ import baw.cmd.utils
 import baw.config
 import baw.git
 import baw.requirements
+import baw.requirements.parser
+import baw.requirements.upgrade
 import baw.run
 import baw.runtime
 import baw.utils
@@ -216,10 +218,12 @@ def required_installation(
 ):
     current = pip_list(root, verbose=verbose, venv=venv)
     requested = [
-        baw.requirements.parse(baw.utils.file_read(item)) for item in txts
+        baw.requirements.parser.parse(baw.utils.file_read(item))
+        for item in txts
     ]
     missing = [
-        baw.requirements.diff(current, item, minimal) for item in requested
+        baw.requirements.upgrade.diff(current, item, minimal)
+        for item in requested
     ]
     result = baw.requirements.Requirements()
     for item in missing:
@@ -352,7 +356,7 @@ def pip_list(
         baw.utils.error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
-    parsed = baw.requirements.parse(content)
+    parsed = baw.requirements.parser.parse(content)
     return parsed
 
 

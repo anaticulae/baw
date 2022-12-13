@@ -8,6 +8,9 @@
 # =============================================================================
 
 import baw.cmd.upgrade
+import baw.requirements
+import baw.requirements.parser
+import baw.requirements.upgrade
 import tests.fixtures.requirements
 
 REPLACED = """
@@ -52,7 +55,7 @@ def test_replace_requirements():
         },
         greater={},
     )
-    replaced = baw.requirements.replace(
+    replaced = baw.requirements.upgrade.replace(
         tests.fixtures.requirements.REQUIREMENTS,
         upgrades,
     )
@@ -60,20 +63,22 @@ def test_replace_requirements():
 
 
 def test_requirements_parser():
-    result = baw.requirements.parse(tests.fixtures.requirements.REQUIREMENTS)
+    result = baw.requirements.parser.parse(
+        tests.fixtures.requirements.REQUIREMENTS)
     assert result, 'requirements parsing error'
     assert result.equal == EXPECTED
 
 
 def test_requirements_parser_greater_equal():
-    result = baw.requirements.parse(REQUIREMENTS_GREATER)
+    result = baw.requirements.parser.parse(REQUIREMENTS_GREATER)
     assert result, 'requirements parsing error'
     assert result.greater == EXPECTED_GREATER
 
 
 def test_requirements_diff_equal():
-    parsed = baw.requirements.parse(tests.fixtures.requirements.REQUIREMENTS)
-    empty = baw.requirements.diff(parsed, parsed)
+    parsed = baw.requirements.parser.parse(
+        tests.fixtures.requirements.REQUIREMENTS)
+    empty = baw.requirements.upgrade.diff(parsed, parsed)
     assert not empty.equal, empty
 
 
@@ -88,5 +93,5 @@ def test_requirements_diff():
     expected = baw.requirements.Requirements(equal={
         'pdfminer.six': '20181108',
     })
-    diff = baw.requirements.diff(current, requested)
+    diff = baw.requirements.upgrade.diff(current, requested)
     assert diff == expected

@@ -17,6 +17,9 @@ import baw.cmd.utils
 import baw.config
 import baw.git
 import baw.requirements
+import baw.requirements.check
+import baw.requirements.parser
+import baw.requirements.upgrade
 import baw.utils
 
 
@@ -150,7 +153,7 @@ def upgrade_requirements(
     upgraded = determine_new_requirements(root, content, venv=venv, pre=pre)
     if upgraded is None:
         return baw.utils.FAILURE
-    replaced = baw.requirements.replace(content, upgraded)
+    replaced = baw.requirements.upgrade.replace(content, upgraded)
     if replaced == content:
         baw.utils.log('Requirements are up to date.\n')
         return REQUIREMENTS_UPTODATE
@@ -179,7 +182,7 @@ def available_version(content: str, package: str = None):
     if not searched:
         return None
     detected = searched.group('available')
-    result = baw.requirements.fix_version(detected)
+    result = baw.requirements.parser.fix_version(detected)
     return result
 
 
@@ -199,7 +202,7 @@ def determine_new_requirements(
     pre: bool = False,
     venv: bool = False,
 ) -> baw.requirements.NewRequirements:
-    parsed = baw.requirements.parse(requirements)
+    parsed = baw.requirements.parser.parse(requirements)
     if parsed is None:
         baw.utils.error('could not parse requirements')
         return None
@@ -255,7 +258,7 @@ def collect_new_packages(  # pylint:disable=R0914
                 available = available_version(dependency, package=package)
                 installed = installed_version(dependency)
                 if installed:
-                    if baw.requirements.lower(installed, available):
+                    if baw.requirements.check.lower(installed, available):
                         available = installed
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
