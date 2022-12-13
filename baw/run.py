@@ -23,7 +23,6 @@ import baw.cmd.init
 import baw.cmd.lint
 import baw.cmd.open
 import baw.cmd.plan
-import baw.cmd.publish
 import baw.cmd.test
 import baw.cmd.upgrade
 import baw.cmd.utils
@@ -218,22 +217,6 @@ def run_doc(args: dict):
         root=root,
         verbose=args.get('verbose', False),
         venv=args.get('venv', False),
-    )
-    return result
-
-
-def run_publish(args: dict):
-    root = baw.cmd.utils.get_root(args)
-    venv = args['venv']
-    # overwrite venv flag if given
-    novenv = args.get('no_venv', False)
-    if novenv:
-        baw.utils.log('do not use venv')
-        venv = False
-    result = baw.cmd.publish.publish(
-        root=root,
-        verbose=args.get('verbose', False),
-        venv=venv,
     )
     return result
 

@@ -8,6 +8,7 @@
 #==============================================================================
 """Run every function which is used by `baw`."""
 
+import baw.cmd.utils
 import baw.config
 import baw.git
 import baw.run
@@ -61,6 +62,22 @@ def distribution_format() -> str:
     return 'bdist_wheel --universal'
 
 
+def run(args: dict):
+    root = baw.cmd.utils.get_root(args)
+    venv = args['venv']
+    # overwrite venv flag if given
+    novenv = args.get('no_venv', False)
+    if novenv:
+        baw.utils.log('do not use venv')
+        venv = False
+    result = publish(
+        root=root,
+        verbose=args.get('verbose', False),
+        venv=venv,
+    )
+    return result
+
+
 def extend_cli(parser):
     created = parser.add_parser('publish', help='Push release to repository')
     created.add_argument(
@@ -70,4 +87,4 @@ def extend_cli(parser):
         help='Push release to this repository',
     )
     created.add_argument('--no_venv', action='store_true')
-    created.set_defaults(func=baw.run.run_publish)
+    created.set_defaults(func=run)
