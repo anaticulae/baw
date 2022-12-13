@@ -142,7 +142,7 @@ def sources(pre: bool = False) -> tuple:
     return (pip_index, extra_url)
 
 
-def sync_dependencies(
+def sync_dependencies(  # pylint:disable=R1260
     root: str,
     packages: str,
     *,
@@ -166,16 +166,20 @@ def sync_dependencies(
     )
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
+    testing = baw.utils.package_testing()
     baw.utils.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()
     baw.utils.file_replace(requirements, str(required))
+    if '.post' not in str(required):
+        testing = None
     cmd, pip = get_install_cmd(
         root,
         requirements,
         verbose,
-        pip_index,
-        extra_url,
+        pip_index=pip_index,
+        extra_url=extra_url,
+        testing_url=testing,
         venv=venv,
     )
     if verbose:
@@ -283,11 +287,14 @@ def get_install_cmd(
     verbose: bool,
     pip_index: str,
     extra_url: str,
-    venv: bool,
+    testing_url: str,
+    venv: bool = False,
 ):
     trusted = host(pip_index)
     warning = '' if verbose else '--no-warn-conflicts'
     pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
+    if testing_url:
+        pip += f'--extra-index-url {testing_url} '
     pip += f'--trusted {trusted}'
     config = '--retries 2 --disable-pip-version-check '
     if require_legacy_solver():
