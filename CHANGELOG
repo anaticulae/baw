@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v1.34.0 (2022-12-13)
+
+### Feature
+
+* use testing repository if sync pre releases (93f5c6ff0e36)
+* publish pre-release to testing repository (cc8256db67e8)
+* add testing url to store pre pre-releases (1c776d0c2777)
+* add pre flag to include pre-releases (d713b12692db)
+* use baw live version (1e444a8c06b9)
+* log version of pre-release push (2e0865ebda22)
+* add option to publish pre-releases (c41931b9b18c)
+* add method to drop tag (4651bfdba167)
+
+### Chore
+
+* add pre-release to provide quick releases (4c736670dbac)
+* use pre-release in integrate step (e8f87389b65e)
+* upgrade environment (45a9b98c16b3)
+* enable pre-releases (ded15cdbe7a0)
+* adjust message (6497def1008a)
+
 ## v1.33.0 (2022-12-09)
 
 ### Feature
