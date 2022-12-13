@@ -243,7 +243,8 @@ def collect_new_packages(  # pylint:disable=R0914
             try:
                 dependency = future.result()
             except ValueError:
-                baw.utils.error(f'package: {package} is not available')
+                if not pre:
+                    baw.utils.error(f'package: {package} is not available')
             except RuntimeError:
                 baw.utils.error('could not reach package repository')
                 sync_error = True
