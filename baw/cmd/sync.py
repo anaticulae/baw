@@ -176,13 +176,13 @@ def sync_dependencies(  # pylint:disable=R1260
     if '.post' not in str(required):
         testing = None
     cmd, pip = get_install_cmd(
-        root,
-        requirements,
-        verbose,
+        root=root,
+        to_install=requirements,
         pip_index=pip_index,
         extra_url=extra_url,
         testing_url=testing,
         venv=venv,
+        verbose=verbose,
     )
     if verbose:
         baw.utils.log(cmd)
