@@ -44,7 +44,7 @@ def create_parser():  # noqa: Z21
     add_open_options(cmds)
     baw.cmd.doc.extend_cli(cmds)
     add_clean_options(cmds)
-    add_upgrade_option(cmds)
+    baw.cmd.upgrade.extend_cli(cmds)
     baw.cmd.sync.extend_cli(cmds)
     baw.cmd.install.extend_cli(cmds)
     baw.cmd.generate.extend_cli(cmds)
@@ -118,23 +118,6 @@ def add_parameter(parser):
         action='store_true',
         help='Show version of this program',
     )
-
-
-def add_upgrade_option(parser):
-    plan = parser.add_parser('upgrade', help='Upgrade requirements.txt/dev/ext')
-    plan.add_argument(
-        'upgrade',
-        help='Select packages to upgrade',
-        choices=[
-            'dev',
-            'requirements',
-            'extra',
-            'all',
-        ],
-        nargs='?',
-        default='requirements',
-    )
-    plan.set_defaults(func=baw.run.run_upgrade)
 
 
 def add_clean_options(parser):

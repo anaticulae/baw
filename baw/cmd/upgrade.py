@@ -13,6 +13,7 @@ import re
 
 import baw.cmd.complex
 import baw.cmd.sync
+import baw.cmd.utils
 import baw.config
 import baw.git
 import baw.requirements
@@ -229,3 +230,31 @@ def collect_new_packages(root, source, sink, venv, verbose=False):
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
     return sync_error
+
+
+def run(args):
+    root = baw.cmd.utils.get_root(args)
+    result = upgrade(
+        root=root,
+        packages=args['upgrade'],
+        venv=False,
+        verbose=args['verbose'],
+    )
+    return result
+
+
+def extend_cli(parser):
+    plan = parser.add_parser('upgrade', help='Upgrade requirements.txt/dev/ext')
+    plan.add_argument(
+        'upgrade',
+        help='Select packages to upgrade',
+        choices=[
+            'dev',
+            'requirements',
+            'extra',
+            'all',
+        ],
+        nargs='?',
+        default='requirements',
+    )
+    plan.set_defaults(func=run)

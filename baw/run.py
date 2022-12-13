@@ -134,17 +134,6 @@ def run_venv(args):
     return result
 
 
-def run_upgrade(args):
-    root = baw.cmd.utils.get_root(args)
-    result = baw.cmd.upgrade.upgrade(
-        root=root,
-        verbose=args.get('verbose', False),
-        venv=False,
-        packages=args['upgrade'],
-    )
-    return result
-
-
 def run_clean(args):
     root = baw.cmd.utils.get_root(args)
     clean = args['clean']
