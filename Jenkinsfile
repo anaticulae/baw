@@ -104,4 +104,5 @@ def alls(){
 def integrate(){
     sh 'git rebase origin/master'
     sh 'baw upgrade all'
+    sh 'baw upgrade all --pre'
 }
