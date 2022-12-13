@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import importlib.metadata
 import os
 import sys
 import time
@@ -62,7 +63,11 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
 def run_version(args) -> bool:
     if not args.get('version'):
         return False
-    baw.utils.log(baw.__version__)
+    try:
+        live = importlib.metadata.version('baw')
+    except importlib.metadata.PackageNotFoundError as notfound:
+        raise ValueError('baw not installed/no metadata') from notfound
+    baw.utils.log(live)
     return True
 
 

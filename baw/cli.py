@@ -26,6 +26,7 @@ import baw.cmd.release
 import baw.cmd.sh
 import baw.cmd.sync
 import baw.cmd.test
+import baw.cmd.upgrade
 import baw.run
 import baw.utils
 
