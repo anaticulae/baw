@@ -14,6 +14,7 @@ import os
 import re
 
 import setuptools
+import subprocess
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(ROOT, 'README'), 'rt', encoding='utf8') as fp:
@@ -50,7 +51,28 @@ ENTRY_POINTS = dict(console_scripts=[
 ])
 
 
-def versions():
+def prerelease() -> str:
+    try:
+        completed = subprocess.run(
+            'git describe'.split(),
+            check=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError:
+        print('install git, no prerelease', file=sys.stderr)
+        return None
+    value = completed.stdout.strip().decode('utf8')
+    # transform v2.40.1-5-gc1b4bee to
+    # utila-2.93.0.post6+g3b6726a
+    value = value[1:]
+    value = value.replace('-', '.post', 1)
+    value = value.replace('-g', '+')
+    return value
+
+
+def versions() -> str:
+    if pre := prerelease():
+        return pre
     return VERSION
 
 
