@@ -254,6 +254,8 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0911,R
     True
     >>> inside('20220524', '20220524')
     True
+    >>> inside('2.97.0', ['2.97.0.post5+7356925', '3.0.0'])
+    False
     """
     if not isinstance(expected, str):
         if expected[0] != expected[1]:
@@ -268,18 +270,14 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0911,R
         return current == expected
     else:
         small, greater = expected, expected
-
     major = baw.project.version.major
     minor = baw.project.version.minor
     patch = baw.project.version.patch
-
     if not major(small) <= major(current) <= major(greater):
         return False
-
     if major(small) == major(current):
         if minor(current) < minor(small):
             return False
-
     if major(greater) == major(current):
         if '<=' in expected:
             if minor(current) > minor(greater):
@@ -287,12 +285,26 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0911,R
         else:
             if minor(current) >= minor(greater):  # pylint:disable=R5601,R5501
                 return False
-
     if major(small) == major(current) and minor(small) == minor(current):
         if patch(small) > patch(current):
             return False
-
+        if pre(current) < pre(small):
+            # ('2.97.0', ['2.97.0.post5+7356925', '3.0.0'])
+            return False
     return True
+
+
+def pre(item: str) -> int:
+    """\
+    >>> pre('2.97.0.post5+7356925')
+    5
+    """
+    if '.post' not in item:
+        return 0
+    item = item.split('.post')[1]
+    item = item.split('+')[0]
+    item = int(item)
+    return item
 
 
 def lower(current: str, new: str) -> bool:
