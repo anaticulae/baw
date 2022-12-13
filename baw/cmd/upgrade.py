@@ -188,7 +188,6 @@ def determine_new_requirements(
     if parsed is None:
         baw.utils.error('could not parse requirements')
         return None
-
     sync_error = False
     equal = {}
     greater = {}
@@ -199,10 +198,10 @@ def determine_new_requirements(
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(root, source, sink, venv, verbose=False):
+def collect_new_packages(root, source, sink, venv, verbose=False) -> bool:
     sync_error = False
-    parallel_worker = baw.config.pip_parallel_worker(root)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=parallel_worker) as executor: # yapf:disable
+    worker = baw.config.pip_parallel_worker(root)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
         todo = {
             executor.submit(
                 baw.cmd.sync.check_dependency,
