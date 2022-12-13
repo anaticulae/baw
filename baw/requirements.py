@@ -111,6 +111,8 @@ def line_parse(line: str) -> tuple:
     """\
     >>> line_parse('nltk==3.5')
     ({'nltk': '3.5.0'}, {})
+    >>> line_parse(' # be prosecuted under') is None
+    True
     """
     line = line.strip()
     if not line or line.lstrip()[0] == '#':
