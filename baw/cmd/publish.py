@@ -36,7 +36,7 @@ def publish(
     baw.utils.log('publish start')
     if failure := can_publish(root, pre=pre, verbose=verbose):
         return failure
-    url, _ = baw.utils.package_address()
+    url = baw.utils.package_testing() if pre else baw.utils.package_address()[0]
     distribution = distribution_format()
     python = baw.config.python(root)
     cmd = f'{python} setup.py {distribution} upload -r {url}'
