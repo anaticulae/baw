@@ -23,43 +23,51 @@ with open(os.path.join(ROOT, 'baw/__init__.py'), 'rt', encoding='utf8') as fp:
 with open(os.path.join(ROOT, "requirements.txt"), encoding='utf8') as fp:
     REQUIRES = [line for line in fp.readlines() if line and '#' not in line]
 
+CLASSIFIERS = [
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+]
+PACKAGES = [
+    'baw',
+    'baw.archive',
+    'baw.cmd',
+    'baw.cmd.image',
+    'baw.cmd.release',
+    'baw.dockers',
+    'baw.project',
+    'baw.requires',
+    'baw.small',
+    'baw.templates',
+    'baw.templates.docs',
+]
+ENTRY_POINTS = dict(console_scripts=[
+    'baw = baw.run:main',
+    'baw_cprofile_show = baw.small.cprofile:main',
+    'baw_profile = baw.small.profile:main',
+    'baw_regen = baw.small.regen:main',
+    'baw_semantic_release = baw.small.version:main',
+    'baw_single = baw.small.single:main',
+])
+
+
+def versions():
+    return VERSION
+
+
 if __name__ == "__main__":
     setuptools.setup(
+        name='baw',
         author='Helmut Konrad Fahrendholz',
         author_email='helmutus@outlook.com',
         description='A simple console-application to manage project complexity.',
+        classifiers=CLASSIFIERS,
+        entry_points=ENTRY_POINTS,
         include_package_data=True,
         install_requires=REQUIRES,
         long_description=README,
-        name='baw',
+        packages=PACKAGES,
         platforms='any',
         url='https://dev.baw.checkitweg.de',
-        version=VERSION,
+        version=versions(),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
-        classifiers=[
-            'Programming Language :: Python :: 3.8',
-        ],
-        packages=[
-            'baw',
-            'baw.archive',
-            'baw.cmd',
-            'baw.cmd.image',
-            'baw.cmd.release',
-            'baw.dockers',
-            'baw.project',
-            'baw.requires',
-            'baw.small',
-            'baw.templates',
-            'baw.templates.docs',
-        ],
-        entry_points={
-            'console_scripts': [
-                'baw = baw.run:main',
-                'baw_cprofile_show = baw.small.cprofile:main',
-                'baw_profile = baw.small.profile:main',
-                'baw_regen = baw.small.regen:main',
-                'baw_single = baw.small.single:main',
-                'baw_semantic_release = baw.small.version:main',
-            ],
-        },
     )
