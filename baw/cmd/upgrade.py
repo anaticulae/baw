@@ -208,6 +208,7 @@ def determine_new_requirements(
             root,
             source,
             sink,
+            pre=pre,
             venv=venv,
         )
     if sync_error:
@@ -215,11 +216,12 @@ def determine_new_requirements(
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(
+def collect_new_packages(  # pylint:disable=R0914
     root,
     source,
     sink,
     *,
+    pre=False,
     venv=False,
     verbose=False,
 ) -> bool:
@@ -231,6 +233,7 @@ def collect_new_packages(
                 baw.cmd.sync.check_dependency,
                 root,
                 package,
+                pre=pre,
                 venv=venv,
                 verbose=verbose,
             ): (package, version) for package, version in source.items()

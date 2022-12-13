@@ -95,16 +95,13 @@ def check_dependency(
     root: str,
     package: str,
     *,
-    venv: bool,
+    pre: bool = False,
+    venv: bool = False,
     verbose: bool = False,
 ):
     """Check if packages need an upgrade."""
-    pip_index, extra_url = baw.utils.package_address()
-    # if not connected(pip_index, extra_url):
-    #     msg = f"Could not reach index {pip_index} or {extra_url}"
-    #     raise RuntimeError(msg)
     python = baw.config.python(root, venv=venv)
-    for index in [pip_index, extra_url]:
+    for index in sources(pre):
         if not str(index).startswith('http'):
             index = f'http://{index}'
         pip = f'{python} -mpip search --index {index} {package}'
@@ -133,6 +130,16 @@ def check_dependency(
                 continue
             return completed.stdout
     raise ValueError(f'Could not check dependencies {package}')
+
+
+def sources(pre: bool = False) -> tuple:
+    if pre:
+        return (baw.utils.package_testing(),)
+    pip_index, extra_url = baw.utils.package_address()
+    # if not connected(pip_index, extra_url):
+    #     msg = f"Could not reach index {pip_index} or {extra_url}"
+    #     raise RuntimeError(msg)
+    return (pip_index, extra_url)
 
 
 def sync_dependencies(
