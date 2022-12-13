@@ -36,6 +36,7 @@ PACKAGES = [
     'baw.cmd.release',
     'baw.dockers',
     'baw.project',
+    'baw.requirements',
     'baw.requires',
     'baw.small',
     'baw.templates',
