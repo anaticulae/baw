@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.35.0 (2022-12-13)
+
+### Feature
+
+* add testing repository to sync (18697aca2672)
+* add pre version to requirements parser (f86605e3f4d2)
+
+### Fix
+
+* ensure to sync post correctly (fb6066eddc3f)
+* do not log missing package as error on pre-release (fdf8a2eb882d)
+
+### Chore
+
+* upgrade Jenkinsfile (bb6f30aa74c1)
+
 ## v1.34.0 (2022-12-13)
 
 ### Feature
