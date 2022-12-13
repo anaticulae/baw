@@ -27,6 +27,7 @@ def upgrade(
     verbose: bool = False,
     venv: bool = False,
     generate: bool = True,
+    pre: bool = True,
     packages: str = 'requirements',
 ) -> int:
     """Upgrade requirements
@@ -34,7 +35,7 @@ def upgrade(
     force: upgrade dev requirements also
     """
     with baw.git.stash(root, verbose=verbose, venv=venv):
-        returnvalue = check_upgrade(root, packages=packages)
+        returnvalue = check_upgrade(root, packages=packages, pre=pre)
         if returnvalue in (baw.utils.SUCCESS, baw.utils.FAILURE):
             return returnvalue
         requirements_dev = returnvalue
@@ -75,21 +76,29 @@ def upgrade(
     return baw.utils.SUCCESS
 
 
-def check_upgrade(root, packages):
-    failure = upgrade_requirements(root)
+def check_upgrade(root, packages, pre: bool = False):
+    failure = upgrade_requirements(root, pre=pre)
     requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
     if not os.path.exists(requirements_dev) or packages == 'requirements':
         requirements_dev = None
     failure_dev = REQUIREMENTS_UPTODATE
     if requirements_dev:
-        failure_dev = upgrade_requirements(root, baw.utils.REQUIREMENTS_DEV)
+        failure_dev = upgrade_requirements(
+            root,
+            requirements=baw.utils.REQUIREMENTS_DEV,
+            pre=pre,
+        )
     requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
     check_extra = packages in 'extra all'
     if not os.path.exists(requirements_extra) or not check_extra:
         requirements_extra = None
     failure_extra = REQUIREMENTS_UPTODATE
     if requirements_extra:
-        failure_extra = upgrade_requirements(root, baw.utils.REQUIREMENTS_EXTRA)
+        failure_extra = upgrade_requirements(
+            root,
+            requirements=baw.utils.REQUIREMENTS_EXTRA,
+            pre=pre,
+        )
     # requirements.txt is up-to-date, no update required
     if all((
             failure == REQUIREMENTS_UPTODATE,
@@ -112,6 +121,7 @@ REQUIREMENTS_UPTODATE = 100
 def upgrade_requirements(
     root: str,
     requirements: str = baw.utils.REQUIREMENTS_TXT,
+    pre: bool = False,
     venv: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
@@ -120,6 +130,7 @@ def upgrade_requirements(
     Args:
         root(str): generated project
         requirements(str): relative path to requirements
+        pre(bool): include pre-releases
         venv(bool): run in venv environment
     Returns:
         SUCCESS if file was upgraded
@@ -136,7 +147,7 @@ def upgrade_requirements(
         baw.utils.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchronizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
-    upgraded = determine_new_requirements(root, content, venv=venv)
+    upgraded = determine_new_requirements(root, content, venv=venv, pre=pre)
     if upgraded is None:
         return baw.utils.FAILURE
     replaced = baw.requirements.replace(content, upgraded)
@@ -182,6 +193,7 @@ def determine_new_requirements(
     root: str,
     requirements: str,
     *,
+    pre: bool = False,
     venv: bool = False,
 ) -> baw.requirements.NewRequirements:
     parsed = baw.requirements.parse(requirements)
@@ -236,6 +248,7 @@ def run(args):
     result = upgrade(
         root=root,
         packages=args['upgrade'],
+        pre=args['pre'],
         venv=False,
         verbose=args['verbose'],
     )
@@ -255,5 +268,10 @@ def extend_cli(parser):
         ],
         nargs='?',
         default='requirements',
+    )
+    plan.add_argument(
+        '--pre',
+        action='store_true',
+        help='Include pre-releases in upgrade process',
     )
     plan.set_defaults(func=run)
