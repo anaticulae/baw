@@ -19,11 +19,7 @@ pytest_localserver==0.7.0
 pytest_timeout==2.1.0
 pytest_xdist==3.0.2
 
-python-semantic-release==7.32.2
 setuptools==65.5.1
-
-# create venv environment
-virtualenv==20.16.6
 
 rope==0.10.7
 
