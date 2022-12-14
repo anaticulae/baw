@@ -77,6 +77,12 @@ pipeline{
                 sh 'baw publish --pre'
             }
         }
+        stage('others'){
+            when{branch 'develop'}
+            parallel{
+                stage('dockers'){steps{build job: 'caelum/dockers/integrate'}}
+            }
+        }
         stage('release'){
             when {branch 'master'}
             steps{
