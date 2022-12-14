@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.35.1 (2022-12-14)
+
+### Chore
+
+* trigger dockers to verify image building (bac36d28205a)
+* increase used worker (2f5742814966)
+* remove duplicated requirement (0a77f05ab9a7)
+
 ## v1.35.0 (2022-12-13)
 
 ### Feature
