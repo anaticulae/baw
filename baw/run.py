@@ -134,32 +134,6 @@ def run_venv(args):
     return result
 
 
-def run_clean(args):
-    root = baw.cmd.utils.get_root(args)
-    clean = args['clean']
-    docs = clean == 'docs'
-    resources = clean == 'resources'
-    tests = clean == 'tests'
-    tmp = clean == 'tmp'
-    venv = clean == 'venv'
-    all_ = clean == 'all'
-    if clean == 'ci':
-        docs = True
-        resources = True
-        tests = True
-        tmp = True
-    result = baw.cmd.clean.clean(
-        docs=docs,
-        resources=resources,
-        tests=tests,
-        tmp=tmp,
-        venv=venv,
-        all_=all_,
-        root=root,
-    )
-    return result
-
-
 def run_test(args):
     root = baw.cmd.utils.get_root(args)
     testconfig = create_testconfig(args)

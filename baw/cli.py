@@ -11,6 +11,7 @@
 import argparse
 import sys
 
+import baw.cmd.clean
 import baw.cmd.doc
 import baw.cmd.format
 import baw.cmd.generate
@@ -43,7 +44,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.ide.extend_cli(cmds)
     add_open_options(cmds)
     baw.cmd.doc.extend_cli(cmds)
-    add_clean_options(cmds)
+    baw.cmd.clean.extend_cli(cmds)
     baw.cmd.upgrade.extend_cli(cmds)
     baw.cmd.sync.extend_cli(cmds)
     baw.cmd.install.extend_cli(cmds)
@@ -118,18 +119,6 @@ def add_parameter(parser):
         action='store_true',
         help='Show version of this program',
     )
-
-
-def add_clean_options(parser):
-    plan = parser.add_parser('clean', help='Remove generated content')
-    plan.add_argument(
-        'clean',
-        help='Remove different type of content',
-        choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv', 'ci'],
-        nargs='?',
-        default='tests',
-    )
-    plan.set_defaults(func=baw.run.run_clean)
 
 
 def add_open_options(parser):

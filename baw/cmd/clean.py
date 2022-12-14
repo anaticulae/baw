@@ -16,6 +16,7 @@ import sys
 
 import resinf
 
+import baw.cmd.utils
 import baw.config
 import baw.runtime
 
@@ -176,3 +177,41 @@ def remove_readonly(func, path, _):  # pylint:disable=W0613
     """Clear the readonly bit and reattempt the removal"""
     os.chmod(path, stat.S_IWRITE)
     func(path)
+
+
+def run(args):
+    root = baw.cmd.utils.get_root(args)
+    xclean = args['clean']
+    docs = xclean == 'docs'
+    resources = xclean == 'resources'
+    tests = xclean == 'tests'
+    tmp = xclean == 'tmp'
+    venv = xclean == 'venv'
+    all_ = xclean == 'all'
+    if xclean == 'ci':
+        docs = True
+        resources = True
+        tests = True
+        tmp = True
+    result = clean(
+        docs=docs,
+        resources=resources,
+        tests=tests,
+        tmp=tmp,
+        venv=venv,
+        all_=all_,
+        root=root,
+    )
+    return result
+
+
+def extend_cli(parser):
+    plan = parser.add_parser('clean', help='Remove generated content')
+    plan.add_argument(
+        'clean',
+        help='Remove different type of content',
+        choices=['all', 'docs', 'resources', 'tests', 'tmp', 'venv', 'ci'],
+        nargs='?',
+        default='tests',
+    )
+    plan.set_defaults(func=run)
