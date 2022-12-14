@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.35.2 (2022-12-14)
+
+### Fix
+
+* do treat pre publish on releases as error (b51d47413204)
+
 ## v1.35.1 (2022-12-14)
 
 ### Chore
