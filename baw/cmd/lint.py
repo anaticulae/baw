@@ -19,7 +19,6 @@ minimal:
 import enum
 import functools
 import os
-import sys
 
 import baw.config
 import baw.resources
@@ -105,11 +104,7 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
         cmd += '--disable=all --enable=W0511 '
     if spelling:
         cmd += '--spelling-dict=en_US '
-        try:
-            path = os.environ['PYLINT_SPELLING']
-        except KeyError:
-            baw.utils.error('require global env: `PYLINT_SPELLING`')
-            sys.exit(baw.utils.FAILURE)
+        path = baw.config.pylint_spelling()
         cmd += f'--spelling-private-dict-file={path} '
     if pylint_:
         cmd += f'{pylint_} '

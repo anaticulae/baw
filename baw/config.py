@@ -367,6 +367,15 @@ def pylint(root: str) -> bool:
     return result
 
 
+def pylint_spelling() -> str:
+    try:
+        result = os.environ['PYLINT_SPELLING']
+    except KeyError:
+        baw.utils.error('require global env: `PYLINT_SPELLING`')
+        sys.exit(baw.utils.FAILURE)
+    return result
+
+
 def plugins(root: str) -> bool:
     result = default_config(
         root,
