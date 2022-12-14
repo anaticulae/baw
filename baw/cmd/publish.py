@@ -68,7 +68,7 @@ def can_publish(
     tag = baw.git.headtag(root, venv=False, verbose=verbose)
     if tag and pre:
         baw.utils.error('Stable release already published')
-        return baw.utils.FAILURE
+        return baw.utils.SUCCESS
     if not tag and not pre:
         baw.utils.error('Could not find release-git-tag. Aborting publishing.')
         return baw.utils.FAILURE
