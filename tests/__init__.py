@@ -23,8 +23,6 @@ THIS = os.path.dirname(__file__)
 PROJECT = os.path.abspath(os.path.join(THIS, '..'))
 DATA = os.path.join(THIS, 'data')
 
-REQUIREMENTS = os.path.join(PROJECT, 'baw/requires/requirements-dev.txt')
-
 LONGRUN = 'LONGRUN' in os.environ
 NO_LONGRUN_REASON = 'Takes to mutch time'
 

@@ -10,7 +10,7 @@
 include requirements.txt
 include CHANGELOG
 
-include baw/requires/requirements-dev.txt
-include baw/requires/requirements-doc.txt
+include baw/sync/dev
+include baw/sync/doc
 
 graft baw/templates

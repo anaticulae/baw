@@ -36,15 +36,15 @@ RUN git config --global --add core.excludesFile /var/install/.gitignore
 RUN /usr/sbin/python -m pip install --upgrade pip
 
 COPY /requirements.txt\
-     /baw/requires/requirements-dev.txt\
-     /baw/requires/requirements-doc.txt\
+     /baw/sync/dev\
+     /baw/sync/doc\
         /var/install/
 
 WORKDIR /var/install
 
 RUN python -mpip install -r requirements.txt &&\
-    python -mpip install -r requirements-dev.txt &&\
-    python -mpip install -r requirements-doc.txt
+    python -mpip install -r dev &&\
+    python -mpip install -r doc
 
 COPY . /var/install
 

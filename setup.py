@@ -37,8 +37,8 @@ PACKAGES = [
     'baw.dockers',
     'baw.project',
     'baw.requirements',
-    'baw.requires',
     'baw.small',
+    'baw.sync',
     'baw.templates',
     'baw.templates.docs',
 ]
