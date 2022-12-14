@@ -136,8 +136,8 @@ def check_dependency(
 
 def sources(pre: bool = False) -> tuple:
     if pre:
-        return (baw.utils.package_testing(),)
-    pip_index, extra_url = baw.utils.package_address()
+        return (baw.config.package_testing(),)
+    pip_index, extra_url = baw.config.package_address()
     # if not connected(pip_index, extra_url):
     #     msg = f"Could not reach index {pip_index} or {extra_url}"
     #     raise RuntimeError(msg)
@@ -155,7 +155,7 @@ def sync_dependencies(  # pylint:disable=R1260
     baw.utils.check_root(root)
     baw.utils.log('sync venv' if venv else 'sync local')
     resources = determine_resources(root, packages)
-    pip_index, extra_url = baw.utils.package_address()
+    pip_index, extra_url = baw.config.package_address()
     if not connected(pip_index, extra_url):
         baw.utils.error('could not reach package index')
         return baw.utils.FAILURE
@@ -168,7 +168,7 @@ def sync_dependencies(  # pylint:disable=R1260
     )
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
-    testing = baw.utils.package_testing()
+    testing = baw.config.package_testing()
     baw.utils.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()

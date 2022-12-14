@@ -125,33 +125,6 @@ def forward_slash(content: str, save_newline=True):
     return content
 
 
-def package_address():
-    """\
-    >>> package_address()
-    ('http...', 'http...')
-    """
-    try:
-        internal = os.environ['PIP_INDEX_URL']
-        external = os.environ['PIP_EXTRA_INDEX_URL']
-        return (internal, external)
-    except KeyError as failure:
-        error(f'Missing global var {failure}')
-        sys.exit(FAILURE)
-
-
-def package_testing():
-    """\
-    >>> package_testing()
-    '...'
-    """
-    try:
-        pre = os.environ['PIP_PRE_INDEX_URL']
-        return pre
-    except KeyError as failure:
-        error(f'Missing global var {failure}')
-        sys.exit(FAILURE)
-
-
 @functools.lru_cache(maxsize=16)
 def tmp(root: str) -> str:
     """Return path to temporary folder. Create folder if required.
