@@ -24,7 +24,7 @@ disable=C0111,
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
-jobs=1
+jobs=4
 
 load-plugins=pylint.extensions.bad_builtin,
              pylint.extensions.check_elif,
