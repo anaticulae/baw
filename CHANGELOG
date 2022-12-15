@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.36.0 (2022-12-15)
+
+### Feature
+
+* add single parameter to split tests (1e471e7702f9)
+
+### Fix
+
+* do not upgrade pre release without --pre flag (bfd52fab9989)
+* regenerate if conftest changes (14cad02222fb)
+
 ## v1.35.2 (2022-12-14)
 
 ### Fix
