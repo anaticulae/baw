@@ -22,6 +22,7 @@ import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.pipeline
 import baw.cmd.publish
+import baw.cmd.rebase
 import baw.cmd.refactor
 import baw.cmd.release
 import baw.cmd.sh
@@ -41,6 +42,7 @@ def create_parser():  # noqa: Z21
     add_parameter(parser)
     cmds = parser.add_subparsers(help='sub-cmd help')
     baw.cmd.init.extend_cli(cmds)
+    baw.cmd.rebase.extend_cli(cmds)
     baw.cmd.ide.extend_cli(cmds)
     add_open_options(cmds)
     baw.cmd.doc.extend_cli(cmds)
