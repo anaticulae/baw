@@ -381,6 +381,11 @@ def extend_cli(parser):
         action='store_true',
     )
     test.add_argument(
+        '--single',
+        help='run every single test inside a single test run',
+        action='store_true',
+    )
+    test.add_argument(
         '--config',
         help='overwrite pytest invocation',
         nargs=1,
