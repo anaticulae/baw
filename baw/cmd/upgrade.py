@@ -258,7 +258,10 @@ def collect_new_packages(  # pylint:disable=R0914
                 available = available_version(dependency, package=package)
                 installed = installed_version(dependency)
                 if installed:
-                    if baw.requirements.check.lower(installed, available):
+                    if baw.requirements.check.lower(
+                            current=installed,
+                            new=available,
+                    ):
                         available = installed
                 if available != version:
                     sink[package] = (version, available)  #(old, new)
