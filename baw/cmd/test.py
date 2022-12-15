@@ -19,10 +19,6 @@ import baw.run
 import baw.runtime
 import baw.utils
 
-# pytest returncode when runnining without tests
-# from _pytest.main import EXIT_NOTESTSCOLLECTED
-NO_TEST_TO_RUN = 5
-
 
 def run_test(  # pylint:disable=R0914
     root: str,
@@ -126,6 +122,11 @@ def run_test(  # pylint:disable=R0914
         # override pytest error code
         return baw.utils.SUCCESS
     return completed.returncode
+
+
+# pytest returncode when runnining without tests
+# from _pytest.main import EXIT_NOTESTSCOLLECTED
+NO_TEST_TO_RUN = 5
 
 
 def all_tests(testconfig) -> bool:
