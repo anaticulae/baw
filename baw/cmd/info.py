@@ -112,7 +112,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
     'baw:...'
     """
     todo = ('Jenkinsfile requirements.txt requirements.dev '
-            'requirements.extra').split()
+            'requirements.extra tests/conftest.py').split()
     content = ''
     for fname in todo:
         path = os.path.join(root, fname)
