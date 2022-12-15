@@ -264,6 +264,13 @@ def collect_new_packages(  # pylint:disable=R0914
                     ):
                         available = installed
                 if available != version:
+                    if '.post' in available and not pre:
+                        # installed pre-version and upgrade without --pre
+                        # command. Do not upgrade with pre-release without
+                        # --pre flag.
+                        msg = f'do not upgrade: {available} without --pre'
+                        baw.utils.log(msg)
+                        continue
                     sink[package] = (version, available)  #(old, new)
     return sync_error
 
