@@ -12,6 +12,7 @@ import shutil
 import sys
 
 import baw.archive.test
+import baw.cmd.utils
 import baw.config
 import baw.datetime
 import baw.git
@@ -340,6 +341,51 @@ def collect_cov_sources(root: str) -> str:
     return cov_sources
 
 
+def create_testconfig(args: dict) -> list:
+    testconfig = []
+    if args['n'] != '1':
+        testconfig += [f'-n={args["n"]}']
+    if args['k']:
+        kselected = args["k"]
+        if '.' in kselected:
+            testconfig += [f'--pyargs {kselected}']
+        else:
+            testconfig += [f'-k {kselected}']
+    if args['x']:
+        testconfig += ['-x ']
+    if args['config']:
+        testconfig += args['config']
+    if args['junit_xml']:
+        testconfig += [f'--junit-xml="{args["junit_xml"]}"']
+    return testconfig
+
+
+def run(args: dict):
+    root = baw.cmd.utils.get_root(args)
+    testconfig = create_testconfig(args)
+    selected = args['test']
+    generate = selected == 'generate'
+    generate |= args['generate']  # TODO: REMOVE LEGACY
+    result = run_test(
+        root=root,
+        coverage=args['cov'],
+        docs=selected == 'docs',
+        fast=selected == 'fast',
+        longrun=selected == 'long',
+        nightly=selected == 'nightly',
+        alls=selected == 'all',
+        pdb=args['pdb'],
+        generate=generate,
+        stash=args['stash'],
+        instafail=args['instafail'],
+        testconfig=testconfig,
+        noinstall=args.get('no_install', False),
+        verbose=args.get('verbose', False),
+        venv=args.get('venv', False),
+    )
+    return result
+
+
 def extend_cli(parser):
     test = parser.add_parser('test', help='Run unit tests')
     test.add_argument(
@@ -407,4 +453,4 @@ def extend_cli(parser):
         default='fast',
         choices='skip docs fast long generate nightly all'.split(),
     )
-    test.set_defaults(func=baw.run.run_test)
+    test.set_defaults(func=run)
