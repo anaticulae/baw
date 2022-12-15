@@ -26,21 +26,6 @@ import baw.runtime
 import baw.utils
 
 
-def evaluate(args):
-    root = baw.cmd.utils.run_environment(args)
-    venv = args.get('venv', False)
-    if venv:
-        baw.run.run_venv(args)
-    result = sync(
-        root=root,
-        packages=args.get('packages'),
-        minimal=args.get('minimal', False),
-        verbose=args.get('verbose', False),
-        venv=venv,
-    )
-    return result
-
-
 def sync(
     root: str,
     packages: str = 'dev',
@@ -390,6 +375,21 @@ def should_skip(msg: str, verbose: bool = False):
     return False
 
 
+def run(args: dict):
+    root = baw.cmd.utils.run_environment(args)
+    venv = args.get('venv', False)
+    if venv:
+        baw.run.run_venv(args)
+    result = sync(
+        root=root,
+        packages=args.get('packages'),
+        minimal=args.get('minimal', False),
+        verbose=args.get('verbose', False),
+        venv=venv,
+    )
+    return result
+
+
 def extend_cli(parser):
     synx = parser.add_parser('sync', help='Synchronize project requirements')
     synx.add_argument(
@@ -405,4 +405,4 @@ def extend_cli(parser):
         const='dev',
         choices=['all', 'dev', 'doc', 'extra', 'requirements'],
     )
-    synx.set_defaults(func=evaluate)
+    synx.set_defaults(func=run)
