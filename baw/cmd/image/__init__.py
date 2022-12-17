@@ -190,10 +190,14 @@ def run(args: dict):  # pylint:disable=R0911
     if action == 'run':
         name = args['name']
         cmd = args['cmd']
-        baw.utils.log(f'run name: {name}; cmd: {cmd}')
+        env = args['env']
+        if env:
+            env = env.split(';')
+        baw.utils.log(f'run name: {name}; cmd: {cmd}; env: {env};')
         return baw.dockers.container.run(
             cmd=cmd,
             image=name,
+            environment=env,
             generate=args.get('generate'),
         )
     if action == 'check':
@@ -226,6 +230,10 @@ def extend_cli(parser):
     cli.add_argument(
         '--cmd',
         help='run cmd inside container',
+    )
+    cli.add_argument(
+        '--env',
+        help='overwrite env: PASSWORD=xxx;BASE=hello',
     )
     cli.add_argument(
         '--dockerfile',
