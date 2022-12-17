@@ -1,0 +1,31 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2022 by Helmut Konrad Schewe. All rights reserved.
+# This file is property of Helmut Konrad Schewe. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+FROM 169.254.149.20:6001/arch_python_git:v0.17.1
+
+MAINTAINER HELMUT KONRAD FAHRENDHOLZ
+
+ENV MAIN='origin/master'
+ENV BRANCH='develop'
+
+ENV BASE='http://169.254.149.20:6300'
+ENV OWNER='caelum'
+ENV REPO='baw'
+
+COPY run /var/workdir/run
+RUN chmod +x /var/workdir/run
+
+ENV GIT_ASKPASS='/var/gitpassword'
+RUN echo 'echo $GIT_PASSWORD' >> /var/gitpassword && chmod +x /var/gitpassword
+
+ENV GIT_PASSWORD='automated'
+
+WORKDIR /var/workdir
+
+ENTRYPOINT ["sh", "run"]
