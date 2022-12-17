@@ -43,3 +43,6 @@ build(){
 build Dockerfile    arch_python_git                 arch_python_git_baw
 build Dockerfile    arch_python_git_ghost           arch_python_git_ghost_baw
 build Dockerfile    arch_python_git_ghost_opencv    arch_python_git_ghost_opencv_baw
+
+# build git runner
+pushd env && ./make; popd
