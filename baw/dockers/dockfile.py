@@ -63,7 +63,7 @@ IMAGE = re.compile(r"""
     image
     [\:]?[\ ]{1,3}
     (?P<quote_opt>'{0,1})
-        ((?P<repo>.{5,})/(?P<image>.{5,})\:(?P<version>.{3,}))
+        ((?P<repo>\S{5,})/(?P<image>\S{5,})\:(?P<version>\S{3,}))
     (?P=quote_opt)
 """, flags=re.VERBOSE)
 # yapf:enable
