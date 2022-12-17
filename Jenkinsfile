@@ -2,7 +2,7 @@ pipeline{
     agent{
         dockerfile{filename 'Dockerfile'}
     }
-    // image '169.254.149.20:6001/arch_python_git_baw:v1.34.0'
+    // image '169.254.149.20:6001/arch_python_git_baw:v1.36.0-5-g31a4f9d'
     stages{
         stage('integrate'){
             when {branch 'integrate'}
@@ -88,6 +88,7 @@ pipeline{
             steps{
                 sh 'baw release --no_test --no_linter --no_install --no_venv --no_sync'
                 sh 'baw publish'
+                rebase()
             }
         }
     }
@@ -117,4 +118,11 @@ def integrate(){
     sh 'git rebase origin/master'
     sh 'baw upgrade all'
     sh 'baw upgrade all --pre'
+}
+def rebase(){
+    if(branch!='master'){
+        return
+    }
+    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env=BRANCH=develop'
+    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env=BRANCH=integrate'
 }
