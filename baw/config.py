@@ -144,7 +144,7 @@ def docker_runtime() -> str:
     return host
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def name(root: str):
     assert os.path.exists(root)
     path = config_path(root)
@@ -154,7 +154,7 @@ def name(root: str):
     return name_
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def shortcut(root: str) -> str:
     """Read short project name out of project config.
 
@@ -254,7 +254,7 @@ def fail_on_finding(root: str) -> bool:
     return result
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def load(path: str):
     if not os.path.exists(path):
         raise ValueError(f'Configuration {path} does not exists')
@@ -264,7 +264,7 @@ def load(path: str):
     return cfg
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def project(path: str) -> 'Tuple[str, str]':
     """Determine tuple of `shortcut` and `project name` current `path`
     project.
@@ -318,7 +318,7 @@ def sources(root: str) -> list:
     return source
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def config_path(root: str) -> str:
     """Select configuration path based on project `root`.
 
@@ -333,7 +333,7 @@ def config_path(root: str) -> str:
     return os.path.join(root, PROJECT_PATH[0])
 
 
-@functools.lru_cache()
+@functools.lru_cache
 def python(root: str, venv: bool = False) -> str:
     if venv:
         return 'python'
