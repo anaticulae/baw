@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.37.2 (2022-12-18)
+
+### Chore
+
+* ensure that git rebaser is build (5bea70f0b7cd)
+
 ## v1.37.1 (2022-12-18)
 
 ### Fix
