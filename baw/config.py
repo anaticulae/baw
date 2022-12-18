@@ -216,10 +216,12 @@ def cmds(root: str) -> dict:
     assert os.path.exists(path), path
     cfg = load(path)
     try:
-        # TODO: DIRTY, goto standard lib
-        return {item: cfg['run'][item] for item in cfg['run']}
+        run = cfg['run']
     except KeyError:
         return {}
+    else:
+        result = dict(run.items())
+    return result
 
 
 def minimal_coverage(root: str) -> int:
