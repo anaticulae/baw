@@ -40,7 +40,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.utils.log(f'\n{index}|{len(todo)}')
         baw.utils.log(f'>>> {headline}')
         baw.utils.log(f'git checkout {commit} in {root}')
-        if checkout(root, commit):
+        if baw.git.checkout(root, commit):
             sys.exit(baw.utils.FAILURE)
         current = time.time()
         baw.utils.log(f'run: {cmd}')
@@ -63,7 +63,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.utils.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
                       f'{commit[1][0:30]}')
     # checkout(root, commit=todo[0])
-    checkout(root, commit='master')
+    baw.git.checkout(root, branch='master')
     return timed
 
 
@@ -91,26 +91,6 @@ def commits(root, ranges) -> list:
         sys.exit(baw.utils.FAILURE)
     result = [line.split(maxsplit=1) for line in stdout.splitlines()]
     return result
-
-
-def checkout(
-    root: str,
-    commit: str,
-) -> int:
-    """Checkout he from git repository
-
-    Args:
-        root(str): root to generated project
-        commit(str): state to reach
-    Returns:
-        0 if SUCCESS else FAILURE
-    """
-    cmd = f'git checkout {commit}'
-    completed = baw.runtime.run(cmd, cwd=root)
-    if completed.returncode:
-        msg = f'while checkout {commit}'
-        baw.utils.error(msg)
-    return completed.returncode
 
 
 def parse_args(parser) -> tuple:

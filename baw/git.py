@@ -126,6 +126,26 @@ def reset(
     return completed.returncode
 
 
+def checkout(
+    root: str,
+    branch: str,
+) -> int:
+    """Checkout head from git repository.
+
+    Args:
+        root(str): root to generated project
+        branch(str): state to reach
+    Returns:
+        0 if SUCCESS else FAILURE
+    """
+    cmd = f'git checkout {branch}'
+    completed = baw.runtime.run(cmd, cwd=root)
+    if completed.returncode:
+        msg = f'while checkout {branch}'
+        baw.utils.error(msg)
+    return completed.returncode
+
+
 def tag_drop(
     tag: str,
     root: str,
