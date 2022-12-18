@@ -82,6 +82,7 @@ def docker_image_upgrade(
     content = baw.utils.file_read(path)
     parsed = IMAGE.findall(content)
     if not parsed:
+        baw.utils.error(f'could not parse: {path}')
         return None
     result = content
     for find in parsed:
