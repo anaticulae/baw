@@ -120,9 +120,6 @@ def integrate(){
     sh 'baw upgrade all --pre'
 }
 def rebase(){
-    if(branch!='master'){
-        return
-    }
     sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env=BRANCH=develop'
     sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env=BRANCH=integrate'
 }
