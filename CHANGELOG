@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.37.3 (2022-12-18)
+
+### Chore
+
+* verify that utila and utilatest works if baw changes (c95d76fe0f52)
+
 ## v1.37.2 (2022-12-18)
 
 ### Chore
