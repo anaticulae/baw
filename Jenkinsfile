@@ -125,6 +125,6 @@ def rebase(){
     // build git runner
     sh 'pushd env && ./make; popd'
     // sync repository
-    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env=BRANCH=integrate'
-    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env=BRANCH=develop'
+    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env="BRANCH=integrate;REPO=baw"'
+    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env="BRANCH=develop;REPO=baw"'
 }
