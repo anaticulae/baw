@@ -59,7 +59,7 @@ def upgrade(
             requirements = (requirements, requirements_dev)
         if failure:
             # reset requirement
-            completed = baw.git.checkout(
+            completed = baw.git.reset(
                 root,
                 requirements,
                 verbose=verbose,

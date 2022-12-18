@@ -92,7 +92,7 @@ def reset_resources(
         return baw.utils.FAILURE  # at least one path does not exist.
     if not to_reset:
         return baw.utils.FAILURE
-    completed = baw.git.checkout(
+    completed = baw.git.reset(
         root,
         to_reset,
         venv=venv,

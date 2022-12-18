@@ -95,24 +95,23 @@ def is_clean(root, verbose: bool = True):
     return 'nothing to commit, working tree clean' in process.stdout
 
 
-def checkout(
+def reset(
     root: str,
     files: str,
     *,
     verbose: bool = False,
     venv: bool = False,
 ) -> int:
-    """Checkout files from git repository
+    """Reset files from git repository.
 
     Args:
         root(str): root to generated project
-        files(str or iterable): files to checkout
+        files(str or iterable): files to reset
         verbose(bool): increase logging
         venv(bool): run in venv environment
     Returns:
         0 if baw.utils.SUCCESS else FAILURE
     """
-    # TODO: RENAME TO GIT_RESET
     to_reset = ' '.join(files) if not isinstance(files, str) else files
     baw.utils.log(f'Reset {to_reset}')
     completed = baw.runtime.run_target(
