@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.37.0 (2022-12-18)
+
+### Feature
+
+* add parameter to pass env vars to container (31a4f9de2709)
+* add docker image to encapsulate rebase (c5ae014f7e94)
+* add rebase command to sync branch with other branch (24d90170105c)
+
+### Fix
+
+* fix regex (5f36788c013e)
+
+### Chore
+
+* add rebase step to sync branches (e8cbf84a8598)
+* build git rebase (e6822a4beaf9)
+
 ## v1.36.0 (2022-12-15)
 
 ### Feature
