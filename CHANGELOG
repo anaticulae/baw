@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.37.1 (2022-12-18)
+
+### Fix
+
+* fix syntax error (6a3e3be141d5)
+
 ## v1.37.0 (2022-12-18)
 
 ### Feature
