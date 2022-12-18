@@ -212,7 +212,6 @@ def cmds(root: str) -> dict:
         dict{name, cmd}: dict with cmds to execute
     """
     assert os.path.exists(root), root
-
     path = config_path(root)
     assert os.path.exists(path), path
     cfg = load(path)
@@ -234,7 +233,6 @@ def minimal_coverage(root: str) -> int:
     assert os.path.exists(root)
     path = config_path(root)
     cfg = load(path)
-
     for package in [
             'release',
             'tests',  # legacy: remove later
