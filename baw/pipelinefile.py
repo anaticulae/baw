@@ -27,6 +27,8 @@ def upgrade(
     always: bool = False,
 ) -> str:
     """\
+    Use always to avoid return None by unchanged file.
+
     >>> upgrade(__file__, always=True)
     '.../arch_python_git_baw:v...'
     """

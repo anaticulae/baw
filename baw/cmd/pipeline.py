@@ -56,7 +56,7 @@ def upgrade(
     if not os.path.exists(source):
         baw.utils.error(f'Jenkinsfile does not exists: {source}')
         return baw.utils.FAILURE
-    replaced = baw.pipelinefile.upgrade(root)
+    replaced = baw.pipelinefile.upgrade(root, always=True)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
         baw.utils.error('Jenkinsfile unchanged, skip upgrade')
