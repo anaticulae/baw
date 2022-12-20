@@ -59,8 +59,8 @@ def upgrade(
     replaced = baw.pipelinefile.upgrade(root, always=True)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
-        baw.utils.error('Jenkinsfile unchanged, skip upgrade')
-        return baw.utils.FAILURE
+        baw.utils.log('Jenkinsfile unchanged, skip upgrade')
+        return baw.utils.SUCCESS
     with baw.git.stash(root, verbose=verbose, venv=venv):
         baw.utils.file_replace(
             source,
