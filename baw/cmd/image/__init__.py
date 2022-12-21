@@ -29,6 +29,7 @@ def create(  # pylint:disable=W0613
     name: str = None,
     dockerfile: str = None,
     generate: bool = False,
+    install: bool = False,
     verbose: bool = False,
     venv: bool = False,
 ):
@@ -48,6 +49,7 @@ def create(  # pylint:disable=W0613
     with baw.cmd.image.dockerfiles.generate(
             root,
             inject=generate,
+            install=install,
     ) as path:
         result = baw.dockers.dockfile.build(
             dockerfile=path,
@@ -167,6 +169,7 @@ def run(args: dict):  # pylint:disable=R0911
             dockerfile=args['dockerfile'],
             name=args['name'],
             generate=args.get('generate'),
+            install=args.get('install'),
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
@@ -238,6 +241,11 @@ def extend_cli(parser):
     cli.add_argument(
         '--dockerfile',
         help='use this dockerfile',
+    )
+    cli.add_argument(
+        '--install',
+        action='store_true',
+        help='run baw install task before',
     )
     cli.add_argument(
         '--generate',

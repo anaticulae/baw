@@ -19,7 +19,7 @@ import baw.utils
 
 
 @contextlib.contextmanager
-def generate(root: str, inject: bool = False):
+def generate(root: str, inject: bool = False, install: bool = False):
     name = baw.cmd.info.requirement_hash(root, verbose=True)
     name = name.replace(':', '_')
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
@@ -30,6 +30,8 @@ def generate(root: str, inject: bool = False):
     content += environments(root)
     content += requirements(root)
     content += SYNC
+    if install:
+        content += INSTALL
     if inject:
         content += resources(root)
     baw.utils.file_replace(
@@ -128,6 +130,10 @@ def environments(root: str) -> str:
 
 SYNC = """
 RUN baw sync all
+"""
+
+INSTALL = """
+RUN baw --verbose install
 """
 
 GENERATE = """
