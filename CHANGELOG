@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.38.0 (2022-12-21)
+
+### Feature
+
+* add option to add install task (506a41a167a2)
+* inform about parsing error (b51d7c386709)
+
+### Fix
+
+* do not fail on up-to-date pipeline (cf0d24826d41)
+* adjust unchanged pipe (bbf79b6b5387)
+* use tag instead of commit (467eda5f7868)
+
+### Chore
+
+* clarify rebase repository (548030b2f6ab)
+* upgrade Jenkinsfile (ac597e74766a)
+
 ## v1.37.3 (2022-12-18)
 
 ### Chore
