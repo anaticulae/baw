@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import json
 import os
 import re
 import sys
@@ -105,7 +106,7 @@ def jenkinsfile(root: str):
 
 
 # @Library('caelum@d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d') _
-LIBRARY = "@Library('caelum@"
+LIBRARY = "@Library('caelum@refs/tags/"
 LIBRARY_END = "') _"
 
 
@@ -119,7 +120,7 @@ def library(root: str, verbose: False):
     if newest in current:
         baw.utils.error(f'already newst caelum: {newest}')
         return baw.utils.FAILURE
-    init_lib = LIBRARY not in current
+    init_lib = LIBRARY[0:16] not in current
     header = f'{LIBRARY}{newest}{LIBRARY_END}\n\n'
     if init_lib:
         baw.utils.log(f'caelum library: init {newest}')
@@ -162,14 +163,14 @@ def image_newest() -> str:
     return result
 
 
-def library_newest(
+def library_newest(  # pylint:disable=W0613
     branch: str = 'master',
     repo: str = 'jenkins',
     user: str = 'caelum',
     verbose: bool = False,
 ) -> str:
     base = baw.config.gitea_server()
-    url = f'{base}/api/v1/repos/{user}/{repo}/branches/{branch}'
+    url = f'{base}/api/v1/repos/{user}/{repo}/tags'
     cmd = f'curl {url}'
     if verbose:
         baw.utils.log(cmd)
@@ -180,7 +181,7 @@ def library_newest(
         baw.utils.error(completed)
         sys.exit(completed.returncode)
     stdout = completed.stdout
-    # "id":"d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d"
-    matched = re.search(r'"id"\:"(\w{40})"', stdout)
-    commit = matched[1]
-    return commit
+    data = json.loads(stdout)
+    newest = data[0]
+    name = newest['name']
+    return name
