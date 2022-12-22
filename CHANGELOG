@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.39.0 (2022-12-22)
+
+### Feature
+
+* add prog check (c7142f330d19)
+
+### Fix
+
+* run conftest on doctest (511e4b86affe)
+
 ## v1.38.0 (2022-12-21)
 
 ### Feature
