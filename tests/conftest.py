@@ -7,9 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import subprocess
-
-import baw.utils
+import baw
 from tests.fixtures.project import example  # pylint:disable=W0611
 from tests.fixtures.project import project_example  # pylint:disable=W0611
 from tests.fixtures.project import project_example_done  # pylint:disable=W0611
@@ -19,8 +17,4 @@ from tests.fixtures.project import simple  # pylint:disable=W0611
 
 pytest_plugins = 'pytester'  # pylint: disable=invalid-name
 
-assert subprocess.run(  # nosec
-    ['which', 'baw'],
-    capture_output=True,
-    check=False,
-).returncode == baw.utils.SUCCESS, 'require baw'
+assert baw.hasprog('baw'), 'install baw'
