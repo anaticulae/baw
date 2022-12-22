@@ -364,8 +364,8 @@ def run(args: dict):
     root = baw.cmd.utils.get_root(args)
     testconfig = create_testconfig(args)
     selected = args['test']
-    generate = selected == 'generate'
-    generate |= args['generate']  # TODO: REMOVE LEGACY
+    generate = args['generate']
+    generate |= selected == 'generate'  # TODO: REMOVE LEGACY
     result = run_test(
         root=root,
         coverage=args['cov'],
