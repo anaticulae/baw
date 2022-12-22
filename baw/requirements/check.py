@@ -28,6 +28,8 @@ def lower(current: str, new: str) -> bool:
     False
     >>> lower('2.97.0.post5+abcde', '2.97.0.post4+bcde')
     True
+    >>> lower('20221105', '20221105')
+    False
     """
     current = baw.requirements.parser.fix_version(current, True)
     new = baw.requirements.parser.fix_version(new, True)
@@ -39,6 +41,8 @@ def lower(current: str, new: str) -> bool:
         new = semver.VersionInfo.parse(new)
     except ValueError:
         new: int = int(new)
+    if isinstance(new, int):
+        return new < current
     if new == current:
         if current.build and new.build:
             curr = current.build.split('+')[0][4:]
