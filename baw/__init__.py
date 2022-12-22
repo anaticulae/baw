@@ -16,3 +16,4 @@ import baw.__patch__
 import baw.__root__
 from baw.dockers.dockfile import docker_image_upgrade
 from baw.pipelinefile import jenkinsfile
+from baw.runtime import hasprog
