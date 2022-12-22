@@ -279,8 +279,10 @@ def tests_sources(
         testdir, doctests = '', ''
     if doctest and not generate_only and not coverage:
         # skip normal tests if doctest is selected
+        # testdir = ''
         # do not skip normal tests when running coverage
-        testdir = ''
+        # Ensure to run conftest on doctest run
+        testdir = os.path.join(root, 'tests/conftest.py')
     result = f'{testdir} {doctests} '
     return result
 
