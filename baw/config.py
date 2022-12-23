@@ -147,6 +147,20 @@ def docker_runtime() -> str:
     return host
 
 
+def docker_setup(root: str) -> str:
+    """\
+    >>> import baw.project
+    >>> docker_setup(baw.project.determine_root(__file__)) is None
+    True
+    """
+    result = default_config(
+        root,
+        lambda x: x['docker']['setup'],
+        default=None,
+    )
+    return result
+
+
 @functools.lru_cache
 def name(root: str):
     assert os.path.exists(root)

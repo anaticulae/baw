@@ -14,6 +14,7 @@ import sys
 import baw.cmd.info
 import baw.cmd.pipeline
 import baw.cmd.utils
+import baw.config
 import baw.pipelinefile
 import baw.utils
 
@@ -32,6 +33,8 @@ def generate(root: str, inject: bool = False, install: bool = False):
     content += SYNC
     if install:
         content += INSTALL
+    if setup := baw.config.docker_setup(root):
+        content += f'RUN ls; {setup}'
     if inject:
         content += resources(root)
     baw.utils.file_replace(
