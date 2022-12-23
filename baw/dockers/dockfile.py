@@ -35,10 +35,17 @@ def build(dockerfile: str, tagname: str) -> int:
             )
             log_service(done)
     except docker.errors.BuildError as error:
-        for line in error.build_log:
-            baw.utils.error(line)
+        log_error(error)
         return baw.utils.FAILURE
     return baw.utils.SUCCESS
+
+
+def log_error(error):
+    for line in error.build_log:
+        try:
+            baw.utils.error(line['stream'].rstrip())
+        except KeyError:
+            pass
 
 
 def log_service(done):
