@@ -77,12 +77,12 @@ def verbose(msg: str = '', end: str = NEWLINE, verbose: bool = False):  # pylint
     log(msg=msg, end=end)
 
 
-def error(msg: str):
+def error(msg: str, end: str = NEWLINE):
     """Print error-message to stderr and add [ERROR]-tag"""
     # use forward slashs
     msg = forward_slash(msg)
     msg = fix_encoding(msg)
-    print(f'[ERROR] {msg}', file=sys.stderr, flush=True)
+    print(f'[ERROR] {msg}', end=end, file=sys.stderr, flush=True)
 
 
 def fix_encoding(msg: str) -> str:
