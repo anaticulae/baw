@@ -18,7 +18,7 @@ ENV BASE='http://169.254.149.20:6300'
 ENV OWNER='caelum'
 ENV REPO='baw'
 
-COPY run /var/workdir/run
+COPY rebase_run /var/workdir/run
 RUN chmod +x /var/workdir/run
 
 ENV GIT_ASKPASS='/var/gitpassword'
