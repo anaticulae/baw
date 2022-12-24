@@ -28,4 +28,5 @@ build(){
     fi
 }
 
-build Rebase    baw_rebase
+build Rebase            baw_rebase
+build Release           baw_release

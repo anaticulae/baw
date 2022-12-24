@@ -1,0 +1,26 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2022 by Helmut Konrad Schewe. All rights reserved.
+# This file is property of Helmut Konrad Schewe. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+FROM 169.254.149.20:6001/arch_python_git_ghost_opencv_baw:<<GITDESCRIBE>>
+
+MAINTAINER HELMUT KONRAD FAHRENDHOLZ
+
+ENV MAIN='master'
+ENV BASE='http://169.254.149.20:6300'
+ENV OWNER='caelum'
+ENV REPO='baw'
+
+ENV GITEA_TOKEN='9ec3d6b7bbeca6642b8195fdd06abd42d1765e25'
+
+COPY release_run /var/script/run
+RUN chmod +x /var/script/run
+
+WORKDIR /var/workdir
+
+ENTRYPOINT ["sh", "/var/script/run"]
