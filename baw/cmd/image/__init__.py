@@ -202,6 +202,7 @@ def run(args: dict):  # pylint:disable=R0911
             image=name,
             environment=env,
             generate=args.get('generate'),
+            gitdir=args['gitdir'],
         )
     if action == 'check':
         name = args['name']
@@ -251,6 +252,11 @@ def extend_cli(parser):
         '--generate',
         action='store_true',
         help='generate test data',
+    )
+    cli.add_argument(
+        '--gitdir',
+        action='store_true',
+        help='copy git dir into docker container',
     )
     cli.add_argument(
         '--prerelease',

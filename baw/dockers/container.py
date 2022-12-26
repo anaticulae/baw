@@ -23,6 +23,7 @@ def run(
     volumes: str = None,
     environment: list = None,
     generate: bool = False,
+    gitdir: bool = False,
 ) -> int:
     failure = False
     with baw.dockers.client() as connected:
@@ -34,8 +35,14 @@ def run(
             generate=generate,
         )
         try:
+            # TODO: GIT DIR IS ALWAYS REQUIRED TO RUN TESTS PROPERLY,
+            # THINK ABOUT LATER
+            gitdir = True
+            if gitdir and not volumes:
+                # use default volume
+                volumes = baw.dockers.determine_volumes()
             if volumes:
-                content = tar_content(os.getcwd())
+                content = tar_content(content=os.getcwd(), git_include=gitdir)
                 container.put_archive(
                     path=volumes,
                     data=content,
@@ -115,11 +122,11 @@ def verify(container) -> bool:
     return failure
 
 
-IGNORE = '--exclude=build/* --exclude=.git/*'
-IGNORE += '--one-file-system -P '
-
-
-def tar_content(content) -> str:
+def tar_content(
+    content,
+    *,
+    git_include: bool = False,
+) -> str:
     assert os.path.exists(content), str(content)
     if not baw.runtime.hasprog('tar'):
         baw.utils.error('tar is not installed, could not tar')
@@ -130,7 +137,8 @@ def tar_content(content) -> str:
         tar = baw.utils.forward_slash(base, save_newline=False)
         tar = tar.replace('C:/', '/c/')
         content = baw.utils.forward_slash(content, save_newline=False)
-        cmd = f'tar cvf {tar} {IGNORE} .'
+        do_not_tar = ignore(git_include)
+        cmd = f'tar cvf {tar} {do_not_tar} .'
         completed = baw.runtime.run(cmd, content)
         if completed.returncode:
             baw.utils.error(f'tar failed: {cmd}')
@@ -140,3 +148,17 @@ def tar_content(content) -> str:
                 baw.utils.error(completed.stderr)
         content = baw.utils.file_read_binary(base)
     return content
+
+
+def ignore(git_include: bool = False):
+    """\
+    >>> ignore()
+    '--exclude=build/* --exclude=.git/* --one-file-system -P '
+    >>> ignore(git_include=True)
+    '--exclude=build/* --one-file-system -P '
+    """
+    result = '--exclude=build/* '
+    if not git_include:
+        result += '--exclude=.git/* '
+    result += '--one-file-system -P '
+    return result

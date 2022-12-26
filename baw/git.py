@@ -26,8 +26,8 @@ def init(root: str):
 
     Args:
         root(str): generated project"""
-    git_dir = os.path.join(root, GIT_EXT)
-    if os.path.exists(git_dir):
+    gitdir = os.path.join(root, GIT_EXT)
+    if os.path.exists(gitdir):
         baw.utils.skip('git init')
         return
     baw.utils.log('git init')
