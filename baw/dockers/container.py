@@ -43,6 +43,8 @@ def run(
             baw.utils.log('start container')
             container.start()
             failure = verify(container)
+            if failure:
+                baw.utils.error(cmd)
             baw.utils.log('stop container')
             # TODO: VERIFY THIS
             container.stop()
