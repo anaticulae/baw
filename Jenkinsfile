@@ -88,8 +88,7 @@ pipeline{
         stage('release'){
             when {branch 'master'}
             steps{
-                sh 'baw release --no_test --no_linter --no_install --no_venv --no_sync'
-                sh 'baw publish'
+                release()
                 rebase()
             }
         }
@@ -120,6 +119,9 @@ def integrate(){
     sh 'git rebase origin/master'
     sh 'baw upgrade all'
     sh 'baw upgrade all --pre'
+}
+def release(){
+    sh 'baw image run --name 169.254.149.20:6001/baw_release:$(baw info describe) --env="REPO=baw"'
 }
 def rebase(){
     // sync repository
