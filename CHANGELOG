@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.41.0 (2022-12-28)
+
+### Feature
+
+* add option to include git dir (3e34c8832853)
+* log container cmd in case off error (82d89751d2d8)
+* add release image (3e5f9ebf21e9)
+
+### Chore
+
+* upgrade Jenkinsfile (a767ad801807)
+* use release image (5541d997f5a2)
+* runner is already build in make (af872fc7fd4b)
+* add setup step on container setup (2f0c30feea79)
+
 ## v1.40.0 (2022-12-23)
 
 ### Feature
