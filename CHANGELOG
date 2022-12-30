@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.42.0 (2022-12-30)
+
+### Feature
+
+* add pre-release docker image (dedb3faa0278)
+
+### Chore
+
+* use new pre-release step (6eb99675a059)
+
 ## v1.41.0 (2022-12-28)
 
 ### Feature
