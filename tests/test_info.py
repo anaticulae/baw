@@ -18,6 +18,12 @@ import tests
     ('venv', 'venv'),
     ('shortcut', 'baw'),
     ('name', 'Beta Alpha Omega'),
+    ('requirement', ''),
+    ('sources', 'baw'),
+    ('image', 'try_baw'),
+    ('describe', ''),
+    ('stable', ''),
+    ('branch', ''),
 ))
 def test_cmd_info(cmd, expected, monkeypatch, capsys):
     tests.baaw(
@@ -25,7 +31,8 @@ def test_cmd_info(cmd, expected, monkeypatch, capsys):
         monkeypatch,
     )
     stdout = tests.stdout(capsys)
-    assert expected in stdout, str(stdout)
+    if expected:
+        assert expected in stdout, str(stdout)
 
 
 def test_cmd_requirement_info(monkeypatch, capsys):
