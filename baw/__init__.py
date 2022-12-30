@@ -14,6 +14,7 @@ __version__ = '1.43.0'
 # pylint:disable=wrong-import-position
 import baw.__patch__
 import baw.__root__
+from baw.config import shortcut
 from baw.dockers.dockfile import docker_image_upgrade
 from baw.pipelinefile import jenkinsfile
 from baw.runtime import hasprog
