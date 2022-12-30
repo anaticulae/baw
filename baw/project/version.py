@@ -20,19 +20,22 @@ VERSION = (
 )
 
 
-def determine(root: str) -> str:
+def determine(root: str, verbose: bool = False) -> str:
     """Determine current version out of __init__.py file
 
     Args:
         root(str): project root
+        verbose(bool): if True, add project name
     Returns:
         version number in format (x.y.z)
     Raises:
         ValueError: if no __version__ can be located
 
-    >>> import baw.project
-    >>> determine(baw.project.determine_root(__file__))
+    >>> import baw.project; ROOT = baw.project.determine_root(__file__)
+    >>> determine(ROOT)
     '...'
+    >>> determine(ROOT, True)
+    '...==...'
     """
     assert os.path.exists(root)
     # f'{short}/__init__.py:__version__'
@@ -47,6 +50,9 @@ def determine(root: str) -> str:
         break
     if not current:
         raise ValueError(f'Could not locate __version__ in {path}')
+    if verbose:
+        shorts = baw.shortcut(root)
+        current = f'{shorts}=={current}'
     return current
 
 

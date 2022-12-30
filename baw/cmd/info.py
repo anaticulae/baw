@@ -62,7 +62,7 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
         baw.utils.log(baw.git.describe(root))
         return baw.utils.SUCCESS
     if value == 'stable':
-        baw.utils.log(baw.project.version.determine(root))
+        baw.utils.log(baw.project.version.determine(root, verbose=verbose))
         return baw.utils.SUCCESS
     if value == 'branch':
         baw.utils.log(baw.git.branchname(root))
