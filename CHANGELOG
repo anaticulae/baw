@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.43.0 (2022-12-30)
+
+### Feature
+
+* add method to determine branch name (68b92a1967cb)
+* add method to determine branch name (be74cea091c4)
+
 ## v1.42.0 (2022-12-30)
 
 ### Feature
