@@ -16,6 +16,7 @@ import baw.cmd.pipeline
 import baw.cmd.utils
 import baw.config
 import baw.pipelinefile
+import baw.project.version
 import baw.utils
 
 
@@ -32,7 +33,8 @@ def generate(root: str, inject: bool = False, install: bool = False):
     content += requirements(root)
     content += SYNC
     if install:
-        content += INSTALL
+        use = baw.project.version.determine(root, verbose=True)
+        content += INSTALL % use
     if setup := baw.config.docker_setup(root):
         content += f'RUN ls; {setup}'
     if inject:
@@ -136,7 +138,7 @@ RUN baw sync all
 """
 
 INSTALL = """
-RUN baw --verbose install
+RUN pip install %s
 """
 
 GENERATE = """
