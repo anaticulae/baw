@@ -17,7 +17,7 @@ import tests
     ('tmp', 'tmp'),
     ('venv', 'venv'),
     ('shortcut', 'baw'),
-    ('name', 'Black and White'),
+    ('name', 'Beta Alpha Omega'),
 ))
 def test_cmd_info(cmd, expected, monkeypatch, capsys):
     tests.baaw(

@@ -26,7 +26,7 @@ def configuration(testdir):
     config = """\
     [project]
     short = baw
-    name = Black and White
+    name = Beta Alpha Omega
     source = abc
         defg
 
@@ -43,7 +43,7 @@ def configuration(testdir):
 def test_config_load():
     short, name = baw.config.project(PROJECT)
     assert short == 'baw'
-    assert name == 'Black and White'
+    assert name == 'Beta Alpha Omega'
 
 
 def test_config_create_and_load(tmpdir):

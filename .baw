@@ -9,7 +9,7 @@
 
 [project]
 short = baw
-name = Black and White
+name = Beta Alpha Omega
 
 [release]
 minimal_coverage = 40

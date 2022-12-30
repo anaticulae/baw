@@ -1,4 +1,4 @@
-Welcome to Black and White
+Welcome to Beta Alpha Omega
 ==========================
 
 General
