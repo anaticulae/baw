@@ -74,7 +74,7 @@ pipeline{
         stage('pre-release'){
             when{not{branch 'master'}}
             steps{
-                sh 'baw publish --pre'
+                prerelease()
             }
         }
         stage('others'){
@@ -119,6 +119,9 @@ def integrate(){
     sh 'git rebase origin/master'
     sh 'baw upgrade all'
     sh 'baw upgrade all --pre'
+}
+def prerelease(){
+    sh 'baw image run --name 169.254.149.20:6001/baw_prerelease:$(baw info describe) --env="REPO=baw"'
 }
 def release(){
     sh 'baw image run --name 169.254.149.20:6001/baw_release:$(baw info describe) --env="REPO=baw"'
