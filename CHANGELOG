@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.44.0 (2022-12-30)
+
+### Feature
+
+* log non selected image (2bc8063e322f)
+* add verbose flag to extend stable info (14be7a4856ac)
+* add shortcut to public API (672e4b297444)
+
 ## v1.43.0 (2022-12-30)
 
 ### Feature
