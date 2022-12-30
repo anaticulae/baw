@@ -294,6 +294,22 @@ def describe(root: str) -> str:
     return name
 
 
+def branchname(root: str) -> str:
+    """\
+    >>> import baw.project;
+    >>> branchname(baw.project.determine_root(__file__))
+    '...'
+    """
+    if not installed():
+        baw.utils.error('install git')
+        sys.exit(baw.utils.FAILURE)
+    branches = baw.runtime.run('git branch', cwd=root).stdout.strip()
+    branches = [item for item in branches.splitlines() if item.startswith('*')]
+    # * develop
+    name = branches[0].split('*')[1].strip()
+    return name
+
+
 def update_gitignore(root: str, verbose: bool = False):
     if verbose:
         baw.utils.log('sync gitexclude')
