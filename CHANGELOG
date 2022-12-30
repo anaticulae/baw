@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.45.0 (2022-12-30)
+
+### Feature
+
+* use last stable build for install process (d2ac982c527d)
+
+### Chore
+
+* upgrade Jenkinsfile (70e8b641ea5a)
+
 ## v1.44.0 (2022-12-30)
 
 ### Feature
