@@ -44,7 +44,7 @@ def determine(root: str) -> str:
         if not parsed:
             continue
         current = parsed.group(1)
-        return current
+        break
     if not current:
         raise ValueError(f'Could not locate __version__ in {path}')
     return current
