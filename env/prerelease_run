@@ -1,0 +1,39 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2022 by Helmut Konrad Schewe. All rights reserved.
+# This file is property of Helmut Konrad Schewe. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+URL="${BASE}/${OWNER}/${REPO}.git"
+
+echo $URL
+echo $BRANCH
+git clone ${URL} -b ${BRANCH} release && cd release
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo 'baw sync'
+baw sync all
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo 'pip install...'
+pip install .
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo 'baw publish --pre...'
+baw publish --pre
+if [ $? -ne 0 ]
+then
+    exit 1
+fi

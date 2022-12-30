@@ -30,3 +30,4 @@ build(){
 
 build Rebase            baw_rebase
 build Release           baw_release
+build PreRelease        baw_prerelease
