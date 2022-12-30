@@ -209,6 +209,7 @@ def run(args: dict):  # pylint:disable=R0911
         return baw.dockers.image.exists(name)
     if action == 'newest':
         return newest(args['name'])
+    baw.error(f'nothing selected: {args}')
     return baw.utils.FAILURE
 
 
