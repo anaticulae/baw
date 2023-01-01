@@ -177,7 +177,7 @@ def sync_dependencies(  # pylint:disable=R1260
     return returncode
 
 
-def eval_sync(pip, completed, verbose) -> int:
+def eval_sync(pip, completed, *, verbose: bool) -> int:
     if 'NewConnectionError' in completed.stdout:
         baw.utils.error(f'Could not reach server: {pip}')
         return completed.returncode
