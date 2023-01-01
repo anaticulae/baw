@@ -179,6 +179,11 @@ def sync_dependencies(  # pylint:disable=R1260
         venv=venv,
     )
     baw.utils.file_remove(requirements)
+    returncode = eval_sync(pip, completed, verbose=verbose)
+    return returncode
+
+
+def eval_sync(pip, completed, verbose) -> int:
     if 'NewConnectionError' in completed.stdout:
         baw.utils.error(f'Could not reach server: {pip}')
         return completed.returncode
