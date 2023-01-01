@@ -163,8 +163,6 @@ def sync_dependencies(  # pylint:disable=R1260
     cmd, pip = get_install_cmd(
         root=root,
         to_install=requirements,
-        pip_index=pip_index,
-        extra_url=extra_url,
         testing_url=testing,
         venv=venv,
         verbose=verbose,
@@ -279,11 +277,10 @@ def get_install_cmd(
     root: str,
     to_install: str,
     verbose: bool,
-    pip_index: str,
-    extra_url: str,
     testing_url: str,
     venv: bool = False,
 ):
+    pip_index, extra_url = baw.config.package_address()
     trusted = host(pip_index)
     warning = '' if verbose else '--no-warn-conflicts'
     pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
