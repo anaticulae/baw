@@ -276,9 +276,10 @@ def determine_resources(root: str, packages: str) -> list:
 def get_install_cmd(
     root: str,
     to_install: str,
-    verbose: bool,
     testing_url: str,
+    *,
     venv: bool = False,
+    verbose: bool = False,
 ):
     pip_index, extra_url = baw.config.package_address()
     trusted = host(pip_index)
