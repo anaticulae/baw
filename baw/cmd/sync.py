@@ -153,17 +153,13 @@ def sync_dependencies(  # pylint:disable=R1260
     )
     if not required.equal and not required.greater:
         return baw.utils.SUCCESS
-    testing = baw.config.package_testing()
     baw.utils.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()
     baw.utils.file_replace(requirements, str(required))
-    if '.post' not in str(required):
-        testing = None
     cmd, pip = get_install_cmd(
         root=root,
-        to_install=requirements,
-        testing_url=testing,
+        requirements=requirements,
         venv=venv,
         verbose=verbose,
     )
@@ -275,16 +271,17 @@ def determine_resources(root: str, packages: str) -> list:
 
 def get_install_cmd(
     root: str,
-    to_install: str,
-    testing_url: str,
+    requirements: str,
     *,
     venv: bool = False,
     verbose: bool = False,
 ):
     pip_index, extra_url = baw.config.package_address()
     trusted = host(pip_index)
-    warning = '' if verbose else '--no-warn-conflicts'
     pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
+    testing_url = baw.config.package_testing()
+    if '.post' not in baw.utils.file_read(requirements):
+        testing_url = None
     if testing_url:
         pip += f'--extra-index-url {testing_url} '
     pip += f'--trusted {trusted}'
@@ -292,10 +289,11 @@ def get_install_cmd(
     if require_legacy_solver():
         config += '--use-deprecated=legacy-resolver '
     python = baw.config.python(root, venv=venv)
+    warning = '' if verbose else '--no-warn-conflicts'
     # prepare cmd
     cmd = f'{python} -mpip install {warning} {pip} '
     cmd += f'-U {config} '
-    cmd += f'-r {to_install} '
+    cmd += f'-r {requirements} '
     return cmd, pip
 
 
