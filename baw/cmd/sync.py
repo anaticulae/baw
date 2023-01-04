@@ -275,6 +275,7 @@ def get_install_cmd(
     *,
     venv: bool = False,
     verbose: bool = False,
+    timeout: int = 30,
 ):
     pip_index, extra_url = baw.config.package_address()
     trusted = host(pip_index)
@@ -294,6 +295,7 @@ def get_install_cmd(
     cmd = f'{python} -mpip install {warning} {pip} '
     cmd += f'-U {config} '
     cmd += f'-r {requirements} '
+    cmd += f'--timeout {timeout} '
     return cmd, pip
 
 
