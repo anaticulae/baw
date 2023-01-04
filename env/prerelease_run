@@ -25,7 +25,7 @@ then
 fi
 
 echo 'pip install...'
-pip install .
+pip --verbose install .
 if [ $? -ne 0 ]
 then
     exit 1
