@@ -75,7 +75,9 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
         f'git commit {source} -m {message}',
         verbose=verbose,
     )
-    if not process.returncode and tag:
+    if process.returncode:
+        return process.returncode
+    if tag:
         process = baw.runtime.run_target(
             root,
             f'git tag {tag}',
