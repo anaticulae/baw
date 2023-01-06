@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v1.46.0 (2023-01-06)
+
+### Feature
+
+* use new quick pattern (18e50b8d5e5a)
+* make pip step more verbose (6d667771c89d)
+* increase timeout to download huge packages (77ba8e9adce5)
+
+### Fix
+
+* pass return code if git fails (b5986345f367)
+
+### Documentation
+
+* happy New Year! (9c5025abc7a9)
+
+### Chore
+
+* upgrade Jenkinsfile (ca15120709c0)
+
 ## v1.45.0 (2022-12-30)
 
 ### Feature
