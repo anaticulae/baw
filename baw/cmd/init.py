@@ -90,7 +90,8 @@ def init(
         )
         if completed:
             return completed
-    first_commit(root, verbose)
+    if returncode := first_commit(root, verbose):
+        return returncode
     # Deactivate options to reach fast reaction
     # TODO: Think aboud activating later? Add test flag?
     # Reduces times of creating from 8 to 2 secs
@@ -104,7 +105,7 @@ def init(
     return baw.utils.SUCCESS
 
 
-def first_commit(root, verbose: bool):
+def first_commit(root, verbose: bool) -> int:
     """This is a replacement for semantic_release cause project setup
     does not worker proper like in the past(4.1.1) anymore."""
     baw.git.add(
@@ -112,12 +113,13 @@ def first_commit(root, verbose: bool):
         '.',
         verbose=verbose,
     )
-    baw.git.commit(
+    returncode = baw.git.commit(
         root,
         source=' ',
         message=INIT,
         tag='v0.0.0',
     )
+    return returncode
 
 
 INIT = """\
