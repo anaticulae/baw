@@ -73,6 +73,8 @@ REFRENCE = '<<GITDESCRIBE>>'
 
 PIPREF = '<<PIPREF>>'
 
+PIPSTABLE = '<<PIPSTABLE>>'
+
 
 @contextlib.contextmanager
 def dockerfile_resolve_gitdescribe(dockerfile: str):
@@ -102,6 +104,10 @@ def describe(dockerfile: str) -> str:
         pipref = baw.cmd.info.pip_version(root, verbose=True)
         baw.utils.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
         content = content.replace(PIPREF, pipref)
+    if PIPSTABLE in content:
+        stable = baw.project.version.determine(root, verbose=True)
+        baw.utils.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
+        content = content.replace(PIPSTABLE, stable)
     return content
 
 

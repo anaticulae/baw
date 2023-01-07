@@ -9,6 +9,8 @@
 
 import os
 
+import pytest
+
 import baw.cmd.image.dockerfiles
 import baw.pipelinefile
 import tests
@@ -44,14 +46,18 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
     assert upgraded, str(stdout)
 
 
-def test_cmd_image_pipref_upgrade(simple, capsys):
+@pytest.mark.parametrize('typ', [
+    'PIPREF',
+    'PIPSTABLE',
+])
+def test_cmd_image_pipref_upgrade(simple, capsys, typ):
     simple[0]('pipe init')
     root = simple[1]
     dockerfile = os.path.join(root, 'DOCKERFILE')
     # use image-name of current Jenkins-File
     project = baw.cmd.image.dockerfiles.header(baw.ROOT)
-    # create simple docker-file which replaces <<PIPREF>>
-    baw.utils.file_create(dockerfile, f'{project}\nRUN echo <<PIPREF>>')
+    # create simple docker-file which replaces <<PIPREF>><<PIPSTABLE>>
+    baw.utils.file_create(dockerfile, f'{project}\nRUN echo <<{typ}>>')
     baw.git.commit(root, 'DOCKERFILE', 'verify pipref')
     # create dockerfile to verify PIPREF-replacement
     simple[0](f'image create --dockerfile {dockerfile}')
