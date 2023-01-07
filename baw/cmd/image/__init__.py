@@ -77,7 +77,7 @@ PIPREF = '<<PIPREF>>'
 @contextlib.contextmanager
 def dockerfile_resolve_gitdescribe(dockerfile: str):
     content = baw.utils.file_read(dockerfile)
-    described = describe(content, dockerfile)
+    described = describe(dockerfile)
     if no_replace := described == content:  # pylint:disable=W0612
         yield dockerfile
         return
@@ -91,7 +91,8 @@ def dockerfile_resolve_gitdescribe(dockerfile: str):
     os.unlink(newpath)
 
 
-def describe(content: str, dockerfile: str) -> str:
+def describe(dockerfile: str) -> str:
+    content = baw.utils.file_read(dockerfile)
     root = baw.determine_root(dockerfile)
     if REFRENCE in content:
         current = baw.git.describe(root)
