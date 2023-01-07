@@ -17,6 +17,7 @@ import baw.__root__
 from baw.config import shortcut
 from baw.dockers.dockfile import docker_image_upgrade
 from baw.pipelinefile import jenkinsfile
+from baw.project import determine_root
 from baw.runtime import hasprog
 from baw.utils import error
 from baw.utils import log
