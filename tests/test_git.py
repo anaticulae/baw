@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import baw.cmd.release.drop
+import baw.cmd.release
 import baw.git
 
 
@@ -15,4 +15,4 @@ def test_commit_with_tag(simple):
     """Regression test to tag/annoate commit to use with git describe."""
     root = simple[1]
     tagged = baw.git.describe(root)
-    assert tagged == baw.cmd.release.drop.DEFAULT_RELEASE
+    assert tagged == baw.cmd.release.FIRST_RELEASE

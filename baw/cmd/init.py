@@ -15,6 +15,7 @@ import os
 
 import baw.cmd
 import baw.cmd.format
+import baw.cmd.release
 import baw.config
 import baw.git
 import baw.resources
@@ -117,7 +118,7 @@ def first_commit(root, verbose: bool) -> int:
         root,
         source=' ',
         message=INIT,
-        tag='v0.0.0',
+        tag=baw.cmd.release.FIRST_RELEASE,
     )
     return returncode
 

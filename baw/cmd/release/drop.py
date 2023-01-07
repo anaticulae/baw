@@ -62,13 +62,11 @@ def can_drop(root: str, venv: bool, verbose: bool) -> bool:
     if not matched:
         baw.utils.error(f'No release tag detected: {headtag}')
         return False
-    if headtag == DEFAULT_RELEASE:
-        baw.utils.error(f'Could not remove {DEFAULT_RELEASE} release')
+    default_release = baw.cmd.release.FIRST_RELEASE
+    if headtag == default_release:
+        baw.utils.error(f'Could not remove {default_release} release')
         return False
     return True
-
-
-DEFAULT_RELEASE = 'v0.0.0'
 
 
 def reset_resources(

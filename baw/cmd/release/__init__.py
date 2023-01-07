@@ -16,6 +16,8 @@ import baw.git
 import baw.runtime
 import baw.utils
 
+FIRST_RELEASE = 'v0.0.0'
+
 
 def release(  # pylint:disable=R1260
     root: str,
