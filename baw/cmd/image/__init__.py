@@ -75,20 +75,26 @@ REFRENCE = '<<GITDESCRIBE>>'
 @contextlib.contextmanager
 def dockerfile_resolve_gitdescribe(dockerfile: str, root: str):
     content = baw.utils.file_read(dockerfile)
-    if REFRENCE not in content:
+    current = baw.git.describe(root)
+    described = describe(content, current, dockerfile)
+    if no_replace := described == content:  # pylint:disable=W0612
         yield dockerfile
         return
-    current = baw.git.describe(root)
-    baw.utils.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
-    content = content.replace(REFRENCE, current)
     # tmp file must be in the same path as dockerfile to COPY correctly
     newpath = os.path.join(os.path.split(dockerfile)[0], 'dockertmp')
     baw.utils.file_create(
         newpath,
-        content=content,
+        content=described,
     )
     yield newpath
     os.unlink(newpath)
+
+
+def describe(content: str, current: str, dockerfile: str = None) -> str:
+    if REFRENCE in content:
+        baw.utils.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
+        content = content.replace(REFRENCE, current)
+    return content
 
 
 def create_git_hash(root: str, name=None):  # pylint:disable=W0613
