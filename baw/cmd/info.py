@@ -10,6 +10,9 @@
 import os
 import sys
 
+import utila
+import utila.quick
+
 import baw.cmd.image
 import baw.cmd.utils
 import baw.config
@@ -55,6 +58,9 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
     if value == 'sources':
         baw.utils.log(' '.join(baw.config.sources(root) + ['tests']))
         return baw.utils.SUCCESS
+    if value == 'pip':
+        baw.utils.log(pip_version(root, verbose=verbose))
+        return baw.utils.SUCCESS
     if value == 'image':
         baw.utils.log(baw.cmd.image.tag(root))
         return baw.utils.SUCCESS
@@ -86,6 +92,21 @@ def print_tmp(root: str):
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
     baw.utils.log(tmpdir)
     sys.exit(baw.utils.SUCCESS)
+
+
+def pip_version(root: str, verbose: bool = False):
+    """\
+    >>> import baw;pip_version(baw.ROOT)
+    '...'
+    >>> pip_version(baw.ROOT, verbose=True)
+    'baw==...'
+    """
+    current = utila.quick.git_hash(root)
+    result = current
+    if verbose:
+        name = utila.baw_name(root)
+        result = f'{name}=={result}'
+    return result
 
 
 def print_venv(root: str):
@@ -131,7 +152,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
 
 CHOISES = ('name shortcut sources venv tmp '
            'covreport requirement image clean describe stable '
-           'branch').split()
+           'branch pip').split()
 
 
 def extend_cli(parser):
