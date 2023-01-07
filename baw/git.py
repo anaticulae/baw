@@ -84,6 +84,12 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
             f'git tag -a {tag} -m {message}',
             verbose=verbose,
         )
+        if process.returncode:
+            if stdout := process.stdout.strip():
+                baw.utils.log(stdout)
+            if stderr := process.stderr.strip():
+                baw.utils.error(stderr)
+            sys.exit(baw.utils.FAILURE)
     return process.returncode
 
 
