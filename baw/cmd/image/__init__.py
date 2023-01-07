@@ -141,6 +141,9 @@ def upgrade(
     prerelease: bool = False,
 ) -> int:
     path = os.path.abspath(dockerfile)
+    if not os.path.exists(path):
+        baw.utils.error(f'could not upgrade, path does not exists: {path}')
+        return baw.utils.FAILURE
     baw.utils.log(f'start upgrading: {path}')
     replaced = baw.docker_image_upgrade(
         path,
