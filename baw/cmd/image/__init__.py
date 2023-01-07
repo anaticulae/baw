@@ -38,7 +38,7 @@ def create(  # pylint:disable=W0613
         dockerfile = baw.utils.forward_slash(dockerfile)
         if '/' not in dockerfile:
             dockerfile = os.path.join(os.getcwd(), dockerfile)
-        with dockerfile_resolve_gitdescribe(dockerfile, root) as dock:
+        with dockerfile_resolve_gitdescribe(dockerfile) as dock:
             result = dockerfile_build(
                 root,
                 dockerfile=dock,
@@ -71,12 +71,13 @@ def dockerfile_build(root, dockerfile, name=None) -> int:
 
 REFRENCE = '<<GITDESCRIBE>>'
 
+PIPREF = '<<PIPREF>>'
+
 
 @contextlib.contextmanager
-def dockerfile_resolve_gitdescribe(dockerfile: str, root: str):
+def dockerfile_resolve_gitdescribe(dockerfile: str):
     content = baw.utils.file_read(dockerfile)
-    current = baw.git.describe(root)
-    described = describe(content, current, dockerfile)
+    described = describe(content, dockerfile)
     if no_replace := described == content:  # pylint:disable=W0612
         yield dockerfile
         return
@@ -90,10 +91,16 @@ def dockerfile_resolve_gitdescribe(dockerfile: str, root: str):
     os.unlink(newpath)
 
 
-def describe(content: str, current: str, dockerfile: str = None) -> str:
+def describe(content: str, dockerfile: str) -> str:
+    root = baw.determine_root(dockerfile)
     if REFRENCE in content:
+        current = baw.git.describe(root)
         baw.utils.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
         content = content.replace(REFRENCE, current)
+    if PIPREF in content:
+        pipref = baw.cmd.info.pip_version(root, verbose=True)
+        baw.utils.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
+        content = content.replace(PIPREF, pipref)
     return content
 
 
