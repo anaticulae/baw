@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v1.47.0 (2023-01-07)
+
+### Feature
+
+* add pip compatible version info (06923b21f5cb)
+* make upgrade more flexible (b5f21f824f2e)
+* inform about non exiting path (35876d52a011)
+* log docker image upgrade (52d2b4e6275d)
+
 ## v1.46.0 (2023-01-06)
 
 ### Feature
