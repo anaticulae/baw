@@ -41,3 +41,20 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
     upgraded = 'upgraded:' in stdout
     upgraded |= 'up-to-date:' in stdout
     assert upgraded, str(stdout)
+
+
+def test_cmd_image_pipref_upgrade(simple, capsys):
+    simple[0]('pipe init')
+    root = simple[1]
+    dockerfile = os.path.join(root, 'DOCKERFILE')
+    # use image-name of current Jenkins-File
+    project = baw.cmd.image.dockerfiles.header(baw.ROOT)
+    # create simple docker-file which replaces <<PIPREF>>
+    baw.utils.file_create(dockerfile, f'{project}\nRUN echo <<PIPREF>>')
+    baw.git.commit(root, 'DOCKERFILE', 'verify pipref')
+    # create dockerfile to verify PIPREF-replacement
+    simple[0](f'image create --dockerfile {dockerfile}')
+    expected = 'RUN echo xkcd==0.0.0'
+    # ensure that replacement was correct
+    stdout = tests.stdout(capsys)
+    assert expected in stdout
