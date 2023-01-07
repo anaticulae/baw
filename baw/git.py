@@ -293,7 +293,14 @@ def describe(root: str) -> str:
     if not installed():
         baw.utils.error('install git')
         sys.exit(baw.utils.FAILURE)
-    name = baw.runtime.run('git describe', cwd=root).stdout.strip()
+    completed = baw.runtime.run('git describe', cwd=root)
+    if completed.returncode:
+        if stdout := completed.stdout.strip():
+            baw.utils.log(stdout)
+        if stderr := completed.stderr.strip():
+            baw.utils.error(stderr)
+        sys.exit(baw.utils.FAILURE)
+    name = completed.stdout.strip()
     return name
 
 
