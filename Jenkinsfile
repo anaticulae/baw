@@ -68,7 +68,7 @@ pipeline{
         stage('upgrade'){
             when {branch 'integrate'}
             steps{
-                sh 'git push origin/integrate'
+                integrate()
             }
         }
         stage('pre-release'){
