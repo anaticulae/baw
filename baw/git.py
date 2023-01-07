@@ -78,9 +78,10 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
     if process.returncode:
         return process.returncode
     if tag:
+        # -a: ensure to make annotated tag to use with `git describe`
         process = baw.runtime.run_target(
             root,
-            f'git tag {tag}',
+            f'git tag -a {tag} -m {message}',
             verbose=verbose,
         )
     return process.returncode
