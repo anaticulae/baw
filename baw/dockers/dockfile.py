@@ -97,6 +97,7 @@ def docker_image_upgrade(
         # '169.254.149.20:6001', 'arch_python_git_baw', 'v1.20.0')
         repo, image = find[2], find[3]
         matched = f'{repo}/{image}'
+        baw.utils.verbose(f'>>> search: {matched}')
         tagx = baw.dockers.image.tags(matched)
         maxed = baw.dockers.image.version_max(
             tagx,
