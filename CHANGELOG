@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.48.0 (2023-01-07)
+
+### Feature
+
+* add PIPREF to automate image replacement (8231fffd399a)
+* add method to determine project root (9e079a6710a6)
+
+### Chore
+
+* use pre-release to use newest feature (9eb6729bf360)
+* use new integrate step (894564a7e4b0)
+
 ## v1.47.0 (2023-01-07)
 
 ### Feature
