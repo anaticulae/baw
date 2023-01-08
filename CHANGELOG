@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.49.0 (2023-01-08)
+
+### Feature
+
+* make git commit more verbose (e461d36b1415)
+* make git describe more verbose (2f4179ab72b9)
+* add <<PIPSTABLE>> (1b47d30bb5da)
+* upgrade template (9fbaf860a6d8)
+
+### Fix
+
+* annotate tag to use with git describe (8402e0e4e7ae)
+
+### Chore
+
+* use current baw (6128bd865d0e)
+
 ## v1.48.0 (2023-01-07)
 
 ### Feature
