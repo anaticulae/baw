@@ -2,7 +2,7 @@ pipeline{
     agent{
         dockerfile{filename 'Dockerfile'}
     }
-    // image '169.254.149.20:6001/arch_python_git_baw:v1.47.0-7-g4128878'
+    // image '169.254.149.20:6001/arch_python_git_baw:v1.48.0-6-ge461d36'
     stages{
         stage('integrate'){
             when {branch 'integrate'}
