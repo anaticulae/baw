@@ -222,7 +222,7 @@ def determine_new_requirements(
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(  # pylint:disable=R0914
+def collect_new_packages(  # pylint:disable=R0914,R1260
     root,
     source,
     sink,
@@ -263,6 +263,10 @@ def collect_new_packages(  # pylint:disable=R0914
                             new=available,
                     ):
                         available = installed
+                if not available:
+                    baw.utils.error(f'package: {package} not available')
+                    sync_error = True
+                    continue
                 if available != version:
                     if '.post' in available and not pre:
                         # installed pre-version and upgrade without --pre
