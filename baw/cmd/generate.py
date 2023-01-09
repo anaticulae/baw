@@ -14,16 +14,16 @@ import baw.utils
 
 def run(args: dict):
     root = baw.cmd.utils.get_root(args)
-    pattern = args.get('pattern')
+    pattern = args.get('pattern', 'all')
     if pattern == 'all':
-        return baw.cmd.test.run_test(
-            root,
-            generate=True,
-            venv=args['venv'],
-            verbose=args['verbose'],
-        )
-    baw.utils.error(f'pattern not supported: {pattern}')
-    return baw.utils.FAILURE
+        pattern = True
+    completed = baw.cmd.test.run_test(
+        root,
+        generate=pattern,
+        venv=args['venv'],
+        verbose=args['verbose'],
+    )
+    return completed
 
 
 def extend_cli(parser):

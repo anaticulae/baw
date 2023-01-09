@@ -170,7 +170,7 @@ def setup_testenvironment(
         env['NIGHTLY'] = 'True'  # Very long running test
         markers += '-m longrun -m nightly '
     if generate:
-        env['GENERATE'] = 'True'  # Generate test resources
+        env['GENERATE'] = str(generate)  # Generate test resources
     if noinstall:
         env['NOINSTALL'] = 'True'  # do not run setup process
     # comma-separated plugins to load during startup
