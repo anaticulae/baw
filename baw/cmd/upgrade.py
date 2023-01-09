@@ -279,6 +279,9 @@ def check_package(dependency: str, package: str, version: str, pre: bool):
         ):
             available = installed
     if not available:
+        if pre:
+            # no pre-release available
+            return True
         baw.utils.error(f'package: {package} not available')
         return None
     if available == version:
