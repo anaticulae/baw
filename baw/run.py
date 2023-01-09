@@ -26,7 +26,6 @@ import baw.cmd.plan
 import baw.cmd.test
 import baw.cmd.upgrade
 import baw.cmd.utils
-import baw.config
 import baw.dockers
 import baw.project
 import baw.runtime
@@ -47,7 +46,7 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
         if failure := run_bisect(args):
             return failure
     # setup virtual flag, verify this!
-    run_environment(args)
+    baw.cmd.utils.run_environment(args)
     func = args.get('func')
     if func:
         # TODO: REMOVE ALL METHOD BELOW
@@ -70,19 +69,8 @@ def run_version(args) -> bool:
     return True
 
 
-def run_environment(args):
-    if baw.config.venv_always():
-        # overwrite venv selection
-        args['venv'] = True
-    root = baw.cmd.utils.setup_environment(
-        args['raw'],
-        args.get('venv', False),
-    )
-    return root
-
-
 def run_open(args):
-    directory = run_environment(args)
+    directory = baw.cmd.utils.run_environment(args)
     printme = args['print']
     baw.cmd.open.openme(
         root=directory,
@@ -95,7 +83,7 @@ def run_open(args):
 def run_ide(args):
     # # create a new git repository with template code
     # open vscode
-    root = run_environment(args)
+    root = baw.cmd.utils.run_environment(args)
     packages = None
     if args['package']:
         packages = tuple(args['package'])
