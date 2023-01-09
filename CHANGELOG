@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.49.2 (2023-01-09)
+
+### Fix
+
+* do not fail on missing pre-release (829a30b5e9fd)
+* do not to try upgrade without upgrade (cd0d7b305d5d)
+
+### Chore
+
+* upgrade requirements.txt (11678895351c)
+
 ## v1.49.1 (2023-01-09)
 
 ### Fix
