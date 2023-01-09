@@ -257,28 +257,38 @@ def collect_new_packages(  # pylint:disable=R0914,R1260
                 baw.utils.error('could not reach package repository')
                 sync_error = True
                 continue
-            available = available_version(dependency, package=package)
-            installed = installed_version(dependency)
-            if installed:
-                if baw.requirements.check.lower(
-                        current=installed,
-                        new=available,
-                ):
-                    available = installed
-            if not available:
-                baw.utils.error(f'package: {package} not available')
+            upgraded = check_package(dependency, package, version, pre)
+            if not upgraded:
                 sync_error = True
                 continue
-            if available != version:
-                if '.post' in available and not pre:
-                    # installed pre-version and upgrade without --pre
-                    # command. Do not upgrade with pre-release without
-                    # --pre flag.
-                    msg = f'do not upgrade: {available} without --pre'
-                    baw.utils.log(msg)
-                    continue
-                sink[package] = (version, available)  #(old, new)
+            if upgraded is True:
+                # no upgrade required
+                continue
+            sink[package] = upgraded  #(old, new)
     return sync_error
+
+
+def check_package(dependency: str, package: str, version: str, pre: bool):
+    available = available_version(dependency, package=package)
+    installed = installed_version(dependency)
+    if installed:
+        if baw.requirements.check.lower(
+                current=installed,
+                new=available,
+        ):
+            available = installed
+    if not available:
+        baw.utils.error(f'package: {package} not available')
+        return None
+    if available != version:
+        if '.post' in available and not pre:
+            # installed pre-version and upgrade without --pre
+            # command. Do not upgrade with pre-release without
+            # --pre flag.
+            msg = f'do not upgrade: {available} without --pre'
+            baw.utils.log(msg)
+            return True
+    return (version, available)  #(old, new)
 
 
 def run(args):
