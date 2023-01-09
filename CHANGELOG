@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.49.1 (2023-01-09)
+
+### Fix
+
+* mark missing package as sync error (94bc94b70879)
+* inform about sync error (678c4423f835)
+
 ## v1.49.0 (2023-01-08)
 
 ### Feature
