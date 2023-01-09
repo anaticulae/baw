@@ -281,6 +281,9 @@ def check_package(dependency: str, package: str, version: str, pre: bool):
     if not available:
         baw.utils.error(f'package: {package} not available')
         return None
+    if available == version:
+        # no upgrade required
+        return True
     if available != version:
         if '.post' in available and not pre:
             # installed pre-version and upgrade without --pre
