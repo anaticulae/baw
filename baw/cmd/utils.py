@@ -35,12 +35,12 @@ def run_environment(args):
 
 
 def setup_environment(raw, venv):  # pylint: disable=W0621
-    if venv:
-        # expose venv flag
-        os.environ['VENV'] = "TRUE"
     if raw:
         # expose raw out flag
         os.environ[baw.utils.PLAINOUTPUT] = "TRUE"
+    if venv:
+        # expose venv flag
+        os.environ['VENV'] = "TRUE"
     root = os.getcwd()
     return root
 
