@@ -257,28 +257,27 @@ def collect_new_packages(  # pylint:disable=R0914,R1260
                 baw.utils.error('could not reach package repository')
                 sync_error = True
                 continue
-            else:
-                available = available_version(dependency, package=package)
-                installed = installed_version(dependency)
-                if installed:
-                    if baw.requirements.check.lower(
-                            current=installed,
-                            new=available,
-                    ):
-                        available = installed
-                if not available:
-                    baw.utils.error(f'package: {package} not available')
-                    sync_error = True
+            available = available_version(dependency, package=package)
+            installed = installed_version(dependency)
+            if installed:
+                if baw.requirements.check.lower(
+                        current=installed,
+                        new=available,
+                ):
+                    available = installed
+            if not available:
+                baw.utils.error(f'package: {package} not available')
+                sync_error = True
+                continue
+            if available != version:
+                if '.post' in available and not pre:
+                    # installed pre-version and upgrade without --pre
+                    # command. Do not upgrade with pre-release without
+                    # --pre flag.
+                    msg = f'do not upgrade: {available} without --pre'
+                    baw.utils.log(msg)
                     continue
-                if available != version:
-                    if '.post' in available and not pre:
-                        # installed pre-version and upgrade without --pre
-                        # command. Do not upgrade with pre-release without
-                        # --pre flag.
-                        msg = f'do not upgrade: {available} without --pre'
-                        baw.utils.log(msg)
-                        continue
-                    sink[package] = (version, available)  #(old, new)
+                sink[package] = (version, available)  #(old, new)
     return sync_error
 
 
