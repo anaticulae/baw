@@ -125,6 +125,20 @@ def test_upgrading(tmpdir):
     assert loaded != TEST_UPGRADE
 
 
+def test_cmd_upgrade_nopre(simple, capsys):  # pylint:disable=W0621,W0613
+    simple[0]('upgrade')
+    stdout = tests.stdout(capsys)
+    assert 'Start upgrading requirements:' in stdout, stdout
+    assert 'Requirements are up to date' in stdout, stdout
+
+
+def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
+    simple[0]('upgrade --pre')
+    stdout = tests.stdout(capsys)
+    assert 'Start upgrading requirements:' in stdout, stdout
+    assert 'Requirements are up to date' in stdout, stdout
+
+
 # @tests.hasgit
 # @tests.nightly
 # def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
