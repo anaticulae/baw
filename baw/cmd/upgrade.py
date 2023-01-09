@@ -244,27 +244,28 @@ def collect_new_packages(  # pylint:disable=R0914,R1260
                 verbose=verbose,
             ): (package, version) for package, version in source.items()
         }
-        for future in concurrent.futures.as_completed(todo):
-            (package, version) = todo[future]
-            try:
-                dependency = future.result()
-            except ValueError:
-                if not pre:
-                    baw.utils.error(f'package: {package} is not available')
-                    sync_error = True
-                continue
-            except RuntimeError:
-                baw.utils.error('could not reach package repository')
+    completed = concurrent.futures.as_completed(todo)
+    for future in completed:
+        (package, version) = todo[future]
+        try:
+            dependency = future.result()
+        except ValueError:
+            if not pre:
+                baw.utils.error(f'package: {package} is not available')
                 sync_error = True
-                continue
-            upgraded = check_package(dependency, package, version, pre)
-            if not upgraded:
-                sync_error = True
-                continue
-            if upgraded is True:
-                # no upgrade required
-                continue
-            sink[package] = upgraded  #(old, new)
+            continue
+        except RuntimeError:
+            baw.utils.error('could not reach package repository')
+            sync_error = True
+            continue
+        upgraded = check_package(dependency, package, version, pre)
+        if not upgraded:
+            sync_error = True
+            continue
+        if upgraded is True:
+            # no upgrade required
+            continue
+        sink[package] = upgraded  #(old, new)
     return sync_error
 
 
