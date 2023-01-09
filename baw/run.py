@@ -8,7 +8,6 @@
 #==============================================================================
 
 import importlib.metadata
-import os
 import sys
 import time
 import traceback
@@ -75,7 +74,7 @@ def run_environment(args):
     if baw.config.venv_always():
         # overwrite venv selection
         args['venv'] = True
-    root = setup_environment(
+    root = baw.cmd.utils.setup_environment(
         args['raw'],
         args.get('venv', False),
     )
@@ -165,17 +164,6 @@ def run_plan(args: dict):
 
 
 # TODO: add matrix with excluding cmds, eg. --init --drop_release
-
-
-def setup_environment(raw, venv):  # pylint: disable=W0621
-    if venv:
-        # expose venv flag
-        os.environ['VENV'] = "TRUE"
-    if raw:
-        # expose raw out flag
-        os.environ[baw.utils.PLAINOUTPUT] = "TRUE"
-    root = os.getcwd()
-    return root
 
 
 def main():
