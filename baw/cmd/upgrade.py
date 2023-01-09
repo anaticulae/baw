@@ -222,7 +222,7 @@ def determine_new_requirements(
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
-def collect_new_packages(  # pylint:disable=R0914,R1260
+def collect_new_packages(  # pylint:disable=R0914
     root,
     source,
     sink,
