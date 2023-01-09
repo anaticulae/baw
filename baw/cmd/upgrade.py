@@ -251,9 +251,12 @@ def collect_new_packages(  # pylint:disable=R0914,R1260
             except ValueError:
                 if not pre:
                     baw.utils.error(f'package: {package} is not available')
+                    sync_error = True
+                continue
             except RuntimeError:
                 baw.utils.error('could not reach package repository')
                 sync_error = True
+                continue
             else:
                 available = available_version(dependency, package=package)
                 installed = installed_version(dependency)
