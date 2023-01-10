@@ -11,7 +11,7 @@ import sys
 
 import pytest
 
-import baw.run
+import baw.__main__
 
 
 @pytest.mark.parametrize(
@@ -29,7 +29,7 @@ def test_baaw(monkeypatch, cmd):
         # baw is removed as first arg
         context.setattr(sys, 'argv', ['baw'] + cmd.split())
         with pytest.raises(SystemExit) as result:
-            baw.run.main()
+            baw.__main__.run()
         result = str(result)
         # if no cmd is selected print help message and return code 1
         expected = 'SystemExit(0)' if cmd else 'SystemExit(1)'

@@ -43,7 +43,7 @@ PACKAGES = [
     'baw.templates.docs',
 ]
 ENTRY_POINTS = dict(console_scripts=[
-    'baw = baw.run:main',
+    'baw = baw.__main__:run',
     'baw_cprofile_show = baw.small.cprofile:main',
     'baw_profile = baw.small.profile:main',
     'baw_regen = baw.small.regen:main',

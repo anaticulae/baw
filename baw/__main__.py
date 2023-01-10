@@ -8,7 +8,25 @@
 #==============================================================================
 """Evaluate cmd-args and execute cmds"""
 
-import baw.run
+import sys
+import traceback
+
+
+def run():
+    """Entry point of script"""
+    try:
+        import baw.dockers
+        sys.exit(baw.dockers.switch_docker())
+    except KeyboardInterrupt:
+        import baw.utils
+        baw.utils.log('\nOperation cancelled by user')
+    except Exception as msg:  # pylint: disable=broad-except
+        import baw.utils
+        baw.utils.error(msg)
+        stack_trace = traceback.format_exc()
+        baw.utils.log(baw.utils.forward_slash(stack_trace))
+    sys.exit(baw.utils.FAILURE)
+
 
 if __name__ == "__main__":
-    baw.run.main()
+    run()

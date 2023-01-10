@@ -10,7 +10,6 @@
 import importlib.metadata
 import sys
 import time
-import traceback
 
 import baw
 import baw.cli
@@ -149,19 +148,3 @@ def run_plan(args: dict):
         plan=args.get('plan_operation'),
     )
     return result
-
-
-# TODO: add matrix with excluding cmds, eg. --init --drop_release
-
-
-def main():
-    """Entry point of script"""
-    try:
-        sys.exit(baw.dockers.switch_docker())
-    except KeyboardInterrupt:
-        baw.utils.log('\nOperation cancelled by user')
-    except Exception as msg:  # pylint: disable=broad-except
-        baw.utils.error(msg)
-        stack_trace = traceback.format_exc()
-        baw.utils.log(baw.utils.forward_slash(stack_trace))
-    sys.exit(baw.utils.FAILURE)

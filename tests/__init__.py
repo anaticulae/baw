@@ -14,6 +14,7 @@ import sys
 
 import pytest
 
+import baw.__main__
 import baw.git
 import baw.run
 import baw.runtime
@@ -119,7 +120,7 @@ def baaw(
         cmdx += cmd
         context.setattr(sys, 'argv', cmdx)
         with pytest.raises(SystemExit) as result:
-            baw.run.main()
+            baw.__main__.run()
         result = str(result)
         if expect:
             assert 'SystemExit(0)' in result, result
