@@ -31,7 +31,7 @@ master_doc = 'index'
 # General information about the project.
 project = '{{NAME}}'
 copyright = '2019-{{YEAR}}, kiwi project'
-author = 'Helmut Konrad Fahrendholz'
+author = 'Helmut Konrad Schewe'
 
 version = '{{VERSION}}'
 release = '{{VERSION}}'
