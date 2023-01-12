@@ -54,6 +54,7 @@ RUN python -mpip install .
 RUN mkdir -m 777 /.local /.cache /.pylint.d
 RUN chmod -R 777 /tmp
 
+WORKDIR /var/outdir
 WORKDIR /var/workdir
 
 ENTRYPOINT ["sh", "-c"]
