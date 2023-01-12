@@ -22,6 +22,7 @@ def run(
     image: str,
     volumes: str = None,
     environment: list = None,
+    *,
     generate: bool = False,
     gitdir: bool = False,
 ) -> int:
