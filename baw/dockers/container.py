@@ -55,7 +55,7 @@ def run(
             if failure:
                 baw.utils.error(cmd)
             if not failure and outdir:
-                receive_data(container)
+                receive_data(container, outdir)
             baw.utils.log('stop container')
             # TODO: VERIFY THIS
             container.stop()
@@ -111,13 +111,14 @@ def create(
     return container
 
 
-def receive_data(container):
+def receive_data(container, outdir: bool = True):
+    outdir: str = outdir if isinstance(outdir, str) else '/var/outdir'
     baw.utils.log('receive data...')
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')
         with open(base, 'wb') as fp:
-            bits, stat = container.get_archive('/var/outdir')
-            baw.utils.log(stat)
+            bits, stat = container.get_archive(outdir)
+            baw.utils.verbose(stat)
             for chunk in bits:
                 fp.write(chunk)
         # untar content
