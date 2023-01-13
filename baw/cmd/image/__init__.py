@@ -226,6 +226,7 @@ def run(args: dict):  # pylint:disable=R0911
             environment=env,
             generate=args.get('generate'),
             gitdir=args['gitdir'],
+            outdir=args['outdir'],
         )
     if action == 'check':
         name = args['name']
@@ -281,6 +282,11 @@ def extend_cli(parser):
         '--gitdir',
         action='store_true',
         help='copy git dir into docker container',
+    )
+    cli.add_argument(
+        '--outdir',
+        action='store_true',
+        help='copy /var/outdir from container to this cwd',
     )
     cli.add_argument(
         '--prerelease',

@@ -25,6 +25,7 @@ def run(
     *,
     generate: bool = False,
     gitdir: bool = False,
+    outdir: bool = False,
 ) -> int:
     failure = False
     with baw.dockers.client() as connected:
@@ -53,6 +54,8 @@ def run(
             failure = verify(container)
             if failure:
                 baw.utils.error(cmd)
+            if not failure and outdir:
+                receive_data(container)
             baw.utils.log('stop container')
             # TODO: VERIFY THIS
             container.stop()
@@ -106,6 +109,27 @@ def create(
             environment=environment,
         )
     return container
+
+
+def receive_data(container):
+    baw.utils.log('receive data...')
+    with baw.utils.tmpdir() as tmp:
+        base = os.path.join(tmp, 'content.tar')
+        with open(base, 'wb') as fp:
+            bits, stat = container.get_archive('/var/outdir')
+            baw.utils.log(stat)
+            for chunk in bits:
+                fp.write(chunk)
+        # untar content
+        cmd = f'tar -xf {base}'
+        completed = baw.runtime.run(cmd, cwd=os.getcwd())
+        if completed.returncode:
+            baw.utils.error(f'untar failed: {cmd}')
+            if completed.stdout:
+                baw.utils.error(completed.stdout)
+            if completed.stdout:
+                baw.utils.error(completed.stderr)
+    baw.utils.log('done')
 
 
 def verify(container) -> bool:
