@@ -200,7 +200,7 @@ def create_test_cmd(  # pylint:disable=R0914
     pytest_ini = create_pytest_config(root)
     # configure test run
     debugger = '--pdb ' if pdb else ''
-    cov = cov_args(root, pdb=debugger) if coverage else ''
+    cov = cov_args(root, pdb=debugger, outdir=coverage) if coverage else ''
     # create test directory
     tmp_testpath, cachedir = create_testdir(root)
     # config
@@ -296,16 +296,19 @@ def determine_plugins(root) -> str:
     return result
 
 
-def cov_args(root: str, *, pdb: bool) -> str:
+def cov_args(root: str, *, pdb: bool, outdir: str = None) -> str:
     """Determine args for running tests based on project-root.
 
     Args:
         root(str): project root
         pdb(bool): using debugger on running tests
+        outdir(str): if str, write to outdir; if not, use default
     Returns:
         args for coverage cmd
     """
     output = os.path.join(baw.utils.tmp(root), 'report')
+    if isinstance(outdir, str):
+        output = baw.utils.fixup_windows(outdir)
     cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')
     assert os.path.exists(cov_config), str(cov_config)
     no_cov = '--no-cov ' if pdb else ''
@@ -402,7 +405,6 @@ def extend_cli(parser):
     test.add_argument(
         '--cov',
         help='test coverage',
-        action='store_true',
     )
     test.add_argument(
         '--generate',
