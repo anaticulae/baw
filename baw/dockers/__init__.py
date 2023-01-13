@@ -54,6 +54,8 @@ def prepare_cmd(argv: list) -> str:
     'baw test -n1'
     >>> prepare_cmd(['/var/tmp/baw', '--docker', 'test', '-n1'])
     'baw test -n1'
+    >>> prepare_cmd(['C:\\usr\\python\\310\\Scripts\\baw', '--docker', 'test', 'docs', '--junit_xml=C:/usr/git/var/outdir/test.xml'])
+    'baw test docs --junit_xml=/var/outdir/test.xml'
     """
     # use docker to run cmd
     argv = [item for item in argv if item not in '--docker --docken']
@@ -66,7 +68,22 @@ def prepare_cmd(argv: list) -> str:
             # linux
             argv[0] = argv[0].split('/')[-1]
     usercmd = ' '.join(argv)
+    # workaround
+    usercmd = fixup_windows(usercmd)
     return usercmd
+
+
+def fixup_windows(path):
+    """On windows argsparse expand /var/outdir/test.xml to C:/usr/git/var/..
+
+    This fixup fixes this.
+
+    >>> fixup_windows('--junit_xml=C:/usr/git/var/outdir/test.xml')
+    '--junit_xml=/var/outdir/test.xml'
+    """
+    # TODO: IMPORVE LATER
+    path = path.replace('C:/usr/git/var', '/var')
+    return path
 
 
 def determine_volumes() -> str:
