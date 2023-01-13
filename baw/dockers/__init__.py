@@ -16,6 +16,7 @@ import docker
 import baw.cmd.image
 import baw.dockers.container
 import baw.run
+import baw.utils
 
 
 @contextlib.contextmanager
@@ -70,21 +71,8 @@ def prepare_cmd(argv: list) -> str:
             argv[0] = argv[0].split('/')[-1]
     usercmd = ' '.join(argv)
     # workaround
-    usercmd = fixup_windows(usercmd)
+    usercmd = baw.utils.fixup_windows(usercmd)
     return usercmd
-
-
-def fixup_windows(path):
-    """On windows argsparse expand /var/outdir/test.xml to C:/usr/git/var/..
-
-    This fixup fixes this.
-
-    >>> fixup_windows('--junit_xml=C:/usr/git/var/outdir/test.xml')
-    '--junit_xml=/var/outdir/test.xml'
-    """
-    # TODO: IMPORVE LATER
-    path = path.replace('C:/usr/git/var', '/var')
-    return path
 
 
 def determine_volumes() -> str:
