@@ -117,7 +117,11 @@ def receive_data(container, outdir: bool = True):
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')
         with open(base, 'wb') as fp:
-            bits, stat = container.get_archive(outdir)
+            try:
+                bits, stat = container.get_archive(outdir)
+            except docker.errors.NotFound:
+                baw.utils.error(f'could not find: {outdir}')
+                return
             baw.utils.verbose(stat)
             for chunk in bits:
                 fp.write(chunk)
