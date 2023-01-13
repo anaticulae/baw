@@ -371,9 +371,10 @@ def run(args: dict):
     selected = args['test']
     generate = args['generate']
     generate |= selected == 'generate'  # TODO: REMOVE LEGACY
+    coverage = select_cov(args)
     result = run_test(
         root=root,
-        coverage=args['cov'],
+        coverage=coverage,
         docs=selected == 'docs',
         fast=selected == 'fast',
         longrun=selected == 'long',
@@ -391,6 +392,29 @@ def run(args: dict):
     return result
 
 
+def select_cov(args):
+    """Select optional cov path or default one, or no cov.
+
+    --cov
+    >>> select_cov(dict(cov=None))
+    True
+
+    --cov=/var/workdir
+    >>> select_cov(dict(cov='/var/workdir'))
+    '/var/workdir'
+
+    >>> select_cov(dict(cov='NOT_SELECTED'))
+    False
+    """
+    if args['cov'] == 'NOT_SELECTED':
+        return False
+    if args['cov']:
+        # --cov=/var/workdir
+        return args['cov']
+    # --cov without data
+    return True
+
+
 def extend_cli(parser):
     test = parser.add_parser('test', help='Run unit tests')
     test.add_argument(
@@ -404,7 +428,9 @@ def extend_cli(parser):
     )
     test.add_argument(
         '--cov',
-        help='test coverage',
+        nargs='?',
+        default='NOT_SELECTED',
+        help='determine coverage, use optional report-path',
     )
     test.add_argument(
         '--generate',
