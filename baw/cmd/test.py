@@ -210,7 +210,7 @@ def create_test_cmd(  # pylint:disable=R0914
     if '-n' in manual_parameter:
         manual_parameter = f'-p xdist {manual_parameter}'
     generate_only = '--collect-only' if generate_only else ''
-    sources = tests_sources(
+    sources = select_tests_sources(
         root,
         parameter,
         doctest,
@@ -264,7 +264,7 @@ def create_testdir(root):
     return tmp_testpath, cachedir
 
 
-def tests_sources(
+def select_tests_sources(
     root,
     parameter,
     doctest: bool,
