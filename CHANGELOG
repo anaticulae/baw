@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.51.0 (2023-01-13)
+
+### Feature
+
+* always copy data out of container (3dd623d2f169)
+* add parameter to change outdir (d1cb86c1d0c1)
+
+### Fix
+
+* do not fail on missing path (005614779c76)
+* fix tar behavior on windows (18200f9155bf)
+* adjust path to ease using on windows (16ed3e8479c7)
+
+### Chore
+
+* skip outdir (de227e4f092c)
+* upgrade Jenkinsfile (74df729fab45)
+
 ## v1.50.0 (2023-01-13)
 
 ### Feature
