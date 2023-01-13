@@ -160,8 +160,7 @@ def tar_content(
     # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')
-        tar = baw.utils.forward_slash(base, save_newline=False)
-        tar = tar.replace('C:/', '/c/')
+        tar = fixup_path(base)
         content = baw.utils.forward_slash(content, save_newline=False)
         do_not_tar = ignore(git_include)
         cmd = f'tar cvf {tar} {do_not_tar} .'
@@ -174,6 +173,12 @@ def tar_content(
                 baw.utils.error(completed.stderr)
         content = baw.utils.file_read_binary(base)
     return content
+
+
+def fixup_path(path: str):
+    path = baw.utils.forward_slash(path, save_newline=False)
+    path = path.replace('C:/', '/c/')
+    return path
 
 
 def ignore(git_include: bool = False):
