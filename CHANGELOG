@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.50.0 (2023-01-13)
+
+### Feature
+
+* add option to receive data from container (4463eae91568)
+* make interface more explicit (7c371ea2e08d)
+* add outdir to pass data from container to jenkins (dec011b051a6)
+* reduce import scope to reduce required runtime (7e51bc6c54bb)
+* try to generate resources via pattern (b2328817f0f8)
+
+### Fix
+
+* adjust date (b12140aded61)
+
+### Chore
+
+* upgrade requirements.txt (621465d939bd)
+
 ## v1.49.3 (2023-01-09)
 
 ### Chore
