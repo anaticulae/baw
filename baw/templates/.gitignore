@@ -12,6 +12,7 @@
 .vscode/**
 dist
 tmp
+outdir/
 
 # Files
 *.cache

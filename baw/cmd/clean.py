@@ -137,6 +137,7 @@ TMP = """
 .vscode
 __pycache__
 build
+outdir
 dist
 nano.save
 pytest.ini
