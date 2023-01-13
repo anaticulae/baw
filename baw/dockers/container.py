@@ -122,7 +122,7 @@ def receive_data(container, outdir: bool = True):
             for chunk in bits:
                 fp.write(chunk)
         # untar content
-        cmd = f'tar -xf {base}'
+        cmd = f'tar -xf {fixup_path(base)}'
         completed = baw.runtime.run(cmd, cwd=os.getcwd())
         if completed.returncode:
             baw.utils.error(f'untar failed: {cmd}')
