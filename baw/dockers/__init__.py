@@ -44,6 +44,7 @@ def switch_docker():
         image=image,
         volumes=volumes,
         generate=dockenx,
+        outdir=True,
     )
     return result
 
