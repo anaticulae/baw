@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.52.0 (2023-01-13)
+
+### Feature
+
+* add optional cov-report path (2cb80c9765ec)
+* add option to redirect cov-report (ea8355c4330b)
+
+### Fix
+
+* rename method to avoid problems with doc-test (c09417f6693c)
+
 ## v1.51.0 (2023-01-13)
 
 ### Feature
