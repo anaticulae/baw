@@ -49,13 +49,30 @@ def smart_replace(requirements: str, old: str, new: str):
     """Ensure that `PyYAML==5.1.0` matches with `PyYAML==5.1` as `old`
     requirement line."""
     result = [
-        line
-        if not difflib.get_close_matches(line, [old], n=1, cutoff=0.9) else new
+        line if not line_match(line, old) else line.replace(old, new)
         for line in requirements.splitlines()
     ]
     result = baw.utils.NEWLINE.join(result) + baw.utils.NEWLINE
     assert requirements != result, f'replacement does not work: {old}; {new}; {requirements}'
     return result
+
+
+def line_match(line, old) -> bool:
+    """\
+    >>> line_match('selenium==3.141.0 # noauto', 'selenium==3.141.0')
+    True
+    >>> line_match('selenium==4.4.3', 'selenium==3.141.0')
+    False
+    """
+    line = line.split('#')[0]  # remove optional comment
+    if difflib.get_close_matches(
+            line,
+        [old],
+            n=1,
+            cutoff=0.9,
+    ):
+        return True
+    return False
 
 
 def diff(

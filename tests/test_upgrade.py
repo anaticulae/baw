@@ -10,6 +10,7 @@
 import os
 
 import baw.cmd.upgrade
+import baw.requirements.upgrade
 import tests
 import tests.fixtures.project
 import tests.fixtures.requirements
@@ -182,3 +183,28 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #         generate=False,  # see above
 #     )
 #     assert result == baw.utils.SUCCESS
+
+REQUIREMENTS = """\
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2021-2023 by Helmut Konrad Schewe. All rights reserved.
+# This file is property of Helmut Konrad Schewe. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+selenium==3.141.0 # noauto
+
+pytest_localserver==0.7.0
+power==2.22.0
+"""
+
+
+def test_smart_replace_comment():
+    replaced = baw.requirements.upgrade.smart_replace(
+        REQUIREMENTS,
+        old='selenium==3.141.0',
+        new='selenium==4.4.3',
+    )
+    assert replaced != REQUIREMENTS
