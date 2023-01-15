@@ -295,7 +295,7 @@ def check_package(dependency: str, package: str, version: str, pre: bool):
             # installed pre-version and upgrade without --pre
             # command. Do not upgrade with pre-release without
             # --pre flag.
-            msg = f'do not upgrade: {available} without --pre'
+            msg = f'do not upgrade: {package}; {available} without --pre'
             baw.utils.log(msg)
             return True
     return (version, available)  #(old, new)
