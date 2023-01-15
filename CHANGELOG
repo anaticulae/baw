@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.53.0 (2023-01-15)
+
+### Feature
+
+* support noauto to skip package upgrade (b6e81e20865b)
+
+### Fix
+
+* handle line with comment correctly (83ef2c79c9e6)
+
+### Chore
+
+* upgrade Jenkinsfile (d4e8a4e556af)
+
 ## v1.52.0 (2023-01-13)
 
 ### Feature
