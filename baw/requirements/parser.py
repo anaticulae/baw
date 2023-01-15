@@ -14,7 +14,7 @@ import sys
 import baw.requirements
 
 
-def parse(content: str) -> baw.requirements.Requirements:
+def parse(content: str, upgrade: bool = False) -> baw.requirements.Requirements:
     """\
     >>> parse('Flask_Login==0.1.1')
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
@@ -30,7 +30,7 @@ def parse(content: str) -> baw.requirements.Requirements:
     error = False
     for line in content.splitlines():
         try:
-            if not (parsed := line_parse(line)):
+            if not (parsed := line_parse(line, upgrade=upgrade)):
                 continue
         except ValueError:
             baw.utils.error(f'could not parse: "{line}"')
@@ -49,16 +49,27 @@ def parse(content: str) -> baw.requirements.Requirements:
     return result
 
 
-def line_parse(line: str) -> tuple:
+def line_parse(line: str, upgrade: bool = False) -> tuple:
     """\
+    Use noauto to skip automated package upgrade. If upgrade is False,
+    normal parser is used, cause we need it for sync resources etc.
+
     >>> line_parse('nltk==3.5')
     ({'nltk': '3.5.0'}, {})
     >>> line_parse(' # be prosecuted under') is None
     True
+    >>> line_parse('iamraw>=3.5 # noauto', upgrade=True)
+    skip: iamraw>=3.5 # noauto
+    >>> line_parse('iamraw>=3.5 # noauto', upgrade=False)
+    ({}, {'iamraw': '3.5.0'})
     """
     line = line.strip()
     if not line or line.lstrip()[0] == '#':
         return None
+    if noauto := '#' in line and 'noauto' in line:  # pylint:disable=W0612
+        if upgrade:
+            baw.utils.log(f'skip: {line}')
+            return None
     with contextlib.suppress(ValueError):
         # remove right side comment: 'rawmaker==1.0.0 # this is rawmaker'
         line = line.split('#')[0]

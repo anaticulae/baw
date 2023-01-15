@@ -202,7 +202,10 @@ def determine_new_requirements(
     pre: bool = False,
     venv: bool = False,
 ) -> baw.requirements.NewRequirements:
-    parsed = baw.requirements.parser.parse(requirements)
+    parsed = baw.requirements.parser.parse(
+        requirements,
+        upgrade=True,
+    )
     if parsed is None:
         baw.utils.error('could not parse requirements')
         return None
