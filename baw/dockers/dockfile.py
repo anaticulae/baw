@@ -84,7 +84,7 @@ def docker_image_upgrade(
     r"""\
     >>> import baw;
     >>> docker_image_upgrade(baw.jenkinsfile(__file__), always=True)
-    'pipeline{...}\n'
+    '@Library(...pipeline{...}\n'
     """
     content = baw.utils.file_read(path)
     parsed = IMAGE.findall(content)

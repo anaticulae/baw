@@ -7,76 +7,55 @@ pipeline{
     // image '169.254.149.20:6001/arch_python_git_baw:v1.52.0'
     stages{
         stage('integrate'){
-            when {branch 'integrate'}
-            steps{
-                integrate()
-            }
+            steps{script{baw.integrate()}}
         }
-        stage('sync'){
-            steps{
-                image_setup()
-            }
+        stage('setup'){
+            steps{script{baw.setup()}}
         }
         stage('test'){
             failFast true
             parallel{
                 stage('doctest'){
                     steps{
-                        doctest()
+                        script{baw.doctest()}
                     }
                 }
                 stage('fast'){
                     steps{
-                        baw('test fast -n5')
+                        script{baw.fast()}
                     }
                 }
                 stage('long'){
                     steps{
-                        baw('test long -n8')
+                        script{baw.longrun()}
                     }
                 }
             }
         }
-        stage('ready?'){
+        stage('quality'){
             failFast true
             parallel{
                 stage('lint'){
                     steps{
-                        baw('lint')
+                        script{baw.lint()}
                     }
                 }
                 stage('format'){
                     steps{
-                        baw('format && baw info clean')
-                    }
-                }
-                stage('all'){
-                    steps{
-                        alls()
+                        script{baw.format()}
                     }
                 }
             }
         }
         stage('docker'){
-            steps{
-                sh './make'
-            }
+            steps{script{baw.run("sh ./make")}}
         }
-        stage('clean workspace'){
-            steps{
-                sh 'baw info clean'
-            }
+        stage('pre'){
+            steps{script{baw.pre()}}
         }
-        stage('upgrade'){
-            when {branch 'integrate'}
+        stage('all'){
             steps{
-                integrate()
-            }
-        }
-        stage('pre-release'){
-            when{not{branch 'master'}}
-            steps{
-                prerelease()
+                script{baw.all()}
             }
         }
         stage('others'){
@@ -88,48 +67,12 @@ pipeline{
             }
         }
         stage('release'){
-            when {branch 'master'}
             steps{
-                release()
-                rebase()
+                script{
+                    publish.release()
+                    baw.rebase()
+                }
             }
         }
     }
-}
-
-@NonCPS
-def image_name() {
-    return sh(script: "baw image info")
-}
-def image_setup(){
-    env.IMAGE_NAME = sh(script: 'baw info image', returnStdout: true).trim()
-    sh 'baw image create'
-}
-def baw(cmd){
-    sh 'baw --docker ' + cmd
-    //#sh 'docker run --rm -u 1005:1006 -v ${WORKSPACE}:/var/workdir ${IMAGE_NAME} "baw ' + cmd + '"'
-}
-def doctest(){
-    baw('test docs -n1 --junit_xml=docs.xml')
-    //junit '**/docs.xml'
-}
-def alls(){
-    baw('test all --junit_xml=all.xml')
-    //junit '**/all.xml'
-}
-def integrate(){
-    sh 'git rebase origin/master'
-    sh 'baw upgrade all'
-    sh 'baw upgrade all --pre'
-}
-def prerelease(){
-    sh 'baw image run --name 169.254.149.20:6001/baw_prerelease:$(baw info describe) --env="REPO=baw"'
-}
-def release(){
-    sh 'baw image run --name 169.254.149.20:6001/baw_release:$(baw info describe) --env="REPO=baw"'
-}
-def rebase(){
-    // sync repository
-    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env="BRANCH=integrate;REPO=baw"'
-    sh 'baw image run --name 169.254.149.20:6001/baw_rebase:$(baw info describe) --env="BRANCH=develop;REPO=baw"'
 }
