@@ -41,6 +41,8 @@ PYTHON_DEFAULT = 'python'
 SPELLING_DEFAULT = False
 FAIL_ON_FINDING_DEFAULT = True
 
+COVERAGE_MIN = 20
+
 
 def venv_global() -> bool:
     """Use global venv.
@@ -245,20 +247,18 @@ def minimal_coverage(root: str) -> int:
         root(str): path to project root
     Returns:
         percentage of required test coverage
+
+    >>> minimal_coverage(__file__)
+    40
     """
-    assert os.path.exists(root)
-    path = config_path(root)
-    cfg = load(path)
-    for package in [
-            'release',
-            'tests',  # legacy: remove later
-    ]:
-        try:
-            min_coverage = int(cfg[package]['minimal_coverage'])
-            break
-        except KeyError:
-            min_coverage = 20
-    return min_coverage
+    root = baw.project.determine_root(root)
+    result = default_config(
+        root,
+        lambda x: x['release']['minimal_coverage'],
+        default=COVERAGE_MIN,
+    )
+    result = int(str(result))
+    return result
 
 
 def fail_on_finding(root: str) -> bool:
