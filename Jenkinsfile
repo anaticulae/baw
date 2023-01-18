@@ -1,3 +1,5 @@
+@Library('caelum@refs/tags/v0.14.0') _
+
 pipeline{
     agent{
         dockerfile{filename 'Dockerfile'}
