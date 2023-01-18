@@ -53,6 +53,9 @@ ENTRY_POINTS = dict(console_scripts=[
 
 
 def prerelease() -> str:
+    """Compatible version tag with `git describe` with
+       pip install version scheme.
+    """
     try:
         completed = subprocess.run(
             'git describe'.split(),
@@ -63,11 +66,10 @@ def prerelease() -> str:
         print('install git, no prerelease', file=sys.stderr)
         return None
     value = completed.stdout.strip().decode('utf8')
-    # transform v2.40.1-5-gc1b4bee to
-    # utila-2.93.0.post6+g3b6726a
+    # transform v2.40.1-5-gc1b4bee to 2.40.1.post5+gc1b4bee
     value = value[1:]
     value = value.replace('-', '.post', 1)
-    value = value.replace('-g', '+')
+    value = value.replace('-g', '+g', 1)
     return value
 
 
