@@ -31,7 +31,7 @@ def configuration(testdir):
         defg
 
     [release]
-    minimal_coverage = 50
+    coverage_min = 50
     fail_on_finding = True
     """
     config = textwrap.dedent(config)

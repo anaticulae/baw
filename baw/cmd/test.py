@@ -314,7 +314,7 @@ def cov_args(root: str, *, pdb: bool, outdir: str = None) -> str:
     no_cov = '--no-cov ' if pdb else ''
     if no_cov:
         baw.utils.log('Disable coverage report')
-    min_cov = baw.config.minimal_coverage(root)
+    min_cov = baw.config.coverage_min(root)
     cov_sources = collect_cov_sources(root)
     cov = (f'-p pytest_cov --cov-config={cov_config} {cov_sources} '
            f'--cov-report=html:{output} --cov-branch {no_cov} '

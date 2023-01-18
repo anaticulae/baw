@@ -14,7 +14,7 @@ Parameter
 release
 ~~~~~~~
 
-* minimal_coverage: do not release with fewer test coverage
+* coverage_min: do not release with fewer test coverage
 * fail_on_finding: if True allow only todo-findings. The build must be
                    free of statical code errors.
 """
@@ -240,7 +240,7 @@ def cmds(root: str) -> dict:
     return result
 
 
-def minimal_coverage(root: str) -> int:
+def coverage_min(root: str) -> int:
     """Read percentage of required test coverage
 
     Args:
@@ -248,15 +248,22 @@ def minimal_coverage(root: str) -> int:
     Returns:
         percentage of required test coverage
 
-    >>> minimal_coverage(__file__)
+    >>> coverage_min(__file__)
     40
     """
     root = baw.project.determine_root(root)
     result = default_config(
         root,
-        lambda x: x['release']['minimal_coverage'],
+        lambda x: x['release']['coverage_min'],
         default=COVERAGE_MIN,
     )
+    if result == COVERAGE_MIN:
+        # legacy, TODO: REMOVE LATER
+        result = default_config(
+            root,
+            lambda x: x['release']['minimal_coverage'],
+            default=COVERAGE_MIN,
+        )
     result = int(str(result))
     return result
 
