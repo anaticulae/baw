@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.54.0 (2023-01-18)
+
+### Feature
+
+* fix naming (cafd4dd626f6)
+* adjust minimal coverage (37f47924eae6)
+* make upgrade more verbose (b360bc66d0fe)
+
+### Fix
+
+* do not remove the g, we want to use git describe (d89c972db0fb)
+
+### Chore
+
+* upgrade pipeline (e31631db48a6)
+* upgrade images (015d61dfe687)
+* add pipe library (ff090ab4e4e4)
+
 ## v1.53.0 (2023-01-15)
 
 ### Feature
