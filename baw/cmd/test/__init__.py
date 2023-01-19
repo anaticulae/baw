@@ -12,6 +12,7 @@ import shutil
 import sys
 
 import baw.archive.test
+import baw.cmd.test.cov
 import baw.cmd.utils
 import baw.config
 import baw.datetime
@@ -390,7 +391,7 @@ def run(args: dict):
     selected = args['test']
     generate = args['generate']
     generate |= selected == 'generate'  # TODO: REMOVE LEGACY
-    coverage = select_cov(args)
+    coverage = baw.cmd.test.cov.select_cov(args)
     result = run_test(
         root=root,
         coverage=coverage,
@@ -410,29 +411,6 @@ def run(args: dict):
         venv=args.get('venv', False),
     )
     return result
-
-
-def select_cov(args):
-    """Select optional cov path or default one, or no cov.
-
-    --cov
-    >>> select_cov(dict(cov=None))
-    True
-
-    --cov=/var/workdir
-    >>> select_cov(dict(cov='/var/workdir'))
-    '/var/workdir'
-
-    >>> select_cov(dict(cov='NOT_SELECTED'))
-    False
-    """
-    if args['cov'] == 'NOT_SELECTED':
-        return False
-    if args['cov']:
-        # --cov=/var/workdir
-        return args['cov']
-    # --cov without data
-    return True
 
 
 def extend_cli(parser):
