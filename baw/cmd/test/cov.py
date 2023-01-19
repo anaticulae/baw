@@ -8,7 +8,6 @@
 # =============================================================================
 
 import os
-import sys
 
 import baw.config
 import baw.utils
@@ -56,21 +55,13 @@ def collect_cov_sources(root: str) -> str:
     Args:
         root(str): path to project root
     Returns:
-        list of --cov= collected from `source` cfg
+        list of --cov= collected from .baw
     """
-    project_sources = baw.config.sources(root)
-    ret = 0
+    sources = baw.config.sources(root)
     cov_sources = ''
-    for item in project_sources:
-        code_path = os.path.join(root, item)
-        if not os.path.exists(code_path):
-            msg = f'path {code_path} from `.baw` does not exist'
-            baw.utils.error(msg)
-            ret += 1
-            continue
+    for project in sources:
+        code_path = os.path.join(root, project)
         cov_sources += f'--cov={code_path} '
-    if ret:
-        sys.exit(ret)
     return cov_sources
 
 
