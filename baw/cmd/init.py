@@ -233,16 +233,12 @@ def create_requirements(root: str):
 
 
 def utila_current() -> str:
-    """Determine current version of `utila` package."""
-    default = "1.11.0"
-    try:
-        import utila  # pylint:disable=C0415
-
-        # extend linter white list, cause __version__ is not available for
-        # linter if utila is not installed.
-        return utila.__version__  # pylint:disable=E1101
-    except ImportError:
-        return default
+    """Determine current version of `utila` package.
+    >>> utila_current()
+    '...'
+    """
+    import utila
+    return utila.__version__
 
 
 def extend_cli(parser):
