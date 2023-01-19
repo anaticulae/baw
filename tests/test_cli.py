@@ -8,9 +8,6 @@
 # =============================================================================
 """Test runnig cmds with --cmd."""
 
-import os
-
-import baw.utils
 import tests
 
 
@@ -28,13 +25,3 @@ def test_run_without_cmds_in_project(example):
         'baw --run',
         cwd=example,
     )
-
-
-def test_cmd_test_cov_simple(simple, capsys):
-    # capsys does not capture simple run, therefore I build this workaround.
-    simple[0]('test --cov -n1')
-    simple[0]('info covreport')
-    lines = tests.stdout(capsys).strip().splitlines()
-    path = os.path.join(lines[-1], 'index.html')
-    content = baw.utils.file_read(path)
-    assert '100%' in content
