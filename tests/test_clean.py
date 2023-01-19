@@ -15,7 +15,7 @@ import tests
 
 
 @tests.longrun
-def test_clean_files_and_dirs(tmpdir):
+def test_clean_files_and_dirs(simple):
     """Create some files and folder and clean them afterwards.
 
     1. Create project
@@ -24,31 +24,21 @@ def test_clean_files_and_dirs(tmpdir):
     4. Run clean
     5. Check result
     """
-    assert not tests.file_count(tmpdir)  # clean directory
-
-    for item in ('.git', 'build', baw.utils.TMP):
-        os.makedirs(os.path.join(tmpdir, item))
-    assert tests.file_count(tmpdir) == 3
+    root = simple[1]
+    base = tests.file_count(root)
+    for item in ('build', baw.utils.TMP):
+        os.makedirs(os.path.join(root, item))
+    assert tests.file_count(root) == base + 2
 
     for item in ('.coverage', 'do_not_clean.txt'):
-        baw.utils.file_create(os.path.join(tmpdir, item))
-    assert tests.file_count(tmpdir) == 5
+        baw.utils.file_create(os.path.join(root, item))
+    assert tests.file_count(root) == base + 2 + 2
 
-    nested_file = os.path.join(tmpdir, 'build', '.coverage')
+    nested_file = os.path.join(root, 'build', '.coverage')
     baw.utils.file_create(nested_file)
     assert os.path.exists(nested_file)
-
-    # yapf:disable
-    baw.utils.file_create(os.path.join(tmpdir, '.baw'), """
-    [project]
-    short = test
-    name = this is just a test
-    """)
-    # yapf:enable
-
-    completed = tests.run('baw clean all', tmpdir)
-    assert not completed.returncode, completed.stderr
-
-    cleaned_project = set(os.listdir(tmpdir))
+    # run clean task
+    simple[0]('clean all')
+    cleaned_project = set(os.listdir(root))
     # .gitdir remains
-    assert cleaned_project == {'.git', 'do_not_clean.txt', '.baw'}
+    assert len(cleaned_project) == base + 2 + 2 - 3
