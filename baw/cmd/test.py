@@ -37,6 +37,7 @@ def run_test(  # pylint:disable=R0914
     quiet: bool = False,
     stash: bool = False,
     noinstall: bool = False,
+    cov_report: bool = False,
     verbose: bool = False,
     venv: bool = False,
 ) -> int:
@@ -59,6 +60,7 @@ def run_test(  # pylint:disable=R0914
         quiet(bool): pytest - use minimal logging
         stash(bool): stash all changes to test commited-change in repository
         noinstall(bool): do not run install step before testing
+        cov_report(bool): generate and open cov report
         verbose(bool): extend logging
         venv(bool): run cmd in venv environment
     Returns:
@@ -90,6 +92,7 @@ def run_test(  # pylint:disable=R0914
         markers=markers,
         pdb=pdb,
         quiet=quiet,
+        cov_report=cov_report,
         verbose=verbose,
         venv=venv,
     )
@@ -193,6 +196,7 @@ def create_test_cmd(  # pylint:disable=R0914
     parameter,
     generate_only,
     markers: str,
+    cov_report: bool = True,
     doctest: bool = True,
     verbose: bool = False,
     venv: bool = False,
@@ -200,7 +204,12 @@ def create_test_cmd(  # pylint:disable=R0914
     pytest_ini = create_pytest_config(root)
     # configure test run
     debugger = '--pdb ' if pdb else ''
-    cov = cov_args(root, pdb=debugger, outdir=coverage) if coverage else ''
+    cov = cov_args(
+        root,
+        pdb=debugger,
+        outdir=coverage,
+        report=cov_report,
+    ) if coverage else ''
     # create test directory
     tmp_testpath, cachedir = create_testdir(root)
     # config
@@ -296,13 +305,20 @@ def determine_plugins(root) -> str:
     return result
 
 
-def cov_args(root: str, *, pdb: bool, outdir: str = None) -> str:
+def cov_args(
+    root: str,
+    *,
+    pdb: bool,
+    outdir: str = None,
+    report: bool = True,
+) -> str:
     """Determine args for running tests based on project-root.
 
     Args:
         root(str): project root
         pdb(bool): using debugger on running tests
         outdir(str): if str, write to outdir; if not, use default
+        report(bool): generate html report
     Returns:
         args for coverage cmd
     """
@@ -317,8 +333,11 @@ def cov_args(root: str, *, pdb: bool, outdir: str = None) -> str:
     min_cov = baw.config.coverage_min(root)
     cov_sources = collect_cov_sources(root)
     cov = (f'-p pytest_cov --cov-config={cov_config} {cov_sources} '
-           f'--cov-report=html:{output} --cov-branch {no_cov} '
-           f'--cov-fail-under={min_cov}')
+           f'--cov-branch {no_cov} '
+           f'--cov-fail-under={min_cov} ')
+    if report:
+        cov += f'--cov-report=html:{output} '
+    cov = cov.strip()
     return cov
 
 
