@@ -75,3 +75,9 @@ def test_cmd_info_clean(simple, capsys):  # pylint:disable=W0621,W0613
     stdout = tests.stdout(capsys)
     # ensure that workspace is clean
     assert 'clean' in stdout
+
+
+def test_cmd_info_cov(simple, capsys):
+    simple[0]('info cov')
+    stdout = tests.stdout(capsys)
+    assert '100.0' in stdout
