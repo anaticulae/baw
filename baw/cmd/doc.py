@@ -78,7 +78,7 @@ def generate_docs(root: str, verbose: bool, venv: bool) -> int:
     baw.utils.log('sync docs')
     source = os.path.join(root, 'docs')
     shutil.copytree(source, doctmp, dirs_exist_ok=True)
-    for filename in 'CHANGELOG.md'.split():
+    for filename in 'CHANGELOG.md CHANGELOG'.split():
         path = os.path.join(root, filename)
         if not os.path.exists(path):
             continue
