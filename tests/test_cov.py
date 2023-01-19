@@ -8,8 +8,10 @@
 # =============================================================================
 
 import os
+
 import pytest
 
+import baw.config.change
 import baw.utils
 import tests
 
@@ -59,3 +61,12 @@ def test_cmd_test_cov_no_root(testdir, monkeypatch, capsys):
     stdout = tests.stdout(capsys)
     assert 'subproject does not exists: it' in stdout
     assert 'subproject does not exists: missing' in stdout
+
+
+def test_cmd_cov_increase(simple):
+    root = simple[1]
+    assert baw.config.coverage_min(root) == baw.config.COVERAGE_MIN
+    baw.config.change.coverage_min(root, 50.0)
+    assert baw.config.coverage_min(root) == 50.0
+    baw.config.change.coverage_min(root, 60.0)
+    assert baw.config.coverage_min(root) == 60.0
