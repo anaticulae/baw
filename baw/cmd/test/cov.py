@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+NOT_SELECTED = 'NOT_SELECTED'
+
 
 def select_cov(args):
     """Select optional cov path or default one, or no cov.
@@ -19,10 +21,10 @@ def select_cov(args):
     >>> select_cov(dict(cov='/var/workdir'))
     '/var/workdir'
 
-    >>> select_cov(dict(cov='NOT_SELECTED'))
+    >>> select_cov(dict(cov=NOT_SELECTED))
     False
     """
-    if args['cov'] == 'NOT_SELECTED':
+    if args['cov'] == NOT_SELECTED:
         return False
     if args['cov']:
         # --cov=/var/workdir

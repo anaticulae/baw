@@ -427,7 +427,7 @@ def extend_cli(parser):
     test.add_argument(
         '--cov',
         nargs='?',
-        default='NOT_SELECTED',
+        default=baw.cmd.test.cov.NOT_SELECTED,
         help='determine coverage, use optional report-path',
     )
     test.add_argument(
