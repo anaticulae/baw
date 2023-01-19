@@ -205,7 +205,7 @@ def create_test_cmd(  # pylint:disable=R0914
     pytest_ini = create_pytest_config(root)
     # configure test run
     debugger = '--pdb ' if pdb else ''
-    cov = cov_args(
+    cov = baw.cmd.test.cov.cov_args(
         root,
         pdb=debugger,
         outdir=coverage,
@@ -304,66 +304,6 @@ def determine_plugins(root) -> str:
     plugins = [f'-p {item}' for item in plugins.split()]
     result = ' '.join(plugins)
     return result
-
-
-def cov_args(
-    root: str,
-    *,
-    pdb: bool,
-    outdir: str = None,
-    report: bool = True,
-) -> str:
-    """Determine args for running tests based on project-root.
-
-    Args:
-        root(str): project root
-        pdb(bool): using debugger on running tests
-        outdir(str): if str, write to outdir; if not, use default
-        report(bool): generate html report
-    Returns:
-        args for coverage cmd
-    """
-    output = os.path.join(baw.utils.tmp(root), 'report')
-    if isinstance(outdir, str):
-        output = baw.utils.fixup_windows(outdir)
-    cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')
-    assert os.path.exists(cov_config), str(cov_config)
-    no_cov = '--no-cov ' if pdb else ''
-    if no_cov:
-        baw.utils.log('Disable coverage report')
-    min_cov = baw.config.coverage_min(root)
-    cov_sources = collect_cov_sources(root)
-    cov = (f'-p pytest_cov --cov-config={cov_config} {cov_sources} '
-           f'--cov-branch {no_cov} '
-           f'--cov-fail-under={min_cov} ')
-    if report:
-        cov += f'--cov-report=html:{output} '
-    cov = cov.strip()
-    return cov
-
-
-def collect_cov_sources(root: str) -> str:
-    """Collect source code folder from project configuration.
-
-    Args:
-        root(str): path to project root
-    Returns:
-        list of --cov= collected from `source` cfg
-    """
-    project_sources = baw.config.sources(root)
-    ret = 0
-    cov_sources = ''
-    for item in project_sources:
-        code_path = os.path.join(root, item)
-        if not os.path.exists(code_path):
-            msg = f'path {code_path} from `project.cfg` does not exist'
-            baw.utils.error(msg)
-            ret += 1
-            continue
-        cov_sources += f'--cov={code_path} '
-    if ret:
-        sys.exit(ret)
-    return cov_sources
 
 
 def create_testconfig(args: dict) -> list:
