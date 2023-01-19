@@ -21,3 +21,28 @@ def test_cmd_test_cov_simple(simple, capsys):
     path = os.path.join(lines[-1], 'index.html')
     content = baw.utils.file_read(path)
     assert '100%' in content
+
+
+MISSING_TEST_RESOURCE = """
+[project]
+short = invalid_test
+name = IT
+source = it
+    missing
+"""
+
+
+def test_cmd_test_cov_no_root(testdir, monkeypatch, capsys):
+    baw.utils.file_create(
+        '.baw',
+        MISSING_TEST_RESOURCE,
+    )
+    os.mkdir(testdir.tmpdir.join('tests'))
+    tests.baaw(
+        'test --cov -n1',
+        monkeypatch,
+        expect=False,
+    )
+    stdout = tests.stdout(capsys)
+    assert 'subproject does not exists: it' in stdout
+    assert 'subproject does not exists: missing' in stdout
