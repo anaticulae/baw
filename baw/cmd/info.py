@@ -8,6 +8,7 @@
 # =============================================================================
 
 import os
+import re
 import sys
 
 import utila
@@ -73,6 +74,9 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
     if value == 'branch':
         baw.utils.log(baw.git.branchname(root))
         return baw.utils.SUCCESS
+    if value == 'cov':
+        print_cov(root)
+        return baw.utils.SUCCESS
     if value == 'clean':
         if baw.git.is_clean(root, verbose=False):
             baw.utils.log('very clean')
@@ -127,6 +131,21 @@ def print_covreport(root: str):
     sys.exit(baw.utils.SUCCESS)
 
 
+def print_cov() -> int:
+    completed = utila.run('baw test --cov --no_report')
+    if completed.returncode:
+        return completed.returncode
+    coverage = re.search(
+        r'Total coverage: (?P<coverage>\d{1,3}\.\d{2})',
+        completed.stdout,
+    )
+    if not coverage:
+        sys.exit(baw.utils.FAILURE)
+    result = float(coverage['coverage'])
+    baw.utils.log(result)
+    sys.exit(baw.utils.SUCCESS)
+
+
 def requirement_hash(root: str, verbose: bool = False) -> str:
     """\
     >>> import baw
@@ -152,7 +171,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
 
 CHOISES = ('name shortcut sources venv tmp '
            'covreport requirement image clean describe stable '
-           'branch pip').split()
+           'branch pip cov').split()
 
 
 def extend_cli(parser):
