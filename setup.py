@@ -34,6 +34,7 @@ PACKAGES = [
     'baw.cmd',
     'baw.cmd.image',
     'baw.cmd.release',
+    'baw.cmd.test',
     'baw.dockers',
     'baw.project',
     'baw.requirements',
