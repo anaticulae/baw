@@ -55,7 +55,7 @@ pipeline{
         }
         stage('all'){
             steps{
-                script{baw.all()}
+                script{baw.cov(32, false, true)}
             }
         }
         stage('others'){
