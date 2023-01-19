@@ -118,7 +118,7 @@ def run_test(  # pylint:disable=R0914
         # do not log partial long running tests as completed
         # TODO: ADJUST -n6!!!
         # TODO: VERIFY THAT SELECTIVE TESTING WAS NOT USED
-        if all_tests(testconfig) and (longrun or nightly):
+        if all_tests(testconfig) and (longrun or nightly or alls):
             head = baw.git.headhash(root)
             if head:
                 baw.archive.test.mark_tested(root, head)
