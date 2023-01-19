@@ -113,7 +113,7 @@ def run_test(  # pylint:disable=R0914
         if generate_only:
             # do not write log of collect tests
             baw.utils.log('test data generated')
-        if coverage:
+        if coverage and cov_report:
             open_report(root)
         # do not log partial long running tests as completed
         # TODO: ADJUST -n6!!!
@@ -405,6 +405,7 @@ def run(args: dict):
         instafail=args['instafail'],
         testconfig=testconfig,
         noinstall=args.get('no_install', False),
+        cov_report=not args.get('no_report', False),
         verbose=args.get('verbose', False),
         venv=args.get('venv', False),
     )
@@ -474,6 +475,11 @@ def extend_cli(parser):
     test.add_argument(
         '--no_install',
         help='do not run setup before testing',
+        action='store_true',
+    )
+    test.add_argument(
+        '--no_report',
+        help='do not generate cov report',
         action='store_true',
     )
     test.add_argument(
