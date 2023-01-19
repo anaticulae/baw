@@ -16,3 +16,11 @@ def test_cmd_sh(simple, capsys):  # pylint:disable=W0621,W0613
     # assert 'README' in stdout
     # assert 'CHANGELOG' in stdout
     simple[0]('sh "ls"')
+
+
+@utilatest.longrun
+def test_cmd_sh_fail(simple, capsys):  # pylint:disable=W0621,W0613
+    simple[0](
+        'sh "invalid command"',
+        expect=False,
+    )
