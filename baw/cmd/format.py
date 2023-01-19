@@ -49,7 +49,7 @@ def format_source(root: str, verbose: bool = False, venv: bool = False):
         return failure.returncode
     # run in parallel if not testing with pytest
     # TODO: yapf does not run on venv environment properly
-    parallel = '-p' if not baw.config.testing() and not venv else ''
+    parallel = '-p' if not baw.utils.testing() and not venv else ''
     template_skip = '-e *.tpy'
     # python = baw.config.python(root, venv=False)
     cmd = f'yapf -r -i --style=google {template_skip} {parallel} --no-local-style'

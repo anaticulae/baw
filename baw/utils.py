@@ -363,3 +363,13 @@ def fixup_windows(path):
     # TODO: IMPORVE LATER
     path = path.replace('C:/usr/git/var', '/var')
     return path
+
+
+def testing() -> bool:
+    """\
+    >>> testing()
+    True
+    """
+    if os.environ.get('PYTEST_CURRENT_TEST', None):
+        return True
+    return False

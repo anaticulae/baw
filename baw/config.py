@@ -52,7 +52,7 @@ def venv_global() -> bool:
     """
     single = str(os.environ.get('BAW_VENV_GLOBAL', default='')).lower()
     if '1' in single or 'true' in single:
-        if testing():
+        if baw.utils.testing():
             # do not use global for baw project
             return False
         return True
@@ -67,7 +67,7 @@ def venv_always() -> bool:
     """
     single = str(os.environ.get('BAW_VENV_ALWAYS', default='')).lower()
     if '1' in single or 'true' in single:
-        if testing():
+        if baw.utils.testing():
             # do not use global for baw project
             return False
         return True
@@ -532,9 +532,3 @@ def docpath(root: str, mkdir: bool = True) -> str:
     if mkdir:
         os.makedirs(tmpdoc, exist_ok=True)
     return tmpdoc
-
-
-def testing() -> bool:
-    if os.environ.get('PYTEST_CURRENT_TEST', None):
-        return True
-    return False
