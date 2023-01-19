@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.55.0 (2023-01-19)
+
+### Feature
+
+* add cli parameter to disable cov report (04e1a5991fed)
+* add parameter to disable cov report (9bc65eacbd8a)
+* add cov info (3817605640da)
+
+### Fix
+
+* fix legacy parser (22c05f440731)
+
+### Chore
+
+* upgrade requirements.txt (efeae1ebc6ec)
+
 ## v1.54.0 (2023-01-18)
 
 ### Feature
