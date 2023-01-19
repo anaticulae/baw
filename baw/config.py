@@ -257,7 +257,7 @@ def coverage_min(root: str) -> int:
         lambda x: x['release']['coverage_min'],
         default=COVERAGE_MIN,
     )
-    if result == COVERAGE_MIN:
+    if int(str(result)) == COVERAGE_MIN:
         # legacy, TODO: REMOVE LATER
         result = default_config(
             root,
