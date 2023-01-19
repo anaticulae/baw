@@ -253,7 +253,7 @@ def create_test_cmd(  # pylint:disable=R0914
 
 
 def create_pytest_config(root: str) -> str:
-    pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.ini')
+    pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.pini')
     # using ROOT to get location from baw-tool
     assert os.path.exists(pytest_ini), f'no testconfig available {pytest_ini}'
     config = baw.utils.file_read(pytest_ini)
