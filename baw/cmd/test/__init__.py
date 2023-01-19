@@ -202,6 +202,11 @@ def create_test_cmd(  # pylint:disable=R0914
     verbose: bool = False,
     venv: bool = False,
 ):
+    """\
+    >>> create_test_cmd(baw.project.determine_root(__file__), instafail=True, pdb=True, coverage=True, quiet=True, parameter=[],
+    ... generate_only=False, markers='', cov_report=True, doctest=True, verbose=False, venv=False)
+    Disable coverage report...'
+    """
     pytest_ini = create_pytest_config(root)
     # configure test run
     debugger = '--pdb ' if pdb else ''
