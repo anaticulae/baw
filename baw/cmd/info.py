@@ -75,7 +75,7 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
         baw.utils.log(baw.git.branchname(root))
         return baw.utils.SUCCESS
     if value == 'cov':
-        print_cov(root)
+        print_cov()
         return baw.utils.SUCCESS
     if value == 'clean':
         if baw.git.is_clean(root, verbose=False):
