@@ -67,3 +67,9 @@ def test_cmd_junit_xml(simple):  # pylint:disable=W0621
     expected = os.path.join(simple[1], 'myreport.xml')
     simple[0](f'test --junit_xml={expected}')
     assert os.path.exists(expected)
+
+
+def test_cmd_test_skip(simple, capsys):
+    simple[0]('test skip')
+    stdout = tests.stdout(capsys)
+    assert 'skip tests...' in stdout
