@@ -64,7 +64,7 @@ def collect_cov_sources(root: str) -> str:
     for item in project_sources:
         code_path = os.path.join(root, item)
         if not os.path.exists(code_path):
-            msg = f'path {code_path} from `project.cfg` does not exist'
+            msg = f'path {code_path} from `.baw` does not exist'
             baw.utils.error(msg)
             ret += 1
             continue
