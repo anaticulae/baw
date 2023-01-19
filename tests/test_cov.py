@@ -8,6 +8,7 @@
 # =============================================================================
 
 import os
+import pytest
 
 import baw.utils
 import tests
@@ -21,6 +22,18 @@ def test_cmd_test_cov_simple(simple, capsys):
     path = os.path.join(lines[-1], 'index.html')
     content = baw.utils.file_read(path)
     assert '100%' in content
+
+
+@pytest.mark.parametrize('report', (True, False))
+def test_cmd_test_cov_report(report, simple, capsys):
+    noreport = '' if report else '--no_report'
+    # do not generate html-report
+    simple[0](f'--verbose test --cov -n1 {noreport}')
+    stdout = tests.stdout(capsys)
+    if report:
+        assert '--cov-report=html:' in stdout
+    else:
+        assert '--cov-report=html:' not in stdout
 
 
 MISSING_TEST_RESOURCE = """
