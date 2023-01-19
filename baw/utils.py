@@ -285,6 +285,9 @@ def empty(*args, **kwargs):  # pylint:disable=W0613
 
 
 def openbrowser(url: str):
+    """\
+    >>> openbrowser(__file__)
+    """
     if 'PYTEST_CURRENT_TEST' in os.environ:
         # running with pytest do not open webbrowser
         return
@@ -333,7 +336,7 @@ def select_executor():
     # TODO: how to use multiprocessing with pytest, see pytest: 38.3.1
     testrun = os.environ.get('PYTEST_PLUGINS', False)
     executor = concurrent.futures.ProcessPoolExecutor
-    if testrun:
+    if testrun:  # pragma:nocover
         executor = concurrent.futures.ThreadPoolExecutor
     return executor
 
