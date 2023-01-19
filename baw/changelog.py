@@ -6,8 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""\
+r"""\
     Patches:
+
         - insert space after version tag
         - Pathlib, use \n instead of windows nl
 """

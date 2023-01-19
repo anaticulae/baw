@@ -15,7 +15,7 @@ import baw.requirements.check
 import baw.utils
 
 
-def replace(requirements: str, update: 'NewRequirements') -> str:
+def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
     for package, [old, new] in update.equal.items():
         # no version was given for old package
         pattern = f'{package}'
@@ -76,8 +76,8 @@ def line_match(line, old) -> bool:
 
 
 def diff(
-    current: 'Requirements',
-    requested: 'Requirements',
+    current: baw.requirements.Requirements,
+    requested: baw.requirements.Requirements,
     minimal: bool = False,
 ):
     # TODO: SUPPORT GREATER THAN

@@ -35,6 +35,7 @@ def sync(
     verbose: bool = False,
 ) -> int:
     """Sync packages which are defined in requirements.txt
+
     Args:
         root(str): root path of project to sync
         packages(str): decide which packages should be synchronized:

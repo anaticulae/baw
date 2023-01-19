@@ -58,9 +58,7 @@ def test_cmd_requirement_verbose_info(monkeypatch, capsys):
 
 def test_cmd_info_venv_fix(monkeypatch, capsys):
     """\
-    Exepect `c/tmp/dev/tmp/baw`
-    not `venv: /c/tmp/dev/
-         c/tmp/dev/tmp/baw`
+    Exepect `c/tmp/dev/tmp/baw`, not `venv: /c/tmp/dev/; c/tmp/dev/tmp/baw`
     """
     cmd = '--venv info tmp'
     tests.baaw(cmd, monkeypatch, verbose=False)

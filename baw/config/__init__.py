@@ -289,7 +289,7 @@ def load(path: str):
 
 
 @functools.lru_cache
-def project(path: str) -> 'Tuple[str, str]':
+def project(path: str) -> tuple[str, str]:
     """Determine tuple of `shortcut` and `project name` current `path`
     project.
 
