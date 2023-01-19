@@ -9,6 +9,7 @@
 
 # documentation
 added-value==0.21.3
+commonmark==0.9.1
 recommonmark==0.7.1
 Sphinx==5.1.1
 sphinx-autodoc-typehints==1.19.2
