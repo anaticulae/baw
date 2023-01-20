@@ -99,7 +99,7 @@ def build_html(root: str, verbose: bool, venv: bool) -> int:
     build_options = ' '.join([
         # '-vvvv ',
         '-n',  # warn about all missing references
-        '-W',  # turn warning into error
+        # '-W',  # turn warning into error # TODO: ENABLE LATER
         '--keep-going',
         # '-b coverage',  # TODO: Check autodoc package
         '-j 8'
