@@ -11,6 +11,8 @@ import os
 
 import pytest
 
+import tests
+
 
 def test_cmd_pipeline_init(simple):
     simple[0]('pipe init')
@@ -21,7 +23,7 @@ def test_cmd_pipeline_lib_error(simple, capsys):
     with pytest.raises(AssertionError, match='ExceptionInfo SystemExit'):
         simple[0]('pipe library')
     assert not os.path.exists(simple[1].join('Jenkinsfile'))
-    assert 'could not find Jenkinsfile' in stderr(capsys)
+    assert 'could not find Jenkinsfile' in tests.stderr(capsys)
 
 
 def test_cmd_pipeline_lib_upgrade(simple):
@@ -35,8 +37,4 @@ def test_cmd_pipeline_lib_already_upgraded(simple, capsys):
     simple[0]('pipe library')  # upgrade
     with pytest.raises(AssertionError, match='ExceptionInfo SystemExit'):
         simple[0]('pipe library')  # already upgraded
-    assert 'already newst caelum' in stderr(capsys)
-
-
-def stderr(capsys):
-    return capsys.readouterr().err
+    assert 'already newst caelum' in tests.stderr(capsys)
