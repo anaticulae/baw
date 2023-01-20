@@ -23,6 +23,7 @@
             "**/nano.save": true,
             "**/tmp": true,
             "tests/resources/generated": true,
+            "outdir": true,
         },
         "python.unitTest.nosetestsEnabled": false,
         "python.unitTest.pyTestEnabled": true,
