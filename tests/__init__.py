@@ -163,3 +163,9 @@ def stdout(capsys) -> str:
     out = capsys.readouterr().out
     result = str(out)
     return result
+
+
+def stderr(capsys) -> str:
+    out = capsys.readouterr().err
+    result = str(out)
+    return result

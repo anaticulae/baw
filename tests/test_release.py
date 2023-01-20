@@ -34,3 +34,12 @@ def test_release_simple(simple, monkeypatch, capsys):
         simple[0]('--verbose release')
     stdout = tests.stdout(capsys)
     assert 'Completed: `ls` in' in stdout
+
+
+def test_release_do_not_drop_first_release(simple, capsys):
+    simple[0](
+        'release drop',
+        expect=False,
+    )
+    stderr = tests.stderr(capsys)
+    assert 'Could not remove v0.0.0 release' in stderr
