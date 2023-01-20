@@ -19,8 +19,7 @@ def run(root, verbose, release_type, venv: bool = False):
             verbose,
             venv=venv,
     ) as cfg:
-        release_type = select_release_type(release_type, cfg=cfg)
-        cmd = f'baw_semantic_release -v DEBUG publish {release_type}'
+        cmd = release_cmd(release_type, cfg)
         completed = baw.runtime.run_target(
             root,
             cmd,
@@ -38,6 +37,12 @@ def run(root, verbose, release_type, venv: bool = False):
         baw.utils.error(completed.stderr)
         return completed.returncode
     return baw.utils.SUCCESS
+
+
+def release_cmd(types, cfg) -> str:
+    release_type = select_release_type(types, cfg=cfg)
+    result = f'baw_semantic_release -v DEBUG publish {release_type}'
+    return result
 
 
 # semantic release returns this message if no new release is provided, cause
