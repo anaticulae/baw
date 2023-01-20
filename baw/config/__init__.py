@@ -100,14 +100,7 @@ def gitea_server() -> str:
     >>> gitea_server()
     '...'
     """
-    try:
-        server = os.environ['GITEA_SERVER_URL']
-    except KeyError:
-        baw.utils.error('missing GITEA_SERVER_URL')
-        sys.exit(baw.utils.FAILURE)
-    else:
-        result = str(server)
-    return result
+    return lookup('GITEA_SERVER_URL')
 
 
 def git_author_name() -> str:
@@ -115,14 +108,7 @@ def git_author_name() -> str:
     >>> git_author_name()
     '...'
     """
-    try:
-        author_name = os.environ['GIT_AUTHOR_NAME']
-    except KeyError:
-        baw.utils.error('missing GIT_AUTHOR_NAME')
-        sys.exit(baw.utils.FAILURE)
-    else:
-        result = str(author_name)
-    return result
+    return lookup('GIT_AUTHOR_NAME')
 
 
 def git_author_email() -> str:
@@ -130,14 +116,7 @@ def git_author_email() -> str:
     >>> git_author_email()
     '...'
     """
-    try:
-        author_email = os.environ['GIT_AUTHOR_EMAIL']
-    except KeyError:
-        baw.utils.error('missing GIT_AUTHOR_EMAIL')
-        sys.exit(baw.utils.FAILURE)
-    else:
-        result = str(author_email)
-    return result
+    return lookup('GIT_AUTHOR_EMAIL')
 
 
 def docker_testing() -> str:
@@ -145,14 +124,7 @@ def docker_testing() -> str:
     >>> docker_testing()
     '...'
     """
-    try:
-        server = os.environ['CAELUM_DOCKER_TEST']
-    except KeyError:
-        baw.utils.error('missing CAELUM_DOCKER_TEST')
-        sys.exit(baw.utils.FAILURE)
-    else:
-        server = str(server)
-    return server
+    return lookup('CAELUM_DOCKER_TEST')
 
 
 def docker_runtime() -> str:
@@ -160,14 +132,7 @@ def docker_runtime() -> str:
     >>> docker_runtime()
     '...'
     """
-    try:
-        host = os.environ['CAELUM_DOCKER_RUNTIME']
-    except KeyError:
-        baw.utils.error('missing CAELUM_DOCKER_RUNTIME')
-        sys.exit(baw.utils.FAILURE)
-    else:
-        host = str(host)
-    return host
+    return lookup('CAELUM_DOCKER_RUNTIME')
 
 
 def docker_setup(root: str) -> str:
@@ -464,13 +429,7 @@ def package_address():
     >>> package_address()
     ('http...', 'http...')
     """
-    try:
-        internal = os.environ['PIP_INDEX_URL']
-        external = os.environ['PIP_EXTRA_INDEX_URL']
-        return (internal, external)
-    except KeyError as failure:
-        baw.utils.error(f'Missing global var {failure}')
-        sys.exit(baw.utils.FAILURE)
+    return lookup('PIP_INDEX_URL', 'PIP_EXTRA_INDEX_URL')
 
 
 def package_testing():
@@ -478,12 +437,7 @@ def package_testing():
     >>> package_testing()
     '...'
     """
-    try:
-        pre = os.environ['PIP_PRE_INDEX_URL']
-        return pre
-    except KeyError as failure:
-        baw.utils.error(f'Missing global var {failure}')
-        sys.exit(baw.utils.FAILURE)
+    return lookup('PIP_PRE_INDEX_URL')
 
 
 def changelog(root: str) -> str:
