@@ -212,6 +212,9 @@ def cmds(root: str) -> dict:
         root(str): project root
     Returns:
         dict{name, cmd}: dict with cmds to execute
+
+    >>> import baw.project;cmds(baw.project.determine_root(__file__))
+    {}
     """
     assert os.path.exists(root), root
     path = config_path(root)
