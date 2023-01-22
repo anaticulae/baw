@@ -378,12 +378,7 @@ def pylint(root: str) -> bool:
 
 
 def pylint_spelling() -> str:
-    try:
-        result = os.environ['PYLINT_SPELLING']
-    except KeyError:
-        baw.utils.error('require global env: `PYLINT_SPELLING`')
-        sys.exit(baw.utils.FAILURE)
-    return result
+    return lookup('PYLINT_SPELLING')
 
 
 def plugins(root: str) -> bool:
@@ -492,11 +487,7 @@ def default_config(root: str, access: callable, default=None) -> bool:
 
 @functools.lru_cache(maxsize=1)
 def bawtmp():
-    try:
-        path = os.environ['BAW']
-    except KeyError:
-        baw.utils.error('DEFINE $BAW ENV VAR')
-        sys.exit(baw.utils.FAILURE)
+    path = lookup('BAW')
     os.makedirs(path, exist_ok=True)
     return path
 
