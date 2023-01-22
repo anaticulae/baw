@@ -8,7 +8,6 @@
 # =============================================================================
 
 import os
-import textwrap
 
 import pytest
 
@@ -19,24 +18,24 @@ import tests
 PROJECT = os.path.join(tests.DATA, '.baw')
 assert os.path.exists(PROJECT), str(PROJECT)
 
+CONFIG = """\
+[project]
+short = baw
+name = Beta Alpha Omega
+source = abc
+    defg
+
+[release]
+coverage_min = 50
+fail_on_finding = True
+"""
+
 
 @pytest.fixture
 def configuration(testdir):
-    root = str(testdir)
-    config = """\
-    [project]
-    short = baw
-    name = Beta Alpha Omega
-    source = abc
-        defg
-
-    [release]
-    coverage_min = 50
-    fail_on_finding = True
-    """
-    config = textwrap.dedent(config)
+    root = str(testdir.tmpdir)
     path = os.path.join(root, '.baw')
-    baw.utils.file_create(path, config)
+    baw.utils.file_create(path, CONFIG)
     return root
 
 
