@@ -74,27 +74,6 @@ def venv_always() -> bool:
     return False
 
 
-def lookup(*args):
-    """\
-    >>> lookup('NON_VALUE')
-    Traceback (most recent call last):
-    ...
-    SystemExit: missing global env: NON_VALUE
-    """
-    result = []
-    for key in args:
-        try:
-            item = os.environ[key]
-        except KeyError as error:
-            raise SystemExit(f'missing global env: {key}') from error
-        else:
-            item = str(item)
-        result.append(item)
-    if len(result) == 1:
-        return result[0]
-    return tuple(result)
-
-
 def gitea_server() -> str:
     """\
     >>> gitea_server()
@@ -501,3 +480,24 @@ def docpath(root: str, mkdir: bool = True) -> str:
     if mkdir:
         os.makedirs(tmpdoc, exist_ok=True)
     return tmpdoc
+
+
+def lookup(*args):
+    """\
+    >>> lookup('NON_VALUE')
+    Traceback (most recent call last):
+    ...
+    SystemExit: missing global env: NON_VALUE
+    """
+    result = []
+    for key in args:
+        try:
+            item = os.environ[key]
+        except KeyError as error:
+            raise SystemExit(f'missing global env: {key}') from error
+        else:
+            item = str(item)
+        result.append(item)
+    if len(result) == 1:
+        return result[0]
+    return tuple(result)
