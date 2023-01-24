@@ -73,3 +73,20 @@ def test_cmd_test_skip(simple, capsys):
     simple[0]('test skip')
     stdout = tests.stdout(capsys)
     assert 'skip tests...' in stdout
+
+
+SIMPLE = """
+def test_all():
+    pass
+"""
+
+
+def test_cmd_test_all(simple):
+    root = simple[1]
+    baw.utils.file_create(
+        os.path.join(root, 'tests/test_simple.py'),
+        content=SIMPLE,
+    )
+    simple[0]('test all -n1')
+    # TODO: ENABLE LATER
+    # assert 'test_all PASSED' in stdout or 'test_all PASSED' in stderr
