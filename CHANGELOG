@@ -2,6 +2,34 @@
 
 Every noteable change is logged here.
 
+## v1.56.0 (2023-01-24)
+
+### Feature
+
+* add general config lookup method (0601669afed1)
+* skip outdir (7b2fe3c0175a)
+* add method to change coverage_min (869cdfc51604)
+
+### Fix
+
+* copy CHANGELOG if used (1ccad9a0b961)
+* do not fail on warning (9a4e8cf5cebc)
+* use higher commonmark to fix import problem (4d67ac52faf1)
+* do not remove pytest.ini (e4f8b496531c)
+* clarify error message (e29bdab57f60)
+* allow test with all selector (f7ec99a6f54f)
+* adjust interface (c012432c6bab)
+
+### Documentation
+
+* enable doc generation (ba89e1955db9)
+
+### Chore
+
+* upgrade requirements.txt (29f3913a76b5)
+* always run test cov (c1de090e553b)
+* upgrade Jenkinsfile (1e5455b7cedc)
+
 ## v1.55.0 (2023-01-19)
 
 ### Feature
