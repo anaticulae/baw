@@ -24,7 +24,7 @@ setuptools==65.5.1
 rope==0.10.7
 
 yapf==0.32.0            # format source code
-isort==5.10.1           # format imports
+isort==5.11.4           # format imports
 
 pylint==2.15.4
 
