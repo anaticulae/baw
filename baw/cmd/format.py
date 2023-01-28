@@ -101,14 +101,11 @@ def format_(
     testpath = os.path.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
-
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         waitfor = []
         for item in folder:
             source = os.path.join(root, item)
             cmdx = f'{cmd} {source}'
-            if verbose:
-                baw.utils.log(cmdx)
             waitfor.append(
                 executor.submit(
                     baw.runtime.run_target,
