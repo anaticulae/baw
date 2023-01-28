@@ -37,24 +37,21 @@ def format_repository(root: str, verbose: bool = False, venv: bool = False):
 def format_source(root: str, verbose: bool = False, venv: bool = False):
     if not baw.runtime.installed('yapf', root=root, venv=venv):
         return baw.utils.FAILURE
-    if os.path.exists('setup.py'):
-        cmd = 'yapf -i --style=google setup.py'
-        completed = baw.runtime.run_target(
-            root,
-            cmd,
-            verbose=False,
-            venv=venv,
-        )
-        if completed.returncode:
-            baw.utils.error(completed)
-            return completed.returncode
+    setup = ['setup.py'] if os.path.exists('setup.py') else None
     # run in parallel if not testing with pytest
     # TODO: yapf does not run on venv environment properly
     parallel = '-p' if not baw.utils.testing() and not venv else ''
     template_skip = '-e *.tpy'
     # python = baw.config.python(root, venv=False)
     cmd = f'yapf -r -i --style=google {template_skip} {parallel} --no-local-style'
-    return format_(root, cmd=cmd, verbose=verbose, venv=venv)
+    completed = format_(
+        root,
+        cmd=cmd,
+        verbose=verbose,
+        venv=venv,
+        folders=setup,
+    )
+    return completed
 
 
 def format_imports(root: str, verbose: bool = False, venv: bool = False):
@@ -91,13 +88,15 @@ def format_(
     root: str,
     cmd: str,
     info: str = 'format source',
+    folders: list = None,
     *,
     verbose: bool = False,
     venv: bool = False,
 ):
     baw.utils.log(info)
     folder = baw.config.sources(root)
-
+    if folders:
+        folder.extend(folder)
     # check that `tests` path exists
     testpath = os.path.join(root, 'tests')
     if os.path.exists(testpath):
