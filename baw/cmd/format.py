@@ -37,16 +37,17 @@ def format_repository(root: str, verbose: bool = False, venv: bool = False):
 def format_source(root: str, verbose: bool = False, venv: bool = False):
     if not baw.runtime.installed('yapf', root=root, venv=venv):
         return baw.utils.FAILURE
-    cmd = 'yapf -i --style=google setup.py'
-    failure = baw.runtime.run_target(
-        root,
-        cmd,
-        verbose=False,
-        venv=venv,
-    )
-    if failure.returncode:
-        baw.utils.error(failure)
-        return failure.returncode
+    if os.path.exists('setup.py'):
+        cmd = 'yapf -i --style=google setup.py'
+        completed = baw.runtime.run_target(
+            root,
+            cmd,
+            verbose=False,
+            venv=venv,
+        )
+        if completed.returncode:
+            baw.utils.error(completed)
+            return completed.returncode
     # run in parallel if not testing with pytest
     # TODO: yapf does not run on venv environment properly
     parallel = '-p' if not baw.utils.testing() and not venv else ''
