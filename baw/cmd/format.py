@@ -34,6 +34,20 @@ def format_repository(root: str, verbose: bool = False, venv: bool = False):
     return baw.utils.SUCCESS
 
 
+def sources(root: str):
+    """\
+    >>> import baw.project; sources(baw.determine_root(__file__))
+    ['setup.py', 'tests', 'baw']
+    """
+    result = []
+    for item in 'setup.py tests'.split():
+        if not os.path.exists(item):
+            continue
+        result.append(item)
+    result.extend(baw.config.sources(root))
+    return result
+
+
 def format_source(root: str, verbose: bool = False, venv: bool = False):
     if not baw.runtime.installed('yapf', root=root, venv=venv):
         return baw.utils.FAILURE
