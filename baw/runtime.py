@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import concurrent.futures
 import os
 import shutil
 import subprocess
@@ -380,6 +381,30 @@ def run(
         check=False,
     )
     return process
+
+
+def runs(
+    cmds: str,
+    cwd: str,
+    verbose: bool = False,
+    workers: int = 12,
+) -> int:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
+        waitfor = []
+        for cmd in cmds:
+            waitfor.append(executor.submit(
+                run,
+                cmd=cmd,
+                cwd=cwd,
+            ))
+        for future in concurrent.futures.as_completed(waitfor):
+            completed = future.result()
+            if completed.returncode:
+                baw.utils.error(f'error: {completed.stderr}')
+                return baw.utils.FAILURE
+    if verbose:
+        baw.utils.log(f'{cmds}: complete\n')
+    return baw.utils.SUCCESS
 
 
 def installed(program: str, root: str, venv: bool = False):

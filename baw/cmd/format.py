@@ -48,22 +48,25 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: bool = False, venv: bool = False):
+def format_source(root: str, verbose: bool = False, venv: bool = False) -> int:  # pylint:disable=W0613
+    baw.utils.log('format source')
     if not baw.runtime.installed('yapf', root=root, venv=venv):
         return baw.utils.FAILURE
-    setup = ['setup.py'] if os.path.exists('setup.py') else None
-    # run in parallel if not testing with pytest
-    # TODO: yapf does not run on venv environment properly
+    yapf = '-i --style=google --no-local-style'
     parallel = '-p' if not baw.utils.testing() and not venv else ''
     template_skip = '-e *.tpy'
-    # python = baw.config.python(root, venv=False)
-    cmd = f'yapf -r -i --style=google {template_skip} {parallel} --no-local-style'
-    completed = format_(
-        root,
-        cmd=cmd,
-        verbose=verbose,
-        venv=venv,
-        folders=setup,
+    todo = []
+    for item in sources(root):
+        path = os.path.join(root, item)
+        if os.path.isfile(path):
+            cmd = f'yapf -i {yapf} {path}'
+        else:
+            cmd = f'yapf -r {yapf} {template_skip} {parallel} {path}'
+        todo.append(cmd)
+    completed = baw.runtime.runs(
+        todo,
+        cwd=root,
+        workers=len(todo),
     )
     return completed
 
@@ -102,15 +105,12 @@ def format_(
     root: str,
     cmd: str,
     info: str = 'format source',
-    folders: list = None,
     *,
     verbose: bool = False,
     venv: bool = False,
 ):
     baw.utils.log(info)
     folder = baw.config.sources(root)
-    if folders:
-        folder.extend(folder)
     # check that `tests` path exists
     testpath = os.path.join(root, 'tests')
     if os.path.exists(testpath):
