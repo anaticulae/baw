@@ -13,8 +13,6 @@ import contextlib
 import functools
 import os
 import random
-import shutil
-import stat
 import sys
 import time
 import webbrowser
@@ -253,21 +251,6 @@ def profile():
         raise
     else:
         print_runtime(start)
-
-
-def remove_tree(path: str):
-    assert os.path.exists(path), path
-
-    def remove_readonly(func, path, _):  # pylint:disable=W0613
-        """Clear the readonly bit and reattempt the removal."""
-        os.chmod(path, stat.S_IWRITE)
-        func(path)
-
-    try:
-        shutil.rmtree(path, onerror=remove_readonly)
-    except PermissionError:
-        error(f'Could not remove {path}')
-        sys.exit(FAILURE)
 
 
 def skip(msg: str):
