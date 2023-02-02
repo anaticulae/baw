@@ -19,5 +19,7 @@ from baw.dockers.dockfile import docker_image_upgrade
 from baw.pipelinefile import jenkinsfile
 from baw.project import determine_root
 from baw.runtime import hasprog
+from baw.utils import FAILURE
+from baw.utils import SUCCESS
 from baw.utils import error
 from baw.utils import log
