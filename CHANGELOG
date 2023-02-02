@@ -2,6 +2,28 @@
 
 Every noteable change is logged here.
 
+## v1.57.0 (2023-02-02)
+
+### Feature
+
+* upgrade template (fda5d5ccbcfe)
+* improve yapf formatter (fb21639dcdeb)
+* add method to determine format destinations (a71e20286fb2)
+* reduce invoke count to improve speed (9597759586bf)
+* upgrade Sphinx (d4487b6aace3)
+* upgrade isort (c59e10058f3f)
+* upgrade xdist (456bfea983cc)
+
+### Fix
+
+* log only once in verbose mode (a50754ad268a)
+* only format if setup exists (7a2ac9a9d211)
+
+### Chore
+
+* upgrade Jenkinsfile (b07e18854419)
+* upgrade images (b0ce949b7adf)
+
 ## v1.56.0 (2023-01-24)
 
 ### Feature
