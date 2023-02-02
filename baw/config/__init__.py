@@ -153,18 +153,20 @@ def shortcut(root: str) -> str:
     return short
 
 
-def create(root: str, shortname: str, longname: str):
+def create(root: str, shortname: str, longname: str, cov_min: int = 100):
     """Create project-config in .baw folder
 
     Args:
         root(str): path to expected project root
         shortname(str): short name eg. 3 chars long of project
         longname(str): project-name which is used in generated
+        cov_min(int): required coverage for new release
+
     """
     assert os.path.exists(root)
     cfg = configparser.ConfigParser()
     cfg['project'] = {'short': shortname, 'name': longname}
-    # cfg['release'] = {'fail_on_finding': True}
+    cfg['release'] = {'coverage_min': cov_min}
     outpath = config_path(root)
     # write to buffer
     output = io.StringIO()
