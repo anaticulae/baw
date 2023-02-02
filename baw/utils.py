@@ -356,3 +356,13 @@ def testing() -> bool:
     if os.environ.get('PYTEST_CURRENT_TEST', None):
         return True
     return False
+
+
+def exitx(msg='', returncode=FAILURE):
+    """End progam. Log optional exit message as failure or success."""
+    if msg:
+        if returncode:
+            baw.error(msg)
+        else:
+            baw.log(msg)
+    sys.exit(returncode)

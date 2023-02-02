@@ -22,4 +22,5 @@ from baw.runtime import hasprog
 from baw.utils import FAILURE
 from baw.utils import SUCCESS
 from baw.utils import error
+from baw.utils import exitx
 from baw.utils import log
