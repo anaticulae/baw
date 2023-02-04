@@ -15,6 +15,10 @@ import pytest
 import tests
 
 
+@pytest.mark.skipif(
+    sys.hexversion >= 0x030900F0,
+    reason='python 3.10, update Sphinx',
+)
 def test_cmd_doc(simple):
     # TODO: CHNAGE AFTER UPGRADING SPHINX
     simple[0]('doc')
