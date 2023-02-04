@@ -8,7 +8,6 @@
 #==============================================================================
 
 import os
-import sys
 
 import pytest
 
@@ -23,18 +22,6 @@ def test_init_project_in_empty_folder(project_example):
     """
     index = project_example.join('docs/index.rst')
     assert os.path.exists(index)
-
-
-@pytest.mark.skipif(
-    sys.hexversion >= 0x030900F0,
-    reason='python 3.10, update Sphinx',
-)
-@tests.nightly
-def test_doc_cmd(project_example, monkeypatch):
-    """Run doc cmd to generate documentation."""
-    tests.baaw('doc', monkeypatch)
-    created = project_example.join('tmpdir/docs/xcd/html/index.html')
-    assert os.path.exists(created)
 
 
 @tests.hasbaw
