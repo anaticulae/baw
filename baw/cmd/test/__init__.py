@@ -12,6 +12,7 @@ import shutil
 import sys
 
 import baw.archive.test
+import baw.cmd.test.baseline
 import baw.cmd.test.cov
 import baw.cmd.utils
 import baw.config
@@ -22,10 +23,11 @@ import baw.runtime
 import baw.utils
 
 
-def run_test(  # pylint:disable=R0914
+def run_test(  # pylint:disable=R0914,R1260
     root: str,
     testconfig: list = None,
     *,
+    baseline: bool = False,
     coverage: bool = False,
     docs: bool = False,
     fast: bool = False,
@@ -49,6 +51,7 @@ def run_test(  # pylint:disable=R0914
     Args:
         root(str): path to root of tested project
         testconfig(list): list of user defined test parameter via -k
+        baseline(bool): run tests and commit expected changes
         coverage(bool): run python test coverage
         docs(bool): run doctests
         fast(bool): skip long running tests
@@ -67,6 +70,9 @@ def run_test(  # pylint:disable=R0914
     Returns:
         returncode(int): 0 if successful else > 0
     """
+    if baseline:
+        baw.cmd.test.baseline.pre(root)
+        alls = True
     if not any((generate, nightly, longrun, fast, docs, alls)):
         baw.utils.log('skip tests...')
         return baw.utils.SUCCESS
@@ -126,6 +132,10 @@ def run_test(  # pylint:disable=R0914
     if completed.returncode == NO_TEST_TO_RUN:
         # override pytest error code
         return baw.utils.SUCCESS
+    if baseline:
+        if baw.cmd.test.baseline.commit(root):
+            return baw.FAILURE
+        return baw.SUCCESS
     return completed.returncode
 
 
@@ -339,6 +349,7 @@ def run(args: dict):
     coverage = baw.cmd.test.cov.select_cov(args)
     result = run_test(
         root=root,
+        baseline=selected == 'baseline',
         coverage=coverage,
         docs=selected == 'docs',
         fast=selected == 'fast',
@@ -429,6 +440,6 @@ def extend_cli(parser):
         help='',
         nargs='?',
         default='fast',
-        choices='skip docs fast long generate nightly all'.split(),
+        choices='skip docs fast long generate nightly all baseline'.split(),
     )
     test.set_defaults(func=run)
