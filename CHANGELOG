@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v1.58.0 (2023-02-04)
+
+### Feature
+
+* add baseline flag to ease development (9ace2d24afb2)
+* add separate cov manage step (60cbc3d591ae)
+* add minimal test coverage for new projects (19bba78bbcc9)
+* add method to shorten sys.exit (a0557b44913c)
+* extend public API to shorten code (9443a105abc3)
+
+### Documentation
+
+* happy New Year! (4ef8e141da67)
+
 ## v1.57.0 (2023-02-02)
 
 ### Feature
