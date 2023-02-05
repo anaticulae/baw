@@ -155,6 +155,18 @@ def checkout(
     return completed.returncode
 
 
+def push(root: str) -> int:
+    cmd = 'git push'
+    completed = baw.runtime.run(cmd, cwd=root)
+    if completed.returncode:
+        baw.error('while pushing')
+        if completed.stdout.strip():
+            baw.log(completed.stdout)
+        if completed.stderr.strip():
+            baw.error(completed.stderr)
+    return completed.returncode
+
+
 def tag_drop(
     tag: str,
     root: str,
