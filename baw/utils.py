@@ -47,6 +47,13 @@ def handle_error(*exceptions: list, code: int = 1):
         SystemExit: if given `exceptions` is raised while executing context
     Yields:
         Context: to run operation
+
+    >>> with handle_error(ValueError, code=10):
+    ...     raise ValueError('HeKo')
+    Traceback (most recent call last):
+    ...
+        sys.exit(code)
+    SystemExit: 10
     """
     try:
         yield
