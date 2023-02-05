@@ -306,6 +306,9 @@ def fork(
     Returns:
         returncode if error occurs or returncode=True
         result of computation if no error occurs or returncode is not used
+
+    >>> fork(['Not A Method', 'Also not a method'], returncode=True) == baw.FAILURE
+    True
     """
     failure = 0
     executor = concurrent.futures.ThreadPoolExecutor
