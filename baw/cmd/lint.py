@@ -31,6 +31,12 @@ class Scope(enum.Enum):
     MINIMAL = enum.auto()
     TODO = enum.auto()
 
+    @staticmethod
+    def from_str(scope: str):
+        if isinstance(scope, str):
+            scope = Scope[scope.upper()]
+        return scope
+
 
 def run_linter(root: str, verbose: bool, venv: bool) -> int:
     if not baw.config.basic(root):
@@ -72,8 +78,7 @@ def lint(
     Returns:
         Returncode of linter process.
     """
-    if isinstance(scope, str):
-        scope = Scope[scope.upper()]
+    scope = Scope.from_str(scope)
     code = ' '.join(baw.config.sources(root))
     testpath = os.path.join(root, 'tests')
     linttest = testpath if os.path.exists(testpath) else ''
