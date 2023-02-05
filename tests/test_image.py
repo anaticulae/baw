@@ -64,8 +64,9 @@ def test_cmd_image_pipref_upgrade(simple, capsys, typ):
 
     baw.utils.file_create(dockerfile, create())
     baw.git.commit(root, 'DOCKERFILE', 'verify pipref')
+    tmpname = f'tmp_baw_test_cmd_image_pipref_{typ.lower()}'
     # create dockerfile to verify PIPREF-replacement
-    simple[0](f'image create --dockerfile {dockerfile}')
+    simple[0](f'image create --dockerfile {dockerfile} --name={tmpname}')
     expected = 'RUN echo xkcd==0.0.0'
     # ensure that replacement was correct
     stdout = tests.stdout(capsys)
