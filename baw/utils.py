@@ -280,7 +280,8 @@ def empty(*args, **kwargs):  # pylint:disable=W0613
 
 def openbrowser(url: str):
     """\
-    >>> openbrowser(__file__)
+    >>> openbrowser(__file__) is None
+    True
     """
     if 'PYTEST_CURRENT_TEST' in os.environ:
         # running with pytest do not open webbrowser
