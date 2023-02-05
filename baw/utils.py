@@ -69,6 +69,17 @@ def log(msg: str = '', end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
+def completed(completed):  # pylint:disable=W0621
+    if not completed.returncode:
+        return
+    if completed.stdout and completed.stdout.strip():
+        # stdout can be None
+        log(completed.stdout)
+    if completed.stderr and completed.stderr.strip():
+        # stderr can be None
+        log(completed.stderr)
+
+
 def verbose(msg: str = '', end: str = NEWLINE, verbose: bool = False):  # pylint:disable=W0621
     if not verbose:
         return
