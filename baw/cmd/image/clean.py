@@ -20,6 +20,7 @@ def images() -> int:
             imagename = str(image)
             delete = baw.cmd.image.TEST_TAG in imagename
             delete |= imagename == "<Image: ''>"
+            delete |= imagename.startswith('tmp_')
             if not delete:
                 continue
             baw.utils.log(f'try to remove: {image.id}')
