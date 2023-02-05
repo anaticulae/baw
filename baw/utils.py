@@ -69,8 +69,8 @@ def log(msg: str = '', end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
-def completed(completed):  # pylint:disable=W0621
-    if not completed.returncode:
+def completed(completed, force: bool = False):  # pylint:disable=W0621
+    if not completed.returncode and not force:
         return
     if completed.stdout and completed.stdout.strip():
         # stdout can be None

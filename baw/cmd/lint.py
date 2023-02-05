@@ -20,6 +20,7 @@ import enum
 import functools
 import os
 
+import baw
 import baw.config
 import baw.resources
 import baw.runtime
@@ -122,8 +123,7 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
         verbose=verbose,
     )
     if log_always or completed.returncode:
-        baw.utils.log(completed.stderr)
-        baw.utils.log(completed.stdout)
+        baw.completed(completed, force=True)
     return completed.returncode
 
 
@@ -141,8 +141,7 @@ def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
         verbose=verbose,
     )
     if completed.returncode:
-        baw.utils.log(completed.stderr)
-        baw.utils.log(completed.stdout)
+        baw.completed(completed)
     elif log_always:
         baw.utils.log('bandit complete')
     return completed.returncode
