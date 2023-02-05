@@ -11,7 +11,7 @@ URL="${BASE}/${OWNER}/${REPO}.git"
 
 echo $URL
 echo $BRANCH
-git clone ${URL} -b ${BRANCH} release && cd release
+git clone ${URL} -b ${BRANCH} baseline && cd baseline
 if [ $? -ne 0 ]
 then
     exit 1
