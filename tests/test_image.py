@@ -54,10 +54,15 @@ def test_cmd_image_pipref_upgrade(simple, capsys, typ):
     simple[0]('pipe init')
     root = simple[1]
     dockerfile = os.path.join(root, 'DOCKERFILE')
-    # use image-name of current Jenkins-File
-    project = baw.cmd.image.dockerfiles.header(baw.ROOT)
-    # create simple docker-file which replaces <<PIPREF>><<PIPSTABLE>>
-    baw.utils.file_create(dockerfile, f'{project}\nRUN echo <<{typ}>>')
+
+    def create():
+        # use image-name of current Jenkins-File
+        content = baw.cmd.image.dockerfiles.header(baw.ROOT)
+        # create simple docker-file which replaces <<PIPREF>><<PIPSTABLE>>
+        content += f'\nRUN echo <<{typ}>>'
+        return content
+
+    baw.utils.file_create(dockerfile, create())
     baw.git.commit(root, 'DOCKERFILE', 'verify pipref')
     # create dockerfile to verify PIPREF-replacement
     simple[0](f'image create --dockerfile {dockerfile}')
