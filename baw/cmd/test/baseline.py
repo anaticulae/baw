@@ -20,7 +20,7 @@ def pre(root: str):
     return baw.SUCCESS
 
 
-def commit(root: str) -> int:
+def commit(root: str, push: bool = True) -> int:
     if baw.git.is_clean(root, verbose=False):
         baw.log('baseline: nothing changed')
         return baw.SUCCESS
@@ -29,4 +29,8 @@ def commit(root: str) -> int:
         source='tests/**',
         message=MESSAGE,
     )
+    if returnvalue:
+        return returnvalue
+    if push:
+        returnvalue = baw.git.push(root)
     return returnvalue
