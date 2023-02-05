@@ -16,6 +16,7 @@ import sys
 
 import resinf
 
+import baw
 import baw.cmd.utils
 import baw.config
 import baw.runtime
@@ -76,10 +77,7 @@ def clean_git(root: str):
         cwd=root,
         verbose=False,
     )
-    if completed.stdout:
-        baw.utils.log(completed.stdout)
-    if completed.stderr:
-        baw.utils.error(completed.stderr)
+    baw.completed(completed)
 
 
 def clean_docs(root: str):

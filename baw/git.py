@@ -13,6 +13,7 @@ import os
 import subprocess
 import sys
 
+import baw
 import baw.resources
 import baw.runtime
 import baw.utils
@@ -160,10 +161,7 @@ def push(root: str) -> int:
     completed = baw.runtime.run(cmd, cwd=root)
     if completed.returncode:
         baw.error('while pushing')
-        if completed.stdout.strip():
-            baw.log(completed.stdout)
-        if completed.stderr.strip():
-            baw.error(completed.stderr)
+        baw.completed(completed)
     return completed.returncode
 
 

@@ -12,6 +12,7 @@ import sys
 
 import docker.errors
 
+import baw
 import baw.dockers
 import baw.runtime
 import baw.utils
@@ -95,9 +96,7 @@ def create(
         )
         if completed.returncode:
             baw.utils.error(f'could not create image: {root}')
-            if completed.stdout.strip():
-                baw.utils.log(completed.stdout)
-            baw.utils.error(completed.stderr)
+            baw.completed(completed)
             sys.exit(baw.utils.FAILURE)
         else:
             baw.utils.log(completed.stdout)
@@ -130,10 +129,7 @@ def receive_data(container, outdir: bool = True):
         completed = baw.runtime.run(cmd, cwd=os.getcwd())
         if completed.returncode:
             baw.utils.error(f'untar failed: {cmd}')
-            if completed.stdout:
-                baw.utils.error(completed.stdout)
-            if completed.stdout:
-                baw.utils.error(completed.stderr)
+            baw.completed(completed)
     baw.utils.log('done')
 
 
@@ -171,10 +167,7 @@ def tar_content(
         completed = baw.runtime.run(cmd, content)
         if completed.returncode:
             baw.utils.error(f'tar failed: {cmd}')
-            if completed.stdout:
-                baw.utils.error(completed.stdout)
-            if completed.stdout:
-                baw.utils.error(completed.stderr)
+            baw.completed(completed)
         content = baw.utils.file_read_binary(base)
     return content
 

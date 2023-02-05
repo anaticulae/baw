@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time
 
+import baw
 import baw.config
 import baw.utils
 
@@ -291,10 +292,7 @@ def log_result(  # pylint:disable=R1260,R0912
     if reporting and error_message.strip():
         baw.utils.error(error_message.strip())
     if verbose:
-        if completed.stderr:
-            baw.utils.error(completed.stderr)
-        if completed.stdout:
-            baw.utils.log(completed.stdout)
+        baw.completed(completed)
         if start is not None:
             baw.utils.print_runtime(start)
 
