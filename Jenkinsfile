@@ -48,9 +48,11 @@ pipeline{
             }
         }
         stage('docker'){
+            when{branch 'master or docker'}
             steps{script{baw.run("sh ./make")}}
         }
         stage('pre'){
+            when{branch 'pre'}
             steps{script{baw.pre()}}
         }
         stage('all'){
