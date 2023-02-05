@@ -35,9 +35,7 @@ def create(  # pylint:disable=W0613
 ):
     root = baw.cmd.utils.determine_root(root)
     if dockerfile:
-        dockerfile = baw.utils.forward_slash(dockerfile)
-        if '/' not in dockerfile:
-            dockerfile = os.path.join(os.getcwd(), dockerfile)
+        dockerfile = ensure_dockerfile_path(dockerfile)
         with dockerfile_resolve_gitdescribe(dockerfile) as dock:
             result = dockerfile_build(
                 root,
@@ -56,6 +54,14 @@ def create(  # pylint:disable=W0613
             tagname=tagname,
         )
     return result
+
+
+def ensure_dockerfile_path(dockerfile):
+    dockerfile = baw.utils.forward_slash(dockerfile)
+    if '/' not in dockerfile:
+        # make absolute?
+        dockerfile = os.path.join(os.getcwd(), dockerfile)
+    return dockerfile
 
 
 def dockerfile_build(root, dockerfile, name=None) -> int:
