@@ -206,6 +206,8 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
         r'Your code has been rated at (?P<major>\d{1,2})\.(?P<minor>\d{1,2})/10',
         completed.stdout,
     )
+    if rating is None:
+        baw.completed(completed)
     assert rating is not None, rating
 
     result = CodeQuality()
