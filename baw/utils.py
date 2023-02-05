@@ -370,7 +370,17 @@ def testing() -> bool:
 
 
 def exitx(msg='', returncode=FAILURE):
-    """End progam. Log optional exit message as failure or success."""
+    """End progam. Log optional exit message as failure or success.
+
+    >>> exitx('Fehler?')
+    Traceback (most recent call last):
+    ...sys.exit(returncode)
+    SystemExit: 1
+    >>> exitx('Alles gut.', returncode=0)
+    Traceback (most recent call last):
+    ...
+    SystemExit: 0
+    """
     if msg:
         if returncode:
             baw.error(msg)
