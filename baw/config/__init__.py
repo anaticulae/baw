@@ -43,6 +43,8 @@ FAIL_ON_FINDING_DEFAULT = True
 
 COVERAGE_MIN = 20
 
+COVERAGE_MAX = 100
+
 
 def venv_global() -> bool:
     """Use global venv.
@@ -153,7 +155,12 @@ def shortcut(root: str) -> str:
     return short
 
 
-def create(root: str, shortname: str, longname: str, cov_min: int = 100):
+def create(
+    root: str,
+    shortname: str,
+    longname: str,
+    cov_min: int = COVERAGE_MAX,
+):
     """Create project-config in .baw folder
 
     Args:
@@ -161,7 +168,6 @@ def create(root: str, shortname: str, longname: str, cov_min: int = 100):
         shortname(str): short name eg. 3 chars long of project
         longname(str): project-name which is used in generated
         cov_min(int): required coverage for new release
-
     """
     assert os.path.exists(root)
     cfg = configparser.ConfigParser()
