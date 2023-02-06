@@ -345,8 +345,11 @@ def fork(
                 error(f'future number: {index}; {future} failed.')
                 error(failed)
                 failure += 1
-    if failure or returncode:
+    if failure:
         return failure
+    if returncode:
+        # Pylint does not raises an Exception but produces an returnvalue.
+        return max((failure, sum(result)))
     return result
 
 
