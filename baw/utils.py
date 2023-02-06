@@ -348,6 +348,7 @@ def fork(
     if failure:
         return failure
     if returncode:
+        # TODO: FAILURE IS ALWAYS ZERO
         # Pylint does not raises an Exception but produces an returnvalue.
         return max((failure, sum(result)))
     return result
