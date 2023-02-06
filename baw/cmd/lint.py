@@ -88,7 +88,11 @@ def lint(
     bandit_ = functools.partial(bandit, root, run_in, venv, log_always, verbose)
     pylint_ = functools.partial(pylint, root, scope, run_in, venv, log_always,
                                 verbose)
-    _, returncode = baw.utils.fork(*[bandit_, pylint_], process=True)
+    returncode = baw.utils.fork(
+        *[bandit_, pylint_],
+        process=True,
+        returncode=True,
+    )
     return returncode
 
 
