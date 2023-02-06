@@ -198,7 +198,7 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Your code has been rated at 9.24/10
     completed = baw.runtime.run_target(
         root,
-        cmd='baw lint',
+        cmd='baw --verbose lint',
         skip_error_code=set(range(100)),
         verbose=verbose,
     )
@@ -208,8 +208,9 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     )
     if rating is None:
         baw.completed(completed)
-    assert rating is not None, rating
-
+    # Hint: If broken, verify 'baw --verbose lint' and ensure that code
+    # rating is printed.
+    assert rating is not None, completed
     result = CodeQuality()
     if rating:
         result.rating = float(rating['major'] + '.' + rating['minor'])
