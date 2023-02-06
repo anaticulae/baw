@@ -27,7 +27,7 @@ def changelog_headers(  # pylint:disable=W0613
     changelog: dict,
     changelog_sections: list,
     **kwargs,
-) -> typing.Optional[str]:  # pylint:disable=R6003
+) -> typing.Optional[str]:  # pylint:disable=R6003 # pragma: no cover
     import semantic_release.changelog.changelog
     output = ""
     for section in semantic_release.changelog.changelog.get_changelog_sections(
@@ -47,7 +47,10 @@ def changelog_headers(  # pylint:disable=W0613
     return output
 
 
-def update_changelog_file(version: str, content_to_add: str):
+def update_changelog_file(
+    version: str,
+    content_to_add: str,
+):  # pragma: no cover
     """Update changelog file with changelog for the release.
 
     :param version: The release version number, as a string.
@@ -86,7 +89,7 @@ def update_changelog_file(version: str, content_to_add: str):
     repo().git.add(str(git_path.relative_to(str(repo().working_dir))))
 
 
-def __patch__():
+def __patch__():  # pragma: no cover
     import semantic_release.cli
     semantic_release.cli.update_changelog_file = update_changelog_file
 
