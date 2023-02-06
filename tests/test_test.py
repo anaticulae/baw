@@ -65,7 +65,8 @@ def test_test_with_import(example):
 
 def test_cmd_junit_xml(simple):  # pylint:disable=W0621
     expected = os.path.join(simple[1], 'myreport.xml')
-    simple[0](f'test --junit_xml={expected}')
+    # -n1: avoid xdist runtime error, TODO: VERIFY THIS
+    simple[0](f'test --junit_xml={expected} -n1')
     assert os.path.exists(expected)
 
 
