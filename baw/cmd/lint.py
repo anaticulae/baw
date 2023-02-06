@@ -115,7 +115,7 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     baw.log('pylint...')
     python = baw.config.python(root, venv=venv)
     spelling = baw.config.spelling(root)
-    pylint_ = baw.config.pylint(root)
+    pyconfig = baw.config.pylint(root)
     cmd = f'{python} -mpylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={baw.resources.RCFILE_PATH} '
@@ -132,8 +132,8 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
         cmd += '--spelling-dict=en_US '
         path = baw.config.pylint_spelling()
         cmd += f'--spelling-private-dict-file={path} '
-    if pylint_:
-        cmd += f'{pylint_} '
+    if pyconfig:
+        cmd += f'{pyconfig} '
     cmd = cmd.strip()
     completed = baw.runtime.run_target(
         root,
