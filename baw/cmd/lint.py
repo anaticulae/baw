@@ -113,10 +113,10 @@ def lint(
 
 def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     baw.log('pylint...')
-    python = baw.config.python(root, venv=venv)
+    # python = baw.config.python(root, venv=venv)
     spelling = baw.config.spelling(root)
     pyconfig = baw.config.pylint(root)
-    cmd = f'{python} -mpylint {run_in}'
+    cmd = f'pylint {run_in}'
     if scope in (Scope.ALL, Scope.MINIMAL):
         cmd += f'--rcfile={baw.resources.RCFILE_PATH} '
     cmd += '-d R0801 '  # disable duplicated code check
@@ -151,8 +151,8 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
 
 def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
     baw.log('bandit...')
-    python = baw.config.python(root, venv=venv)
-    cmd = f'{python} -mbandit {run_in} -r '
+    # python = baw.config.python(root, venv=venv)
+    cmd = f'bandit {run_in} -r '
     cmd += '--skip B101'  # skip assert is used
     cmd += ',B404'  # import subprocess
     completed = baw.runtime.run_target(
