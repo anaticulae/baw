@@ -103,7 +103,7 @@ def lint(
         verbose,
     )
     returncode = baw.utils.fork(
-        *[bandits, pylints],
+        *[pylints, bandits],
         process=False,
         returncode=True,
         worker=2,
