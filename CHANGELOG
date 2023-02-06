@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.60.1 (2023-02-06)
+
+### Chore
+
+* upgrade requirements.txt (9e5ca0462f4b)
+* fix branch selector (ff3d8d136e4f)
+
 ## v1.60.0 (2023-02-06)
 
 ### Feature
