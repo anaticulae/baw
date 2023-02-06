@@ -13,14 +13,14 @@ import baw.config
 import baw.utils
 
 
-def test_archive_path(root: str) -> str:
+def path_tested(root: str) -> str:
     tmpdir = baw.config.project_tmpdir(root)
     return os.path.join(tmpdir, 'tested')
 
 
-def tested(root: str, hashed: str) -> bool:
+def is_tested(root: str, hashed: str) -> bool:
     assert hashed.strip(), 'require hashed value'
-    archive = test_archive_path(root)
+    archive = path_tested(root)
     if not os.path.exists(archive):
         return False
     content = baw.utils.file_read(archive)
@@ -32,9 +32,9 @@ def tested(root: str, hashed: str) -> bool:
 
 def mark_tested(root: str, hashed: str) -> bool:
     assert hashed.strip(), 'require hashed value'
-    if tested(root, hashed):
+    if is_tested(root, hashed):
         return True
-    archive = test_archive_path(root)
+    archive = path_tested(root)
     # add newline to separate hash values in file
     hashed = f'{hashed}\n'
     if os.path.exists(archive):

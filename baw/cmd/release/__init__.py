@@ -114,7 +114,7 @@ def run_test(
     # do not run hashed on first release, cause there is no any tagged
     # version.
     hashed = baw.git.headhash(root)
-    require_test = not hashed or not baw.archive.test.tested(root, hashed)
+    require_test = not hashed or not baw.archive.test.is_tested(root, hashed)
     if require_test:
         returncode = baw.cmd.complex.sync_and_test(
             root,
