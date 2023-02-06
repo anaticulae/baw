@@ -25,3 +25,4 @@ from baw.utils import completed
 from baw.utils import error
 from baw.utils import exitx
 from baw.utils import log
+from baw.utils import tmpname

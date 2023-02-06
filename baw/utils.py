@@ -11,6 +11,7 @@ import binascii
 import concurrent.futures
 import contextlib
 import functools
+import math
 import os
 import random
 import sys
@@ -162,12 +163,24 @@ def tmp(root: str) -> str:
     return path
 
 
+def tmpname(width: int = 10):
+    """\
+    >>> len(tmpname(15))
+    15
+    >>> tmpname(15)
+    '...'
+    """
+    value = int(random.random() * math.pow(10, width))  # nosec
+    name = str(value).zfill(width)
+    return name
+
+
 def tmpfile() -> str:
     """\
     >>> tmpfile()
     '...'
     """
-    name = str(int(random.random() * 10000000000)).zfill(10)  # nosec
+    name = tmpname()
     tmps = tmp(baw.ROOT)
     result = os.path.join(tmps, name)
     if os.path.exists(result):
