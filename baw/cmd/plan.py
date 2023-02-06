@@ -211,7 +211,10 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # Hint: If broken, verify 'baw --verbose lint' and ensure that code
     # rating is printed.
     assert rating is not None, completed
-    result = CodeQuality()
+    result = CodeQuality(
+        coverage=1.0,
+        rating=10.0,
+    )
     if rating:
         result.rating = float(rating['major'] + '.' + rating['minor'])
     # Total coverage: 0.00
@@ -227,5 +230,4 @@ def code_quality(root: str, verbose: bool = False) -> CodeQuality:
     # assert coverage is not None, completed
     # if coverage:
     #     result.coverage = float(coverage['coverage'])
-    result.coverage = 1.0
     return result
