@@ -85,7 +85,7 @@ def lint(
     linttest = testpath if os.path.exists(testpath) else ''
     run_in = f'{code} {linttest} '
     # TODO: ADD TO RETURNCODE LATER
-    bandit_ = functools.partial(
+    bandits = functools.partial(
         bandit,
         root,
         run_in,
@@ -93,7 +93,7 @@ def lint(
         log_always,
         verbose,
     )
-    pylint_ = functools.partial(
+    pylints = functools.partial(
         pylint,
         root,
         scope,
@@ -103,7 +103,7 @@ def lint(
         verbose,
     )
     returncode = baw.utils.fork(
-        *[bandit_, pylint_],
+        *[bandits, pylints],
         process=False,
         returncode=True,
         worker=2,
