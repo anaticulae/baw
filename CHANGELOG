@@ -2,6 +2,34 @@
 
 Every noteable change is logged here.
 
+## v1.60.0 (2023-02-06)
+
+### Feature
+
+* set default code quality values (ee762dc13fa4)
+* log linter starts (2409a2d054d5)
+* process is not required (8dadf6033b0c)
+* extend public API (dfb9ac2cf5a5)
+* add method to determine tmp name (0c1d03aae3ed)
+* extend cleaning pattern (aa58c8f002cd)
+* extend logging (ad3df4f1b1da)
+* add method to log completed (8aebffb93b89)
+* push baseline automatically (f1ea3a93d90a)
+* add method to push branch (95e0528924dd)
+
+### Fix
+
+* run linter directly (17e18bbbcf66)
+* fix plan evaluation (f33124f12a52)
+* run pylint before bandit (8a752656b097)
+* ensure to return returnvalue (14efc00090ee)
+* reduce possible worker count (b7c170fc6aee)
+
+### Chore
+
+* upgrade Jenkinsfile (9b2fb8ac317b)
+* reduce auto generated images (3b208467fee9)
+
 ## v1.59.0 (2023-02-05)
 
 ### Feature
