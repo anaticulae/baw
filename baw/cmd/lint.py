@@ -92,6 +92,7 @@ def lint(
         *[bandit_, pylint_],
         process=True,
         returncode=True,
+        worker=2,
     )
     return returncode
 
