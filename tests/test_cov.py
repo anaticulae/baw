@@ -66,7 +66,7 @@ def test_cmd_test_cov_no_root(testdir, monkeypatch, capsys):
 
 def test_cmd_cov_increase(simple):
     root = simple[1]
-    assert baw.config.coverage_min(root) == baw.config.COVERAGE_MIN
+    assert baw.config.coverage_min(root) == baw.config.COVERAGE_MAX
     baw.config.change.coverage_min(root, 50.0)
     assert baw.config.coverage_min(root) == 50.0
     baw.config.change.coverage_min(root, 60.0)
