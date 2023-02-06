@@ -48,7 +48,7 @@ pipeline{
             }
         }
         stage('docker'){
-            when{branch 'master or docker'}
+            when{expression { BRANCH_NAME ==~ /(master|docker)/ }}
             steps{script{baw.run("sh ./make")}}
         }
         stage('pre'){
