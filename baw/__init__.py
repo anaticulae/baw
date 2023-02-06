@@ -24,5 +24,7 @@ from baw.utils import SUCCESS
 from baw.utils import completed
 from baw.utils import error
 from baw.utils import exitx
+from baw.utils import file_append
+from baw.utils import file_create
 from baw.utils import log
 from baw.utils import tmpname
