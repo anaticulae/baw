@@ -10,7 +10,6 @@
 import os
 
 import pytest
-import utilatest
 
 import baw.config.change
 import baw.utils
@@ -73,14 +72,12 @@ def test_cmd_cov_increase(simple):
     assert baw.config.coverage_min(root) == 60.0
 
 
-@utilatest.no_linux
 def test_cmd_cov_upgrade_max_done(simple, capsys):
     simple[0]('cov upgrade')
     stdout = tests.stdout(capsys)
     assert 'max cov reached:' in stdout
 
 
-@utilatest.no_linux
 def test_cmd_cov_print(simple, capsys):
     simple[0]('cov print')
     stdout = tests.stdout(capsys)
