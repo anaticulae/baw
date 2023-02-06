@@ -112,6 +112,7 @@ def lint(
 
 
 def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
+    baw.log('pylint...')
     python = baw.config.python(root, venv=venv)
     spelling = baw.config.spelling(root)
     pylint_ = baw.config.pylint(root)
@@ -141,17 +142,19 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
         venv=venv,
         verbose=verbose,
     )
-    if log_always or completed.returncode:
-        baw.completed(completed, force=True)
+    if completed.returncode:
+        baw.completed(completed)
+    elif log_always:
+        baw.utils.log('pylint complete')
     return completed.returncode
 
 
 def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
+    baw.log('bandit...')
     python = baw.config.python(root, venv=venv)
     cmd = f'{python} -mbandit {run_in} -r '
     cmd += '--skip B101'  # skip assert is used
     cmd += ',B404'  # import subprocess
-
     completed = baw.runtime.run_target(
         root,
         cmd,
