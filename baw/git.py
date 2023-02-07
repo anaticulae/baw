@@ -32,7 +32,7 @@ def init(root: str):
     if os.path.exists(gitdir):
         baw.utils.skip('git init')
         return
-    baw.utils.log('git init')
+    baw.log('git init')
     cmd = subprocess.run(  # nosec
         ['git', 'init'],
         check=False,
@@ -72,7 +72,7 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
     assert os.path.exists(root)
     message = f'"{message}"'
     if verbose:
-        baw.utils.log('git commit')
+        baw.log('git commit')
     # support multiple files
     if not isinstance(source, str):
         source = ' '.join(source)
@@ -92,7 +92,7 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
         )
         if process.returncode:
             baw.completed(process)
-            sys.exit(baw.utils.FAILURE)
+            sys.exit(baw.FAILURE)
     return process.returncode
 
 
@@ -135,10 +135,10 @@ def reset(
         verbose(bool): increase logging
         venv(bool): run in venv environment
     Returns:
-        0 if baw.utils.SUCCESS else FAILURE
+        0 if baw.SUCCESS else FAILURE
     """
     to_reset = ' '.join(files) if not isinstance(files, str) else files
-    baw.utils.log(f'Reset {to_reset}')
+    baw.log(f'Reset {to_reset}')
     completed = baw.runtime.run_target(
         root,
         cmd=f'git checkout -q {to_reset}',
@@ -186,7 +186,7 @@ def tag_drop(
     venv: bool = False,
     verbose: bool = False,
 ) -> bool:
-    baw.utils.log(f'Remove tag: {tag}')
+    baw.log(f'Remove tag: {tag}')
     completed = baw.runtime.run_target(
         root=root,
         cmd=f'git tag -d {tag}',
@@ -221,8 +221,8 @@ def stash(
     """
     if is_clean(root, verbose=verbose):
         yield
-        return baw.utils.SUCCESS
-    baw.utils.log('Stash environment')
+        return baw.SUCCESS
+    baw.log('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = baw.runtime.run_target(
         root,
@@ -239,7 +239,7 @@ def stash(
     nostash = (not completed.returncode and
                'No local changes to save' in completed.stdout)
     if nostash:
-        baw.utils.log('No stash is required. Environment is already clean.')
+        baw.log('No stash is required. Environment is already clean.')
 
     err = None
     try:
@@ -251,7 +251,7 @@ def stash(
         # reraise exception from user code
         if err:
             raise err
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     # unstash to recreate dirty environment
     stash_pop(root, venv, verbose)
     # reraise except from user code
@@ -323,11 +323,11 @@ def is_modified(root: str) -> bool:
 def describe(root: str) -> str:
     if not installed():
         baw.utils.error('install git')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     completed = baw.runtime.run('git describe', cwd=root)
     if completed.returncode:
         baw.completed(completed)
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     name = completed.stdout.strip()
     return name
 
@@ -340,7 +340,7 @@ def branchname(root: str) -> str:
     """
     if not installed():
         baw.utils.error('install git')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     branches = baw.runtime.run('git branch', cwd=root).stdout.strip()
     branches = [item for item in branches.splitlines() if item.startswith('*')]
     # * develop
@@ -350,16 +350,16 @@ def branchname(root: str) -> str:
 
 def update_gitignore(root: str, verbose: bool = False):
     if verbose:
-        baw.utils.log('sync gitexclude')
+        baw.log('sync gitexclude')
     exclude = os.path.join(root, GIT_REPO_EXCLUDE)
     if not os.path.exists(exclude):
-        baw.utils.log(f'no git dir: {exclude}, skip update')
-        return baw.utils.SUCCESS
+        baw.log(f'no git dir: {exclude}, skip update')
+        return baw.SUCCESS
     baw.utils.file_replace(
         exclude,
         baw.resources.GITIGNORE,
     )
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def update_userdata(username='supermario', email='test@test.com'):
@@ -403,7 +403,7 @@ def installed() -> bool:
         )
     except FileNotFoundError:
         return False
-    if process.returncode == baw.utils.SUCCESS:
+    if process.returncode == baw.SUCCESS:
         return True
     return False
 
@@ -415,4 +415,4 @@ def ensure_git(error: str = None):
         baw.utils.error(f'git is not installed: {error}')
     else:
         baw.utils.error('git is not installed')
-    sys.exit(baw.utils.FAILURE)
+    sys.exit(baw.FAILURE)
