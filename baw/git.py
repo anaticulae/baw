@@ -91,10 +91,7 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
             verbose=verbose,
         )
         if process.returncode:
-            if stdout := process.stdout.strip():
-                baw.utils.log(stdout)
-            if stderr := process.stderr.strip():
-                baw.utils.error(stderr)
+            baw.completed(process)
             sys.exit(baw.utils.FAILURE)
     return process.returncode
 
