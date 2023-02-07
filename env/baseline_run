@@ -10,16 +10,20 @@
 
 URL="${BASE}/${OWNER}/${REPO}.git"
 
-echo $URL
-echo $BRANCH
+: "${BRANCH}:=develop"
+: "${WORKER}:=32"
+
+echo `url:    $URL`
+echo `branch: $BRANCH`
+echo `worker: $WORKER`
 
 for cmd in \
     `git clone ${URL} -b ${BRANCH} baseline && cd baseline`\
     'baw sync all'\
     'pip --verbose install .'\
-    'baw generate all -n32'\
+    `baw generate all -n ${WORKER}`\
     'baw test baseline'\
-    'git push origin ${BRANCH}'
+    `git push origin ${BRANCH}`
 do
     echo $cmd
     $cmd

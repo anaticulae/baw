@@ -16,6 +16,8 @@ ENV BASE='http://169.254.149.20:6300'
 ENV OWNER='caelum'
 ENV REPO='baw'
 
+ENV WORKER=32
+
 COPY baseline_run /var/script/run
 RUN chmod +x /var/script/run
 
