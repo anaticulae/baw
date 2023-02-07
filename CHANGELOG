@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v1.61.0 (2023-02-07)
+
+### Feature
+
+* add generator step (a77249ee4240)
+* add git to public API (77b23963d0be)
+* add update flag to control working tree (f0ccdd099eb3)
+
+### Fix
+
+* do not add temporary py files (69e0600e9ac7)
+
+### Chore
+
+* shorten branch selector (311509fdfa42)
+
 ## v1.60.1 (2023-02-06)
 
 ### Chore
