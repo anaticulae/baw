@@ -24,9 +24,14 @@ def commit(root: str, push: bool = True) -> int:
     if baw.git.is_clean(root, verbose=False):
         baw.log('baseline: nothing changed')
         return baw.SUCCESS
+    baw.git.add(
+        root,
+        'tests/**',
+        update=True,
+    )
     returnvalue = baw.git.commit(
         root,
-        source='tests/**',
+        source='',
         message=MESSAGE,
     )
     if returnvalue:
