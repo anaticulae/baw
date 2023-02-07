@@ -14,7 +14,7 @@ echo $URL
 echo $BRANCH
 
 for cmd in \
-    'git clone ${URL} -b ${BRANCH} baseline && cd baseline'\
+    `git clone ${URL} -b ${BRANCH} baseline && cd baseline`\
     'baw sync all'\
     'pip --verbose install .'\
     'baw generate'\
