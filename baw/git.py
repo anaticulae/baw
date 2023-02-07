@@ -326,10 +326,7 @@ def describe(root: str) -> str:
         sys.exit(baw.utils.FAILURE)
     completed = baw.runtime.run('git describe', cwd=root)
     if completed.returncode:
-        if stdout := completed.stdout.strip():
-            baw.utils.log(stdout)
-        if stderr := completed.stderr.strip():
-            baw.utils.error(stderr)
+        baw.completed(completed)
         sys.exit(baw.utils.FAILURE)
     name = completed.stdout.strip()
     return name
