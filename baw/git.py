@@ -231,16 +231,13 @@ def stash(
         venv=venv,
     )
     if completed.returncode:
-        baw.utils.error(completed.stdout)
-        baw.utils.error(completed.stderr)
+        baw.completed(completed)
         # Stashing an repository with no commit, produces an error
         sys.exit(completed.returncode)
-
     nostash = (not completed.returncode and
                'No local changes to save' in completed.stdout)
     if nostash:
         baw.log('No stash is required. Environment is already clean.')
-
     err = None
     try:
         yield  # let user do there job
