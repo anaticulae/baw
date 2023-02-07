@@ -12,42 +12,18 @@ URL="${BASE}/${OWNER}/${REPO}.git"
 echo $URL
 echo $BRANCH
 
-git clone ${URL} -b ${BRANCH} baseline && cd baseline
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo 'baw sync'
-baw sync all
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo 'pip install...'
-pip --verbose install .
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo 'baw generate'
-baw generate -n16
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo 'baw test baseline'
-baw test baseline
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-git push origin $BRANCH
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
+for cmd in \
+    'git clone ${URL} -b ${BRANCH} baseline && cd baseline'\
+    'baw sync all'\
+    'pip --verbose install .'\
+    'baw generate'\
+    'baw test baseline'\
+    'git push origin ${BRANCH}'
+do
+    echo $cmd
+    $cmd
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    fi
+done
