@@ -19,6 +19,7 @@ from baw.dockers.dockfile import docker_image_upgrade
 from baw.git import add as git_add
 from baw.git import checkout as git_checkout
 from baw.git import commit as git_commit
+from baw.git import is_clean as git_isclean
 from baw.git import push as git_push
 from baw.git import reset as git_reset
 from baw.git import stash as git_stash
