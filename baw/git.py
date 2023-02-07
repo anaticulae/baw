@@ -26,7 +26,8 @@ def init(root: str):
     """Init git repository. Do nothing if repo already exists.
 
     Args:
-        root(str): generated project"""
+        root(str): generated project
+    """
     gitdir = os.path.join(root, GIT_EXT)
     if os.path.exists(gitdir):
         baw.utils.skip('git init')
