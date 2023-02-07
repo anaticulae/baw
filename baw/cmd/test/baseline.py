@@ -16,6 +16,7 @@ test(baseline): adjust baseline
 
 def pre(root: str):
     if not baw.git.is_clean(root, verbose=False):
+        baw.log(baw.git.modified(root))
         baw.exitx(f'could not baseline, repo is not clean: {root}')
     return baw.SUCCESS
 
