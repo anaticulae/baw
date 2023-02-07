@@ -16,3 +16,13 @@ def test_commit_with_tag(simple):
     root = simple[1]
     tagged = baw.git.describe(root)
     assert tagged == baw.cmd.release.FIRST_RELEASE
+
+
+def test_modified(simple):
+    root = simple[1]
+    assert baw.git_isclean(root)
+    baw.runtime.run_target(root, 'touch ABC')
+    assert not baw.git_isclean(root)
+    modified = baw.git.modified(root)
+    expected = '## master\n?? ABC'
+    assert modified == expected
