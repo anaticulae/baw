@@ -15,13 +15,17 @@ import baw.requirements
 
 
 def parse(content: str, upgrade: bool = False) -> baw.requirements.Requirements:
-    """\
+    r"""\
     >>> parse('Flask_Login==0.1.1')
     Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
     >>> parse('nltk==3.5')
     Requirements(equal={'nltk': '3.5.0'}, greater={})
     >>> parse('camelot_py[cv]>=0.8.2<0.9.0').greater
     {'camelot_py': ['0.8.2', '0.9.0']}
+    >>> parse('Flask_Login>=1.1.1\nFlask_Login==0.2.1')  # duplicated definition
+    Traceback (most recent call last):
+    ...
+    SystemExit: 1
     """
     assert isinstance(content, str), content
     content = content.replace('-', '_')
