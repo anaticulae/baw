@@ -11,6 +11,7 @@ URL="${BASE}/${OWNER}/${REPO}.git"
 
 echo $URL
 echo $BRANCH
+
 git clone ${URL} -b ${BRANCH} baseline && cd baseline
 if [ $? -ne 0 ]
 then
@@ -31,10 +32,22 @@ then
     exit 1
 fi
 
+echo 'baw generate'
+baw generate -n16
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
 echo 'baw test baseline'
 baw test baseline
 if [ $? -ne 0 ]
 then
     exit 1
 fi
+
 git push origin $BRANCH
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
