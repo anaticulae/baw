@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.63.0 (2023-02-07)
+
+### Feature
+
+* extend public git API (f839e6b94a15)
+* log modified files (d6f0d8379aa9)
+* add method to show modified files (6212476cc54f)
+
+### Fix
+
+* generate some data (14fcf3a5b9e7)
+
 ## v1.62.0 (2023-02-07)
 
 ### Feature
