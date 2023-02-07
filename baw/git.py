@@ -43,6 +43,7 @@ def init(root: str):
 def add(
     root: str,
     pattern: str,
+    update: bool = False,
     verbose: bool = False,
 ):
     """Stage items matching on given pattern
@@ -50,14 +51,17 @@ def add(
     Args:
         root(str): root of generated project
         pattern(str): pattern in linux-style
+        update(bool): if True, do not change working tree
         verbose(bool): increase verbosity
     """
     assert os.path.exists(root)
+    update: str = '-u ' if update else ''
+    raw = f'git add {update}{pattern}'
     if verbose:
-        baw.utils.log('git add')
+        baw.log(raw)
     cmd = baw.runtime.run_target(
         root,
-        f'git add {pattern}',
+        cmd=raw,
         verbose=verbose,
     )
     evaluate_git_error(cmd)
