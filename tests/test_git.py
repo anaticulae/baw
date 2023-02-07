@@ -26,3 +26,13 @@ def test_modified(simple):
     modified = baw.git.modified(root)
     expected = '## master\n?? ABC'
     assert modified == expected
+
+
+def test_stash(simple):
+    root = simple[1]
+    assert baw.git_isclean(root)
+    baw.runtime.run_target(root, 'touch ABC')
+    assert not baw.git_isclean(root)
+    with baw.git.stash(root):
+        assert baw.git_isclean(root)
+    assert not baw.git_isclean(root)
