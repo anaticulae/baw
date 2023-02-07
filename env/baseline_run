@@ -17,7 +17,7 @@ for cmd in \
     `git clone ${URL} -b ${BRANCH} baseline && cd baseline`\
     'baw sync all'\
     'pip --verbose install .'\
-    'baw generate all'\
+    'baw generate all -n32'\
     'baw test baseline'\
     'git push origin ${BRANCH}'
 do
