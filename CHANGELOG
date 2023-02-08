@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.65.0 (2023-02-08)
+
+### Feature
+
+* increase worker count (7d2d9b4b3035)
+
 ## v1.64.0 (2023-02-07)
 
 ### Feature
