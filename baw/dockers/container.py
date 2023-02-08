@@ -84,29 +84,46 @@ def create(
             environment=environment,
         )
     except docker.errors.ImageNotFound:
-        baw_image_create = 'baw image create'
-        if generate:
-            baw_image_create += ' --generate'
-        root = os.getcwd()
-        baw.utils.log(baw_image_create)
-        completed = baw.runtime.run(
-            cmd=baw_image_create,
-            cwd=root,
-            # live=True, # live does not return completed
-        )
-        if completed.returncode:
-            baw.utils.error(f'could not create image: {root}')
-            baw.completed(completed)
-            sys.exit(baw.utils.FAILURE)
-        else:
-            baw.utils.log(completed.stdout)
-            if completed.stderr.strip():
-                baw.utils.error(completed.stderr)
-        container = connected.containers.create(
+        container = create_image_create_generate(
             image,
-            command=f'"{cmd}"',
-            environment=environment,
+            cmd,
+            connected,
+            environment,
+            generate,
         )
+    return container
+
+
+def create_image_create_generate(
+    image: str,
+    cmd: str,
+    connected,
+    environment: list = None,
+    generate: bool = False,
+):
+    baw_image_create = 'baw image create'
+    if generate:
+        baw_image_create += ' --generate'
+    root = os.getcwd()
+    baw.utils.log(baw_image_create)
+    completed = baw.runtime.run(
+        cmd=baw_image_create,
+        cwd=root,
+        # live=True, # live does not return completed
+    )
+    if completed.returncode:
+        baw.utils.error(f'could not create image: {root}')
+        baw.completed(completed)
+        sys.exit(baw.utils.FAILURE)
+    else:
+        baw.utils.log(completed.stdout)
+        if completed.stderr.strip():
+            baw.utils.error(completed.stderr)
+    container = connected.containers.create(
+        image,
+        command=f'"{cmd}"',
+        environment=environment,
+    )
     return container
 
 
