@@ -83,28 +83,29 @@ def create(
             command=f'"{cmd}"',
             environment=environment,
         )
+        return container
     except docker.errors.ImageNotFound:
-        container = create_image_create_generate(
+        root = os.getcwd()
+        build_image(root, generate)
+    try:
+        container = connected.containers.create(
             image,
-            cmd,
-            connected,
-            environment,
-            generate,
+            command=f'"{cmd}"',
+            environment=environment,
         )
+    except docker.errors.ImageNotFound as error:
+        # mostly base image is not created
+        baw.utils.error(f'could not create container: {image}')
+        baw.utils.error(error)
+        sys.exit(baw.utils.FAILURE)
     return container
 
 
-def create_image_create_generate(
-    image: str,
-    cmd: str,
-    connected,
-    environment: list = None,
-    generate: bool = False,
-):
+def build_image(root: str, generate: bool = False):
+    """Build image if container image does not exists."""
     baw_image_create = 'baw image create'
     if generate:
         baw_image_create += ' --generate'
-    root = os.getcwd()
     baw.utils.log(baw_image_create)
     completed = baw.runtime.run(
         cmd=baw_image_create,
@@ -119,18 +120,6 @@ def create_image_create_generate(
         baw.utils.log(completed.stdout)
         if completed.stderr.strip():
             baw.utils.error(completed.stderr)
-    try:
-        container = connected.containers.create(
-            image,
-            command=f'"{cmd}"',
-            environment=environment,
-        )
-    except docker.errors.ImageNotFound as error:
-        # mostly base image is not created
-        baw.utils.error(f'could not create container: {root}')
-        baw.utils.error(error)
-        sys.exit(baw.utils.FAILURE)
-    return container
 
 
 def receive_data(container, outdir: bool = True):
