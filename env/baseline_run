@@ -13,9 +13,9 @@ URL="${BASE}/${OWNER}/${REPO}.git"
 : "${BRANCH}:=develop"
 : "${WORKER}:=32"
 
-echo `url:    $URL`
-echo `branch: $BRANCH`
-echo `worker: $WORKER`
+echo "url:    ${URL}"
+echo "branch: ${BRANCH}"
+echo "worker: ${WORKER}"
 
 for cmd in \
     `git clone ${URL} -b ${BRANCH}`\
