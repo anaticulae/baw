@@ -23,6 +23,10 @@ ENV JENKINS_HOME=1
 # TODO: USE WORKER COUNT TO DETERMINE EXTRACTION WORKER
 ENV WORKER=32
 
+ENV GIT_ASKPASS='/var/gitpassword'
+RUN echo 'echo $GIT_PASSWORD' >> /var/gitpassword && chmod +x /var/gitpassword
+ENV GIT_PASSWORD='automated'
+
 COPY baseline_run /var/script/run
 RUN chmod +x /var/script/run
 
