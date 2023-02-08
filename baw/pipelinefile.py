@@ -177,8 +177,6 @@ def library_newest(  # pylint:disable=W0613
     if verbose:
         baw.utils.log(cmd)
     completed = baw.runtime.run(cmd=cmd, cwd=os.getcwd())
-    if baw.utils.testing():
-        return 'd84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d'
     if completed.returncode:
         baw.utils.error(completed)
         sys.exit(completed.returncode)
@@ -186,4 +184,6 @@ def library_newest(  # pylint:disable=W0613
     data = json.loads(stdout)
     newest = data[0]
     name = newest['name']
+    if baw.utils.testing():
+        return 'd84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d'
     return name
