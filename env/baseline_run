@@ -17,19 +17,44 @@ echo "url:    ${URL}"
 echo "branch: ${BRANCH}"
 echo "worker: ${WORKER}"
 
-for cmd in \
-    `git clone ${URL} -b ${BRANCH} baseline`\
-    'pushd baseline'\
-    'baw sync all'\
-    'pip --verbose install .'\
-    `baw generate all`\
-    'baw test baseline'\
-    `git push origin ${BRANCH}`
-do
-    echo "${cmd}"
-    $cmd
-    if [ $? -ne 0 ]
-    then
-        exit 1
-    fi
-done
+echo "git clone ${URL} -b ${BRANCH} baseline && pushd baseline"
+git clone ${URL} -b ${BRANCH} baseline && pushd baseline
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw sync all"
+baw sync all
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "pip --verbose install ."
+pip --verbose install .
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw generate all"
+baw generate all
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw test baseline"
+baw test baseline
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "git push origin ${BRANCH}"
+git push origin ${BRANCH}
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
