@@ -18,7 +18,8 @@ echo "branch: ${BRANCH}"
 echo "worker: ${WORKER}"
 
 for cmd in \
-    `git clone ${URL} -b ${BRANCH}`\
+    `git clone ${URL} -b ${BRANCH} baseline`\
+    'pushd baseline'\
     'baw sync all'\
     'pip --verbose install .'\
     `baw generate all`\
