@@ -171,6 +171,10 @@ def library_newest(  # pylint:disable=W0613
     user: str = 'caelum',
     verbose: bool = False,
 ) -> str:
+    """\
+    >>> library_newest()
+    'd84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d'
+    """
     base = baw.config.gitea_server()
     url = f'{base}/api/v1/repos/{user}/{repo}/tags'
     cmd = f'curl {url}'
