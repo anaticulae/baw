@@ -303,7 +303,7 @@ def openbrowser(url: str):
     >>> openbrowser(__file__) is None
     True
     """
-    if 'PYTEST_CURRENT_TEST' in os.environ:
+    if testing():
         # running with pytest do not open webbrowser
         return
     webbrowser.open_new(url)
