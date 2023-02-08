@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.66.0 (2023-02-08)
+
+### Feature
+
+* use automated account to push baseline (8e886b334135)
+* inform user about missing base image (9cf7fe6034a8)
+
+### Fix
+
+* overwrite baseline (2e24ac55330a)
+* expand commands to ease debugging (186ec5cdb70a)
+* ensure to print cmd correctly (0bf11ce305cf)
+* use different folder cause main contains some data (f248d64fb548)
+* fix docker run invocation (7c756f56b45f)
+* remove non existing parameter (e336e00aeb25)
+* do not clone into separate folder (4113681bf8af)
+
 ## v1.65.0 (2023-02-08)
 
 ### Feature
