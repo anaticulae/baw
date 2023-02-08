@@ -21,7 +21,7 @@ for cmd in \
     `git clone ${URL} -b ${BRANCH}`\
     'baw sync all'\
     'pip --verbose install .'\
-    `baw generate all -n ${WORKER}`\
+    `baw generate all`\
     'baw test baseline'\
     `git push origin ${BRANCH}`
 do
