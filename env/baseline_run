@@ -18,7 +18,7 @@ echo `branch: $BRANCH`
 echo `worker: $WORKER`
 
 for cmd in \
-    `git clone ${URL} -b ${BRANCH} baseline && cd baseline`\
+    `git clone ${URL} -b ${BRANCH}`\
     'baw sync all'\
     'pip --verbose install .'\
     `baw generate all -n ${WORKER}`\
