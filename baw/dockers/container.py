@@ -119,11 +119,17 @@ def create_image_create_generate(
         baw.utils.log(completed.stdout)
         if completed.stderr.strip():
             baw.utils.error(completed.stderr)
-    container = connected.containers.create(
-        image,
-        command=f'"{cmd}"',
-        environment=environment,
-    )
+    try:
+        container = connected.containers.create(
+            image,
+            command=f'"{cmd}"',
+            environment=environment,
+        )
+    except docker.errors.ImageNotFound as error:
+        # mostly base image is not created
+        baw.utils.error(f'could not create container: {root}')
+        baw.utils.error(error)
+        sys.exit(baw.utils.FAILURE)
     return container
 
 
