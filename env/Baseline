@@ -16,6 +16,8 @@ ENV BASE='http://169.254.149.20:6300'
 ENV OWNER='caelum'
 ENV REPO='baw'
 
+# overwrite baseline
+ENV DEV_GIT_REPLACE=1
 # run extraction with max worker count
 ENV JENKINS_HOME=1
 # TODO: USE WORKER COUNT TO DETERMINE EXTRACTION WORKER
