@@ -45,7 +45,10 @@ def run(
                 # use default volume
                 volumes = baw.dockers.determine_volumes()
             if volumes:
-                content = tar_content(content=os.getcwd(), git_include=gitdir)
+                content = tar_content(
+                    content=os.getcwd(),
+                    git_include=gitdir,
+                )
                 container.put_archive(
                     path=volumes,
                     data=content,
