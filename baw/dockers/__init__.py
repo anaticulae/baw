@@ -64,11 +64,12 @@ def prepare_cmd(argv: list) -> str:
     'baw test -n1'
     >>> prepare_cmd(['/var/tmp/baw', '--docker', 'test', '-n1'])
     'baw test -n1'
-    >>> prepare_cmd(['C:\\usr\\python\\310\\Scripts\\baw', '--docker', 'test', 'docs', '--junit_xml=C:/usr/git/var/outdir/test.xml'])
+    >>> prepare_cmd(['C:\\usr\\python\\310\\Scripts\\baw', '--docker=PW=10', 'test', 'docs', '--junit_xml=C:/usr/git/var/outdir/test.xml'])
     'baw test docs --junit_xml=/var/outdir/test.xml'
     """
+    docki = lambda x: '--docker' in x or '--docken' in x
     # use docker to run cmd
-    argv = [item for item in argv if item not in '--docker --docken']
+    argv = [item for item in argv if not docki(item)]
     if argv:
         # TODO: REMOVE THIS HACK
         if '\\' in argv[0]:
