@@ -182,6 +182,7 @@ def tar_content(
         content = baw.forward_slash(content, save_newline=False)
         do_not_tar = ignore(git_include)
         cmd = f'tar cvf {tar} {do_not_tar} .'
+        baw.log(cmd)
         completed = baw.runtime.run(cmd, content)
         if completed.returncode:
             baw.error(f'tar failed: {cmd}')
