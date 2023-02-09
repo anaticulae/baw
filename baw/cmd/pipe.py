@@ -111,7 +111,7 @@ def run(args: dict):
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
-    if action == 'upgrade':
+    if action in {'image', 'upgrade'}:  # TODO: REMOVE UPGRADE LATER
         return upgrade(
             root,
             verbose=args.get('verbose'),
@@ -129,11 +129,12 @@ def run(args: dict):
 
 def extend_cli(parser):
     cli = parser.add_parser('pipe', help='Run pipline task')
+    # TODO: USE UPGRADE LATER TO RUN IMAGE AND LIBRARY
     cli.add_argument(
         'action',
         help='manage the jenkins file',
         nargs='?',
         const='test',
-        choices='init upgrade test library'.split(),
+        choices='init image library upgrade test'.split(),
     )
     cli.set_defaults(func=run)
