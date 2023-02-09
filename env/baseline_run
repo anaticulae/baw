@@ -24,36 +24,8 @@ then
     exit 1
 fi
 
-echo "baw sync all"
-baw sync all
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo "pip --verbose install ."
-pip --verbose install .
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo "baw generate all"
-baw generate all
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo "baw test baseline"
-baw test baseline
-if [ $? -ne 0 ]
-then
-    exit 1
-fi
-
-echo "git push origin ${BRANCH}"
-git push origin ${BRANCH}
+echo "baw --docken baseline test -n32"
+baw --docken baseline test -n32
 if [ $? -ne 0 ]
 then
     exit 1
