@@ -85,6 +85,7 @@ def commit(root, source, message, tag: str = None, verbose: int = 0):
         verbose=verbose,
     )
     if process.returncode:
+        baw.completed(process)
         return process.returncode
     if tag:
         # -a: ensure to make annotated tag to use with `git describe`
