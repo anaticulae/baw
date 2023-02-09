@@ -31,7 +31,7 @@ def format_repository(root: str, verbose: bool = False, venv: bool = False):
         failure = item(root, verbose=verbose, venv=venv)
         if failure:
             return failure
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def sources(root: str):
@@ -51,7 +51,7 @@ def sources(root: str):
 def format_source(root: str, verbose: bool = False, venv: bool = False) -> int:  # pylint:disable=W0613
     baw.utils.log('format source')
     if not baw.runtime.installed('yapf', root=root, venv=venv):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     yapf = '-i --style=google --no-local-style'
     parallel = '-p' if not baw.utils.testing() and not venv else ''
     template_skip = '-e *.tpy'
@@ -73,7 +73,7 @@ def format_source(root: str, verbose: bool = False, venv: bool = False) -> int: 
 
 def format_imports(root: str, verbose: bool = False, venv: bool = False):
     if not baw.runtime.installed('isort', root=root, venv=venv):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     project_sources = baw.config.sources(root)
     short = ' -p '.join(project_sources)
     isort = [
@@ -133,9 +133,9 @@ def format_(
             completed = future.result()
             if completed.returncode:
                 baw.utils.error(f'error while formatting {completed.stderr}')
-                return baw.utils.FAILURE
+                return baw.FAILURE
     baw.utils.log(f'{info}: complete\n')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def extend_cli(parser):

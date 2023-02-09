@@ -32,7 +32,7 @@ def run(
     """
     baw.utils.log('Start dropping release')
     if not can_drop(root, venv, verbose):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     current_release = baw.git.headtag(root, venv, verbose)
     baw.utils.log(current_release)
     # remove the last release commit
@@ -48,9 +48,9 @@ def run(
         return completed
     # git tag -d HEAD
     if not baw.git.tag_drop(current_release, root, venv=venv, verbose=verbose):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     # TODO: ? remove upstream ? or just overwrite ?
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def can_drop(root: str, venv: bool, verbose: bool) -> bool:
@@ -87,9 +87,9 @@ def reset_resources(
             continue
         to_reset.append(item)
     if returncode:
-        return baw.utils.FAILURE  # at least one path does not exist.
+        return baw.FAILURE  # at least one path does not exist.
     if not to_reset:
-        return baw.utils.FAILURE
+        return baw.FAILURE
     completed = baw.git.reset(
         root,
         to_reset,

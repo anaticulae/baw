@@ -24,7 +24,7 @@ def run(
 ):
     if not baw.git.is_clean(root, verbose=False):
         baw.utils.error(f'clean before refactor: {root}')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     changed = pattern_run(
         root,
         verbose=verbose,
@@ -38,7 +38,7 @@ def run(
         )
     else:
         baw.utils.log('nothing todo')
-    sys.exit(baw.utils.SUCCESS)
+    sys.exit(baw.SUCCESS)
 
 
 def pattern_run(root: str, verbose: bool) -> bool:
@@ -72,7 +72,7 @@ def todo() -> dict:
             result[splitted[1]] = splitted[3]
         except IndexError:
             baw.utils.error(f'not enough spaces between: {line}')
-            sys.exit(baw.utils.FAILURE)
+            sys.exit(baw.FAILURE)
     return result
 
 

@@ -23,7 +23,7 @@ def ide_open(root: str, packages: tuple = None) -> int:
     detected = baw.project.determine_root(root)
     if detected is None:
         baw.utils.error(f'could not locate .baw project in: {root}')
-        return baw.utils.FAILURE
+        return baw.FAILURE
     root = detected
 
     baw.utils.log('generate')

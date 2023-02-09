@@ -122,7 +122,7 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
     path = os.path.join(root, 'Dockerfile')
     if not os.path.exists(path):
         baw.utils.error(f'missing Dockerfile: {path}')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     tagname = baw.git.describe(root)
     result = baw.dockers.dockfile.build(
         dockerfile=path,
@@ -152,13 +152,13 @@ def tag(root: str, generate: bool = False) -> str:
 
 def newest(name: str) -> int:
     if baw.dockers.image.check_baseimage(name):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     name = name.rsplit(':', maxsplit=1)[0]
     tags = baw.dockers.image.tags(name)
     maxtag = baw.dockers.image.version_max(tags)
     result = f'{name}:{maxtag[0]}'
     baw.utils.log(result)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def upgrade(
@@ -169,7 +169,7 @@ def upgrade(
     path = os.path.abspath(dockerfile)
     if not os.path.exists(path):
         baw.utils.error(f'could not upgrade, path does not exists: {path}')
-        return baw.utils.FAILURE
+        return baw.FAILURE
     baw.utils.log(f'start upgrading: {path}')
     replaced = baw.docker_image_upgrade(
         path,
@@ -177,7 +177,7 @@ def upgrade(
     )
     if not replaced:
         baw.utils.log(f'already up-to-date: {path}')
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     with baw.git.stash(root):
         baw.utils.file_replace(path, replaced)
         baw.git.commit(
@@ -186,7 +186,7 @@ def upgrade(
             message='chore(upgrade): upgrade images',
         )
         baw.utils.log(f'upgraded: {path}')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def run(args: dict):  # pylint:disable=R0911
@@ -240,7 +240,7 @@ def run(args: dict):  # pylint:disable=R0911
     if action == 'newest':
         return newest(args['name'])
     baw.error(f'nothing selected: {args}')
-    return baw.utils.FAILURE
+    return baw.FAILURE
 
 
 CHOICES = 'create upgrade delete clean githash run check newest'.split()

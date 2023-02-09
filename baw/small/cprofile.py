@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
     for path in files(args):
         profile_show(path)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def files(args):

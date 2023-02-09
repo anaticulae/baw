@@ -39,7 +39,7 @@ def upgrade(
     """
     with baw.git.stash(root, verbose=verbose, venv=venv):
         returnvalue = check_upgrade(root, packages=packages, pre=pre)
-        if returnvalue in (baw.utils.SUCCESS, baw.utils.FAILURE):
+        if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
         requirements_dev = returnvalue
         failure = baw.cmd.complex.sync_and_test(
@@ -76,7 +76,7 @@ def upgrade(
         )
         if failure:
             return failure
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def check_upgrade(root, packages, pre: bool = False):
@@ -108,11 +108,11 @@ def check_upgrade(root, packages, pre: bool = False):
             failure_dev == REQUIREMENTS_UPTODATE,
             failure_extra == REQUIREMENTS_UPTODATE,
     )):
-        return baw.utils.SUCCESS
-    if failure not in (REQUIREMENTS_UPTODATE, baw.utils.SUCCESS):
+        return baw.SUCCESS
+    if failure not in (REQUIREMENTS_UPTODATE, baw.SUCCESS):
         baw.utils.error('Error while upgrading requirements')
-        return baw.utils.FAILURE
-    if failure_dev not in (REQUIREMENTS_UPTODATE, baw.utils.SUCCESS):
+        return baw.FAILURE
+    if failure_dev not in (REQUIREMENTS_UPTODATE, baw.SUCCESS):
         baw.utils.error('Error while upgrading dev requirements')
         return failure_dev
     return requirements_dev
@@ -143,7 +143,7 @@ def upgrade_requirements(
     if not os.path.exists(req_path):
         msg = f'Could not locate any requirements: {req_path}'
         baw.utils.error(msg)
-        return baw.utils.FAILURE
+        return baw.FAILURE
     baw.utils.log(f'\nStart upgrading requirements: {req_path}')
     content = baw.utils.file_read(req_path)
     if not content.strip():
@@ -152,7 +152,7 @@ def upgrade_requirements(
         return REQUIREMENTS_UPTODATE
     upgraded = determine_new_requirements(root, content, venv=venv, pre=pre)
     if upgraded is None:
-        return baw.utils.FAILURE
+        return baw.FAILURE
     replaced = baw.requirements.upgrade.replace(content, upgraded)
     if replaced == content:
         baw.utils.log('Requirements are up to date.\n')
@@ -160,7 +160,7 @@ def upgrade_requirements(
     # write new requirements
     baw.utils.file_replace(req_path, replaced)
     baw.utils.log('Upgrading finished')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def installed_version(content: str):

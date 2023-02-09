@@ -33,13 +33,13 @@ def doc(root: str, venv: bool = False, verbose: bool = False) -> int:
     if not is_sphinx_installed(root=root, venv=venv):
         msg = 'sphinx is not installed, run baw sync=all --venv'
         baw.utils.error(msg)
-        return baw.utils.FAILURE
+        return baw.FAILURE
     if returnvalue := generate_docs(root, verbose, venv):
         return returnvalue
     if returnvalue := build_html(root, verbose, venv):
         return returnvalue
     open_docs(root)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def generate_docs(root: str, verbose: bool, venv: bool) -> int:
@@ -91,7 +91,7 @@ def generate_docs(root: str, verbose: bool, venv: bool) -> int:
         loaded = baw.utils.file_read(path)
         loaded = loaded.replace('../../', '../')
         baw.utils.file_replace(path, loaded)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def build_html(root: str, verbose: bool, venv: bool) -> int:
@@ -144,7 +144,7 @@ def is_sphinx_installed(root: str, venv: bool) -> bool:
         skip_error_code=[1],  # sphinx is not installed
         verbose=False,
     )
-    isinstalled = completed.returncode == baw.utils.SUCCESS
+    isinstalled = completed.returncode == baw.SUCCESS
     return isinstalled
 
 

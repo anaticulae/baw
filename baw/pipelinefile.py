@@ -56,7 +56,7 @@ def docker_image(root: str) -> str:
     path = jenkinsfile(root)
     if not os.path.exists(path):
         baw.utils.error(f'require Jenkinsfile in {root}')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     jenkins = baw.utils.file_read(path)
     parsed = IMAGE.search(jenkins)
     if not parsed:
@@ -76,7 +76,7 @@ def docker_env(root: str) -> dict:
     path = jenkinsfile(root)
     if not os.path.exists(path):
         baw.utils.error(f'require Jenkinsfile in {root}')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     jenkins = baw.utils.file_read(path)
     parsed = ENVIRONMENT.search(jenkins)
     if not parsed:
@@ -116,12 +116,12 @@ def library(root: str, verbose: False):
     path = jenkinsfile(root)
     if not os.path.exists(path):
         baw.utils.error(f'could not find Jenkinsfile: {path}')
-        return baw.utils.FAILURE
+        return baw.FAILURE
     current = baw.utils.file_read(path)
     newest = library_newest(verbose=verbose)
     if newest in current:
         baw.utils.error(f'already newst caelum: {newest}')
-        return baw.utils.FAILURE
+        return baw.FAILURE
     init_lib = LIBRARY[0:16] not in current
     header = f'{LIBRARY}{newest}{LIBRARY_END}\n\n'
     if init_lib:
@@ -141,7 +141,7 @@ def library(root: str, verbose: False):
     if init_lib:
         msg = 'chore(Jenkins): add pipe library'
     baw.git.commit(root, source=path, message=msg)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def image_newest() -> str:

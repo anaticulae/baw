@@ -77,7 +77,7 @@ def parse():
     need_help = not any(vars(args).values())
     if need_help:
         parser.print_help()
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     args = vars(args)
     return args
 

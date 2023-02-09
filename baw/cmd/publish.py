@@ -50,7 +50,7 @@ def publish(
         skip_error_message=[SDIST_UPLOAD_WARNING],
         venv=venv,
     )
-    if completed.returncode == baw.utils.SUCCESS:
+    if completed.returncode == baw.SUCCESS:
         if pre:
             log_prerelease(root)
         baw.utils.log('publish completed')
@@ -68,11 +68,11 @@ def can_publish(
     tag = baw.git.headtag(root, venv=False, verbose=verbose)
     if tag and pre:
         baw.utils.error('Stable release already published')
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     if not tag and not pre:
         baw.utils.error('Could not find release-git-tag. Aborting publishing.')
-        return baw.utils.FAILURE
-    return baw.utils.SUCCESS
+        return baw.FAILURE
+    return baw.SUCCESS
 
 
 def log_prerelease(root):

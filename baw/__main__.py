@@ -25,7 +25,7 @@ def run():
         baw.utils.error(msg)
         stack_trace = traceback.format_exc()
         baw.utils.log(baw.utils.forward_slash(stack_trace))
-    sys.exit(baw.utils.FAILURE)
+    sys.exit(baw.FAILURE)
 
 
 if __name__ == "__main__":

@@ -55,7 +55,7 @@ def header(root: str) -> str:
     """
     root = baw.cmd.utils.determine_root(root)
     if not root:
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     image = baw.pipelinefile.docker_image(root)
     result = f'FROM {image}'
     return result
@@ -71,7 +71,7 @@ def requirements(root: str) -> str:
     """
     root = baw.cmd.utils.determine_root(root)
     if not root:
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     result = ''
     for item in FILES:
         path = os.path.join(root, item)
@@ -95,7 +95,7 @@ def resources(root: str) -> str:
     """
     root = baw.cmd.utils.determine_root(root)
     if not root:
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     conftest = os.path.join(root, 'tests/conftest.py')
     if not os.path.exists(conftest):
         return ''
@@ -123,7 +123,7 @@ def environments(root: str) -> str:
     """
     root = baw.cmd.utils.determine_root(root)
     if not root:
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     env = baw.pipelinefile.docker_env(root)
     if not env:
         return ''

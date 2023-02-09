@@ -35,9 +35,9 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
     start = time.time()
     args = baw.cli.parse()
     if not any(args):
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     if run_version(args):
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     if args.get('venv', False):
         if failure := run_venv(args):
             return failure
@@ -54,7 +54,7 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
         # --ide is a very long running task, sometimes 'endless'.
         # Therefore it is senseless to measure the runtime.
         baw.utils.print_runtime(start)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def run_version(args) -> bool:
@@ -76,7 +76,7 @@ def run_open(args):
         path=args['path'],
         prints=printme,
     )
-    sys.exit(baw.utils.SUCCESS)
+    sys.exit(baw.SUCCESS)
 
 
 def run_ide(args):
@@ -91,7 +91,7 @@ def run_ide(args):
             packages=packages,
     ):
         return returncode
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def run_bisect(args):

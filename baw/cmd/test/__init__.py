@@ -75,7 +75,7 @@ def run_test(  # pylint:disable=R0914,R1260
         alls = True
     if not any((generate, nightly, longrun, fast, docs, alls)):
         baw.utils.log('skip tests...')
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     baw.utils.check_root(root)
     baw.utils.log('tests')
     testenv, markers = setup_testenvironment(
@@ -116,7 +116,7 @@ def run_test(  # pylint:disable=R0914,R1260
             skip_error_code={NO_TEST_TO_RUN},
             venv=venv,
         )
-    if completed.returncode == baw.utils.SUCCESS:
+    if completed.returncode == baw.SUCCESS:
         if generate_only:
             # do not write log of collect tests
             baw.utils.log('test data generated')
@@ -131,7 +131,7 @@ def run_test(  # pylint:disable=R0914,R1260
                 baw.archive.test.mark_tested(root, head)
     if completed.returncode == NO_TEST_TO_RUN:
         # override pytest error code
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     if baseline:
         if baw.cmd.baseline.commit(root):
             return baw.FAILURE
@@ -172,7 +172,7 @@ def setup_testenvironment(
     testdir = os.path.join(root, 'tests')
     if not os.path.exists(testdir):
         baw.utils.error(f'no testdir: {testdir} available')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     env = dict(os.environ.items())
     markers = ''
     if longrun:

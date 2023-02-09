@@ -150,7 +150,7 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #             path,
 #             'git add . && git commit -m "Upgrade requirements"',
 #         )
-#         assert completed.returncode == baw.utils.SUCCESS, str(completed)
+#         assert completed.returncode == baw.SUCCESS, str(completed)
 
 #     # yapf in a higher version is provided by dev environment
 #     baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
@@ -168,7 +168,7 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #         generate=False,  # do not change - see test.py/generate_only
 #         notests=False,
 #     )
-#     assert result == baw.utils.FAILURE
+#     assert result == baw.FAILURE
 #     stdout = tests.stdout(capsys)
 #     assert stdout
 #     assert 'Reset' in stdout, stdout
@@ -182,7 +182,7 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #         venv=False,
 #         generate=False,  # see above
 #     )
-#     assert result == baw.utils.SUCCESS
+#     assert result == baw.SUCCESS
 
 REQUIREMENTS = """\
 # =============================================================================

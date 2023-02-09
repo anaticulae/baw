@@ -19,7 +19,7 @@ def get_root(args):
     directory = run_environment(args)
     root = determine_root(directory)
     if not root:
-        return sys.exit(baw.utils.FAILURE)
+        return sys.exit(baw.FAILURE)
     return root
 
 

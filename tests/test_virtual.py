@@ -36,4 +36,4 @@ def test_run_test_in_venv(project_with_test):
     # install requirements first and run test later
     cmd = 'baw --venv sync all && baw --venv test'  #python -mpytest tests -v'
     completed = tests.run(cmd, project_with_test)
-    assert completed.returncode == baw.utils.SUCCESS, completed.stderr
+    assert completed.returncode == baw.SUCCESS, completed.stderr

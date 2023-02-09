@@ -25,11 +25,11 @@ def main():
     root = baw.cmd.utils.determine_root(os.getcwd())
     if not baw.git.is_clean(root, verbose=False):
         baw.utils.error(f'not clean, abort: {root}')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     parser = create_parser()
     args = parse_args(parser)
     profile(root, args[0], args[1])
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def profile(root, cmd, ranges, lookback: int = 20000) -> list:
@@ -41,18 +41,18 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.utils.log(f'>>> {headline}')
         baw.utils.log(f'git checkout {commit} in {root}')
         if baw.git.checkout(root, commit):
-            sys.exit(baw.utils.FAILURE)
+            sys.exit(baw.FAILURE)
         current = time.time()
         baw.utils.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
         if processed.returncode == 127:
             baw.utils.error(f'invalid cmd: {cmd}')
-            sys.exit(baw.utils.FAILURE)
+            sys.exit(baw.FAILURE)
         if processed.returncode:
             # the head is not important, we what to see the tail
             baw.utils.error(processed.stdout[-lookback:])
             baw.utils.error(processed.stderr[-lookback:])
-        #     sys.exit(baw.utils.FAILURE)
+        #     sys.exit(baw.FAILURE)
         states.append(processed.returncode)
         diff = round(time.time() - current, 4)
         baw.utils.log(f'done: {diff}')
@@ -88,7 +88,7 @@ def commits(root, ranges) -> list:
     stdout = completed.stdout.strip()
     if completed.returncode or completed.stderr:
         baw.utils.error(completed)
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     result = [line.split(maxsplit=1) for line in stdout.splitlines()]
     return result
 

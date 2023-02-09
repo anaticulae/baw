@@ -34,10 +34,10 @@ def exists(name: str) -> int:
     baw.utils.log(f'check: {name}')
     if check_baseimage(name):
         baw.utils.error(f'could not find image: {name}')
-        sys.exit(baw.utils.FAILURE)
-        return baw.utils.FAILURE
+        sys.exit(baw.FAILURE)
+        return baw.FAILURE
     baw.utils.log('OK')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def version_max(taglist, prerelease: bool = False):

@@ -85,7 +85,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
     if os.path.exists(venv) and list(os.scandir(venv)):
         if verbose:
             baw.utils.log(f'venv: {venv}')
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     python = baw.config.python(root, venv=False)
     # use system site packages in docker env
     action = '--copies' if baw.runtime.iswin() else '--system-site-packages'
@@ -105,12 +105,12 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
         baw.utils.error('While creating virtual environment:')
         baw.utils.log(process.stdout)
         baw.utils.error(process.stderr)
-        return baw.utils.FAILURE
+        return baw.FAILURE
     if verbose:
         baw.utils.log(process.stdout)
         if process.stderr:
             baw.utils.error(process.stderr)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def patch_pip(root, verbose: bool = False):
@@ -186,7 +186,7 @@ def run_target(
         )
     except ValueError as fail:
         baw.utils.error(fail)
-        return baw.utils.FAILURE
+        return baw.FAILURE
     if verbose:
         baw.utils.log(cmd)
     if venv:
@@ -399,10 +399,10 @@ def runs(
             completed = future.result()
             if completed.returncode:
                 baw.utils.error(f'error: {completed.stderr}')
-                return baw.utils.FAILURE
+                return baw.FAILURE
     if verbose:
         baw.utils.log(f'{cmds}: complete\n')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def installed(program: str, root: str, venv: bool = False):
@@ -412,7 +412,7 @@ def installed(program: str, root: str, venv: bool = False):
         venv=venv,
         verbose=False,
     )
-    if done.returncode == baw.utils.SUCCESS:
+    if done.returncode == baw.SUCCESS:
         return True
     baw.utils.error(f'not installed: {program}')
     baw.utils.error(f'venv: {venv}')
@@ -428,7 +428,7 @@ def hasprog(program: str):
         check=False,
         capture_output=True,
     )
-    isinstalled = completed.returncode == baw.utils.SUCCESS
+    isinstalled = completed.returncode == baw.SUCCESS
     if isinstalled:
         expected = f'{program}:'
         if completed.stdout.strip() in (expected, expected.encode('utf8')):

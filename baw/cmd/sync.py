@@ -144,7 +144,7 @@ def sync_dependencies(  # pylint:disable=R1260
     pip_index, extra_url = baw.config.package_address()
     if not connected(pip_index, extra_url):
         baw.utils.error('could not reach package index')
-        return baw.utils.FAILURE
+        return baw.FAILURE
     required = required_installation(
         root,
         resources,
@@ -153,7 +153,7 @@ def sync_dependencies(  # pylint:disable=R1260
         venv=venv,
     )
     if not required.equal and not required.greater:
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     baw.utils.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()

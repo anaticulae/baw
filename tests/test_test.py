@@ -25,7 +25,7 @@ def test_creating_project(tmpdir):
         cwd=tmpdir,
     )
     error = f'{completed.stderr}\n{completed.stdout}'
-    assert completed.returncode == baw.utils.SUCCESS, error
+    assert completed.returncode == baw.SUCCESS, error
     assert os.path.exists(os.path.join(tmpdir, '.git'))
 
 

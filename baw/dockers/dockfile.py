@@ -24,7 +24,7 @@ def build(dockerfile: str, tagname: str) -> int:
         baw.utils.error(f'could not find baseimage {image} in {dockerfile}')
         baw.utils.error(parse_baseimage(dockerfile))
         baw.utils.error(baw.utils.file_read(dockerfile))
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     path = os.path.split(dockerfile)[0]
     try:
         with baw.dockers.client() as client:
@@ -36,8 +36,8 @@ def build(dockerfile: str, tagname: str) -> int:
             log_service(done)
     except docker.errors.BuildError as error:
         log_error(error)
-        return baw.utils.FAILURE
-    return baw.utils.SUCCESS
+        return baw.FAILURE
+    return baw.SUCCESS
 
 
 def log_error(error):
@@ -105,7 +105,7 @@ def docker_image_upgrade(
         )
         if not maxed:
             baw.utils.error(f'could not upgrade docker image: {matched}')
-            sys.exit(baw.utils.FAILURE)
+            sys.exit(baw.FAILURE)
         version_new = f'{matched}:{maxed[0]}'
         result = result.replace(find[1], version_new, 1)
     if result == content and not always:

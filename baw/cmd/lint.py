@@ -41,9 +41,9 @@ class Scope(enum.Enum):
 
 def run_linter(root: str, verbose: bool, venv: bool) -> int:
     if not baw.config.basic(root):
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     if not baw.config.fail_on_finding(root):
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     # run linter step before running test and release
     if returncode := lint(
             root,
@@ -55,7 +55,7 @@ def run_linter(root: str, verbose: bool, venv: bool) -> int:
         baw.utils.error('could not release, solve this errors first.')
         baw.utils.error('turn `fail_on_finding` off to release with errors')
         return returncode
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def lint(

@@ -27,7 +27,7 @@ ADDITONAL_REQUIREMENTS = []
 def evaluate(args):
     directory = baw.cmd.utils.run_environment(args)
     #  No GIT found, exit 1
-    with baw.utils.handle_error(ValueError, code=baw.utils.FAILURE):
+    with baw.utils.handle_error(ValueError, code=baw.FAILURE):
         shortcut, description, cmdline = (
             args['shortcut'],
             args['description'],
@@ -69,9 +69,9 @@ def init(
     baw_path = os.path.join(root, baw.utils.BAW_EXT)
     if os.path.exists(baw_path):
         baw.utils.error(f'Project {baw_path} already exists.')
-        raise ValueError(baw.utils.FAILURE)
+        raise ValueError(baw.FAILURE)
     if not baw.runtime.installed('semantic-release', root):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     # Escape ' to avoid errors in generated code
     name = name.replace("'", r'\'')
     baw.git.init(root)
@@ -103,7 +103,7 @@ def init(
     #     coverage=quality.coverage,
     # )
     # baw.cmd.plan.create(root)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def first_commit(root, verbose: bool) -> int:

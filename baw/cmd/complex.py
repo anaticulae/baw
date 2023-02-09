@@ -38,7 +38,7 @@ def sync_and_test(
             baw.utils.error('\nSync failed, could not release.\n')
             return ret
     if not test:
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     ret = baw.cmd.test.run_test(
         root,
         generate=generate,
@@ -54,4 +54,4 @@ def sync_and_test(
         if not quiet:
             baw.utils.error('Tests failed.')
         return ret
-    return baw.utils.SUCCESS
+    return baw.SUCCESS

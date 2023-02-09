@@ -59,7 +59,7 @@ def release(  # pylint:disable=R1260
     baw.utils.verbose('require release?', verbose=verbose)
     if returncode := require_release(root, venv):
         # break release cycle on master
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     baw.utils.verbose('check repository', verbose=verbose)
     if returncode := check_repository(root, require_clean):
         return returncode
@@ -77,28 +77,28 @@ def release(  # pylint:disable=R1260
             venv=venv,
     ):
         return returncode
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def require_release(root, venv):
     current_head = baw.git.headtag(root, venv=venv)
     if not current_head:
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     if current_head.isnumeric():
         # may a year: 2022
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     baw.utils.log(f'No release is required, head is already: {current_head}')
-    return baw.utils.FAILURE
+    return baw.FAILURE
 
 
 def check_repository(root, require_clean: bool):
     if not require_clean:
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     # do not release modified repository
     if baw.git.is_modified(root=root):
         baw.utils.error('repository is not clean')
-        return baw.utils.FAILURE
-    return baw.utils.SUCCESS
+        return baw.FAILURE
+    return baw.SUCCESS
 
 
 def run_test(
@@ -110,7 +110,7 @@ def run_test(
     venv: bool,
 ):
     if not sync and not test:
-        return baw.utils.SUCCESS
+        return baw.SUCCESS
     # do not run hashed on first release, cause there is no any tagged
     # version.
     hashed = baw.git.headhash(root)
@@ -130,7 +130,7 @@ def run_test(
         )
         return returncode
     baw.utils.log('release was already tested successfully')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def run(args: dict) -> int:
@@ -146,7 +146,7 @@ def run(args: dict) -> int:
         baw.utils.log('do not use venv')
         venv = False
     if not baw.runtime.installed('semantic-release', root, venv=venv):
-        return baw.utils.FAILURE
+        return baw.FAILURE
     test = True
     # do not test before releasing
     notest = args.get('no_test', False)

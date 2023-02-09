@@ -38,14 +38,14 @@ def action(root: str, plan: str):
         # TODO: DISTINCT BETWEEN NEW_MAJOR AND NEW_MINOR
         if not current_status == Status.CLOSED and current_status != Status.EMPTY:
             baw.utils.error(f'old plan is not closed: {current_status}')
-            return baw.utils.FAILURE
+            return baw.FAILURE
         create(root)
     if plan == 'close':
         if not current_status == Status.DONE:
             baw.utils.error(f'current plan is not done: {current_status}')
-            return baw.utils.FAILURE
+            return baw.FAILURE
         close(root)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def create(
@@ -109,7 +109,7 @@ def commit(root: str, message: str, verbose: bool = False):
         f'git commit -m "{message}"',
         verbose=verbose,
     )
-    assert process.returncode == baw.utils.SUCCESS, process
+    assert process.returncode == baw.SUCCESS, process
 
 
 def next_version(

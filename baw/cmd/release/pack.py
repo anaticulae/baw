@@ -31,12 +31,12 @@ def run(root, verbose, release_type, venv: bool = False):
             baw.utils.error('abort release')
             baw.utils.log('ensure that some (feat) are commited')
             baw.utils.log('use: `baw release minor` to force release')
-            return baw.utils.FAILURE
+            return baw.FAILURE
     if completed.returncode:
         baw.utils.error('while running semantic-release')
         baw.utils.error(completed.stderr)
         return completed.returncode
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def release_cmd(types, cfg) -> str:

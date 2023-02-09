@@ -28,4 +28,4 @@ def run_shell(args: dict):
     )
     if completed.returncode:
         sys.exit(completed.returncode)
-    sys.exit(baw.utils.SUCCESS)
+    sys.exit(baw.SUCCESS)

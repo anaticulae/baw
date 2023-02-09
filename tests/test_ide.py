@@ -30,5 +30,5 @@ def test_ide_open(testdir, monkeypatch):
 
     with monkeypatch.context() as patched:
         # do not open ide
-        patched.setattr(baw.cmd.ide, 'start', lambda root: baw.utils.SUCCESS)
+        patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
         baw.cmd.ide.ide_open(workspace)

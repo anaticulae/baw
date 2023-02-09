@@ -28,4 +28,4 @@ def images() -> int:
                 image.remove(force=True)
             except docker.errors.APIError:
                 baw.utils.error(f'could not remove {image.id}')
-    return baw.utils.SUCCESS
+    return baw.SUCCESS

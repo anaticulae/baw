@@ -53,10 +53,10 @@ def run(
             container.remove()
         except docker.errors.ContainerError as error:
             baw.error(error.stderr.decode('utf8'))
-            return baw.utils.FAILURE
+            return baw.FAILURE
     if failure:
-        return baw.utils.FAILURE
-    return baw.utils.SUCCESS
+        return baw.FAILURE
+    return baw.SUCCESS
 
 
 def volume_inject(container, volumes, gitdir):
@@ -106,7 +106,7 @@ def create(
         # mostly base image is not created
         baw.error(f'could not create container: {image}')
         baw.error(error)
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     return container
 
 
@@ -124,7 +124,7 @@ def build_image(root: str, generate: bool = False):
     if completed.returncode:
         baw.error(f'could not create image: {root}')
         baw.completed(completed)
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     else:
         baw.log(completed.stdout)
         if completed.stderr.strip():
@@ -177,7 +177,7 @@ def tar_content(
     assert os.path.exists(content), str(content)
     if not baw.runtime.hasprog('tar'):
         baw.error('tar is not installed, could not tar')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')

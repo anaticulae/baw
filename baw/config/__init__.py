@@ -304,7 +304,7 @@ def sources(root: str) -> list:
         source = []
     if any(',' in item for item in source):
         baw.utils.error(f'invalid {source} in {path}, remove collon')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     failure = 0
     for subproject in source:
         if os.path.exists(os.path.join(root, subproject)):
@@ -312,7 +312,7 @@ def sources(root: str) -> list:
         failure += 1
         baw.utils.log(f'subproject does not exists: {subproject}')
     if failure:
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     # put project name to the front
     source.insert(0, cfg['project']['short'])
     return source

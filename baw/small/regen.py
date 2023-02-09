@@ -24,7 +24,7 @@ def main():
     parser = create_parser()
     cmd, worker = parse_args(parser)
     run(root, cmd, worker)
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def run(root, cmd, worker: int = 1):

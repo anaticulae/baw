@@ -66,7 +66,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
     if ret:
         sys.exit(ret)
     baw.utils.log()  # Newline
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 def clean_git(root: str):
@@ -90,7 +90,7 @@ def clean_docs(root: str):
         shutil.rmtree(doctmp)
     except OSError as fail:
         baw.utils.error(fail)
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     baw.utils.log('finished')
 
 
@@ -168,7 +168,7 @@ def clean_venv(root: str):
         shutil.rmtree(venv_path)
     except OSError as fail:
         baw.utils.error(fail)
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     baw.utils.log('done')
 
 

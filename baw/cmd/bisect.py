@@ -72,7 +72,7 @@ def bisect(
         verbose=verbose,
         venv=venv,
     )
-    return baw.utils.SUCCESS
+    return baw.SUCCESS
 
 
 HASH = r'^\[{0,1}[a-z0-9]{40}\]{0,1}'

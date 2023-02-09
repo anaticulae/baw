@@ -45,7 +45,7 @@ def open_generated(root: str, console: bool = False):
         return
     if not os.path.exists(generated):
         baw.utils.error(f'resource: {generated} not generated')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     open_this(generated)
 
 
@@ -86,7 +86,7 @@ def open_this(path=None, prints: bool = False):
     path = str(path)
     if not os.path.exists(path):
         baw.utils.error(f'path does not exists: {path}')
-        sys.exit(baw.utils.FAILURE)
+        sys.exit(baw.FAILURE)
     # convert for windows
     path = path.replace('/', '\\')
     if prints:
