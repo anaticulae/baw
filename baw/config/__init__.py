@@ -86,6 +86,14 @@ def gitea_server() -> str:
     return lookup('GITEA_SERVER_URL')
 
 
+def gitea_token() -> str:
+    """\
+    >>> gitea_token()
+    '...'
+    """
+    return lookup('GITEA_TOKEN')
+
+
 def git_author_name() -> str:
     """\
     >>> git_author_name()

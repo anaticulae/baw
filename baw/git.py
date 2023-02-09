@@ -18,6 +18,7 @@ import baw.config
 import baw.resources
 import baw.runtime
 import baw.utils
+import git
 
 GIT_EXT = '.git'
 GIT_REPO_EXCLUDE = '.git/info/exclude'
@@ -172,13 +173,20 @@ def checkout(
     return completed.returncode
 
 
-def push(root: str, token: str = None) -> int:
-    cmd = 'git push'
-    completed = baw.runtime.run(cmd, cwd=root)
-    if completed.returncode:
+def push(root: str) -> int:
+    server = tokenizes(root)
+    repo = git.Repo(
+        root,
+        search_parent_directories=True,
+    )
+    branch = repo.active_branch
+    try:
+        repo.git.push(server, branch)
+    except git.GitCommandError as error:
         baw.error('while pushing')
-        baw.completed(completed)
-    return completed.returncode
+        baw.error(error)
+        return baw.FAILURE
+    return baw.SUCCESS
 
 
 def tag_drop(
