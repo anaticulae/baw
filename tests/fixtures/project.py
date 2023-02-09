@@ -14,7 +14,7 @@ import textwrap
 import pytest
 
 import baw.config
-import baw.git
+import baw.gix
 import baw.utils
 import tests
 
@@ -25,7 +25,7 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 def example(testdir, monkeypatch):
     """Creating example project due console"""
     require_baw_git()
-    baw.git.update_userdata()
+    baw.gix.update_userdata()
     cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
@@ -50,7 +50,7 @@ def project_example(testdir, monkeypatch):
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
         context.setattr(baw.config, 'bawtmp', tmpdir)
-        baw.git.update_userdata()
+        baw.gix.update_userdata()
         tests.baaw(['init', 'xcd', '"I Like This Project"'], monkeypatch)
         tests.baaw('plan new', monkeypatch)
         yield testdir.tmpdir
@@ -107,5 +107,5 @@ def project_with_test(example):  # pylint:disable=W0621
 def require_baw_git():
     if tests.run('which baw').returncode:
         pytest.skip('install baw')
-    if not baw.git.installed():
+    if not baw.gix.installed():
         pytest.skip('install git')

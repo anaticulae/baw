@@ -10,7 +10,7 @@
 import os
 
 import baw.cmd.release.pack
-import baw.git
+import baw.gix
 import baw.utils
 import tests
 
@@ -26,8 +26,8 @@ def test_release_simple(simple, monkeypatch, capsys):
     root = simple[1]
     path = os.path.join(root, 'abc.txt')
     baw.utils.file_create(path, 'CONTENT')
-    baw.git.add(root, 'abc.txt')
-    baw.git.commit(root, '.', 'feat(abc): feature is welcome')
+    baw.gix.add(root, 'abc.txt')
+    baw.gix.commit(root, '.', 'feat(abc): feature is welcome')
     with monkeypatch.context() as patched:
         # do not open ide
         patched.setattr(baw.cmd.release.pack, 'release_cmd', lambda _, __: 'ls')

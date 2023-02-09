@@ -13,7 +13,7 @@ import sys
 import time
 
 import baw.cmd.utils
-import baw.git
+import baw.gix
 import baw.run
 import baw.runtime
 import baw.utils
@@ -23,7 +23,7 @@ import baw.utils
 
 def main():
     root = baw.cmd.utils.determine_root(os.getcwd())
-    if not baw.git.is_clean(root, verbose=False):
+    if not baw.gix.is_clean(root, verbose=False):
         baw.error(f'not clean, abort: {root}')
         sys.exit(baw.FAILURE)
     parser = create_parser()
@@ -40,7 +40,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.log(f'\n{index}|{len(todo)}')
         baw.log(f'>>> {headline}')
         baw.log(f'git checkout {commit} in {root}')
-        if baw.git.checkout(root, commit):
+        if baw.gix.checkout(root, commit):
             sys.exit(baw.FAILURE)
         current = time.time()
         baw.log(f'run: {cmd}')
@@ -63,7 +63,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         baw.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
                 f'{commit[1][0:30]}')
     # checkout(root, commit=todo[0])
-    baw.git.checkout(root, branch='master')
+    baw.gix.checkout(root, branch='master')
     return timed
 
 

@@ -13,7 +13,7 @@ import os
 import textwrap
 
 import baw.config
-import baw.git
+import baw.gix
 import baw.project
 import baw.resources
 import baw.utils
@@ -144,6 +144,6 @@ def version_variables(root: str) -> str:
 
 
 def firstversion(root: str) -> bool:
-    if not baw.git.headhash(root):
+    if not baw.gix.headhash(root):
         return True
     return False

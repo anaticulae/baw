@@ -11,7 +11,7 @@ import os
 
 import baw.cmd.utils
 import baw.dockers.image
-import baw.git
+import baw.gix
 import baw.pipelinefile
 import baw.project
 import baw.resources
@@ -29,13 +29,13 @@ def init(
         baw.error(f'Jenkinsfile already exists: {source}')
         return baw.FAILURE
     replaced = create_jenkinsfile(root)
-    with baw.git.stash(root, verbose=verbose, venv=venv):
+    with baw.gix.stash(root, verbose=verbose, venv=venv):
         baw.utils.file_create(
             source,
             content=replaced,
         )
-        baw.git.add(root, 'Jenkinsfile')
-        failure = baw.git.commit(
+        baw.gix.add(root, 'Jenkinsfile')
+        failure = baw.gix.commit(
             root,
             source=source,
             message='chore(Jenkins): add Jenkinsfile',
@@ -61,12 +61,12 @@ def upgrade(
     if replaced.strip() == before.strip():
         baw.log('Jenkinsfile unchanged, skip upgrade')
         return baw.SUCCESS
-    with baw.git.stash(root, verbose=verbose, venv=venv):
+    with baw.gix.stash(root, verbose=verbose, venv=venv):
         baw.utils.file_replace(
             source,
             content=replaced,
         )
-        failure = baw.git.commit(
+        failure = baw.gix.commit(
             root,
             source=source,
             message='chore(Jenkins): upgrade Jenkinsfile',

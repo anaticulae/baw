@@ -17,7 +17,7 @@ import utila.quick
 import baw.cmd.image
 import baw.cmd.utils
 import baw.config
-import baw.git
+import baw.gix
 import baw.project
 import baw.runtime
 import baw.utils
@@ -66,19 +66,19 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
         baw.log(baw.cmd.image.tag(root))
         return baw.SUCCESS
     if value == 'describe':
-        baw.log(baw.git.describe(root))
+        baw.log(baw.gix.describe(root))
         return baw.SUCCESS
     if value == 'stable':
         baw.log(baw.project.version.determine(root, verbose=verbose))
         return baw.SUCCESS
     if value == 'branch':
-        baw.log(baw.git.branchname(root))
+        baw.log(baw.gix.branchname(root))
         return baw.SUCCESS
     if value == 'cov':
         print_cov()
         return baw.SUCCESS
     if value == 'clean':
-        if baw.git.is_clean(root, verbose=False):
+        if baw.gix.is_clean(root, verbose=False):
             baw.log('very clean')
             return baw.SUCCESS
         baw.log('not clean\n')

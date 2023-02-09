@@ -13,12 +13,13 @@ import os
 import subprocess
 import sys
 
+import git
+
 import baw
 import baw.config
 import baw.resources
 import baw.runtime
 import baw.utils
-import git
 
 GIT_EXT = '.git'
 GIT_REPO_EXCLUDE = '.git/info/exclude'

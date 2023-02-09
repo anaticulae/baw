@@ -15,7 +15,7 @@ import sys
 import pytest
 
 import baw.__main__
-import baw.git
+import baw.gix
 import baw.run
 import baw.runtime
 import baw.utils

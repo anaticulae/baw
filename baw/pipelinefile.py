@@ -15,7 +15,7 @@ import sys
 import baw
 import baw.config
 import baw.dockers.image
-import baw.git
+import baw.gix
 import baw.project
 import baw.runtime
 import baw.utils
@@ -140,7 +140,7 @@ def library(root: str, verbose: False):
     msg = 'chore(Jenkins): upgrade pipe library'
     if init_lib:
         msg = 'chore(Jenkins): add pipe library'
-    baw.git.commit(root, source=path, message=msg)
+    baw.gix.commit(root, source=path, message=msg)
     return baw.SUCCESS
 
 

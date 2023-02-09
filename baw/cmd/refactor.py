@@ -13,7 +13,7 @@ import sys
 import utila
 
 import baw.cmd.utils
-import baw.git
+import baw.gix
 import baw.resources
 import baw.utils
 
@@ -22,7 +22,7 @@ def run(
     root: str,
     verbose: bool = True,
 ):
-    if not baw.git.is_clean(root, verbose=False):
+    if not baw.gix.is_clean(root, verbose=False):
         baw.error(f'clean before refactor: {root}')
         sys.exit(baw.FAILURE)
     changed = pattern_run(
@@ -30,7 +30,7 @@ def run(
         verbose=verbose,
     )
     if changed:
-        baw.git.commit(
+        baw.gix.commit(
             root,
             source='.',
             message='refactor(replace): automated replacement',

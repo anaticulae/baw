@@ -17,7 +17,7 @@ import baw.cmd.test.cov
 import baw.cmd.utils
 import baw.config
 import baw.datetime
-import baw.git
+import baw.gix
 import baw.run
 import baw.runtime
 import baw.utils
@@ -103,7 +103,7 @@ def run_test(  # pylint:disable=R0914,R1260
         verbose=verbose,
         venv=venv,
     )
-    environment = baw.git.stash if stash else baw.utils.empty
+    environment = baw.gix.stash if stash else baw.utils.empty
     with environment(root, verbose=verbose, venv=venv):
         completed = baw.runtime.run_target(
             root,
@@ -126,7 +126,7 @@ def run_test(  # pylint:disable=R0914,R1260
         # TODO: ADJUST -n6!!!
         # TODO: VERIFY THAT SELECTIVE TESTING WAS NOT USED
         if all_tests(testconfig) and (longrun or nightly or alls):
-            head = baw.git.headhash(root)
+            head = baw.gix.headhash(root)
             if head:
                 baw.archive.test.mark_tested(root, head)
     if completed.returncode == NO_TEST_TO_RUN:

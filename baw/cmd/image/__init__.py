@@ -20,7 +20,7 @@ import baw.dockers
 import baw.dockers.container
 import baw.dockers.dockfile
 import baw.dockers.image
-import baw.git
+import baw.gix
 import baw.utils
 
 
@@ -66,8 +66,8 @@ def ensure_dockerfile_path(dockerfile):
 
 def dockerfile_build(root, dockerfile, name=None) -> int:
     if not name:
-        baw.git.ensure_git()
-        name = baw.git.describe(root)
+        baw.gix.ensure_git()
+        name = baw.gix.describe(root)
     result = baw.dockers.dockfile.build(
         dockerfile=dockerfile,
         tagname=name,
@@ -103,7 +103,7 @@ def describe(dockerfile: str) -> str:
     content = baw.utils.file_read(dockerfile)
     root = baw.determine_root(dockerfile)
     if REFRENCE in content:
-        current = baw.git.describe(root)
+        current = baw.gix.describe(root)
         baw.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
         content = content.replace(REFRENCE, current)
     if PIPREF in content:
@@ -123,7 +123,7 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
     if not os.path.exists(path):
         baw.error(f'missing Dockerfile: {path}')
         sys.exit(baw.FAILURE)
-    tagname = baw.git.describe(root)
+    tagname = baw.gix.describe(root)
     result = baw.dockers.dockfile.build(
         dockerfile=path,
         tagname=tagname,
@@ -178,9 +178,9 @@ def upgrade(
     if not replaced:
         baw.log(f'already up-to-date: {path}')
         return baw.SUCCESS
-    with baw.git.stash(root):
+    with baw.gix.stash(root):
         baw.utils.file_replace(path, replaced)
-        baw.git.commit(
+        baw.gix.commit(
             root,
             path,
             message='chore(upgrade): upgrade images',

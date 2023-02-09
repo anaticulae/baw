@@ -17,13 +17,13 @@ import baw.__root__
 from baw.cmd.test import run_test as test_run
 from baw.config import shortcut
 from baw.dockers.dockfile import docker_image_upgrade
-from baw.git import add as git_add
-from baw.git import checkout as git_checkout
-from baw.git import commit as git_commit
-from baw.git import is_clean as git_isclean
-from baw.git import push as git_push
-from baw.git import reset as git_reset
-from baw.git import stash as git_stash
+from baw.gix import add as git_add
+from baw.gix import checkout as git_checkout
+from baw.gix import commit as git_commit
+from baw.gix import is_clean as git_isclean
+from baw.gix import push as git_push
+from baw.gix import reset as git_reset
+from baw.gix import stash as git_stash
 from baw.pipelinefile import jenkinsfile
 from baw.project import determine_root
 from baw.runtime import hasprog

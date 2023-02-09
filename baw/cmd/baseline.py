@@ -9,7 +9,7 @@
 
 import baw
 import baw.cmd.test
-import baw.git
+import baw.gix
 
 MESSAGE = """\
 test(baseline): adjust baseline
@@ -17,22 +17,22 @@ test(baseline): adjust baseline
 
 
 def pre(root: str):
-    if not baw.git.is_clean(root, verbose=False):
-        baw.log(baw.git.modified(root))
+    if not baw.gix.is_clean(root, verbose=False):
+        baw.log(baw.gix.modified(root))
         baw.exitx(f'could not baseline, repo is not clean: {root}')
     return baw.SUCCESS
 
 
 def commit(root: str, push: bool = True) -> int:
-    if baw.git.is_clean(root, verbose=False):
+    if baw.gix.is_clean(root, verbose=False):
         baw.log('baseline: nothing changed')
         return baw.SUCCESS
-    baw.git.add(
+    baw.gix.add(
         root,
         'tests/**',
         update=True,
     )
-    returnvalue = baw.git.commit(
+    returnvalue = baw.gix.commit(
         root,
         source='',
         message=MESSAGE,
@@ -40,7 +40,7 @@ def commit(root: str, push: bool = True) -> int:
     if returnvalue:
         return returnvalue
     if push:
-        returnvalue = baw.git.push(root)
+        returnvalue = baw.gix.push(root)
     return returnvalue
 
 

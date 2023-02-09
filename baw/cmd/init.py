@@ -17,7 +17,7 @@ import baw.cmd
 import baw.cmd.format
 import baw.cmd.release
 import baw.config
-import baw.git
+import baw.gix
 import baw.resources
 import baw.utils
 
@@ -74,13 +74,13 @@ def init(
         return baw.FAILURE
     # Escape ' to avoid errors in generated code
     name = name.replace("'", r'\'')
-    baw.git.init(root)
+    baw.gix.init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
     create_requirements(root)
-    baw.git.update_gitignore(root)
+    baw.gix.update_gitignore(root)
     baw.log()  # write newline
     if formatter:
         # TODO: EXPOSE FORMATTER BY CLI FLAG
@@ -109,12 +109,12 @@ def init(
 def first_commit(root, verbose: bool) -> int:
     """This is a replacement for semantic_release cause project setup
     does not worker proper like in the past(4.1.1) anymore."""
-    baw.git.add(
+    baw.gix.add(
         root,
         '.',
         verbose=verbose,
     )
-    returncode = baw.git.commit(
+    returncode = baw.gix.commit(
         root,
         source=' ',
         message=INIT,

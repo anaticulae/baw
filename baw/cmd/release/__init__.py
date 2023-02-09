@@ -12,7 +12,7 @@ import baw.cmd.complex
 import baw.cmd.lint
 import baw.cmd.release.drop
 import baw.cmd.release.pack
-import baw.git
+import baw.gix
 import baw.runtime
 import baw.utils
 
@@ -81,7 +81,7 @@ def release(  # pylint:disable=R1260
 
 
 def require_release(root, venv):
-    current_head = baw.git.headtag(root, venv=venv)
+    current_head = baw.gix.headtag(root, venv=venv)
     if not current_head:
         return baw.SUCCESS
     if current_head.isnumeric():
@@ -95,7 +95,7 @@ def check_repository(root, require_clean: bool):
     if not require_clean:
         return baw.SUCCESS
     # do not release modified repository
-    if baw.git.is_modified(root=root):
+    if baw.gix.is_modified(root=root):
         baw.error('repository is not clean')
         return baw.FAILURE
     return baw.SUCCESS
@@ -113,7 +113,7 @@ def run_test(
         return baw.SUCCESS
     # do not run hashed on first release, cause there is no any tagged
     # version.
-    hashed = baw.git.headhash(root)
+    hashed = baw.gix.headhash(root)
     require_test = not hashed or not baw.archive.test.is_tested(root, hashed)
     if require_test:
         returncode = baw.cmd.complex.sync_and_test(

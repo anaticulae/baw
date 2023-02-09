@@ -18,7 +18,7 @@ import os
 import pathlib
 import typing
 
-import baw.git
+import baw.gix
 
 
 def changelog_headers(  # pylint:disable=W0613
@@ -119,5 +119,5 @@ def __patch__():  # pragma: no cover
     pathlib.Path.write_text = write_text
 
 
-if baw.git.installed():
+if baw.gix.installed():
     __patch__()

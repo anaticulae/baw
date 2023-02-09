@@ -10,7 +10,7 @@
 
 import baw.cmd.utils
 import baw.config
-import baw.git
+import baw.gix
 import baw.run
 import baw.runtime
 import baw.utils
@@ -65,7 +65,7 @@ def can_publish(
     pre: bool = False,
     verbose: bool = False,
 ) -> int:
-    tag = baw.git.headtag(root, venv=False, verbose=verbose)
+    tag = baw.gix.headtag(root, venv=False, verbose=verbose)
     if tag and pre:
         baw.error('Stable release already published')
         return baw.SUCCESS

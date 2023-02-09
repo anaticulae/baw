@@ -15,7 +15,7 @@ import baw.cmd.complex
 import baw.cmd.sync
 import baw.cmd.utils
 import baw.config
-import baw.git
+import baw.gix
 import baw.requirements
 import baw.requirements.check
 import baw.requirements.parser
@@ -37,7 +37,7 @@ def upgrade(
 
     force: upgrade dev requirements also
     """
-    with baw.git.stash(root, verbose=verbose, venv=venv):
+    with baw.gix.stash(root, verbose=verbose, venv=venv):
         returnvalue = check_upgrade(root, packages=packages, pre=pre)
         if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
@@ -59,7 +59,7 @@ def upgrade(
             requirements = (requirements, requirements_dev)
         if failure:
             # reset requirement
-            completed = baw.git.reset(
+            completed = baw.gix.reset(
                 root,
                 requirements,
                 verbose=verbose,
@@ -68,7 +68,7 @@ def upgrade(
             baw.error('Upgrading failed')
             assert not completed
             return failure
-        failure = baw.git.commit(
+        failure = baw.gix.commit(
             root,
             source=requirements,
             message=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',

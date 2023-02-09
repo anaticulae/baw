@@ -42,11 +42,10 @@ def enable_http():
         branch: str = "master",
         domain: str = "github.com",
     ):
-        from semantic_release.settings import config
-        from semantic_release.vcs_helpers import repo
-
         from git import GitCommandError
         from git import GitError
+        from semantic_release.settings import config
+        from semantic_release.vcs_helpers import repo
         server = "origin"
         if auth_token:
             token = auth_token

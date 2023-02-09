@@ -13,7 +13,7 @@ import time
 
 import baw
 import baw.config
-import baw.git
+import baw.gix
 import baw.project.version
 import baw.utils
 

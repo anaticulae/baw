@@ -11,7 +11,7 @@ import os
 import re
 
 import baw.config
-import baw.git
+import baw.gix
 import baw.runtime
 import baw.utils
 
@@ -33,7 +33,7 @@ def run(
     baw.log('Start dropping release')
     if not can_drop(root, venv, verbose):
         return baw.FAILURE
-    current_release = baw.git.headtag(root, venv, verbose)
+    current_release = baw.gix.headtag(root, venv, verbose)
     baw.log(current_release)
     # remove the last release commit
     # git reset HEAD~1
@@ -47,7 +47,7 @@ def run(
     if completed:
         return completed
     # git tag -d HEAD
-    if not baw.git.tag_drop(current_release, root, venv=venv, verbose=verbose):
+    if not baw.gix.tag_drop(current_release, root, venv=venv, verbose=verbose):
         return baw.FAILURE
     # TODO: ? remove upstream ? or just overwrite ?
     return baw.SUCCESS
@@ -55,7 +55,7 @@ def run(
 
 def can_drop(root: str, venv: bool, verbose: bool) -> bool:
     baw.log('Detect current release:')
-    if not (headtag := baw.git.headtag(root, venv, verbose)):
+    if not (headtag := baw.gix.headtag(root, venv, verbose)):
         baw.error('No tag detected')
         return False
     matched = RELEASE_PATTERN.match(headtag)
@@ -90,7 +90,7 @@ def reset_resources(
         return baw.FAILURE  # at least one path does not exist.
     if not to_reset:
         return baw.FAILURE
-    completed = baw.git.reset(
+    completed = baw.gix.reset(
         root,
         to_reset,
         venv=venv,

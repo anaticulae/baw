@@ -10,7 +10,7 @@
 import os
 
 import baw.cmd.plan
-import baw.git
+import baw.gix
 import baw.utils
 import tests
 
@@ -46,7 +46,7 @@ def test_plan_init_first_testplan(project_example):
     """Ensure that project init generates first release plan"""
     plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
     assert os.path.exists(plan), plan
-    clean = baw.git.is_clean(project_example)
+    clean = baw.gix.is_clean(project_example)
     assert clean, clean
 
 

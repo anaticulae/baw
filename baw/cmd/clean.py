@@ -19,6 +19,7 @@ import resinf
 import baw
 import baw.cmd.utils
 import baw.config
+import baw.gix
 import baw.runtime
 
 
@@ -70,7 +71,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
 
 
 def clean_git(root: str):
-    baw.git.ensure_git('could not clean')
+    baw.gix.ensure_git('could not clean')
     completed = baw.runtime.run_target(
         root=root,
         cmd='git clean -xf',

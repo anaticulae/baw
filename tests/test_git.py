@@ -8,13 +8,13 @@
 # =============================================================================
 
 import baw.cmd.release
-import baw.git
+import baw.gix
 
 
 def test_commit_with_tag(simple):
     """Regression test to tag/annoate commit to use with git describe."""
     root = simple[1]
-    tagged = baw.git.describe(root)
+    tagged = baw.gix.describe(root)
     assert tagged == baw.cmd.release.FIRST_RELEASE
 
 
@@ -23,7 +23,7 @@ def test_modified(simple):
     assert baw.git_isclean(root)
     baw.runtime.run_target(root, 'touch ABC')
     assert not baw.git_isclean(root)
-    modified = baw.git.modified(root)
+    modified = baw.gix.modified(root)
     expected = '## master\n?? ABC'
     assert modified == expected
 
@@ -33,6 +33,6 @@ def test_stash(simple):
     assert baw.git_isclean(root)
     baw.runtime.run_target(root, 'touch ABC')
     assert not baw.git_isclean(root)
-    with baw.git.stash(root):
+    with baw.gix.stash(root):
         assert baw.git_isclean(root)
     assert not baw.git_isclean(root)

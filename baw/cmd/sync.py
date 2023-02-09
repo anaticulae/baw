@@ -17,7 +17,7 @@ from pip import __version__ as pip_version
 
 import baw.cmd.utils
 import baw.config
-import baw.git
+import baw.gix
 import baw.requirements
 import baw.requirements.parser
 import baw.requirements.upgrade
@@ -54,7 +54,7 @@ def sync(
     baw.utils.check_root(root)
     ret = 0
     baw.log()
-    ret += baw.git.update_gitignore(root, verbose=verbose)
+    ret += baw.gix.update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
     if venv == 'BOTH':
         for item in [True, False]:
