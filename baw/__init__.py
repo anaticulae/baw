@@ -14,6 +14,7 @@ __version__ = '1.66.0'
 # pylint:disable=wrong-import-position
 import baw.__patch__
 import baw.__root__
+from baw.cmd.test import run_test as test_run
 from baw.config import shortcut
 from baw.dockers.dockfile import docker_image_upgrade
 from baw.git import add as git_add
