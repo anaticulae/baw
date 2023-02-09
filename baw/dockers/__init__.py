@@ -37,12 +37,14 @@ def switch_docker():
         root,
         generate=dockenx,
     )
+    environment = parse_env(sys.argv)
     usercmd = prepare_cmd(sys.argv)
     volumes = determine_volumes()
     result = baw.dockers.container.run(
         cmd=usercmd,
         image=image,
         volumes=volumes,
+        environment=environment,
         generate=dockenx,
         outdir=True,
     )
@@ -56,6 +58,19 @@ def docker_docken(argv):
         dockerx |= '--docker=' in item or item == '--docker'
         dockenx |= '--docken=' in item or item == '--docken'
     return dockerx, dockenx
+
+
+def parse_env(argv):
+    r"""\
+    >>> parse_env(['C:\\usr\\python\\310\\Scripts\\baw', '--docker=PW=10', 'test', 'docs', '--junit_xml=C:/usr/git/var/outdir/test.xml'])
+    ['PW=10']
+    """
+    for item in argv:
+        if '--docker=' in item:
+            return item.split('--docker=')[1].split(';')
+        if '--docken=' in item:
+            return item.split('--docken=')[1].split(';')
+    return None
 
 
 def prepare_cmd(argv: list) -> str:

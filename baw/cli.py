@@ -95,13 +95,11 @@ def add_parameter(parser):
     )
     parser.add_argument(
         '--docker',
-        action='store_true',
-        help='Use docker environment',
+        help='Use docker environment, inject PASSWORD=xxx;BASE=hello',
     )
     parser.add_argument(
         '--docken',
-        action='store_true',
-        help='Use docker generated environment',
+        help='Use docker generated env, inject PASSWORD=xxx;BASE=hello',
     )
     parser.add_argument(
         '--raw',
