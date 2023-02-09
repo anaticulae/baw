@@ -13,7 +13,7 @@ import pytest
 
 import baw
 import baw.cmd.image.dockerfiles
-import baw.pipelinefile
+import baw.pipefile
 import baw.utils
 import tests
 
@@ -31,7 +31,7 @@ def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
 
 
 def test_cmd_image_newest(monkeypatch, capsys):
-    name = baw.pipelinefile.docker_image(baw.ROOT)
+    name = baw.pipefile.docker_image(baw.ROOT)
     cmd = f'image newest --name {name}'
     tests.baaw(cmd, monkeypatch=monkeypatch)
     stdout = tests.stdout(capsys)

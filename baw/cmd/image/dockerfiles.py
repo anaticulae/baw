@@ -15,7 +15,7 @@ import baw.cmd.info
 import baw.cmd.pipe
 import baw.cmd.utils
 import baw.config
-import baw.pipelinefile
+import baw.pipefile
 import baw.project.version
 import baw.utils
 
@@ -56,7 +56,7 @@ def header(root: str) -> str:
     root = baw.cmd.utils.determine_root(root)
     if not root:
         sys.exit(baw.FAILURE)
-    image = baw.pipelinefile.docker_image(root)
+    image = baw.pipefile.docker_image(root)
     result = f'FROM {image}'
     return result
 
@@ -124,7 +124,7 @@ def environments(root: str) -> str:
     root = baw.cmd.utils.determine_root(root)
     if not root:
         sys.exit(baw.FAILURE)
-    env = baw.pipelinefile.docker_env(root)
+    env = baw.pipefile.docker_env(root)
     if not env:
         return ''
     result = ''

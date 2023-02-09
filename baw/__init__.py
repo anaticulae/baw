@@ -24,7 +24,7 @@ from baw.gix import is_clean as git_isclean
 from baw.gix import push as git_push
 from baw.gix import reset as git_reset
 from baw.gix import stash as git_stash
-from baw.pipelinefile import jenkinsfile
+from baw.pipefile import jenkinsfile
 from baw.project import determine_root
 from baw.runtime import hasprog
 from baw.utils import FAILURE

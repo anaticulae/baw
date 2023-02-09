@@ -12,7 +12,7 @@ import os
 import baw.cmd.utils
 import baw.dockers.image
 import baw.gix
-import baw.pipelinefile
+import baw.pipefile
 import baw.project
 import baw.resources
 import baw.run
@@ -56,7 +56,7 @@ def upgrade(
     if not os.path.exists(source):
         baw.error(f'Jenkinsfile does not exists: {source}')
         return baw.FAILURE
-    replaced = baw.pipelinefile.upgrade(root, always=True)
+    replaced = baw.pipefile.upgrade(root, always=True)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
         baw.log('Jenkinsfile unchanged, skip upgrade')
@@ -79,7 +79,7 @@ def upgrade(
 
 
 def create_jenkinsfile(root: str):
-    newest = baw.pipelinefile.image_newest()
+    newest = baw.pipefile.image_newest()
     args = image_args()
     replaced = baw.resources.template_replace(
         root,
@@ -118,7 +118,7 @@ def run(args: dict):
             venv=args.get('venv'),
         )
     if action == 'library':
-        return baw.pipelinefile.library(
+        return baw.pipefile.library(
             root,
             verbose=args['verbose'],
         )
