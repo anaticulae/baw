@@ -29,8 +29,7 @@ def client():
 
 def switch_docker():
     """Use docker environment to run cmd."""
-    dockerx = '--docker' in sys.argv
-    dockenx = '--docken' in sys.argv
+    dockerx, dockenx = docker_docken(sys.argv)
     if not dockerx and not dockenx:
         return baw.run.run_main()
     root = os.getcwd()
@@ -48,6 +47,15 @@ def switch_docker():
         outdir=True,
     )
     return result
+
+
+def docker_docken(argv):
+    dockerx, dockenx = False, False
+    for item in argv:
+        # avoid conflicts with --dockerfile for example
+        dockerx |= '--docker=' in item or item == '--docker'
+        dockenx |= '--docken=' in item or item == '--docken'
+    return dockerx, dockenx
 
 
 def prepare_cmd(argv: list) -> str:
