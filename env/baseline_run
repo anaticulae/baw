@@ -24,8 +24,8 @@ then
     exit 1
 fi
 
-echo "baw --docken baseline test -n32"
-baw --docken baseline test -n32
+echo "baw --docken baseline test -n ${WORKER}"
+baw --docken baseline test -n ${WORKER}
 if [ $? -ne 0 ]
 then
     exit 1
