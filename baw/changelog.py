@@ -119,5 +119,5 @@ def __patch__():  # pragma: no cover
     pathlib.Path.write_text = write_text
 
 
-if baw.gix.installed():
+if baw.gix.installed(): # pragma: no cover
     __patch__()
