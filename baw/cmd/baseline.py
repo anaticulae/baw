@@ -12,6 +12,7 @@ import os
 
 import baw
 import baw.cmd.test
+import baw.config
 import baw.gix
 
 MESSAGE = """\
@@ -47,10 +48,15 @@ def commit(root: str, push: bool = True) -> int:
     return returnvalue
 
 
-def test(root):
+def test(root, worker: int = 32):
     pre(root)
+    testconfig = [f'-n={worker}']
     with enable_baseline():
-        baw.cmd.test.run_test(root, alls=True)
+        baw.cmd.test.run_test(
+            root,
+            testconfig=testconfig,
+            alls=True,
+        )
     if commit(root):
         return baw.FAILURE
     return baw.SUCCESS
@@ -68,7 +74,11 @@ def enable_baseline():
 def run(args: dict):
     root = baw.cmd.utils.get_root(args)
     if args['baseline'] == 'test':
-        return test(root)
+        worker = args.get('n', os.cpu_count())
+        return test(
+            root,
+            worker=worker,
+        )
     return baw.FAILURE
 
 
@@ -80,5 +90,10 @@ def extend_cli(parser):
         choices='test clean'.split(),
         nargs='?',
         default='test',
+    )
+    baseline.add_argument(
+        '-n',
+        help='process count; use auto to select os.cpu_count',
+        default='auto',
     )
     baseline.set_defaults(func=run)
