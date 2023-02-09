@@ -171,7 +171,7 @@ def checkout(
     return completed.returncode
 
 
-def push(root: str) -> int:
+def push(root: str, token: str = None) -> int:
     cmd = 'git push'
     completed = baw.runtime.run(cmd, cwd=root)
     if completed.returncode:
