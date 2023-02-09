@@ -43,7 +43,7 @@ def run(
             container.start()
             failure = verify(container)
             if failure:
-                baw.utils.error(cmd)
+                baw.error(cmd)
             if not failure and outdir:
                 receive_data(container, outdir)
             baw.log('stop container')
@@ -52,7 +52,7 @@ def run(
             baw.log('remove container')
             container.remove()
         except docker.errors.ContainerError as error:
-            baw.utils.error(error.stderr.decode('utf8'))
+            baw.error(error.stderr.decode('utf8'))
             return baw.utils.FAILURE
     if failure:
         return baw.utils.FAILURE
@@ -104,8 +104,8 @@ def create(
         )
     except docker.errors.ImageNotFound as error:
         # mostly base image is not created
-        baw.utils.error(f'could not create container: {image}')
-        baw.utils.error(error)
+        baw.error(f'could not create container: {image}')
+        baw.error(error)
         sys.exit(baw.utils.FAILURE)
     return container
 
@@ -122,13 +122,13 @@ def build_image(root: str, generate: bool = False):
         # live=True, # live does not return completed
     )
     if completed.returncode:
-        baw.utils.error(f'could not create image: {root}')
+        baw.error(f'could not create image: {root}')
         baw.completed(completed)
         sys.exit(baw.utils.FAILURE)
     else:
         baw.log(completed.stdout)
         if completed.stderr.strip():
-            baw.utils.error(completed.stderr)
+            baw.error(completed.stderr)
 
 
 def receive_data(container, outdir: bool = True):
@@ -140,7 +140,7 @@ def receive_data(container, outdir: bool = True):
             try:
                 bits, stat = container.get_archive(outdir)
             except docker.errors.NotFound:
-                baw.utils.error(f'could not find: {outdir}')
+                baw.error(f'could not find: {outdir}')
                 return
             baw.utils.verbose(stat)
             for chunk in bits:
@@ -149,7 +149,7 @@ def receive_data(container, outdir: bool = True):
         cmd = f'tar -xf {fixup_path(base)}'
         completed = baw.runtime.run(cmd, cwd=os.getcwd())
         if completed.returncode:
-            baw.utils.error(f'untar failed: {cmd}')
+            baw.error(f'untar failed: {cmd}')
             baw.completed(completed)
     baw.log('done')
 
@@ -176,7 +176,7 @@ def tar_content(
 ) -> str:
     assert os.path.exists(content), str(content)
     if not baw.runtime.hasprog('tar'):
-        baw.utils.error('tar is not installed, could not tar')
+        baw.error('tar is not installed, could not tar')
         sys.exit(baw.utils.FAILURE)
     # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
     with baw.utils.tmpdir() as tmp:
@@ -187,7 +187,7 @@ def tar_content(
         cmd = f'tar cvf {tar} {do_not_tar} .'
         completed = baw.runtime.run(cmd, content)
         if completed.returncode:
-            baw.utils.error(f'tar failed: {cmd}')
+            baw.error(f'tar failed: {cmd}')
             baw.completed(completed)
         content = baw.utils.file_read_binary(base)
     return content
