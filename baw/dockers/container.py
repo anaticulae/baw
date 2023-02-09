@@ -49,6 +49,7 @@ def run(
                     content=os.getcwd(),
                     git_include=gitdir,
                 )
+                baw.log(f'put into container: {volumes}')
                 container.put_archive(
                     path=volumes,
                     data=content,
