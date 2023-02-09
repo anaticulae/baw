@@ -24,7 +24,7 @@ import baw.utils
 def main():
     root = baw.cmd.utils.determine_root(os.getcwd())
     if not baw.git.is_clean(root, verbose=False):
-        baw.utils.error(f'not clean, abort: {root}')
+        baw.error(f'not clean, abort: {root}')
         sys.exit(baw.FAILURE)
     parser = create_parser()
     args = parse_args(parser)
@@ -37,30 +37,30 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
     timed = []
     states = []
     for index, (commit, headline) in enumerate(todo, start=1):
-        baw.utils.log(f'\n{index}|{len(todo)}')
-        baw.utils.log(f'>>> {headline}')
-        baw.utils.log(f'git checkout {commit} in {root}')
+        baw.log(f'\n{index}|{len(todo)}')
+        baw.log(f'>>> {headline}')
+        baw.log(f'git checkout {commit} in {root}')
         if baw.git.checkout(root, commit):
             sys.exit(baw.FAILURE)
         current = time.time()
-        baw.utils.log(f'run: {cmd}')
+        baw.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
         if processed.returncode == 127:
-            baw.utils.error(f'invalid cmd: {cmd}')
+            baw.error(f'invalid cmd: {cmd}')
             sys.exit(baw.FAILURE)
         if processed.returncode:
             # the head is not important, we what to see the tail
-            baw.utils.error(processed.stdout[-lookback:])
-            baw.utils.error(processed.stderr[-lookback:])
+            baw.error(processed.stdout[-lookback:])
+            baw.error(processed.stderr[-lookback:])
         #     sys.exit(baw.FAILURE)
         states.append(processed.returncode)
         diff = round(time.time() - current, 4)
-        baw.utils.log(f'done: {diff}')
+        baw.log(f'done: {diff}')
         timed.append(diff)
-    baw.utils.log('\n\nDONE:\n========================')
+    baw.log('\n\nDONE:\n========================')
     for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
         raw = 'X' if state else ' '
-        baw.utils.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
+        baw.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
                       f'{commit[1][0:30]}')
     # checkout(root, commit=todo[0])
     baw.git.checkout(root, branch='master')
@@ -87,7 +87,7 @@ def commits(root, ranges) -> list:
         completed.stderr = completed.stderr.replace(no_error[0], '')
     stdout = completed.stdout.strip()
     if completed.returncode or completed.stderr:
-        baw.utils.error(completed)
+        baw.error(completed)
         sys.exit(baw.FAILURE)
     result = [line.split(maxsplit=1) for line in stdout.splitlines()]
     return result

@@ -104,15 +104,15 @@ def describe(dockerfile: str) -> str:
     root = baw.determine_root(dockerfile)
     if REFRENCE in content:
         current = baw.git.describe(root)
-        baw.utils.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
+        baw.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
         content = content.replace(REFRENCE, current)
     if PIPREF in content:
         pipref = baw.cmd.info.pip_version(root, verbose=True)
-        baw.utils.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
+        baw.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
         content = content.replace(PIPREF, pipref)
     if PIPSTABLE in content:
         stable = baw.project.version.determine(root, verbose=True)
-        baw.utils.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
+        baw.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
         content = content.replace(PIPSTABLE, stable)
     return content
 
@@ -121,7 +121,7 @@ def create_git_hash(root: str, name=None):  # pylint:disable=W0613
     root = baw.cmd.utils.determine_root(root)
     path = os.path.join(root, 'Dockerfile')
     if not os.path.exists(path):
-        baw.utils.error(f'missing Dockerfile: {path}')
+        baw.error(f'missing Dockerfile: {path}')
         sys.exit(baw.FAILURE)
     tagname = baw.git.describe(root)
     result = baw.dockers.dockfile.build(
@@ -157,7 +157,7 @@ def newest(name: str) -> int:
     tags = baw.dockers.image.tags(name)
     maxtag = baw.dockers.image.version_max(tags)
     result = f'{name}:{maxtag[0]}'
-    baw.utils.log(result)
+    baw.log(result)
     return baw.SUCCESS
 
 
@@ -168,15 +168,15 @@ def upgrade(
 ) -> int:
     path = os.path.abspath(dockerfile)
     if not os.path.exists(path):
-        baw.utils.error(f'could not upgrade, path does not exists: {path}')
+        baw.error(f'could not upgrade, path does not exists: {path}')
         return baw.FAILURE
-    baw.utils.log(f'start upgrading: {path}')
+    baw.log(f'start upgrading: {path}')
     replaced = baw.docker_image_upgrade(
         path,
         prerelease=prerelease,
     )
     if not replaced:
-        baw.utils.log(f'already up-to-date: {path}')
+        baw.log(f'already up-to-date: {path}')
         return baw.SUCCESS
     with baw.git.stash(root):
         baw.utils.file_replace(path, replaced)
@@ -185,7 +185,7 @@ def upgrade(
             path,
             message='chore(upgrade): upgrade images',
         )
-        baw.utils.log(f'upgraded: {path}')
+        baw.log(f'upgraded: {path}')
     return baw.SUCCESS
 
 
@@ -209,12 +209,12 @@ def run(args: dict):  # pylint:disable=R0911
             prerelease=args['prerelease'],
         )
     if action == 'delete':
-        baw.utils.error('not implemented')
+        baw.error('not implemented')
     if action == 'clean':
         return baw.cmd.image.clean.images()
     if action == 'githash':
         name = args['name']
-        baw.utils.log(f'image name: {name}')
+        baw.log(f'image name: {name}')
         return baw.cmd.image.create_git_hash(
             root,
             name=name,
@@ -225,7 +225,7 @@ def run(args: dict):  # pylint:disable=R0911
         env = args['env']
         if env:
             env = env.split(';')
-        baw.utils.log(f'run name: {name}; cmd: {cmd}; env: {env};')
+        baw.log(f'run name: {name}; cmd: {cmd}; env: {env};')
         return baw.dockers.container.run(
             cmd=cmd,
             image=name,

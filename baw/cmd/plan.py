@@ -37,12 +37,12 @@ def action(root: str, plan: str):
     if plan == 'new':
         # TODO: DISTINCT BETWEEN NEW_MAJOR AND NEW_MINOR
         if not current_status == Status.CLOSED and current_status != Status.EMPTY:
-            baw.utils.error(f'old plan is not closed: {current_status}')
+            baw.error(f'old plan is not closed: {current_status}')
             return baw.FAILURE
         create(root)
     if plan == 'close':
         if not current_status == Status.DONE:
-            baw.utils.error(f'current plan is not done: {current_status}')
+            baw.error(f'current plan is not done: {current_status}')
             return baw.FAILURE
         close(root)
     return baw.SUCCESS
@@ -66,7 +66,7 @@ def create(
     )
     outpath = os.path.join(releases(root), f'{major}.{minor}.0.rst')
     baw.utils.file_create(outpath, replaced)
-    baw.utils.log(f'create new release plan: {outpath}')
+    baw.log(f'create new release plan: {outpath}')
 
     overview = os.path.join(releases(root), 'releases.rst')
     loaded = baw.utils.file_read(overview)
@@ -84,7 +84,7 @@ def create(
 
 
 def close(root: str, verbose: bool = False):
-    baw.utils.log('close current release plan')
+    baw.log('close current release plan')
     current_status = status(root)
     assert current_status == Status.DONE, current_status
     quality = code_quality(root, verbose=verbose)

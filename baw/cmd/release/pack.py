@@ -13,7 +13,7 @@ import baw.utils
 
 
 def run(root, verbose, release_type, venv: bool = False):
-    baw.utils.log('update version tag')
+    baw.log('update version tag')
     with baw.cmd.release.config.temp_semantic_config(
             root,
             verbose,
@@ -26,15 +26,15 @@ def run(root, verbose, release_type, venv: bool = False):
             verbose=verbose,
             venv=venv,
         )
-        baw.utils.log(completed.stdout)
+        baw.log(completed.stdout)
         if NO_RELEASE_MESSAGE in completed.stdout:
-            baw.utils.error('abort release')
-            baw.utils.log('ensure that some (feat) are commited')
-            baw.utils.log('use: `baw release minor` to force release')
+            baw.error('abort release')
+            baw.log('ensure that some (feat) are commited')
+            baw.log('use: `baw release minor` to force release')
             return baw.FAILURE
     if completed.returncode:
-        baw.utils.error('while running semantic-release')
-        baw.utils.error(completed.stderr)
+        baw.error('while running semantic-release')
+        baw.error(completed.stderr)
         return completed.returncode
     return baw.SUCCESS
 

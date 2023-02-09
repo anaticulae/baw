@@ -26,7 +26,7 @@ def init(
 ):
     source = baw.jenkinsfile(root)
     if os.path.exists(source):
-        baw.utils.error(f'Jenkinsfile already exists: {source}')
+        baw.error(f'Jenkinsfile already exists: {source}')
         return baw.FAILURE
     replaced = create_jenkinsfile(root)
     with baw.git.stash(root, verbose=verbose, venv=venv):
@@ -43,7 +43,7 @@ def init(
         )
         if failure:
             return failure
-    baw.utils.log('Jenkinsfile added')
+    baw.log('Jenkinsfile added')
     return baw.SUCCESS
 
 
@@ -54,12 +54,12 @@ def upgrade(
 ):
     source = baw.jenkinsfile(root)
     if not os.path.exists(source):
-        baw.utils.error(f'Jenkinsfile does not exists: {source}')
+        baw.error(f'Jenkinsfile does not exists: {source}')
         return baw.FAILURE
     replaced = baw.pipelinefile.upgrade(root, always=True)
     before = baw.utils.file_read(source)
     if replaced.strip() == before.strip():
-        baw.utils.log('Jenkinsfile unchanged, skip upgrade')
+        baw.log('Jenkinsfile unchanged, skip upgrade')
         return baw.SUCCESS
     with baw.git.stash(root, verbose=verbose, venv=venv):
         baw.utils.file_replace(
@@ -74,7 +74,7 @@ def upgrade(
         )
         if failure:
             return failure
-    baw.utils.log('Jenkinsfile upgraded')
+    baw.log('Jenkinsfile upgraded')
     return baw.SUCCESS
 
 
@@ -123,7 +123,7 @@ def run(args: dict):
             verbose=args['verbose'],
         )
     if action == 'test':
-        baw.utils.error('not implemented')
+        baw.error('not implemented')
     return baw.FAILURE
 
 

@@ -26,7 +26,7 @@ def files(args):
     result = []
     for path in args.files:
         if not os.path.exists(path):
-            baw.utils.error(f'file does not exists: {path}')
+            baw.error(f'file does not exists: {path}')
             continue
         abspath = os.path.abspath(path)
         result.append(abspath)

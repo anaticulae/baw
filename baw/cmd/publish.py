@@ -33,7 +33,7 @@ def publish(
     Hint:
         publish run's always in venv environment
     """
-    baw.utils.log('publish start')
+    baw.log('publish start')
     if failure := can_publish(root, pre=pre, verbose=verbose):
         return failure
     url = baw.config.package_testing() if pre else baw.config.package_address()[0]  # yapf:disable
@@ -41,7 +41,7 @@ def publish(
     python = baw.config.python(root)
     cmd = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
-        baw.utils.log(f'build dist: {cmd}')
+        baw.log(f'build dist: {cmd}')
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -53,10 +53,10 @@ def publish(
     if completed.returncode == baw.SUCCESS:
         if pre:
             log_prerelease(root)
-        baw.utils.log('publish completed')
+        baw.log('publish completed')
     else:
-        baw.utils.error(completed.stderr)
-        baw.utils.error('publish failed')
+        baw.error(completed.stderr)
+        baw.error('publish failed')
     return completed.returncode
 
 
@@ -67,18 +67,18 @@ def can_publish(
 ) -> int:
     tag = baw.git.headtag(root, venv=False, verbose=verbose)
     if tag and pre:
-        baw.utils.error('Stable release already published')
+        baw.error('Stable release already published')
         return baw.SUCCESS
     if not tag and not pre:
-        baw.utils.error('Could not find release-git-tag. Aborting publishing.')
+        baw.error('Could not find release-git-tag. Aborting publishing.')
         return baw.FAILURE
     return baw.SUCCESS
 
 
 def log_prerelease(root):
     import utila.quick
-    baw.utils.log(baw.config.shortcut(root) + '-', end='')
-    baw.utils.log(utila.quick.git_hash(root))
+    baw.log(baw.config.shortcut(root) + '-', end='')
+    baw.log(utila.quick.git_hash(root))
 
 
 def distribution_format() -> str:
@@ -95,7 +95,7 @@ def run(args: dict):
     # overwrite venv flag if given
     novenv = args.get('no_venv', False)
     if novenv:
-        baw.utils.log('do not use venv')
+        baw.log('do not use venv')
         venv = False
     result = publish(
         root=root,

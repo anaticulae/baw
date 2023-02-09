@@ -23,7 +23,7 @@ def run(
     verbose: bool = True,
 ):
     if not baw.git.is_clean(root, verbose=False):
-        baw.utils.error(f'clean before refactor: {root}')
+        baw.error(f'clean before refactor: {root}')
         sys.exit(baw.FAILURE)
     changed = pattern_run(
         root,
@@ -37,7 +37,7 @@ def run(
             verbose=False,
         )
     else:
-        baw.utils.log('nothing todo')
+        baw.log('nothing todo')
     sys.exit(baw.SUCCESS)
 
 
@@ -51,7 +51,7 @@ def pattern_run(root: str, verbose: bool) -> bool:
             content = content.replace(key, value)
         if hash(content) != before:
             if verbose:
-                baw.utils.log(f'refactor: {path}')
+                baw.log(f'refactor: {path}')
             changed = True
         baw.utils.file_replace(path, content)
     return changed
@@ -71,7 +71,7 @@ def todo() -> dict:
         try:
             result[splitted[1]] = splitted[3]
         except IndexError:
-            baw.utils.error(f'not enough spaces between: {line}')
+            baw.error(f'not enough spaces between: {line}')
             sys.exit(baw.FAILURE)
     return result
 
@@ -93,7 +93,7 @@ def files(root: str) -> list:
 
 def evals(args: dict):
     root = baw.cmd.utils.get_root(args)
-    baw.utils.log(f'refactor: {root}')
+    baw.log(f'refactor: {root}')
     run(root=root,)
 
 

@@ -37,7 +37,7 @@ def parse(content: str, upgrade: bool = False) -> baw.requirements.Requirements:
             if not (parsed := line_parse(line, upgrade=upgrade)):
                 continue
         except ValueError:
-            baw.utils.error(f'could not parse: "{line}"')
+            baw.error(f'could not parse: "{line}"')
             error = True
         else:
             equal.update(parsed[0])
@@ -46,8 +46,8 @@ def parse(content: str, upgrade: bool = False) -> baw.requirements.Requirements:
         return None
     common_keys = set(equal.keys()) | set(greater.keys())
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
-        baw.utils.error('duplicated package definition')
-        baw.utils.error(content)
+        baw.error('duplicated package definition')
+        baw.error(content)
         sys.exit(baw.FAILURE)
     result = baw.requirements.Requirements(equal=equal, greater=greater)
     return result
@@ -72,7 +72,7 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
         return None
     if noauto := '#' in line and 'noauto' in line:  # pylint:disable=W0612
         if upgrade:
-            baw.utils.log(f'skip: {line}')
+            baw.log(f'skip: {line}')
             return None
     with contextlib.suppress(ValueError):
         # remove right side comment: 'rawmaker==1.0.0 # this is rawmaker'

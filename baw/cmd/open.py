@@ -41,10 +41,10 @@ def open_generated(root: str, console: bool = False):
     name = os.path.split(root)[1]
     generated = resinf.generated(project=name)
     if console:
-        baw.utils.log(generated)
+        baw.log(generated)
         return
     if not os.path.exists(generated):
-        baw.utils.error(f'resource: {generated} not generated')
+        baw.error(f'resource: {generated} not generated')
         sys.exit(baw.FAILURE)
     open_this(generated)
 
@@ -70,7 +70,7 @@ def open_lasttest(root: str, prints: bool = False):
     try:
         last = directories[-1]
     except IndexError:
-        baw.utils.error(f'could not find any test {root}')
+        baw.error(f'could not find any test {root}')
         return
     open_this(last, prints=prints)
 
@@ -85,12 +85,12 @@ def open_this(path=None, prints: bool = False):
         path = os.getcwd()
     path = str(path)
     if not os.path.exists(path):
-        baw.utils.error(f'path does not exists: {path}')
+        baw.error(f'path does not exists: {path}')
         sys.exit(baw.FAILURE)
     # convert for windows
     path = path.replace('/', '\\')
     if prints:
-        baw.utils.log(path)
+        baw.log(path)
         return
     cmd = f'explorer {path}'
     completed = baw.runtime.run(

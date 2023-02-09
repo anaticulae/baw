@@ -21,7 +21,7 @@ def cli(
     venv: bool = False,
     verbose: bool = False,
 ):
-    baw.utils.log(commits)
+    baw.log(commits)
     commits = commits.split('^')
     if len(commits) == 1:
         bad, good = 'HEAD', commits[0]
@@ -30,7 +30,7 @@ def cli(
         # args.remove(commits[1])
     # TODO: CHECK GOOD BAD?
     if not args:
-        baw.utils.error('nothing to bisect')
+        baw.error('nothing to bisect')
         sys.exit(baw.utils.INPUT_ERROR)
     verify = ' '.join(args)
     completed = bisect(
@@ -62,7 +62,7 @@ def bisect(
     )
 
     important = collect_findings(completed.stdout)
-    baw.utils.log(baw.utils.NEWLINE.join(important))
+    baw.log(baw.utils.NEWLINE.join(important))
 
     # finish bisect
     baw.runtime.run_target(

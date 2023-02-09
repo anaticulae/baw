@@ -65,7 +65,7 @@ def upgrade(
                 verbose=verbose,
                 venv=venv,
             )
-            baw.utils.error('Upgrading failed')
+            baw.error('Upgrading failed')
             assert not completed
             return failure
         failure = baw.git.commit(
@@ -110,10 +110,10 @@ def check_upgrade(root, packages, pre: bool = False):
     )):
         return baw.SUCCESS
     if failure not in (REQUIREMENTS_UPTODATE, baw.SUCCESS):
-        baw.utils.error('Error while upgrading requirements')
+        baw.error('Error while upgrading requirements')
         return baw.FAILURE
     if failure_dev not in (REQUIREMENTS_UPTODATE, baw.SUCCESS):
-        baw.utils.error('Error while upgrading dev requirements')
+        baw.error('Error while upgrading dev requirements')
         return failure_dev
     return requirements_dev
 
@@ -142,12 +142,12 @@ def upgrade_requirements(
     msg = f'Path does not exists {req_path}'
     if not os.path.exists(req_path):
         msg = f'Could not locate any requirements: {req_path}'
-        baw.utils.error(msg)
+        baw.error(msg)
         return baw.FAILURE
-    baw.utils.log(f'\nStart upgrading requirements: {req_path}')
+    baw.log(f'\nStart upgrading requirements: {req_path}')
     content = baw.utils.file_read(req_path)
     if not content.strip():
-        baw.utils.log(f'Empty: {req_path}. Skipping replacement.')
+        baw.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchronizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
     upgraded = determine_new_requirements(root, content, venv=venv, pre=pre)
@@ -155,11 +155,11 @@ def upgrade_requirements(
         return baw.FAILURE
     replaced = baw.requirements.upgrade.replace(content, upgraded)
     if replaced == content:
-        baw.utils.log('Requirements are up to date.\n')
+        baw.log('Requirements are up to date.\n')
         return REQUIREMENTS_UPTODATE
     # write new requirements
     baw.utils.file_replace(req_path, replaced)
-    baw.utils.log('Upgrading finished')
+    baw.log('Upgrading finished')
     return baw.SUCCESS
 
 
@@ -207,7 +207,7 @@ def determine_new_requirements(
         upgrade=True,
     )
     if parsed is None:
-        baw.utils.error('could not parse requirements')
+        baw.error('could not parse requirements')
         return None
     sync_error = False
     equal = {}
@@ -254,11 +254,11 @@ def collect_new_packages(  # pylint:disable=R0914
             dependency = future.result()
         except ValueError:
             if not pre:
-                baw.utils.error(f'package: {package} is not available')
+                baw.error(f'package: {package} is not available')
                 sync_error = True
             continue
         except RuntimeError:
-            baw.utils.error('could not reach package repository')
+            baw.error('could not reach package repository')
             sync_error = True
             continue
         upgraded = check_package(dependency, package, version, pre)
@@ -285,7 +285,7 @@ def check_package(dependency: str, package: str, version: str, pre: bool):
         if pre:
             # no pre-release available
             return True
-        baw.utils.error(f'package: {package} not available')
+        baw.error(f'package: {package} not available')
         return None
     if available == version:
         # no upgrade required
@@ -296,7 +296,7 @@ def check_package(dependency: str, package: str, version: str, pre: bool):
             # command. Do not upgrade with pre-release without
             # --pre flag.
             msg = f'do not upgrade: {package}; {available} without --pre'
-            baw.utils.log(msg)
+            baw.log(msg)
             return True
     return (version, available)  #(old, new)
 

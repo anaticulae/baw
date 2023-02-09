@@ -32,7 +32,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
     all_: bool = False,
 ):
     baw.utils.check_root(root)
-    baw.utils.log('start cleaning')
+    baw.log('start cleaning')
     if all_:
         docs, resources, tests, tmp, venv = True, True, True, True, True
     if venv:
@@ -54,7 +54,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
                 todo = glob.glob(root + '**' + pattern, recursive=True)
             todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
-            baw.utils.log(f'remove {item}')
+            baw.log(f'remove {item}')
             try:
                 if os.path.isfile(item):
                     os.remove(item)
@@ -62,10 +62,10 @@ def clean(  # pylint:disable=R1260,too-many-branches
                     shutil.rmtree(item, onerror=remove_readonly)
             except OSError as fail:
                 ret += 1
-                baw.utils.error(fail)
+                baw.error(fail)
     if ret:
         sys.exit(ret)
-    baw.utils.log()  # Newline
+    baw.log()  # Newline
     return baw.SUCCESS
 
 
@@ -83,15 +83,15 @@ def clean_git(root: str):
 def clean_docs(root: str):
     doctmp = baw.config.docpath(root, mkdir=False)
     if not os.path.exists(doctmp):
-        baw.utils.log(f'no docs generated: {doctmp}')
+        baw.log(f'no docs generated: {doctmp}')
         return
-    baw.utils.log(f'clean docs {doctmp}')
+    baw.log(f'clean docs {doctmp}')
     try:
         shutil.rmtree(doctmp)
     except OSError as fail:
-        baw.utils.error(fail)
+        baw.error(fail)
         sys.exit(baw.FAILURE)
-    baw.utils.log('finished')
+    baw.log('finished')
 
 
 def create_pattern(
@@ -161,15 +161,15 @@ def clean_venv(root: str):
     """
     venv_path = baw.runtime.virtual(root)
     if not os.path.exists(venv_path):
-        baw.utils.log(f'venv environment does not exist {venv_path}')
+        baw.log(f'venv environment does not exist {venv_path}')
         return
-    baw.utils.log(f'clean venv: {venv_path}')
+    baw.log(f'clean venv: {venv_path}')
     try:
         shutil.rmtree(venv_path)
     except OSError as fail:
-        baw.utils.error(fail)
+        baw.error(fail)
         sys.exit(baw.FAILURE)
-    baw.utils.log('done')
+    baw.log('done')
 
 
 def remove_readonly(func, path, _):  # pylint:disable=W0613

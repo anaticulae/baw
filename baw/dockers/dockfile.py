@@ -21,9 +21,9 @@ import baw.utils
 def build(dockerfile: str, tagname: str) -> int:
     image = parse_baseimage(dockerfile)
     if baw.dockers.image.check_baseimage(image):
-        baw.utils.error(f'could not find baseimage {image} in {dockerfile}')
-        baw.utils.error(parse_baseimage(dockerfile))
-        baw.utils.error(baw.utils.file_read(dockerfile))
+        baw.error(f'could not find baseimage {image} in {dockerfile}')
+        baw.error(parse_baseimage(dockerfile))
+        baw.error(baw.utils.file_read(dockerfile))
         sys.exit(baw.FAILURE)
     path = os.path.split(dockerfile)[0]
     try:
@@ -43,7 +43,7 @@ def build(dockerfile: str, tagname: str) -> int:
 def log_error(error):
     for line in error.build_log:
         try:
-            baw.utils.error(line['stream'].rstrip())
+            baw.error(line['stream'].rstrip())
         except KeyError:
             pass
 
@@ -52,7 +52,7 @@ def log_service(done):
     done = done[1]
     for line in done:
         try:
-            baw.utils.log(line['stream'], end='')
+            baw.log(line['stream'], end='')
         except KeyError:
             pass
 
@@ -89,7 +89,7 @@ def docker_image_upgrade(
     content = baw.utils.file_read(path)
     parsed = IMAGE.findall(content)
     if not parsed:
-        baw.utils.error(f'could not parse: {path}')
+        baw.error(f'could not parse: {path}')
         return None
     result = content
     for find in parsed:
@@ -104,7 +104,7 @@ def docker_image_upgrade(
             prerelease=prerelease,
         )
         if not maxed:
-            baw.utils.error(f'could not upgrade docker image: {matched}')
+            baw.error(f'could not upgrade docker image: {matched}')
             sys.exit(baw.FAILURE)
         version_new = f'{matched}:{maxed[0]}'
         result = result.replace(find[1], version_new, 1)

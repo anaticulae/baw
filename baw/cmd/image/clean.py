@@ -23,9 +23,9 @@ def images() -> int:
             delete |= imagename.startswith('tmp_')
             if not delete:
                 continue
-            baw.utils.log(f'try to remove: {image.id}')
+            baw.log(f'try to remove: {image.id}')
             try:
                 image.remove(force=True)
             except docker.errors.APIError:
-                baw.utils.error(f'could not remove {image.id}')
+                baw.error(f'could not remove {image.id}')
     return baw.SUCCESS

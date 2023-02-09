@@ -19,12 +19,12 @@ def run():
         sys.exit(baw.dockers.switch_docker())
     except KeyboardInterrupt:
         import baw.utils
-        baw.utils.log('\nOperation cancelled by user')
+        baw.log('\nOperation cancelled by user')
     except Exception as msg:  # pylint: disable=broad-except
         import baw.utils
-        baw.utils.error(msg)
+        baw.error(msg)
         stack_trace = traceback.format_exc()
-        baw.utils.log(baw.utils.forward_slash(stack_trace))
+        baw.log(baw.utils.forward_slash(stack_trace))
     sys.exit(baw.FAILURE)
 
 

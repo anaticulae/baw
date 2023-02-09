@@ -53,7 +53,7 @@ def sync(
     """
     baw.utils.check_root(root)
     ret = 0
-    baw.utils.log()
+    baw.log()
     ret += baw.git.update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
     if venv == 'BOTH':
@@ -104,12 +104,12 @@ def check_dependency(
             # Package not available
             continue
         if completed.returncode == 2:
-            baw.utils.error(f'not reachable: {index} for package {package}')
-            baw.utils.error(completed.stderr)
+            baw.error(f'not reachable: {index} for package {package}')
+            baw.error(completed.stderr)
             sys.exit(completed.returncode)
             continue
         if completed.returncode and completed.stderr:
-            baw.utils.error(completed.stderr)
+            baw.error(completed.stderr)
         if completed.stdout:
             if f'{package} ' not in completed.stdout:
                 # nltk (3.5)  - 3.5
@@ -139,11 +139,11 @@ def sync_dependencies(  # pylint:disable=R1260
     venv: bool = False,
 ) -> int:
     baw.utils.check_root(root)
-    baw.utils.log('sync venv' if venv else 'sync local')
+    baw.log('sync venv' if venv else 'sync local')
     resources = determine_resources(root, packages)
     pip_index, extra_url = baw.config.package_address()
     if not connected(pip_index, extra_url):
-        baw.utils.error('could not reach package index')
+        baw.error('could not reach package index')
         return baw.FAILURE
     required = required_installation(
         root,
@@ -154,7 +154,7 @@ def sync_dependencies(  # pylint:disable=R1260
     )
     if not required.equal and not required.greater:
         return baw.SUCCESS
-    baw.utils.log(f'\nrequire update:\n{required}')
+    baw.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()
     baw.utils.file_replace(requirements, str(required))
@@ -165,7 +165,7 @@ def sync_dependencies(  # pylint:disable=R1260
         verbose=verbose,
     )
     if verbose:
-        baw.utils.log(cmd)
+        baw.log(cmd)
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -180,17 +180,17 @@ def sync_dependencies(  # pylint:disable=R1260
 
 def eval_sync(pip, completed, *, verbose: bool) -> int:
     if 'NewConnectionError' in completed.stdout:
-        baw.utils.error(f'Could not reach server: {pip}')
+        baw.error(f'Could not reach server: {pip}')
         return completed.returncode
     if completed.stdout:
         for message in completed.stdout.splitlines():
             if should_skip(message, verbose=verbose):
                 continue
             if verbose:
-                baw.utils.log(message)
+                baw.log(message)
     if completed.returncode and completed.stderr:
-        baw.utils.error(completed.stderr)
-    baw.utils.log()
+        baw.error(completed.stderr)
+    baw.log()
     return completed.returncode
 
 
@@ -223,7 +223,7 @@ def required_installation(
             # remove duplicated requirement out of `equal requirement`
             result.equal.pop(key)
             continue
-        baw.utils.log(f'duplicated requirement: {key}')
+        baw.log(f'duplicated requirement: {key}')
     return result
 
 
@@ -332,7 +332,7 @@ def pip_list(
     python = baw.config.python(root, venv=venv)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
-        baw.utils.log(cmd)
+        baw.log(cmd)
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -341,8 +341,8 @@ def pip_list(
         venv=venv,
     )
     if completed.returncode and completed.stderr:
-        baw.utils.error(f'{cmd}, {verbose}, {venv}')
-        baw.utils.error(completed.stderr)
+        baw.error(f'{cmd}, {verbose}, {venv}')
+        baw.error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
     parsed = baw.requirements.parser.parse(content)
@@ -368,13 +368,13 @@ def connected(internal: str, external: str) -> bool:
                 response.read()
         except urllib.request.URLError:
             result = False
-            baw.utils.error(f'Could not reach: {item}')
+            baw.error(f'Could not reach: {item}')
     return result
 
 
 def should_skip(msg: str, verbose: bool = False):
     if not verbose and 'Requirement already' in msg:
-        baw.utils.log('.', end='')
+        baw.log('.', end='')
         return True
     return False
 

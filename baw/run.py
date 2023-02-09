@@ -64,7 +64,7 @@ def run_version(args) -> bool:
         live = importlib.metadata.version('baw')
     except importlib.metadata.PackageNotFoundError as notfound:
         raise ValueError('baw not installed/no metadata') from notfound
-    baw.utils.log(live)
+    baw.log(live)
     return True
 
 

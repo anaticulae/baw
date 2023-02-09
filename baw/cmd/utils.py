@@ -48,6 +48,6 @@ def setup_environment(raw, venv):  # pylint: disable=W0621
 def determine_root(directory):
     root = baw.project.determine_root(directory)
     if not root:
-        baw.utils.error(f'require .baw file: {directory}')
+        baw.error(f'require .baw file: {directory}')
         return None
     return root

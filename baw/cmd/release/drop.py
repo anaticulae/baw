@@ -30,17 +30,17 @@ def run(
     3. Checkout CHANGELOG and __init__.py
     4. Remove tag
     """
-    baw.utils.log('Start dropping release')
+    baw.log('Start dropping release')
     if not can_drop(root, venv, verbose):
         return baw.FAILURE
     current_release = baw.git.headtag(root, venv, verbose)
-    baw.utils.log(current_release)
+    baw.log(current_release)
     # remove the last release commit
     # git reset HEAD~1
-    baw.utils.log('Remove last commit')
+    baw.log('Remove last commit')
     completed = baw.runtime.run_target(root, 'git reset HEAD~1')
     if completed.returncode:
-        baw.utils.error(f'while removing the last commit: {completed}')
+        baw.error(f'while removing the last commit: {completed}')
         return completed.returncode
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
     completed = reset_resources(root, venv=venv, verbose=verbose)
@@ -54,17 +54,17 @@ def run(
 
 
 def can_drop(root: str, venv: bool, verbose: bool) -> bool:
-    baw.utils.log('Detect current release:')
+    baw.log('Detect current release:')
     if not (headtag := baw.git.headtag(root, venv, verbose)):
-        baw.utils.error('No tag detected')
+        baw.error('No tag detected')
         return False
     matched = RELEASE_PATTERN.match(headtag)
     if not matched:
-        baw.utils.error(f'No release tag detected: {headtag}')
+        baw.error(f'No release tag detected: {headtag}')
         return False
     default_release = baw.cmd.release.FIRST_RELEASE
     if headtag == default_release:
-        baw.utils.error(f'Could not remove {default_release} release')
+        baw.error(f'Could not remove {default_release} release')
         return False
     return True
 
@@ -82,7 +82,7 @@ def reset_resources(
     for item in [initpath, changelog]:
         if not os.path.exists(os.path.join(root, item)):
             msg = f'Item {item} does not exists'
-            baw.utils.error(msg)
+            baw.error(msg)
             returncode += 1
             continue
         to_reset.append(item)

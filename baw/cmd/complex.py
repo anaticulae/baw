@@ -35,7 +35,7 @@ def sync_and_test(
             venv=venv,
         )
         if ret:
-            baw.utils.error('\nSync failed, could not release.\n')
+            baw.error('\nSync failed, could not release.\n')
             return ret
     if not test:
         return baw.SUCCESS
@@ -52,6 +52,6 @@ def sync_and_test(
     )
     if ret:
         if not quiet:
-            baw.utils.error('Tests failed.')
+            baw.error('Tests failed.')
         return ret
     return baw.SUCCESS

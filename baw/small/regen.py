@@ -47,18 +47,18 @@ def run(root, cmd, worker: int = 1):
 
 def single(cmd, cwd, progress: str):
     logmsg = f'"{progress} {cmd}" in {cwd}'
-    baw.utils.log(logmsg)
+    baw.log(logmsg)
     completed = baw.runtime.run(cmd=cmd, cwd=cwd)
     append_log(completed=completed, cwd=cwd)
     if not completed.returncode:
         return
-    baw.utils.error(f'{logmsg}\n{completed.stderr}\n{completed.stdout}')
+    baw.error(f'{logmsg}\n{completed.stderr}\n{completed.stdout}')
 
 
 def append_log(completed, cwd: str):
     logpath = os.path.join(cwd, 'generated.log')
     if not os.path.exists(logpath):
-        baw.utils.error(f'miss log path: {logpath}')
+        baw.error(f'miss log path: {logpath}')
         return
     separator = '\n\n' + '=' * 30 + 'REGENREGENREGENREGEN' + '=' * 30 + '\n\n'
     baw.utils.file_append(logpath, separator)

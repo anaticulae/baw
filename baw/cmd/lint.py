@@ -52,8 +52,8 @@ def run_linter(root: str, verbose: bool, venv: bool) -> int:
             venv=venv,
             log_always=False,
     ):
-        baw.utils.error('could not release, solve this errors first.')
-        baw.utils.error('turn `fail_on_finding` off to release with errors')
+        baw.error('could not release, solve this errors first.')
+        baw.error('turn `fail_on_finding` off to release with errors')
         return returncode
     return baw.SUCCESS
 
@@ -145,7 +145,7 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     if completed.returncode:
         baw.completed(completed)
     elif log_always:
-        baw.utils.log('pylint complete')
+        baw.log('pylint complete')
     return completed.returncode
 
 
@@ -165,7 +165,7 @@ def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
     if completed.returncode:
         baw.completed(completed)
     elif log_always:
-        baw.utils.log('bandit complete')
+        baw.log('bandit complete')
     return completed.returncode
 
 

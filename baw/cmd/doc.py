@@ -32,7 +32,7 @@ def doc(root: str, venv: bool = False, verbose: bool = False) -> int:
     """
     if not is_sphinx_installed(root=root, venv=venv):
         msg = 'sphinx is not installed, run baw sync=all --venv'
-        baw.utils.error(msg)
+        baw.error(msg)
         return baw.FAILURE
     if returnvalue := generate_docs(root, verbose, venv):
         return returnvalue
@@ -58,9 +58,9 @@ def generate_docs(root: str, verbose: bool, venv: bool) -> int:
     configuration = '-d 10 -M -f -e'
     cmd = 'sphinx-apidoc %s -o %s %s %s'
     cmd = cmd % (configuration, doctmp, sources, ignore)
-    baw.utils.log('generate docs')
+    baw.log('generate docs')
     if verbose:
-        baw.utils.log(cmd)
+        baw.log(cmd)
     completed = baw.runtime.run_target(
         root,
         cmd=cmd,
@@ -75,7 +75,7 @@ def generate_docs(root: str, verbose: bool, venv: bool) -> int:
     baw.utils.file_replace(path, replaced)
     doctmp = baw.config.docpath(root)
     # copy docs
-    baw.utils.log('sync docs')
+    baw.log('sync docs')
     source = os.path.join(root, 'docs')
     shutil.copytree(source, doctmp, dirs_exist_ok=True)
     for filename in 'CHANGELOG.md CHANGELOG'.split():
@@ -107,9 +107,9 @@ def build_html(root: str, verbose: bool, venv: bool) -> int:
     doctmp = baw.config.docpath(root)
     htmloutput = os.path.join(doctmp, 'html')
     cmd = f'sphinx-build {doctmp} {htmloutput} {build_options}'
-    baw.utils.log('make html')
+    baw.log('make html')
     if verbose:
-        baw.utils.log(cmd)
+        baw.log(cmd)
     result = baw.runtime.run_target(
         root,
         cmd=cmd,

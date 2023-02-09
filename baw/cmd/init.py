@@ -68,7 +68,7 @@ def init(
     """
     baw_path = os.path.join(root, baw.utils.BAW_EXT)
     if os.path.exists(baw_path):
-        baw.utils.error(f'Project {baw_path} already exists.')
+        baw.error(f'Project {baw_path} already exists.')
         raise ValueError(baw.FAILURE)
     if not baw.runtime.installed('semantic-release', root):
         return baw.FAILURE
@@ -81,7 +81,7 @@ def init(
     create_files(root)
     create_requirements(root)
     baw.git.update_gitignore(root)
-    baw.utils.log()  # write newline
+    baw.log()  # write newline
     if formatter:
         # TODO: EXPOSE FORMATTER BY CLI FLAG
         completed = baw.cmd.format.format_repository(
@@ -141,7 +141,7 @@ def create_folder(root: str):
         if os.path.exists(create):
             continue
         os.makedirs(create)
-        baw.utils.log(f'create folder {item}')
+        baw.log(f'create folder {item}')
 
 
 def create_files(root: str):
@@ -157,7 +157,7 @@ def create_files(root: str):
         if os.path.exists(create):
             baw.utils.skip(f'{operation_type} {item}')
             continue
-        baw.utils.log(f'{operation_type} {item}')
+        baw.log(f'{operation_type} {item}')
         parent = os.path.dirname(create)
         os.makedirs(parent, exist_ok=True)
         baw.utils.file_create(create, content=replaced)
@@ -222,7 +222,7 @@ def create_python(
 
 
 def create_requirements(root: str):
-    baw.utils.log('add requirements')
+    baw.log('add requirements')
     content = ''
     for item in ADDITONAL_REQUIREMENTS:
         content += item + baw.utils.NEWLINE

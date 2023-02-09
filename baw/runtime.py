@@ -26,17 +26,17 @@ NO_EXECUTABLE = 127
 def destroy(path: str):
     """Remove venv path recursive if path exists, do nothing."""
     if not os.path.exists(path):
-        baw.utils.log(f'Nothing to clean, path does not exists {path}')
+        baw.log(f'Nothing to clean, path does not exists {path}')
         return True
-    baw.utils.log(f'Removing venv environment {path}')
+    baw.log(f'Removing venv environment {path}')
     try:
         shutil.rmtree(path)
     except PermissionError as fail:
         # This error occurs, if an ide e.g. vscode uses the venv environment
         # so removing .venv folder is not possible.
-        baw.utils.error(fail)
+        baw.error(fail)
         msg = f'Could not remove {path}. Path is locked by an other application.'
-        baw.utils.error(msg)
+        baw.error(msg)
         return False
     return True
 
@@ -51,7 +51,7 @@ def virtual(root: str, creates: bool = True) -> str:
         return venv
     outdated = os.path.join(root, VENV_FOLDER)
     if os.path.exists(outdated):
-        baw.utils.error(f'use outdated venv: {outdated}')
+        baw.error(f'use outdated venv: {outdated}')
         return outdated
     if creates:
         os.makedirs(venv, exist_ok=True)
@@ -80,11 +80,11 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
     """
     venv = virtual(root)
     if not os.path.exists(venv):
-        baw.utils.log(f'create venv: {venv}')
+        baw.log(f'create venv: {venv}')
         os.makedirs(venv, exist_ok=True)
     if os.path.exists(venv) and list(os.scandir(venv)):
         if verbose:
-            baw.utils.log(f'venv: {venv}')
+            baw.log(f'venv: {venv}')
         return baw.SUCCESS
     python = baw.config.python(root, venv=False)
     # use system site packages in docker env
@@ -93,7 +93,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
     if clean:
         cmd = f'{cmd} --clear'
     if verbose:
-        baw.utils.log(f'{cmd} in {venv}')
+        baw.log(f'{cmd} in {venv}')
     process = run(cmd=cmd, cwd=venv)
     if iswin():
         patch_pip(root, verbose=verbose)
@@ -101,15 +101,15 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
             # python 3.7
             patch_env(root)
     if process.returncode:
-        baw.utils.error(cmd)
-        baw.utils.error('While creating virtual environment:')
-        baw.utils.log(process.stdout)
-        baw.utils.error(process.stderr)
+        baw.error(cmd)
+        baw.error('While creating virtual environment:')
+        baw.log(process.stdout)
+        baw.error(process.stderr)
         return baw.FAILURE
     if verbose:
-        baw.utils.log(process.stdout)
+        baw.log(process.stdout)
         if process.stderr:
-            baw.utils.error(process.stderr)
+            baw.error(process.stderr)
     return baw.SUCCESS
 
 
@@ -121,7 +121,7 @@ def patch_pip(root, verbose: bool = False):
     TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
     """
     if verbose:
-        baw.utils.log(f'Patching the wheel: {root}')
+        baw.log(f'Patching the wheel: {root}')
     to_patch = os.path.join(
         virtual(root),
         'Lib/site-packages/pip/_internal/wheel.py',
@@ -185,10 +185,10 @@ def run_target(
             skip_error_message,
         )
     except ValueError as fail:
-        baw.utils.error(fail)
+        baw.error(fail)
         return baw.FAILURE
     if verbose:
-        baw.utils.log(cmd)
+        baw.log(cmd)
     if venv:
         try:
             completed = _run_venv(
@@ -273,15 +273,15 @@ def log_result(  # pylint:disable=R1260,R0912
     reporting = returncode and (returncode not in skip_error_code)
     if reporting:
         msg = f'Completed: `{cmd}` in `{cwd}` returncode: {returncode}\n'
-        baw.utils.error(msg)
+        baw.error(msg)
     if completed.stdout and verbose:
-        baw.utils.log(completed.stdout)
+        baw.log(completed.stdout)
     if verbose:
         if not reporting:
             # Inform, not writing to stderr
-            baw.utils.log(f'Completed: `{cmd}` in `{cwd}`\n')
+            baw.log(f'Completed: `{cmd}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
-            baw.utils.log(f'Env: {os.environ}')
+            baw.log(f'Env: {os.environ}')
     error_message = completed.stderr
     # catch stderr is None when running baw --test=pdb because the std-out/err
     # is None
@@ -290,7 +290,7 @@ def log_result(  # pylint:disable=R1260,R0912
     for remove_skip in skip_error_message:
         error_message = error_message.replace(remove_skip, '')
     if reporting and error_message.strip():
-        baw.utils.error(error_message.strip())
+        baw.error(error_message.strip())
     if verbose:
         baw.completed(completed)
         if start is not None:
@@ -398,10 +398,10 @@ def runs(
         for future in concurrent.futures.as_completed(waitfor):
             completed = future.result()
             if completed.returncode:
-                baw.utils.error(f'error: {completed.stderr}')
+                baw.error(f'error: {completed.stderr}')
                 return baw.FAILURE
     if verbose:
-        baw.utils.log(f'{cmds}: complete\n')
+        baw.log(f'{cmds}: complete\n')
     return baw.SUCCESS
 
 
@@ -414,10 +414,10 @@ def installed(program: str, root: str, venv: bool = False):
     )
     if done.returncode == baw.SUCCESS:
         return True
-    baw.utils.error(f'not installed: {program}')
-    baw.utils.error(f'venv: {venv}')
-    baw.utils.error(f'python: {sys.executable}')
-    baw.utils.error(f'path: {" ".join(sys.path)}')
+    baw.error(f'not installed: {program}')
+    baw.error(f'venv: {venv}')
+    baw.error(f'python: {sys.executable}')
+    baw.error(f'path: {" ".join(sys.path)}')
     return False
 
 

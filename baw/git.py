@@ -147,7 +147,7 @@ def reset(
     )
     if completed.returncode:
         msg = f'while checkout out {to_reset}\n{completed}'
-        baw.utils.error(msg)
+        baw.error(msg)
     return completed.returncode
 
 
@@ -167,7 +167,7 @@ def checkout(
     completed = baw.runtime.run(cmd, cwd=root)
     if completed.returncode:
         msg = f'while checkout {branch}'
-        baw.utils.error(msg)
+        baw.error(msg)
     return completed.returncode
 
 
@@ -194,7 +194,7 @@ def tag_drop(
         verbose=verbose,
     )
     if completed.returncode:
-        baw.utils.error(f'while remove tag: {completed}')
+        baw.error(f'while remove tag: {completed}')
         return False
     return True
 
@@ -266,7 +266,7 @@ def stash_pop(root: str, venv: bool, verbose: bool = False) -> int:
         venv=venv,
     )
     if completed.returncode:
-        baw.utils.error(completed.stderr)
+        baw.error(completed.stderr)
     return completed.returncode
 
 
@@ -319,7 +319,7 @@ def is_modified(root: str) -> bool:
 
 def describe(root: str) -> str:
     if not installed():
-        baw.utils.error('install git')
+        baw.error('install git')
         sys.exit(baw.FAILURE)
     completed = baw.runtime.run('git describe', cwd=root)
     if completed.returncode:
@@ -336,7 +336,7 @@ def branchname(root: str) -> str:
     '...'
     """
     if not installed():
-        baw.utils.error('install git')
+        baw.error('install git')
         sys.exit(baw.FAILURE)
     branches = baw.runtime.run('git branch', cwd=root).stdout.strip()
     branches = [item for item in branches.splitlines() if item.startswith('*')]
@@ -409,7 +409,7 @@ def ensure_git(error: str = None):
     if baw.runtime.hasprog('git'):
         return
     if error:
-        baw.utils.error(f'git is not installed: {error}')
+        baw.error(f'git is not installed: {error}')
     else:
-        baw.utils.error('git is not installed')
+        baw.error('git is not installed')
     sys.exit(baw.FAILURE)

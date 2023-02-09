@@ -31,12 +31,12 @@ def tags(matched: str) -> list:
 
 
 def exists(name: str) -> int:
-    baw.utils.log(f'check: {name}')
+    baw.log(f'check: {name}')
     if check_baseimage(name):
-        baw.utils.error(f'could not find image: {name}')
+        baw.error(f'could not find image: {name}')
         sys.exit(baw.FAILURE)
         return baw.FAILURE
-    baw.utils.log('OK')
+    baw.log('OK')
     return baw.SUCCESS
 
 

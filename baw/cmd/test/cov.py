@@ -37,7 +37,7 @@ def cov_args(
     assert os.path.exists(cov_config), str(cov_config)
     no_cov = '--no-cov ' if pdb else ''
     if no_cov:
-        baw.utils.log('Disable coverage report')
+        baw.log('Disable coverage report')
     min_cov = baw.config.coverage_min(root)
     cov_sources = collect_cov_sources(root)
     cov = (f'-p pytest_cov --cov-config={cov_config} {cov_sources} '

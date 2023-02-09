@@ -55,7 +55,7 @@ def docker_image(root: str) -> str:
     """
     path = jenkinsfile(root)
     if not os.path.exists(path):
-        baw.utils.error(f'require Jenkinsfile in {root}')
+        baw.error(f'require Jenkinsfile in {root}')
         sys.exit(baw.FAILURE)
     jenkins = baw.utils.file_read(path)
     parsed = IMAGE.search(jenkins)
@@ -75,7 +75,7 @@ def docker_env(root: str) -> dict:
     """
     path = jenkinsfile(root)
     if not os.path.exists(path):
-        baw.utils.error(f'require Jenkinsfile in {root}')
+        baw.error(f'require Jenkinsfile in {root}')
         sys.exit(baw.FAILURE)
     jenkins = baw.utils.file_read(path)
     parsed = ENVIRONMENT.search(jenkins)
@@ -92,7 +92,7 @@ def docker_env(root: str) -> dict:
         try:
             value, var = line.split('=', maxsplit=1)
         except ValueError:
-            baw.utils.error(f'could not parse: {line}')
+            baw.error(f'could not parse: {line}')
             continue
         result[value.strip()] = var.strip("' ")
     return result
@@ -115,20 +115,20 @@ LIBRARY_END = "') _"
 def library(root: str, verbose: False):
     path = jenkinsfile(root)
     if not os.path.exists(path):
-        baw.utils.error(f'could not find Jenkinsfile: {path}')
+        baw.error(f'could not find Jenkinsfile: {path}')
         return baw.FAILURE
     current = baw.utils.file_read(path)
     newest = library_newest(verbose=verbose)
     if newest in current:
-        baw.utils.error(f'already newst caelum: {newest}')
+        baw.error(f'already newst caelum: {newest}')
         return baw.FAILURE
     init_lib = LIBRARY[0:16] not in current
     header = f'{LIBRARY}{newest}{LIBRARY_END}\n\n'
     if init_lib:
-        baw.utils.log(f'caelum library: init {newest}')
+        baw.log(f'caelum library: init {newest}')
         current = header + current
     else:
-        baw.utils.log(f'caelum library: upgrade {newest}')
+        baw.log(f'caelum library: upgrade {newest}')
         # remove old library
         _, current = current.split(LIBRARY_END, 1)
         # append new library
@@ -179,10 +179,10 @@ def library_newest(  # pylint:disable=W0613
     url = f'{base}/api/v1/repos/{user}/{repo}/tags'
     cmd = f'curl {url}'
     if verbose:
-        baw.utils.log(cmd)
+        baw.log(cmd)
     completed = baw.runtime.run(cmd=cmd, cwd=os.getcwd())
     if completed.returncode:
-        baw.utils.error(completed)
+        baw.error(completed)
         sys.exit(completed.returncode)
     stdout = completed.stdout
     data = json.loads(stdout)

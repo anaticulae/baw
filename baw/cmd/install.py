@@ -47,10 +47,10 @@ def install(
         venv=venv,
     )
     if completed.returncode:
-        baw.utils.log(completed.stdout)
-        baw.utils.error(completed.stderr)
+        baw.log(completed.stdout)
+        baw.error(completed.stderr)
     if not verbose:
-        baw.utils.log('done')
+        baw.log('done')
     return completed.returncode
 
 

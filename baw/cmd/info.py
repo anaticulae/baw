@@ -45,45 +45,45 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
         print_covreport(root)
         return baw.SUCCESS
     if value == 'requirement':
-        baw.utils.log(requirement_hash(
+        baw.log(requirement_hash(
             root,
             verbose=verbose,
         ))
         return baw.SUCCESS
     if value == 'name':
-        baw.utils.log(baw.config.name(root))
+        baw.log(baw.config.name(root))
         return baw.SUCCESS
     if value == 'shortcut':
-        baw.utils.log(baw.config.shortcut(root))
+        baw.log(baw.config.shortcut(root))
         return baw.SUCCESS
     if value == 'sources':
-        baw.utils.log(' '.join(baw.config.sources(root) + ['tests']))
+        baw.log(' '.join(baw.config.sources(root) + ['tests']))
         return baw.SUCCESS
     if value == 'pip':
-        baw.utils.log(pip_version(root, verbose=verbose))
+        baw.log(pip_version(root, verbose=verbose))
         return baw.SUCCESS
     if value == 'image':
-        baw.utils.log(baw.cmd.image.tag(root))
+        baw.log(baw.cmd.image.tag(root))
         return baw.SUCCESS
     if value == 'describe':
-        baw.utils.log(baw.git.describe(root))
+        baw.log(baw.git.describe(root))
         return baw.SUCCESS
     if value == 'stable':
-        baw.utils.log(baw.project.version.determine(root, verbose=verbose))
+        baw.log(baw.project.version.determine(root, verbose=verbose))
         return baw.SUCCESS
     if value == 'branch':
-        baw.utils.log(baw.git.branchname(root))
+        baw.log(baw.git.branchname(root))
         return baw.SUCCESS
     if value == 'cov':
         print_cov()
         return baw.SUCCESS
     if value == 'clean':
         if baw.git.is_clean(root, verbose=False):
-            baw.utils.log('very clean')
+            baw.log('very clean')
             return baw.SUCCESS
-        baw.utils.log('not clean\n')
+        baw.log('not clean\n')
         # log data
-        baw.utils.log(baw.runtime.run('git status', root).stdout)
+        baw.log(baw.runtime.run('git status', root).stdout)
         return baw.FAILURE
     return baw.FAILURE
 
@@ -94,7 +94,7 @@ def print_tmp(root: str):
         root = baw.project.determine_root(root)
         name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
-    baw.utils.log(tmpdir)
+    baw.log(tmpdir)
     sys.exit(baw.SUCCESS)
 
 
@@ -118,7 +118,7 @@ def print_venv(root: str):
         root,
         creates=False,
     )
-    baw.utils.log(tmpdir)
+    baw.log(tmpdir)
     sys.exit(baw.SUCCESS)
 
 
@@ -127,7 +127,7 @@ def print_covreport(root: str):
         baw.utils.tmp(root),
         'report',
     )
-    baw.utils.log(result)
+    baw.log(result)
     sys.exit(baw.SUCCESS)
 
 
@@ -142,7 +142,7 @@ def print_cov() -> int:
     if not coverage:
         sys.exit(baw.FAILURE)
     result = float(coverage['coverage'])
-    baw.utils.log(result)
+    baw.log(result)
     sys.exit(baw.SUCCESS)
 
 

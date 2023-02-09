@@ -87,7 +87,7 @@ def require_release(root, venv):
     if current_head.isnumeric():
         # may a year: 2022
         return baw.SUCCESS
-    baw.utils.log(f'No release is required, head is already: {current_head}')
+    baw.log(f'No release is required, head is already: {current_head}')
     return baw.FAILURE
 
 
@@ -96,7 +96,7 @@ def check_repository(root, require_clean: bool):
         return baw.SUCCESS
     # do not release modified repository
     if baw.git.is_modified(root=root):
-        baw.utils.error('repository is not clean')
+        baw.error('repository is not clean')
         return baw.FAILURE
     return baw.SUCCESS
 
@@ -129,7 +129,7 @@ def run_test(
             venv=venv,
         )
         return returncode
-    baw.utils.log('release was already tested successfully')
+    baw.log('release was already tested successfully')
     return baw.SUCCESS
 
 
@@ -143,7 +143,7 @@ def run(args: dict) -> int:
     no_linter = args.get('no_linter', False)
     sync = not args.get('no_sync', False)
     if novenv:
-        baw.utils.log('do not use venv')
+        baw.log('do not use venv')
         venv = False
     if not baw.runtime.installed('semantic-release', root, venv=venv):
         return baw.FAILURE

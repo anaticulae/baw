@@ -49,7 +49,7 @@ def sources(root: str):
 
 
 def format_source(root: str, verbose: bool = False, venv: bool = False) -> int:  # pylint:disable=W0613
-    baw.utils.log('format source')
+    baw.log('format source')
     if not baw.runtime.installed('yapf', root=root, venv=venv):
         return baw.FAILURE
     yapf = '-i --style=google --no-local-style'
@@ -109,7 +109,7 @@ def format_(
     verbose: bool = False,
     venv: bool = False,
 ):
-    baw.utils.log(info)
+    baw.log(info)
     folder = baw.config.sources(root)
     # check that `tests` path exists
     testpath = os.path.join(root, 'tests')
@@ -132,9 +132,9 @@ def format_(
         for future in concurrent.futures.as_completed(waitfor):
             completed = future.result()
             if completed.returncode:
-                baw.utils.error(f'error while formatting {completed.stderr}')
+                baw.error(f'error while formatting {completed.stderr}')
                 return baw.FAILURE
-    baw.utils.log(f'{info}: complete\n')
+    baw.log(f'{info}: complete\n')
     return baw.SUCCESS
 
 
