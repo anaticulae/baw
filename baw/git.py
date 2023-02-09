@@ -14,6 +14,7 @@ import subprocess
 import sys
 
 import baw
+import baw.config
 import baw.resources
 import baw.runtime
 import baw.utils
@@ -368,6 +369,22 @@ def update_userdata(username='supermario', email='test@test.com'):
         capture_output=True,
     )
     evaluate_git_error(process)
+
+
+def tokenizes(root: str) -> str:
+    """\
+    >>> tokenizes(baw.project.determine_root(__file__))
+    'http://.../baw.git'
+    """
+    token = baw.config.gitea_token()
+    domain = baw.config.gitea_server()
+    if token:
+        token += '@'
+    owner = 'caelum'
+    name = baw.config.shortcut(root)
+    protocol = 'http://'
+    result = f'{protocol}{token}{domain}/{owner}/{name}.git'  # TODO: ENABLE LATER
+    return result
 
 
 def evaluate_git_error(process: subprocess.CompletedProcess):
