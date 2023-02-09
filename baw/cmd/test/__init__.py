@@ -12,7 +12,7 @@ import shutil
 import sys
 
 import baw.archive.test
-import baw.cmd.test.baseline
+import baw.cmd.baseline
 import baw.cmd.test.cov
 import baw.cmd.utils
 import baw.config
@@ -71,7 +71,7 @@ def run_test(  # pylint:disable=R0914,R1260
         returncode(int): 0 if successful else > 0
     """
     if baseline:
-        baw.cmd.test.baseline.pre(root)
+        baw.cmd.baseline.pre(root)
         alls = True
     if not any((generate, nightly, longrun, fast, docs, alls)):
         baw.utils.log('skip tests...')
@@ -133,7 +133,7 @@ def run_test(  # pylint:disable=R0914,R1260
         # override pytest error code
         return baw.utils.SUCCESS
     if baseline:
-        if baw.cmd.test.baseline.commit(root):
+        if baw.cmd.baseline.commit(root):
             return baw.FAILURE
         return baw.SUCCESS
     return completed.returncode
