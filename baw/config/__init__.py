@@ -78,6 +78,8 @@ def venv_always() -> bool:
 
 def gitea_server() -> str:
     """\
+    For example: 169.254.149.20:6300
+
     >>> gitea_server()
     '...'
     """
