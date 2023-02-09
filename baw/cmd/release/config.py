@@ -94,7 +94,7 @@ class ReleaseConfig:
             self.commit_message,
             '',
         )
-        result = baw.utils.NEWLINE.join(todo)
+        result = baw.NEWLINE.join(todo)
         return result
 
 

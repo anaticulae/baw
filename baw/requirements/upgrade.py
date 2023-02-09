@@ -52,7 +52,7 @@ def smart_replace(requirements: str, old: str, new: str):
         line if not line_match(line, old) else line.replace(old, new)
         for line in requirements.splitlines()
     ]
-    result = baw.utils.NEWLINE.join(result) + baw.utils.NEWLINE
+    result = baw.NEWLINE.join(result) + baw.NEWLINE
     assert requirements != result, f'replacement does not work: {old}; {new}; {requirements}'
     return result
 

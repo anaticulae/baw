@@ -28,7 +28,7 @@ def generate(root: str, inject: bool = False, install: bool = False):
     # at linux, parameter delete is missing.
     config = os.path.join(root, name)
     content = header(root)
-    content += baw.utils.NEWLINE * 2
+    content += baw.NEWLINE * 2
     content += environments(root)
     content += requirements(root)
     content += SYNC
@@ -77,7 +77,7 @@ def requirements(root: str) -> str:
         path = os.path.join(root, item)
         if not os.path.exists(path):
             continue
-        result += f'COPY {item} /var/workdir/{item}{baw.utils.NEWLINE}'
+        result += f'COPY {item} /var/workdir/{item}{baw.NEWLINE}'
     return result
 
 
@@ -108,9 +108,9 @@ def resources(root: str) -> str:
         if not os.path.exists(path):
             continue
         if os.path.isfile(path):
-            result += f'COPY {item} /var/workdir/{item}{baw.utils.NEWLINE}'
+            result += f'COPY {item} /var/workdir/{item}{baw.NEWLINE}'
         else:
-            result += f'COPY {item}/ /var/workdir/{item}/{baw.utils.NEWLINE}'
+            result += f'COPY {item}/ /var/workdir/{item}/{baw.NEWLINE}'
     result += GENERATE
     return result
 
@@ -129,7 +129,7 @@ def environments(root: str) -> str:
         return ''
     result = ''
     for key, value in env.items():
-        result += f'ENV {key}="{value}"{baw.utils.NEWLINE}'
+        result += f'ENV {key}="{value}"{baw.NEWLINE}'
     return result
 
 

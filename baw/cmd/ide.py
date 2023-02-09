@@ -76,7 +76,7 @@ def generate_workspace(root: str, packages: tuple = None):
                 baw.error(f'{path} does not exists')
                 continue
             folders.append('{ "name": "%s", "path" : "./%s",},' % (name, path))  # pylint:disable=C0209
-        folders: str = baw.utils.NEWLINE.join(folders)
+        folders: str = baw.NEWLINE.join(folders)
     # write template
     replaced = baw.resources.template_replace(
         root,

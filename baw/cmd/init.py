@@ -225,7 +225,7 @@ def create_requirements(root: str):
     baw.log('add requirements')
     content = ''
     for item in ADDITONAL_REQUIREMENTS:
-        content += item + baw.utils.NEWLINE
+        content += item + baw.NEWLINE
     baw.utils.file_append(
         os.path.join(root, baw.utils.REQUIREMENTS_TXT),
         content,

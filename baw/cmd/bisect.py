@@ -62,7 +62,7 @@ def bisect(
     )
 
     important = collect_findings(completed.stdout)
-    baw.log(baw.utils.NEWLINE.join(important))
+    baw.log(baw.NEWLINE.join(important))
 
     # finish bisect
     baw.runtime.run_target(
