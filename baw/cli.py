@@ -22,7 +22,7 @@ import baw.cmd.image
 import baw.cmd.info
 import baw.cmd.install
 import baw.cmd.lint
-import baw.cmd.pipeline
+import baw.cmd.pipe
 import baw.cmd.publish
 import baw.cmd.rebase
 import baw.cmd.refactor
@@ -56,7 +56,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.test.extend_cli(cmds)
     baw.cmd.format.extend_cli(cmds)
     baw.cmd.lint.extend_cli(cmds)
-    baw.cmd.pipeline.extend_cli(cmds)
+    baw.cmd.pipe.extend_cli(cmds)
     baw.cmd.image.extend_cli(cmds)
     baw.cmd.refactor.extend_cli(cmds)
     add_shell_option(cmds)

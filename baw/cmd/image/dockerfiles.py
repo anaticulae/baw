@@ -12,7 +12,7 @@ import os
 import sys
 
 import baw.cmd.info
-import baw.cmd.pipeline
+import baw.cmd.pipe
 import baw.cmd.utils
 import baw.config
 import baw.pipelinefile
