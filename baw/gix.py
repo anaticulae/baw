@@ -383,7 +383,7 @@ def update_userdata(username='supermario', email='test@test.com'):
 
 def tokenizes(root: str, token: str = None) -> str:
     """\
-    >>> tokenizes(baw.project.determine_root(__file__), 'SECRET')
+    >>> tokenizes(baw.project.determine_root(__file__), 'UNSET')
     'http://.../baw.git'
     """
     token = token if token else baw.config.gitea_token()
