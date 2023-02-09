@@ -25,7 +25,7 @@ then
 fi
 
 echo "baw --docken baseline test -n ${WORKER}"
-baw --docken baseline test -n ${WORKER}
+baw --docken="GITEA_TOKEN=${GITEA_TOKEN}" baseline test -n ${WORKER}
 if [ $? -ne 0 ]
 then
     exit 1
