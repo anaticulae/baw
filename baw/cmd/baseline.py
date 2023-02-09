@@ -31,11 +31,13 @@ def commit(root: str, push: bool = True) -> int:
     if baw.gix.is_clean(root, verbose=False):
         baw.log('baseline: nothing changed')
         return baw.SUCCESS
+    baw.log('baseline: something changed')
     baw.git_add(
         root,
         'tests/**',
         update=True,
     )
+    baw.log('baseline: commit')
     returnvalue = baw.git_commit(
         root,
         source='',
@@ -44,6 +46,7 @@ def commit(root: str, push: bool = True) -> int:
     if returnvalue:
         return returnvalue
     if push:
+        baw.log('baseline: push')
         returnvalue = baw.gix.push(root)
     return returnvalue
 
@@ -52,6 +55,7 @@ def test(root, worker: int = 32):
     pre(root)
     testconfig = [f'-n={worker}']
     with enable_baseline():
+        baw.log('baseline: determining...')
         baw.cmd.test.run_test(
             root,
             testconfig=testconfig,
