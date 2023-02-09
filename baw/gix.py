@@ -380,12 +380,12 @@ def update_userdata(username='supermario', email='test@test.com'):
     evaluate_git_error(process)
 
 
-def tokenizes(root: str) -> str:
+def tokenizes(root: str, token: str = None) -> str:
     """\
-    >>> tokenizes(baw.project.determine_root(__file__))
+    >>> tokenizes(baw.project.determine_root(__file__), 'SECRET')
     'http://.../baw.git'
     """
-    token = baw.config.gitea_token()
+    token = token if token else baw.config.gitea_token()
     domain = baw.config.gitea_server()
     if token:
         token += '@'
