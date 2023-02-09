@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v1.69.0 (2023-02-09)
+
+### Feature
+
+* inject gitea token from env (834899d1ea83)
+* add option to pass env variables to docker container run (bba6d988e63b)
+* improve docker flag skipper (ca2ed9cf913d)
+* make docker switch more sophisticated (7da66b3a8dbd)
+* add image step to upgrade image (4cefea35d864)
+
+### Fix
+
+* use other testing password to ease debugging (6d08e085e690)
+* use WORKER ENV (febce560ca53)
+
+### Chore
+
+* upgrade Jenkinsfile (01f8b826dfaf)
+
 ## v1.68.0 (2023-02-09)
 
 ### Feature
