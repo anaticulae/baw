@@ -34,5 +34,6 @@ from baw.utils import error
 from baw.utils import exitx
 from baw.utils import file_append
 from baw.utils import file_create
+from baw.utils import forward_slash
 from baw.utils import log
 from baw.utils import tmpname
