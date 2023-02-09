@@ -7,6 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+import os
+
 import baw
 import baw.cmd.test
 import baw.gix
@@ -46,10 +49,20 @@ def commit(root: str, push: bool = True) -> int:
 
 def test(root):
     pre(root)
-    baw.cmd.test.run_test(root, alls=True)
+    with enable_baseline():
+        baw.cmd.test.run_test(root, alls=True)
     if commit(root):
         return baw.FAILURE
     return baw.SUCCESS
+
+
+@contextlib.contextmanager
+def enable_baseline():
+    baw.log('enable overwriting: BASELINE_REPLACE')
+    # TODO: REMOVE LATER
+    os.environ['DEV_GIT_REPLACE'] = "1"
+    os.environ['BASELINE_REPLACE'] = "1"
+    yield
 
 
 def run(args: dict):
