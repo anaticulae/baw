@@ -11,6 +11,7 @@
 import argparse
 import sys
 
+import baw.cmd.baseline
 import baw.cmd.clean
 import baw.cmd.cov
 import baw.cmd.doc
@@ -60,6 +61,7 @@ def create_parser():  # noqa: Z21
     baw.cmd.refactor.extend_cli(cmds)
     add_shell_option(cmds)
     add_plan_options(cmds)
+    baw.cmd.baseline.extend_cli(cmds)
     baw.cmd.cov.extend_cli(cmds)
     baw.cmd.release.extend_cli(cmds)
     baw.cmd.publish.extend_cli(cmds)
