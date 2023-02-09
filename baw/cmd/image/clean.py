@@ -9,9 +9,9 @@
 
 import docker.errors
 
+import baw
 import baw.cmd.image
 import baw.dockers
-import baw.utils
 
 
 def images() -> int:

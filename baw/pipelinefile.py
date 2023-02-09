@@ -140,7 +140,7 @@ def library(root: str, verbose: False):
     msg = 'chore(Jenkins): upgrade pipe library'
     if init_lib:
         msg = 'chore(Jenkins): add pipe library'
-    baw.gix.commit(root, source=path, message=msg)
+    baw.git_commit(root, source=path, message=msg)
     return baw.SUCCESS
 
 

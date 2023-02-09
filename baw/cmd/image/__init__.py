@@ -178,9 +178,9 @@ def upgrade(
     if not replaced:
         baw.log(f'already up-to-date: {path}')
         return baw.SUCCESS
-    with baw.gix.stash(root):
+    with baw.git_stash(root):
         baw.utils.file_replace(path, replaced)
-        baw.gix.commit(
+        baw.git_commit(
             root,
             path,
             message='chore(upgrade): upgrade images',

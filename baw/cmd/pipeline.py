@@ -29,13 +29,13 @@ def init(
         baw.error(f'Jenkinsfile already exists: {source}')
         return baw.FAILURE
     replaced = create_jenkinsfile(root)
-    with baw.gix.stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose, venv=venv):
         baw.utils.file_create(
             source,
             content=replaced,
         )
-        baw.gix.add(root, 'Jenkinsfile')
-        failure = baw.gix.commit(
+        baw.git_add(root, 'Jenkinsfile')
+        failure = baw.git_commit(
             root,
             source=source,
             message='chore(Jenkins): add Jenkinsfile',
@@ -61,12 +61,12 @@ def upgrade(
     if replaced.strip() == before.strip():
         baw.log('Jenkinsfile unchanged, skip upgrade')
         return baw.SUCCESS
-    with baw.gix.stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose, venv=venv):
         baw.utils.file_replace(
             source,
             content=replaced,
         )
-        failure = baw.gix.commit(
+        failure = baw.git_commit(
             root,
             source=source,
             message='chore(Jenkins): upgrade Jenkinsfile',

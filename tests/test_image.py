@@ -11,8 +11,10 @@ import os
 
 import pytest
 
+import baw
 import baw.cmd.image.dockerfiles
 import baw.pipelinefile
+import baw.utils
 import tests
 
 
@@ -63,7 +65,7 @@ def test_cmd_image_pipref_upgrade(simple, capsys, typ):
         return content
 
     baw.utils.file_create(dockerfile, create())
-    baw.gix.commit(root, 'DOCKERFILE', 'verify pipref')
+    baw.git_commit(root, 'DOCKERFILE', 'verify pipref')
     tmpname = f'tmp_baw_test_cmd_image_pipref_{typ.lower()}'
     # create dockerfile to verify PIPREF-replacement
     simple[0](f'image create --dockerfile {dockerfile} --name={tmpname}')

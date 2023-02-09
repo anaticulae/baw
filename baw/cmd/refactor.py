@@ -30,7 +30,7 @@ def run(
         verbose=verbose,
     )
     if changed:
-        baw.gix.commit(
+        baw.git_commit(
             root,
             source='.',
             message='refactor(replace): automated replacement',

@@ -103,7 +103,7 @@ def run_test(  # pylint:disable=R0914,R1260
         verbose=verbose,
         venv=venv,
     )
-    environment = baw.gix.stash if stash else baw.utils.empty
+    environment = baw.git_stash if stash else baw.utils.empty
     with environment(root, verbose=verbose, venv=venv):
         completed = baw.runtime.run_target(
             root,

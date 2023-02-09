@@ -33,6 +33,6 @@ def test_stash(simple):
     assert baw.git_isclean(root)
     baw.runtime.run_target(root, 'touch ABC')
     assert not baw.git_isclean(root)
-    with baw.gix.stash(root):
+    with baw.git_stash(root):
         assert baw.git_isclean(root)
     assert not baw.git_isclean(root)

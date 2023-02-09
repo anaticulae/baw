@@ -109,12 +109,12 @@ def init(
 def first_commit(root, verbose: bool) -> int:
     """This is a replacement for semantic_release cause project setup
     does not worker proper like in the past(4.1.1) anymore."""
-    baw.gix.add(
+    baw.git_add(
         root,
         '.',
         verbose=verbose,
     )
-    returncode = baw.gix.commit(
+    returncode = baw.git_commit(
         root,
         source=' ',
         message=INIT,

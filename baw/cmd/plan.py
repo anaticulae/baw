@@ -12,6 +12,7 @@ import enum
 import os
 import re
 
+import baw
 import baw.project.version
 import baw.resources
 import baw.runtime
@@ -77,7 +78,7 @@ def create(
         replace = '  :maxdepth: 1\n\n  0.1.0\n'
         loaded = loaded.replace(token, replace, 1)
         baw.utils.file_replace(overview, loaded)
-        baw.gix.add(root, pattern=overview)
+        baw.git_add(root, pattern=overview)
 
     message = f'releases(plan): add draft of release plan {major}.{minor}.0'
     commit(root, message)
@@ -103,7 +104,7 @@ def close(root: str, verbose: bool = False):
 def commit(root: str, message: str, verbose: bool = False):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
-    baw.gix.add(root, pattern=plan)
+    baw.git_add(root, pattern=plan)
     process = baw.runtime.run_target(
         root,
         f'git commit -m "{message}"',

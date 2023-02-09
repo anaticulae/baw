@@ -37,7 +37,7 @@ def upgrade(
 
     force: upgrade dev requirements also
     """
-    with baw.gix.stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose, venv=venv):
         returnvalue = check_upgrade(root, packages=packages, pre=pre)
         if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
@@ -68,7 +68,7 @@ def upgrade(
             baw.error('Upgrading failed')
             assert not completed
             return failure
-        failure = baw.gix.commit(
+        failure = baw.git_commit(
             root,
             source=requirements,
             message=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',

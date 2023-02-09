@@ -27,12 +27,12 @@ def commit(root: str, push: bool = True) -> int:
     if baw.gix.is_clean(root, verbose=False):
         baw.log('baseline: nothing changed')
         return baw.SUCCESS
-    baw.gix.add(
+    baw.git_add(
         root,
         'tests/**',
         update=True,
     )
-    returnvalue = baw.gix.commit(
+    returnvalue = baw.git_commit(
         root,
         source='',
         message=MESSAGE,
