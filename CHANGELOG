@@ -2,6 +2,35 @@
 
 Every noteable change is logged here.
 
+## v1.67.0 (2023-02-09)
+
+### Feature
+
+* log git commit error (619b81b071f0)
+* add parameter to control numbers of test worker (4ac3f5e9ca11)
+* ensure that baseline overwriting is enabled (cc4dcc55b85a)
+* add method to lookup gitea token (08cfa09086e5)
+* add method to determine origin (c2aa7926a9e9)
+* use token to authenticate push (ff146ca1696a)
+* extend public API (f2a6648d7503)
+* extend public API (43f55b425f90)
+* log copy container (105255c7c917)
+* extend public API (f87ba519dc25)
+* add separate baseline command (a59fda9dfd5e)
+
+### Fix
+
+* make tokenize testable (9b0a7456b426)
+* adjust current year (2e147226ba4b)
+
+### Documentation
+
+* extend documentation (c91ed2e602e9)
+
+### Chore
+
+* add empty gitea token (7e54aca02e3e)
+
 ## v1.66.0 (2023-02-08)
 
 ### Feature
