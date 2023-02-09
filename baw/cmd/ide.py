@@ -51,7 +51,7 @@ def generate_workspace(root: str, packages: tuple = None):
     """
     name = baw.config.name(root)
     output = workspace_configuration(root)
-    rcfile = baw.utils.forward_slash(baw.resources.RCFILE_PATH)
+    rcfile = baw.forward_slash(baw.resources.RCFILE_PATH)
     isortfile = sort_configuration(root)
     if packages is None:
         # pylint:disable=C0209
@@ -60,7 +60,7 @@ def generate_workspace(root: str, packages: tuple = None):
                 "name": "%s",
                 "path": "%s"
             }
-        """ % (name, baw.utils.forward_slash(root, save_newline=False))
+        """ % (name, baw.forward_slash(root, save_newline=False))
     else:
         packages = sorted(packages)
         todo = []
@@ -71,7 +71,7 @@ def generate_workspace(root: str, packages: tuple = None):
         todo.append(('resources', 'tests/resources'))
         folders = []
         for (name, path) in todo:
-            path = baw.utils.forward_slash(path, save_newline=False)
+            path = baw.forward_slash(path, save_newline=False)
             if not os.path.exists(path):
                 baw.error(f'{path} does not exists')
                 continue
@@ -128,14 +128,14 @@ def start(root):
 
 def sort_configuration(root: str) -> str:
     config = os.path.join(baw.utils.tmp(root), '.isort.cfg')
-    forward = baw.utils.forward_slash(config)
+    forward = baw.forward_slash(config)
     return forward
 
 
 def workspace_configuration(root: str):
     """Path to generated workspace configuration."""
     config = os.path.join(baw.utils.tmp(root), '..code-workspace')
-    return baw.utils.forward_slash(config)
+    return baw.forward_slash(config)
 
 
 def extend_cli(parser):

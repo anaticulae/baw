@@ -182,7 +182,7 @@ def tar_content(
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')
         tar = fixup_path(base)
-        content = baw.utils.forward_slash(content, save_newline=False)
+        content = baw.forward_slash(content, save_newline=False)
         do_not_tar = ignore(git_include)
         cmd = f'tar cvf {tar} {do_not_tar} .'
         completed = baw.runtime.run(cmd, content)
@@ -194,7 +194,7 @@ def tar_content(
 
 
 def fixup_path(path: str):
-    path = baw.utils.forward_slash(path, save_newline=False)
+    path = baw.forward_slash(path, save_newline=False)
     path = path.replace('C:/', '/c/')
     return path
 

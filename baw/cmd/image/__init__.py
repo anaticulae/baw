@@ -57,7 +57,7 @@ def create(  # pylint:disable=W0613
 
 
 def ensure_dockerfile_path(dockerfile):
-    dockerfile = baw.utils.forward_slash(dockerfile)
+    dockerfile = baw.forward_slash(dockerfile)
     if '/' not in dockerfile:
         # make absolute?
         dockerfile = os.path.join(os.getcwd(), dockerfile)

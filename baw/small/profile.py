@@ -61,7 +61,7 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
     for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
         raw = 'X' if state else ' '
         baw.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
-                      f'{commit[1][0:30]}')
+                f'{commit[1][0:30]}')
     # checkout(root, commit=todo[0])
     baw.git.checkout(root, branch='master')
     return timed

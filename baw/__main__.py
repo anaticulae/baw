@@ -24,7 +24,7 @@ def run():
         import baw.utils
         baw.error(msg)
         stack_trace = traceback.format_exc()
-        baw.log(baw.utils.forward_slash(stack_trace))
+        baw.log(baw.forward_slash(stack_trace))
     sys.exit(baw.FAILURE)
 
 

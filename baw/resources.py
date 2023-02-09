@@ -215,7 +215,7 @@ def template_replace(root: str, template: str, **kwargs) -> str:
     Hint:
         Vars are defined as {{VARNAME}}.
     """
-    root = baw.utils.forward_slash(root, save_newline=False)
+    root = baw.forward_slash(root, save_newline=False)
     short = baw.config.shortcut(root)
     source = baw.config.sources(root)
     name_ = baw.config.name(root)
