@@ -57,7 +57,10 @@ def test(root, worker: int = 32):
             testconfig=testconfig,
             alls=True,
         )
-    if commit(root):
+    if commit(
+            root,
+            push=True,
+    ):
         return baw.FAILURE
     return baw.SUCCESS
 
