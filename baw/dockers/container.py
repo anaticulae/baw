@@ -8,7 +8,6 @@
 # =============================================================================
 
 import os
-import sys
 
 import docker.errors
 
@@ -105,8 +104,7 @@ def create(
     except docker.errors.ImageNotFound as error:
         # mostly base image is not created
         baw.error(f'could not create container: {image}')
-        baw.error(error)
-        sys.exit(baw.FAILURE)
+        baw.exitx(error)
     return container
 
 
@@ -124,7 +122,7 @@ def build_image(root: str, generate: bool = False):
     if completed.returncode:
         baw.error(f'could not create image: {root}')
         baw.completed(completed)
-        sys.exit(baw.FAILURE)
+        baw.exitx()
     else:
         baw.log(completed.stdout)
         if completed.stderr.strip():
@@ -176,8 +174,7 @@ def tar_content(
 ) -> str:
     assert os.path.exists(content), str(content)
     if not baw.runtime.hasprog('tar'):
-        baw.error('tar is not installed, could not tar')
-        sys.exit(baw.FAILURE)
+        baw.exitx('tar is not installed, could not tar')
     # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')
