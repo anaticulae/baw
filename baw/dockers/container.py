@@ -54,17 +54,17 @@ def run(
                     path=volumes,
                     data=content,
                 )
-            baw.utils.log('start container')
+            baw.log('start container')
             container.start()
             failure = verify(container)
             if failure:
                 baw.utils.error(cmd)
             if not failure and outdir:
                 receive_data(container, outdir)
-            baw.utils.log('stop container')
+            baw.log('stop container')
             # TODO: VERIFY THIS
             container.stop()
-            baw.utils.log('remove container')
+            baw.log('remove container')
             container.remove()
         except docker.errors.ContainerError as error:
             baw.utils.error(error.stderr.decode('utf8'))
@@ -110,7 +110,7 @@ def build_image(root: str, generate: bool = False):
     baw_image_create = 'baw image create'
     if generate:
         baw_image_create += ' --generate'
-    baw.utils.log(baw_image_create)
+    baw.log(baw_image_create)
     completed = baw.runtime.run(
         cmd=baw_image_create,
         cwd=root,
@@ -121,14 +121,14 @@ def build_image(root: str, generate: bool = False):
         baw.completed(completed)
         sys.exit(baw.utils.FAILURE)
     else:
-        baw.utils.log(completed.stdout)
+        baw.log(completed.stdout)
         if completed.stderr.strip():
             baw.utils.error(completed.stderr)
 
 
 def receive_data(container, outdir: bool = True):
     outdir: str = outdir if isinstance(outdir, str) else '/var/outdir'
-    baw.utils.log('receive data...')
+    baw.log('receive data...')
     with baw.utils.tmpdir() as tmp:
         base = os.path.join(tmp, 'content.tar')
         with open(base, 'wb') as fp:
@@ -146,7 +146,7 @@ def receive_data(container, outdir: bool = True):
         if completed.returncode:
             baw.utils.error(f'untar failed: {cmd}')
             baw.completed(completed)
-    baw.utils.log('done')
+    baw.log('done')
 
 
 def verify(container) -> bool:
@@ -160,7 +160,7 @@ def verify(container) -> bool:
         decoded = line.decode('utf8')
         # TODO: IMPROVE THIS CHECK
         failure |= '[ERROR] Completed:' in decoded
-        baw.utils.log(decoded, end='')
+        baw.log(decoded, end='')
     return failure
 
 
