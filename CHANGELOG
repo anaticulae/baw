@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v1.68.0 (2023-02-09)
+
+### Feature
+
+* add baseline token (cbab5bfd6f50)
+* everything is done in baseline step (c0df13f8480e)
+* make baseline more verbose (ac134b3c5421)
+* log tar command (d0b0cf7eb15d)
+
 ## v1.67.0 (2023-02-09)
 
 ### Feature
