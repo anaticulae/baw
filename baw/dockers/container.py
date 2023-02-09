@@ -38,22 +38,7 @@ def run(
             generate=generate,
         )
         try:
-            # TODO: GIT DIR IS ALWAYS REQUIRED TO RUN TESTS PROPERLY,
-            # THINK ABOUT LATER
-            gitdir = True
-            if gitdir and not volumes:
-                # use default volume
-                volumes = baw.dockers.determine_volumes()
-            if volumes:
-                content = tar_content(
-                    content=os.getcwd(),
-                    git_include=gitdir,
-                )
-                baw.log(f'put into container: {volumes}')
-                container.put_archive(
-                    path=volumes,
-                    data=content,
-                )
+            volume_inject(container, volumes, gitdir)
             baw.log('start container')
             container.start()
             failure = verify(container)
@@ -72,6 +57,26 @@ def run(
     if failure:
         return baw.utils.FAILURE
     return baw.utils.SUCCESS
+
+
+def volume_inject(container, volumes, gitdir):
+    # TODO: GIT DIR IS ALWAYS REQUIRED TO RUN TESTS PROPERLY,
+    # THINK ABOUT LATER
+    gitdir = True
+    if gitdir and not volumes:
+        # use default volume
+        volumes = baw.dockers.determine_volumes()
+    if not volumes:
+        return
+    content = tar_content(
+        content=os.getcwd(),
+        git_include=gitdir,
+    )
+    baw.log(f'put into container: {volumes}')
+    container.put_archive(
+        path=volumes,
+        data=content,
+    )
 
 
 def create(
