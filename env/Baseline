@@ -22,7 +22,9 @@ ENV DEV_GIT_REPLACE=1
 ENV JENKINS_HOME=1
 # TODO: USE WORKER COUNT TO DETERMINE EXTRACTION WORKER
 ENV WORKER=32
-
+# baseline
+ENV GITEA_TOKEN='abb64840b5d96591dcf18cf842e2b04cd014f8d5'
+# remove this password?
 ENV GIT_ASKPASS='/var/gitpassword'
 RUN echo 'echo $GIT_PASSWORD' >> /var/gitpassword && chmod +x /var/gitpassword
 ENV GIT_PASSWORD='automated'
