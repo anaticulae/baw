@@ -34,7 +34,7 @@ def run(root, verbose, release_type, venv: bool = False):
             return baw.FAILURE
     if completed.returncode:
         baw.error('while running semantic-release')
-        baw.error(completed.stderr)
+        baw.completed(completed)
         return completed.returncode
     return baw.SUCCESS
 
