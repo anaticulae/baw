@@ -110,6 +110,7 @@ class ReleaseConfig:
             self.commit_author,
             self.version_variable,
             self.changelog_file,
+            self.changelog_header,
             self.gitea_token_var,
             self.commit_message,
             '',
@@ -126,10 +127,6 @@ version_source=commit
 parser_angular_patch_types=fix,perf,chore
 changelog_sections=feature,fix,breaking,documentation,performance,chore
 changelog_components=baw.changelog.changelog_headers
-changelog_placeholder=# Changelog
-
-    Every noteable change is logged here.
-
 upload_to_repository=true
 upload_to_pypi=false
 upload_to_release=false
