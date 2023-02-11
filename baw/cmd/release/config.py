@@ -64,6 +64,26 @@ class ReleaseConfig:
         return f'changelog_file={value}'
 
     @property
+    def changelog_header(self) -> str:
+        r"""\
+        >>> ReleaseConfig(__file__).changelog_header
+        'changelog_placeholder=# Changelog\n\n    Every noteable change is logged here.\n\n'
+        """
+        path = baw.config.changelog(self.root)
+        content = baw.utils.file_read(path)
+        header = content.split('## v')[0]
+        splitted = header.splitlines(True)
+        collected = [splitted[0]] if splitted else []
+        if splitted:
+            for line in splitted[1:]:
+                if not line.strip():
+                    collected.append(line)
+                    continue
+                collected.append('    ' + line)
+        result = f'changelog_placeholder={"".join(collected)}'
+        return result
+
+    @property
     def gitea_token_var(self) -> str:
         if not baw.config.basic(self.root):
             return ''
