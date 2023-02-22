@@ -19,3 +19,14 @@ def determine_root(path) -> str:
         if not str(base).strip():
             return None
     return current
+
+
+def ispython(root: str) -> str:
+    """\
+    >>> ispython(determine_root(__path__))
+    True
+    """
+    for item in 'setup.py'.split():  # pylint:disable=consider-using-any-or-all
+        if os.path.exists(os.path.join(root, item)):
+            return True
+    return False
