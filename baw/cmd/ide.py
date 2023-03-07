@@ -101,8 +101,9 @@ def generate_conftest(root: str):
         baw.utils.file_create(output, baw.resources.CONFTEST_TEMPLATE)
         return
 
-    if len(baw.utils.file_read(output)) < len(baw.resources.CONFTEST_TEMPLATE):
-        baw.utils.file_replace(output, baw.resources.CONFTEST_TEMPLATE)
+    # TODO: MAY ENABLE LATER
+    # if len(baw.utils.file_read(output)) < len(baw.resources.CONFTEST_TEMPLATE):
+    #     baw.utils.file_replace(output, baw.resources.CONFTEST_TEMPLATE)
 
 
 def generate_sort_config(root: str):
