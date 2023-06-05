@@ -45,6 +45,8 @@ COVERAGE_MIN = 20
 
 COVERAGE_MAX = 100
 
+HVCS = 'gitea'
+
 
 def venv_global() -> bool:
     """Use global venv.
@@ -136,6 +138,54 @@ def docker_setup(root: str) -> str:
         root,
         lambda x: x['docker']['setup'],
         default=None,
+    )
+    return result
+
+
+def hvcs(root: str) -> str:
+    """\
+    >>> import baw.project
+    >>> hvcs(baw.project.determine_root(__file__))
+    'gitea'
+    """
+    result = default_config(
+        root,
+        lambda x: x['release']['hvsc'],
+        default=HVCS,
+    )
+    return result
+
+
+def git_group(root: str) -> str:
+    """Username on hvcs where project is grouped into.
+
+    For example: caelum, cobdh.
+
+    >>> import baw.project
+    >>> git_group(baw.project.determine_root(__file__)) is None
+    True
+    """
+    result = default_config(
+        root,
+        lambda x: x['release']['group'],
+        default=None,
+    )
+    return result
+
+
+def git_project(root: str) -> str:
+    """Project name, use project->short if nothing is given.
+
+    For example hvcs=None, group=cobdh, project=live => github.com/cobdh/live.git
+
+    >>> import baw.project
+    >>> git_project(baw.project.determine_root(__file__))
+    'baw'
+    """
+    result = default_config(
+        root,
+        lambda x: x['release']['project'],
+        default=shortcut(root),
     )
     return result
 
