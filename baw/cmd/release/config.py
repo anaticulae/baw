@@ -139,6 +139,7 @@ def determine_changelog(root: str, verbose: bool, venv: bool = False) -> str:
     cmd = 'baw_semantic_release changelog '
     cmd += version_variables(root)
     cmd += '-D "changelog_components=baw.changelog.changelog_headers" '
+    cmd += '-D "branches=prod main master" '
     cmd += '--unreleased'
     completed = baw.runtime.run_target(
         root,
