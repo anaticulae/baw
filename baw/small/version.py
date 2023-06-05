@@ -12,7 +12,12 @@ import sys
 
 
 def main():
-    enable_http()
+    import baw.config
+    import baw.project
+    hvcs = baw.config.hvcs(baw.project.determine_root(path=os.getcwd()))
+    # TODO: REMOVE LATER
+    if hvcs == 'gitea':
+        enable_http()
     import semantic_release.cli
 
     # run the patch
