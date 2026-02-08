@@ -7,12 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-semver>=2.13.0<3.0.0
-python_semantic_release>=7.33.0<8.0.0
-docker>=6.0.1<7.0.0
+semver >=2.13.0, <3.0.0
+python_semantic_release >=7.33.0, <8.0.0
+docker >=6.0.1, <7.0.0
 
-virtualenv>=20.17.1<21.0.0
+virtualenv >=20.17.1, <21.0.0
 
-utila>=2.105.0<4.0.0
+utila >=2.105.0, <4.0.0
 # required for resource generation
-resinf>=0.5.0<1.0.0
+resinf >=0.5.0, <1.0.0
