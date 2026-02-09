@@ -19,6 +19,7 @@ import time
 import webbrowser
 
 import baw
+import baw.runtime
 
 BAW_EXT = '.baw'
 TMP = '.tmp'
@@ -415,3 +416,32 @@ def exitx(msg='', returncode=FAILURE):
         else:
             baw.log(msg)
     sys.exit(returncode)
+
+
+def git_hash(root) -> str:
+    if not baw.runtime.hasprog("git"):
+        exitx("install git, please")
+    completed = baw.runtime.run(
+        "git describe",
+        cwd=root,
+    )
+    value = completed.stdout.strip()
+    if value == static(root):
+        return value
+    # transform v2.40.1-5-gc1b4bee to
+    # utila-2.93.0.post6+g3b6726a
+    value = value[1:]
+    value = value.replace("-", ".post", 1)
+    value = value.replace("-g", "+g")
+    return value
+
+
+def static(root):
+    return root
+    short = utilo.baw_name(root)
+    if not short:
+        utilo.exitx(msg=f"missing short `{short}` def in .baw: {root}")
+    path = utilo.join(root, short, "__init__.py", exist=True)
+    content = utilo.file_read(path)
+    result = re.search(r"__version__ = \'(.*?)\'", content).group(1)
+    return result

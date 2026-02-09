@@ -11,7 +11,6 @@
 import baw.cmd.utils
 import baw.config
 import baw.gix
-import baw.run
 import baw.runtime
 import baw.utils
 
@@ -76,9 +75,8 @@ def can_publish(
 
 
 def log_prerelease(root):
-    import utila.quick
     baw.log(baw.config.shortcut(root) + '-', end='')
-    baw.log(utila.quick.git_hash(root))
+    baw.log(baw.utils.git_hash(root))
 
 
 def distribution_format() -> str:

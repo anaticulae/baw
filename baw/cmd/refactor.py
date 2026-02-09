@@ -10,8 +10,6 @@
 import re
 import sys
 
-import utila
-
 import baw.cmd.utils
 import baw.gix
 import baw.resources
