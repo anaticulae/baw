@@ -14,8 +14,6 @@ import shutil
 import stat
 import sys
 
-import resinf
-
 import baw
 import baw.cmd.utils
 import baw.config

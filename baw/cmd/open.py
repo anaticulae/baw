@@ -11,8 +11,6 @@ import glob
 import os
 import sys
 
-import resinf
-
 import baw.config
 import baw.project
 import baw.runtime

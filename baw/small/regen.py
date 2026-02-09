@@ -11,8 +11,6 @@ import argparse
 import functools
 import os
 
-import resinf
-
 import baw.cmd.utils
 import baw.run
 import baw.runtime
