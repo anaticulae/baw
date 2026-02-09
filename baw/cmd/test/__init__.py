@@ -256,7 +256,7 @@ def create_test_cmd(  # pylint:disable=R0914
     if markers:
         cmd += f'{markers} '
     if instafail:
-        cmd += '--instafail '
+        cmd += '-x '
     if verbose:
         cmd += '-vv '
     return cmd
