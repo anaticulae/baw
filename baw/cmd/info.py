@@ -105,10 +105,10 @@ def pip_version(root: str, verbose: bool = False):
     >>> pip_version(baw.ROOT, verbose=True)
     'baw==...'
     """
-    current = utila.quick.git_hash(root)
+    current = baw.utils.git_hash(root)
     result = current
     if verbose:
-        name = utila.baw_name(root)
+        name = baw_name(root)
         result = f'{name}=={result}'
     return result
 
@@ -132,7 +132,7 @@ def print_covreport(root: str):
 
 
 def print_cov() -> int:
-    completed = utila.run('baw test --cov --no_report')
+    completed = baw.runtime.run('baw test --cov --no_report')
     if completed.returncode:
         return completed.returncode
     coverage = re.search(
@@ -188,7 +188,7 @@ def extend_cli(parser):
 def baw_name(path: str) -> str:
     """\
     >>> baw_name(__file__)
-    'utilo'
+    'baw'
     """
     config = baw_config(path)
     if not config:
@@ -203,7 +203,7 @@ BAW = ".baw"
 def baw_config(path: str) -> dict:
     """\
     >>> baw_config(__file__)
-    {'project': {'short': 'utilo', 'name': 'write it once'},...'test': {'plugins': 'timeout'}}
+    {'project': {'short': 'baw', 'name': 'Beta Alpha Omega'},...
     """
     root = baw_root(path)
     if not root:
@@ -220,7 +220,7 @@ def baw_root(path: str) -> str:
     '...'
     """
     current = str(path)
-    while not baw.exitx(join(current, BAW)):  # pylint:disable=W0149
+    while not os.path.exists(join(current, BAW)):  # pylint:disable=W0149
         current, base = os.path.split(current)
         if not str(base).strip():
             # root of file sytem
@@ -306,5 +306,5 @@ def from_raw_or_path(
                                     f"{content} {fname} {ftype}")
     # filepath must not have any line breaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
-        content = baw.file_read(content)
+        content = baw.utils.file_read(content)
     return content

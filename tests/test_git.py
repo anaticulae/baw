@@ -20,9 +20,9 @@ def test_commit_with_tag(simple):
 
 def test_modified(simple):
     root = simple[1]
-    assert baw.git_isclean(root)
+    assert baw.is_clean(root)
     baw.runtime.run_target(root, 'touch ABC')
-    assert not baw.git_isclean(root)
+    assert not baw.is_clean(root)
     modified = baw.gix.modified(root)
     expected = '## master\n?? ABC'
     assert modified == expected
@@ -30,9 +30,9 @@ def test_modified(simple):
 
 def test_stash(simple):
     root = simple[1]
-    assert baw.git_isclean(root)
+    assert baw.is_clean(root)
     baw.runtime.run_target(root, 'touch ABC')
-    assert not baw.git_isclean(root)
+    assert not baw.is_clean(root)
     with baw.git_stash(root):
-        assert baw.git_isclean(root)
-    assert not baw.git_isclean(root)
+        assert baw.is_clean(root)
+    assert not baw.is_clean(root)

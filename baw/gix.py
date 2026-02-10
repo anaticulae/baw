@@ -17,9 +17,7 @@ import git
 
 import baw
 import baw.config
-import baw.resources
 import baw.runtime
-import baw.utils
 
 GIT_EXT = '.git'
 GIT_REPO_EXCLUDE = '.git/info/exclude'
@@ -33,7 +31,7 @@ def init(root: str):
     """
     gitdir = os.path.join(root, GIT_EXT)
     if os.path.exists(gitdir):
-        baw.utils.skip('git init')
+        baw.skip('git init')
         return
     baw.log('git init')
     cmd = subprocess.run(  # nosec
@@ -44,7 +42,7 @@ def init(root: str):
     evaluate_git_error(cmd)
 
 
-def add(
+def git_add(
     root: str,
     pattern: str,
     update: bool = False,
@@ -71,7 +69,7 @@ def add(
     evaluate_git_error(cmd)
 
 
-def commit(root, source, message, tag: str = None, verbose: int = 0):
+def git_commit(root, source, message, tag: str = None, verbose: int = 0):
     assert os.path.exists(root)
     message = f'"{message}"'
     if verbose:
@@ -211,7 +209,7 @@ def tag_drop(
 
 
 @contextlib.contextmanager
-def stash(
+def git_stash(
     root: str,
     *,
     verbose: bool = False,
@@ -363,7 +361,7 @@ def update_gitignore(root: str, verbose: bool = False):
     if not os.path.exists(exclude):
         baw.log(f'no git dir: {exclude}, skip update')
         return baw.SUCCESS
-    baw.utils.file_replace(
+    baw.file_replace(
         exclude,
         baw.resources.GITIGNORE,
     )

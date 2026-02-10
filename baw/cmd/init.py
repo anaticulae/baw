@@ -237,7 +237,10 @@ def utila_current() -> str:
     >>> utila_current()
     '...'
     """
-    import utila
+    try:
+        import utila
+    except ModuleNotFoundError:
+        return 'None'
     return utila.__version__
 
 

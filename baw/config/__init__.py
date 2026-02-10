@@ -85,7 +85,7 @@ def gitea_server() -> str:
     >>> gitea_server()
     '...'
     """
-    return lookup('GITEA_SERVER_URL')
+    return lookup('GITEA_SERVER_URL', default='localhost')
 
 
 def gitea_token() -> str:
@@ -101,7 +101,7 @@ def git_author_name() -> str:
     >>> git_author_name()
     '...'
     """
-    return lookup('GIT_AUTHOR_NAME')
+    return lookup('GIT_AUTHOR_NAME', default='Max Mustermann')
 
 
 def git_author_email() -> str:
@@ -109,7 +109,7 @@ def git_author_email() -> str:
     >>> git_author_email()
     '...'
     """
-    return lookup('GIT_AUTHOR_EMAIL')
+    return lookup('GIT_AUTHOR_EMAIL', default='norepley@none.com')
 
 
 def docker_testing() -> str:
@@ -117,7 +117,7 @@ def docker_testing() -> str:
     >>> docker_testing()
     '...'
     """
-    return lookup('CAELUM_DOCKER_TEST')
+    return lookup('CAELUM_DOCKER_TEST', default='localhost')
 
 
 def docker_runtime() -> str:
@@ -125,7 +125,7 @@ def docker_runtime() -> str:
     >>> docker_runtime()
     '...'
     """
-    return lookup('CAELUM_DOCKER_RUNTIME')
+    return lookup('CAELUM_DOCKER_RUNTIME', default='localhost')
 
 
 def docker_setup(root: str) -> str:
@@ -472,9 +472,9 @@ def pip_parallel_worker(root: str) -> bool:
 def package_address():
     """\
     >>> package_address()
-    ('http...', 'http...')
+    (None, None)
     """
-    return lookup('PIP_INDEX_URL', 'PIP_EXTRA_INDEX_URL')
+    return lookup('PIP_INDEX_URL', 'PIP_EXTRA_INDEX_URL', default=(None, None))
 
 
 def package_testing():
@@ -482,7 +482,7 @@ def package_testing():
     >>> package_testing()
     '...'
     """
-    return lookup('PIP_PRE_INDEX_URL')
+    return lookup('PIP_PRE_INDEX_URL', default='localhost')
 
 
 def changelog(root: str) -> str:
@@ -550,7 +550,7 @@ def docpath(root: str, mkdir: bool = True) -> str:
     return tmpdoc
 
 
-def lookup(*args):
+def lookup(*args, default=None):
     """\
     >>> lookup('NON_VALUE')
     Traceback (most recent call last):
@@ -562,6 +562,8 @@ def lookup(*args):
         try:
             item = os.environ[key]
         except KeyError as error:
+            if default is not None:
+                return default
             raise SystemExit(f'missing global env: {key}') from error
         else:
             item = str(item)

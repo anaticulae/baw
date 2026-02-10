@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utilatest
+import tests
 
 
-@utilatest.longrun
+@tests.longrun
 def test_cmd_sh(simple, capsys):  # pylint:disable=W0621,W0613
     # stdout = tests.stdout(capsys)
     # assert 'README' in stdout
@@ -18,7 +18,7 @@ def test_cmd_sh(simple, capsys):  # pylint:disable=W0621,W0613
     simple[0]('sh "ls"')
 
 
-@utilatest.longrun
+@tests.longrun
 def test_cmd_sh_fail(simple, capsys):  # pylint:disable=W0621,W0613
     simple[0](
         'sh "invalid command"',

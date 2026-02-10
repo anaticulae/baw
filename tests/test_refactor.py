@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utilatest
+import tests
 
 
-@utilatest.longrun
+@tests.longrun
 def test_cmd_refactor(simple, capsys):
     simple[0]('refactor')
-    log = utilatest.stdout(capsys)
+    log = tests.stdout(capsys)
     assert 'refactor:' in log

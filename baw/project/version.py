@@ -52,7 +52,7 @@ def determine(root: str, verbose: bool = False) -> str:
     if not current:
         raise ValueError(f'Could not locate __version__ in {path}')
     if verbose:
-        shorts = baw.shortcut(root)
+        shorts = baw.config.shortcut(root)
         current = f'{shorts}=={current}'
     return current
 

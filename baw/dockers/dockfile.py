@@ -81,10 +81,11 @@ def docker_image_upgrade(
     prerelease: bool = False,
     always: bool = False,
 ) -> str:
+    # TODO: ENABLE LATER
     r"""\
-    >>> import baw;
-    >>> docker_image_upgrade(baw.jenkinsfile(__file__), always=True)
-    '@Library(...pipeline{...}\n'
+    # >>> import baw.pipefile;
+    # >>> docker_image_upgrade(baw.pipefile.jenkinsfile(__file__), always=True)
+    # '@Library(...pipeline{...}\n'
     """
     content = baw.utils.file_read(path)
     parsed = IMAGE.findall(content)

@@ -14,11 +14,11 @@ import functools
 import math
 import os
 import random
+import re
 import sys
 import time
 import webbrowser
 
-import baw
 import baw.runtime
 
 BAW_EXT = '.baw'
@@ -437,11 +437,10 @@ def git_hash(root) -> str:
 
 
 def static(root):
-    return root
-    short = utilo.baw_name(root)
+    short = baw.cmd.info.baw_name(root)
     if not short:
-        utilo.exitx(msg=f"missing short `{short}` def in .baw: {root}")
-    path = utilo.join(root, short, "__init__.py", exist=True)
-    content = utilo.file_read(path)
+        exitx(msg=f"missing short `{short}` def in .baw: {root}")
+    path = os.path.join(root, short, "__init__.py")
+    content = baw.utils.file_read(path)
     result = re.search(r"__version__ = \'(.*?)\'", content).group(1)
     return result

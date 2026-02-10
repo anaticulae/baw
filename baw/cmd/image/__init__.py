@@ -171,7 +171,7 @@ def upgrade(
         baw.error(f'could not upgrade, path does not exists: {path}')
         return baw.FAILURE
     baw.log(f'start upgrading: {path}')
-    replaced = baw.docker_image_upgrade(
+    replaced = baw.dockers.dockfile.docker_image_upgrade(
         path,
         prerelease=prerelease,
     )

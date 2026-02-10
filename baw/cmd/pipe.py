@@ -24,7 +24,7 @@ def init(
     verbose: bool = False,
     venv: bool = False,
 ):
-    source = baw.jenkinsfile(root)
+    source = baw.pipefile.jenkinsfile(root)
     if os.path.exists(source):
         baw.error(f'Jenkinsfile already exists: {source}')
         return baw.FAILURE
@@ -52,7 +52,7 @@ def upgrade(
     verbose: bool = False,
     venv: bool = False,
 ):
-    source = baw.jenkinsfile(root)
+    source = baw.pipefile.jenkinsfile(root)
     if not os.path.exists(source):
         baw.error(f'Jenkinsfile does not exists: {source}')
         return baw.FAILURE

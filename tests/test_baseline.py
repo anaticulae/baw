@@ -29,7 +29,7 @@ def test_cmd_baseline_test(simple, monkeypatch, capsys):
     )
     baw.git_add(root, pattern='*')
     baw.git_commit(root, source='.', message='baseline')
-    assert baw.git_isclean(root)
+    assert baw.is_clean(root)
     with monkeypatch.context() as context:
         push = lambda _: baw.SUCCESS
         # disable pushing to gitea

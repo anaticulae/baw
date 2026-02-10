@@ -14,17 +14,10 @@ __version__ = '1.69.0'
 # pylint:disable=wrong-import-position
 import baw.__patch__
 import baw.__root__
-from baw.cmd.test import run_test as test_run
-from baw.config import shortcut
-from baw.dockers.dockfile import docker_image_upgrade
-from baw.gix import add as git_add
-from baw.gix import checkout as git_checkout
-from baw.gix import commit as git_commit
-from baw.gix import is_clean as git_isclean
-from baw.gix import push as git_push
-from baw.gix import reset as git_reset
-from baw.gix import stash as git_stash
-from baw.pipefile import jenkinsfile
+from baw.gix import git_add
+from baw.gix import git_commit
+from baw.gix import git_stash
+from baw.gix import is_clean
 from baw.project import determine_root
 from baw.runtime import hasprog
 from baw.utils import FAILURE
@@ -33,9 +26,8 @@ from baw.utils import SUCCESS
 from baw.utils import completed
 from baw.utils import error
 from baw.utils import exitx
-from baw.utils import file_append
 from baw.utils import file_create
-from baw.utils import file_read
+from baw.utils import file_replace
 from baw.utils import forward_slash
 from baw.utils import log
 from baw.utils import tmpname
