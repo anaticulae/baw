@@ -47,8 +47,7 @@ RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # TODO: INVESTIGATE THIS HACK
-RUN mkdir -m 777 /.local /.cache /.pylint.d
-RUN chmod -R 777 /tmp
+RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
 
 COPY /requirements.txt\
      /baw/sync/dev\
