@@ -347,7 +347,10 @@ def branchname(root: str) -> str:
     if not installed():
         baw.error('install git')
         sys.exit(baw.FAILURE)
-    branches = baw.runtime.run('git branch', cwd=root).stdout.strip()
+    completed = baw.runtime.run('git branch', cwd=root)
+    if completed.returncode:
+        baw.exitx(completed)
+    branches = completed.stdout.strip()
     branches = [item for item in branches.splitlines() if item.startswith('*')]
     # * develop
     name = branches[0].split('*')[1].strip()
@@ -426,6 +429,11 @@ def installed() -> bool:
     except FileNotFoundError:
         return False
     if process.returncode == baw.SUCCESS:
+        root = os.getcwd()
+        # ensure that git work inside docker properly. If git user is other
+        # than repo owner, git does not work properly without this patch.
+        cmd = f'git config --global --add safe.directory "{root}"'
+        baw.runtime.run(cmd, cwd=root)
         return True
     return False
 
