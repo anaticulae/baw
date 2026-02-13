@@ -30,5 +30,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        # required by test which requires commits
+        fetch-depth: 15
     - name: run fasttest
       run: make docker-fasttest
