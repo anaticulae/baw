@@ -12,9 +12,10 @@ venv environment."""
 
 import os
 import re
+import subprocess
+import sys
 
 import setuptools
-import subprocess
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(ROOT, 'README'), 'rt', encoding='utf8') as fp:
