@@ -15,3 +15,6 @@ docker-doctest: docker-build
 
 docker-fasttest: docker-build
 	docker run -i -v $(CURDIR):/var/workdir $(IMAGE) "baw test fast"
+
+docker-longtest: docker-build
+	docker run -i -v $(CURDIR):/var/workdir $(IMAGE) "baw test long"
