@@ -347,7 +347,7 @@ def _run_venv(
 
 def run(
     cmd: str,
-    cwd: str,
+    cwd: str = None,
     env=None,
     debugging: bool = False,
     live: bool = False,
