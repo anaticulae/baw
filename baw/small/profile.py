@@ -69,6 +69,8 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
 
 def commits(root, ranges) -> list:
     count = len(ranges)
+    if not baw.gix.installed():
+        return []
     cmd = 'git log --pretty=format:\"%H %s\" '
     cmd += r'| grep -E "(feat|fix|test|refactor)\(" '
     cmd += f'| head -n {count}'
