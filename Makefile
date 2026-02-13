@@ -12,3 +12,6 @@ docker-build:
 
 docker-doctest: docker-build
 	docker run -i -v $(CURDIR):/var/workdir $(IMAGE_NAME) "baw test docs"
+
+docker-fasttest: docker-build
+	docker run -i -v $(CURDIR):/var/workdir $(IMAGE_NAME) "baw test fast"
