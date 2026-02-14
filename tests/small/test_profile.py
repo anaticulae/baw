@@ -20,7 +20,9 @@ def test_commits():
     expected = (0,)
     if baw.gix.installed():
         expected = (5,)
-        if os.environ.get('JENKINS_HOME', False):
+        ci = os.environ.get('JENKINS_HOME', False) or os.environ.get(
+            'CI', False)
+        if ci:
             # reduced checkout may only check out a single version or may
             # a single non feature commit(0).
             # Skip testing result cause it is repository dependent.
