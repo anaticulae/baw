@@ -12,7 +12,7 @@ import functools
 import os
 
 import baw.cmd.utils
-import baw.run
+import baw.config
 import baw.runtime
 import baw.utils
 
@@ -26,7 +26,8 @@ def main():
 
 
 def run(root, cmd, worker: int = 1):
-    generated = resinf.generated(project=root)
+    # generated = resinf.generated(project=root)
+    generated = os.path.join(baw.config.bawtmp(), root)
     assert os.path.exists(generated), str(generated)
     todo = []
     files = [str(item) for item in os.listdir(generated) if '_' in str(item)]

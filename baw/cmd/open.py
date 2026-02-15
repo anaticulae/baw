@@ -37,7 +37,8 @@ def openme(root: str, path: str = None, prints: bool = False):
 
 def open_generated(root: str, console: bool = False):
     name = os.path.split(root)[1]
-    generated = resinf.generated(project=name)
+    generated = os.path.join(baw.config.bawtmp(), name)
+    # generated = resinf.generated(project=name)
     if console:
         baw.log(generated)
         return

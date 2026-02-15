@@ -111,7 +111,7 @@ def create_pattern(
 
 def generated(root) -> list:
     project = os.path.split(root)[1]
-    tmpdir = resinf.generated(project=project)
+    tmpdir = os.path.join(baw.config.bawtmp(), project)
     selected = []
     if os.path.exists(tmpdir):
         selected.append(ResourceDir(tmpdir))
