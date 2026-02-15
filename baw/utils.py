@@ -11,6 +11,7 @@ import binascii
 import concurrent.futures
 import contextlib
 import functools
+import glob
 import math
 import os
 import random
@@ -444,3 +445,139 @@ def static(root):
     content = baw.utils.file_read(path)
     result = re.search(r"__version__ = \'(.*?)\'", content).group(1)
     return result
+
+
+def files_sort(files: list) -> list:
+    """Sort `files` path alphabetically. Sort file names by number if given.
+
+    >>> files_sort(('/c/a', '/c/200.txt', '/c/2.txt', '/c/3', '/c/0.bmp'))
+    ['/c/0.bmp', '/c/2.txt', '/c/3', '/c/200.txt', '/c/a']
+    """
+    files = [forward_slash(item) for item in files]
+
+    def number_filename(item):
+        # sort file names if they are numbers: 0,1,2,3,4,5,6,7,8,9,10
+        item = item.lower()
+        item = file_name(item)
+        with contextlib.suppress(ValueError):
+            # sort items by number
+            item = int(item)
+            # ensure to compare str and str and not str and int
+            item = str(item).zfill(20)
+        return item
+
+    files = sorted(files, key=number_filename)
+    return files
+
+
+def file_name(path: str, ext: bool = False) -> str:
+    """Determine file name without file extension out of file path.
+
+    >>> file_name('/etc/profile.d/helm.sh')
+    'helm'
+    >>> file_name('info.txt')
+    'info'
+    >>> file_name('/etc/.tmp')
+    '.tmp'
+    >>> file_name('.etc')
+    '.etc'
+    >>> file_name('/no/file/ext')
+    'ext'
+    >>> file_name('etc/dev/raw.png', ext=True)
+    'raw.png'
+    """
+    assert path, path
+    path = forward_slash(path)
+    try:
+        _, name = path.rsplit('/', 1)
+    except ValueError:
+        name = path
+    if ext:
+        return name
+    if name[0] == '.':
+        return name
+    return name.split('.')[0]
+
+
+def file_list(  # pylint:disable=R1260
+    path: str,
+    include: list = None,
+    exclude: list = None,
+    recursive: bool = True,
+    absolute: bool = False,
+    sort: bool = True,
+) -> list:
+    """Scans `path` recursively and returns list of relative file path
+    which matches `include` or `exclude` pattern.
+
+    Args:
+        path(str): root path to scan files
+        include(list): list of patterns to include
+        exclude(list): list of patterns to exclude
+        recursive(bool): visit child folder
+        absolute(bool): if True add `path` to extracted files
+        sort(bool): sort file path by name
+    Returns:
+        List of selected files.
+    """
+    msg = f'only one pattern is allowed {include} ! {exclude}'
+    assert not (include and exclude), msg
+    include = include if include else []
+    exclude = exclude if exclude else []
+    include = [include] if isinstance(include, str) else include
+    exclude = [exclude] if isinstance(exclude, str) else exclude
+    # make unique and ?fast?
+    include: set = set(include)
+    exclude: set = set(exclude)
+    result = []
+    for item in glob.glob(f'{path}/**/*', recursive=recursive):
+        if not os.path.isfile(item):
+            continue
+        item = os.path.relpath(item, path)
+        filepath = forward_slash(item)
+        try:
+            ext = filepath.rsplit('.', maxsplit=1)[1]
+        except IndexError:
+            # file without extension
+            ext = None
+        if include:
+            if ext not in include:
+                continue
+        if exclude:
+            if ext in exclude:
+                continue
+        if absolute:
+            filepath = os.path.join(path, item)
+        result.append(filepath)
+    if sort:
+        result = files_sort(result)
+    return result
+
+
+def file_name(path: str, ext: bool = False) -> str:
+    """Determine file name without file extension out of file path.
+
+    >>> file_name('/etc/profile.d/helm.sh')
+    'helm'
+    >>> file_name('info.txt')
+    'info'
+    >>> file_name('/etc/.tmp')
+    '.tmp'
+    >>> file_name('.etc')
+    '.etc'
+    >>> file_name('/no/file/ext')
+    'ext'
+    >>> file_name('etc/dev/raw.png', ext=True)
+    'raw.png'
+    """
+    assert path, path
+    path = forward_slash(path)
+    try:
+        _, name = path.rsplit('/', 1)
+    except ValueError:
+        name = path
+    if ext:
+        return name
+    if name[0] == '.':
+        return name
+    return name.split('.')[0]
