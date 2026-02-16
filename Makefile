@@ -11,10 +11,10 @@ docker-build:
 	docker build -t $(IMAGE) .
 
 docker-doctest: docker-build
-	docker run -i -v $(CURDIR):/var/workdir $(IMAGE) "baw test docs"
+	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test docs"
 
 docker-fasttest: docker-build
-	docker run -i -v $(CURDIR):/var/workdir $(IMAGE) "baw test fast"
+	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test fast"
 
 docker-longtest: docker-build
-	docker run -i -v $(CURDIR):/var/workdir $(IMAGE) "baw test long"
+	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test long"
