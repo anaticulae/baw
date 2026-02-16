@@ -174,6 +174,10 @@ def installed_version(content: str):
 
 
 def available_version(content: str, package: str = None):
+    r"""\
+    >>> available_version('pdfminer.six (20260107)\nAvailable versions: 20260107, 20251230, 20251229')
+    '20260107'
+    """
     pattern = r'\w+\s\((?P<available>[\w\d\.\+]+)\)'
     if package:
         package = re.escape(package)
