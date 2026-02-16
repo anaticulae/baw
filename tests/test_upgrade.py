@@ -12,7 +12,6 @@ import os
 import baw.cmd.upgrade
 import baw.requirements.upgrade
 import tests
-import tests.fixtures.project
 import tests.fixtures.requirements
 
 NEW_VERSION_AVAILABLE = """
