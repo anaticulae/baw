@@ -7,16 +7,24 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM ubuntu:26.04
+FROM alpine:3.23.3
 
 LABEL maintainer="Helmut Konrad Schewe <helmutus@outlook.com>"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# UBUNTU
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     git \
+#     python3 \
+#     python3-pip \
+#     python3-venv \
+# && rm -rf /var/lib/apt/lists/*
+
+# ALPINE
+RUN apk add --no-cache \
     git \
     python3 \
-    python3-pip \
-    python3-venv \
-&& rm -rf /var/lib/apt/lists/*
+    py3-pip \
+    python3-dev
 
 ENV BAW_VENV_GLOBAL=0
 ENV BAW_VENV_ALWAYS=0
