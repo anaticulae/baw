@@ -32,7 +32,7 @@ def test_init_project_in_empty_folder(project_example):
 @pytest.mark.usefixtures('testdir')
 def test_escaping_single_collon(monkeypatch):
     """Generate project with ' in name and test install"""
-    ensure_gituser()
+    tests.ensure_gituser()
     tests.baaw('init xcd "I\'ts magic"', monkeypatch)
     tests.assert_run('.', 'pip install --editable .')
 
@@ -47,10 +47,5 @@ def test_escaping_single_collon(monkeypatch):
 @pytest.mark.usefixtures('testdir')
 def test_run_complex_cmd(monkeypatch, cmd):
     """Run help and version and format cmd to reach basic test coverage"""
-    ensure_gituser()
+    tests.ensure_gituser()
     tests.baaw(cmd, monkeypatch)
-
-
-def ensure_gituser():
-    baw.runtime.run('git config --global user.name "Your Name"')
-    baw.runtime.run('git config --global user.email "you@example.com"')

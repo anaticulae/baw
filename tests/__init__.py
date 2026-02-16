@@ -169,3 +169,8 @@ def stderr(capsys) -> str:
     out = capsys.readouterr().err
     result = str(out)
     return result
+
+
+def ensure_gituser():
+    baw.runtime.run('git config --global user.name "Your Name"')
+    baw.runtime.run('git config --global user.email "you@example.com"')

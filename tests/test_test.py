@@ -20,7 +20,7 @@ import tests.fixtures.project
 @tests.longrun
 def test_creating_project(tmpdir):
     """Creating project without venv environment"""
-    ensure_gituser()
+    tests.ensure_gituser()
     completed = tests.run(
         'baw --verbose init xkcd "Longtime project"',
         cwd=tmpdir,
@@ -92,8 +92,3 @@ def test_cmd_test_all(simple):
     simple[0]('test all -n1')
     # TODO: ENABLE LATER
     # assert 'test_all PASSED' in stdout or 'test_all PASSED' in stderr
-
-
-def ensure_gituser():
-    baw.runtime.run('git config --global user.name "Your Name"')
-    baw.runtime.run('git config --global user.email "you@example.com"')
