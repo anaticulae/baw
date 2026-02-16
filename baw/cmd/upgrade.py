@@ -225,7 +225,10 @@ def determine_new_requirements(
             venv=venv,
         )
     if sync_error:
-        return None
+        # check if some packages are found
+        if not equal and not greater:
+            # no package can be found
+            return None
     return baw.requirements.NewRequirements(equal=equal, greater=greater)
 
 
