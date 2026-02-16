@@ -15,10 +15,8 @@ import sys
 import pytest
 
 import baw.__main__
-import baw.gix
 import baw.run
 import baw.runtime
-import baw.utils
 
 THIS = os.path.dirname(__file__)
 PROJECT = os.path.abspath(os.path.join(THIS, '..'))
