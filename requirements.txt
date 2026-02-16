@@ -9,7 +9,7 @@
 
 semver >=2.13.0, <3.0.0
 python_semantic_release >=7.33.0, <8.0.0
-docker >=6.0.1, <7.0.0
+docker >=7.1.0, <8.0.0
 
 yapf == 0.43.0
 isort == 7.0.0
