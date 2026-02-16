@@ -18,3 +18,6 @@ docker-fasttest: docker-build
 
 docker-longtest: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test long"
+
+docker-lint: docker-build
+	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw lint all"
