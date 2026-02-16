@@ -117,7 +117,7 @@ def check_dependency(
         if completed.returncode and completed.stderr:
             baw.error(completed.stderr)
         if completed.stdout:
-            if f'{package} ' not in completed.stdout:
+            if not completed.stdout.startswith(package):
                 # nltk (3.5)  - 3.5
                 # INSTALLED: 3.5 (latest)
                 # skip finding nltk_data when searching for nltk
