@@ -89,10 +89,16 @@ def check_dependency(
 ):
     """Check if packages need an upgrade."""
     python = baw.config.python(root, venv=venv)
-    for index in sources(pre):
-        if not str(index).startswith('http'):
-            index = f'http://{index}'
-        pip = f'{python} -mpip search --index {index} {package}'
+    lookup = sources(pre)
+    lookup = (None,) if lookup == (None, None) else lookup
+    for index in lookup:
+        if index:
+            if not str(index).startswith('http'):
+                index = f'http://{index}'
+            index = f'--index {index}'
+        else:
+            index = ''
+        pip = f'{python} -mpip index versions {index} {package}'
         completed = baw.runtime.run_target(
             root,
             pip,
@@ -280,7 +286,11 @@ def get_install_cmd(
 ):
     pip_index, extra_url = baw.config.package_address()
     trusted = host(pip_index)
-    pip = f'--index-url {pip_index} --extra-index-url {extra_url} '
+    pip = ''
+    if pip_index:
+        pip = f'--index-url {pip_index}'
+    if extra_url:
+        pip = f'{pip} --extra-index-url {extra_url}'
     testing_url = baw.config.package_testing()
     if '.post' not in baw.utils.file_read(requirements):
         testing_url = None
@@ -319,6 +329,8 @@ def host(url: str) -> str:
     >>> host('http://169.254.149.20:6103')
     '169.254.149.20'
     """
+    if not url:
+        return None
     if searched := HOST.search(url):
         return searched[0]
     return None
@@ -363,6 +375,9 @@ def connected(internal: str, external: str) -> bool:
     """
     result = True
     for item in [internal, external]:
+        if not item:
+            baw.log(f'Empyt pip address: {item}')
+            continue
         try:
             with urllib.request.urlopen(item) as response:  # nosec
                 response.read()
