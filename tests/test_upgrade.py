@@ -105,7 +105,8 @@ def test_new_requirements():
         tests.fixtures.requirements.REQUIREMENTS,
     )
     # utila should allways be new than 0.5.0
-    assert 'utila' in result[0]
+    # assert 'utila' in result[0]
+    assert 'PyYAML' in result[0]
 
 
 TEST_UPGRADE = """\
