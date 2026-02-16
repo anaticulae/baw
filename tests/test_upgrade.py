@@ -114,16 +114,16 @@ utila==0.1.0
 iamraw
 """
 
-# def test_upgrading(tmpdir):
-#     requirements_path = os.path.join(tmpdir, baw.utils.REQUIREMENTS_TXT)
-#     baw.utils.file_create(
-#         requirements_path,
-#         TEST_UPGRADE,
-#     )
-#     # use default requirements.txt
-#     baw.cmd.upgrade.upgrade_requirements(tmpdir)
-#     loaded = baw.utils.file_read(requirements_path)
-#     assert loaded != TEST_UPGRADE
+def test_upgrading(tmpdir):
+    requirements_path = os.path.join(tmpdir, baw.utils.REQUIREMENTS_TXT)
+    baw.utils.file_create(
+        requirements_path,
+        TEST_UPGRADE,
+    )
+    # use default requirements.txt
+    baw.cmd.upgrade.upgrade_requirements(tmpdir)
+    loaded = baw.utils.file_read(requirements_path)
+    assert loaded != TEST_UPGRADE
 
 
 def test_cmd_upgrade_nopre(simple, capsys):  # pylint:disable=W0621,W0613
