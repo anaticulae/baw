@@ -66,6 +66,8 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
     skip: iamraw>=3.5 # noauto
     >>> line_parse('iamraw>=3.5 # noauto', upgrade=False)
     ({}, {'iamraw': '3.5.0'})
+    >>> line_parse('docker >=7.1.0, <7.1.0')
+    ({}, {'docker': ['7.1.0', '7.1.0']})
     """
     line = line.strip()
     if not line or line.lstrip()[0] == '#':
@@ -79,13 +81,16 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
         line = line.split('#')[0]
         # remove whitespace between comment and version sign
         line = line.strip()
+    line = line.replace(',', ' ')
     line = re.sub(r'\[\w{2,}\]', '', line)
     equal, greater = {}, {}
     if '==' in line:
         package, version = line.split('==')
+        package, version = package.strip(), version.strip()
         equal[package] = fix_version(version)
     elif '>=' in line:
         package, version = line.split('>=')
+        package, version = package.strip(), version.strip()
         version = fix_version(version)
         if '<' in version:
             version = version.split('<')

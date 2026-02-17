@@ -29,15 +29,15 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
             if baw.requirements.check.lower(old, new):
                 # skip lower version
                 continue
-            pattern = f'{package}>={old}'
-            replacement = f'{package}>={new}'
+            pattern = f'{package}>=,{old}'
+            replacement = f'{package}>=,{new}'
         else:
             if baw.requirements.check.lower(old[0], new):
                 # skip lower version
                 continue
             # TODO: first approach of greater equal replacement
-            pattern = f'{package}>={old[0]}<{old[1]}'
-            replacement = f'{package}>={new}<{old[1]}'
+            pattern = f'{package}>={old[0]},<{old[1]}'
+            replacement = f'{package}>={new},<{old[1]}'
         if pattern == replacement:
             continue
         baw.log(f'replace requirement:\n{pattern}\n{replacement}')
@@ -65,6 +65,9 @@ def line_match(line, old) -> bool:
     False
     """
     line = line.split('#')[0]  # remove optional comment
+    # remove spaces to improve comparing
+    line = line.replace(' ', '')
+    old = old.replace(' ', '')
     if difflib.get_close_matches(
             line,
         [old],
