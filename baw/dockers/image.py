@@ -71,7 +71,7 @@ def version_max(taglist, prerelease: bool = False):
 def parse(item: str):
     """\
     >>> parse('v1.2.3')
-    VersionInfo(major=1, minor=2, patch=3, prerelease=None, build=None)
+    Version(major=1, minor=2, patch=3, prerelease=None, build=None)
     """
     if item[0] == 'v':
         item = item[1:]
