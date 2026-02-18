@@ -296,7 +296,8 @@ def get_install_cmd(
         testing_url = None
     if testing_url:
         pip += f'--extra-index-url {testing_url} '
-    pip += f'--trusted {trusted}'
+    if trusted:
+        pip += f'--trusted {trusted}'
     config = '--retries 2 --disable-pip-version-check '
     if require_legacy_solver():
         config += '--use-deprecated=legacy-resolver '
