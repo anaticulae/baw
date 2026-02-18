@@ -38,8 +38,6 @@ ENV SHARED_TMP=/tmp/shared/tmp
 ENV SHARED_TODO=/tmp/shared/todo
 ENV SHARED_READY=/tmp/shared/ready
 
-ENV GITEA_SERVER_URL='localhost'
-ENV GITEA_TOKEN='SECRET'
 ENV GIT_AUTHOR_NAME='Automated Release'
 ENV GIT_AUTHOR_EMAIL='automated_release@ostia.la'
 
