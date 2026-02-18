@@ -39,6 +39,10 @@ def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
 
 
 def test_cmd_image_upgrade_prerelease(simple, capsys):
+    # TODO: ADJUST AFTER HAVING RUNNING EXAMPLE
+    # docker{
+    #     image 'alpine_python_git_baw:v1.0.0'
+    # }
     simple[0]('pipe init')
     simple[0]('image upgrade --prerelease --dockerfile Jenkinsfile')
     stdout = tests.stdout(capsys)
