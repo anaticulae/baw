@@ -377,7 +377,7 @@ def connected(internal: str, external: str) -> bool:
     result = True
     for item in [internal, external]:
         if not item:
-            baw.log(f'Empyt pip address: {item}')
+            baw.debug(f'Empty pip address: {item}')
             continue
         try:
             with urllib.request.urlopen(item) as response:  # nosec

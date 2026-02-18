@@ -24,6 +24,7 @@ from baw.utils import FAILURE
 from baw.utils import NEWLINE
 from baw.utils import SUCCESS
 from baw.utils import completed
+from baw.utils import debug
 from baw.utils import error
 from baw.utils import exitx
 from baw.utils import file_create

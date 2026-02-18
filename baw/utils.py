@@ -79,6 +79,15 @@ def log(msg: str = '', end: str = NEWLINE):
     print(msg, end=end, file=sys.stdout, flush=True)
 
 
+def debug(msg: str = '', end: str = NEWLINE):
+    # TODO: ENABLE LATER
+    logit = False
+    if not logit:
+        return
+    msg = '[DEBUG]:' + msg
+    log(msg, end=end)
+
+
 def completed(completed, force: bool = False):  # pylint:disable=W0621
     if not completed.returncode and not force:
         return
