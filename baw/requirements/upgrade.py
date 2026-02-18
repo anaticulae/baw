@@ -48,12 +48,27 @@ def smart_replace(requirements: str, old: str, new: str):
     """Ensure that `PyYAML==5.1.0` matches with `PyYAML==5.1` as `old`
     requirement line."""
     result = [
-        line if not line_match(line, old) else line.replace(old, new)
+        line if not line_match(line, old) else replace_in_line(line, old, new)
         for line in requirements.splitlines()
     ]
     result = baw.NEWLINE.join(result) + baw.NEWLINE
     assert requirements != result, f'replacement does not work:\n{old};\n{new};\n{requirements}'
     return result
+
+
+def replace_in_line(line, old, new):
+    """\
+    >>> replace_in_line('semver>=2.13.0,<3.0.0;', old='semver>=2.13.0,<3.0.0;', new='semver>=3.0.4,<3.0.0;')
+    'semver>=3.0.4,<3.0.0;'
+    """
+    if '#' in line:
+        # complex
+        return line.split('#')[0] + ' ' + line.split('#')[1].strip()
+    # TODO: ENSURE THAT WHITESPACES PRESERVED
+    # simple
+    line = line.replace(' ', '')
+    old = old.replace(' ', '')
+    return line.replace(old, new)
 
 
 def line_match(line, old) -> bool:
