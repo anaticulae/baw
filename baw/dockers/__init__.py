@@ -18,11 +18,12 @@ import baw.dockers.container
 import baw.run
 import baw.utils
 
+BASE_URL = 'http://169.254.149.20:2375'
+
 
 @contextlib.contextmanager
 def client():
-    base_url = 'http://169.254.149.20:2375'
-    result = docker.DockerClient(base_url=base_url)
+    result = docker.DockerClient(base_url=BASE_URL)
     yield result
     result.close()
 
