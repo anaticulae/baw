@@ -18,7 +18,8 @@ import baw.dockers.container
 import baw.run
 import baw.utils
 
-BASE_URL = 'http://169.254.149.20:2375'
+# TODO: CHECK WIN
+BASE_URL = 'unix:///var/run/docker.sock'
 
 
 @contextlib.contextmanager
