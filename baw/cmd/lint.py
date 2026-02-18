@@ -53,7 +53,8 @@ def run_linter(root: str, verbose: bool, venv: bool) -> int:
             log_always=False,
     ):
         baw.error('could not release, solve this errors first.')
-        baw.error('turn `fail_on_finding` off to release with errors')
+        baw.error("turn ['release']['fail_on_finding'] = False "
+                  "to release with errors")
         return returncode
     return baw.SUCCESS
 
