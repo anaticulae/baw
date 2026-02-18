@@ -331,7 +331,7 @@ def _run_venv(
         activate = f'{activate}.bat'
         deactivate = f'{deactivate}.bat'
     else:
-        activate = f'source {activate}'
+        activate = f'. {activate}'
         # linux does not require a deactivate script, its just a function
         # which was create by activate
         deactivate = 'deactivate'
