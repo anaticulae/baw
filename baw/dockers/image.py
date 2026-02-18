@@ -13,7 +13,6 @@ import docker.errors
 import semver
 
 import baw.dockers
-import baw.utils
 
 
 def tags(matched: str) -> list:
