@@ -21,10 +21,10 @@ import tests
     ('requirement', ''),
     ('sources', 'baw'),
     ('image', 'try_baw'),
-    # ('describe', ''), # does not work on github TODO: ENABLE LATER
     ('stable', ''),
     ('branch', ''),
 ))
+# ('describe', ''), # does not work on github TODO: ENABLE LATER
 def test_cmd_info(cmd, expected, monkeypatch, capsys):
     tests.baaw(
         f'info {cmd}',
