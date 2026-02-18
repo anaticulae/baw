@@ -37,6 +37,7 @@ def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
 #     stdout = tests.stdout(capsys)
 #     assert '169.254.149.20:6001/arch_python_git_baw:v' in stdout
 
+
 def test_cmd_image_upgrade_prerelease(simple, capsys):
     simple[0]('pipe init')
     simple[0]('image upgrade --prerelease --dockerfile Jenkinsfile')
@@ -45,6 +46,7 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
     upgraded = 'upgraded:' in stdout
     upgraded |= 'up-to-date:' in stdout
     assert upgraded, str(stdout)
+
 
 # @pytest.mark.parametrize('typ', [
 #     'PIPREF',
