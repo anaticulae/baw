@@ -12,7 +12,6 @@ import difflib
 
 import baw.requirements
 import baw.requirements.check
-import baw.utils
 
 
 def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
