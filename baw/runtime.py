@@ -137,7 +137,7 @@ def patch_pip(root, verbose: bool = False):
 def patch_env(root):
     path = os.path.join(virtual(root), 'Scripts/activate.bat')
     content = baw.utils.file_read(path)
-    content = content.split(':END')[0]  # remove content after :END
+    content = content.partition(':END')[0]  # remove content after :END
     baw.utils.file_remove(path)
     baw.utils.file_create(path, content=content)
 
@@ -325,7 +325,7 @@ def _run_venv(
     )
     deactivate = os.path.join(virtual(root), 'Scripts/deactivate')
     if not os.path.exists(activate):
-        msg = (f'Path `{activate}` does not exists.\nRegenerate the venv')
+        msg = f'Path `{activate}` does not exists.\nRegenerate the venv'
         raise RuntimeError(msg)
     if windows:
         activate = f'{activate}.bat'

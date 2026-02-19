@@ -12,6 +12,8 @@ import os
 import baw
 import baw.config
 
+COV_MAX = 100
+
 
 def upgrade(root):
     if cov_max(root):
@@ -25,7 +27,7 @@ def cov_max(root) -> bool:
     False
     """
     current = baw.config.coverage_min(root)
-    if current == 100:
+    if current == COV_MAX:
         return True
     return False
 
