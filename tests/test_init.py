@@ -27,7 +27,6 @@ def test_init_project_in_empty_folder(project_example):
 @tests.hasbaw
 @tests.hasgit
 @tests.longrun
-@tests.nonvenv
 @pytest.mark.usefixtures('testdir')
 def test_escaping_single_collon(monkeypatch):
     """Generate project with ' in name and test install"""
