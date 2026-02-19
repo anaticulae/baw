@@ -17,4 +17,4 @@ fail_on_finding = False
 hvsc = github
 
 [docker]
-image = 169.254.149.20:6001/test:0.1.0
+image = alpine:3.23.3
