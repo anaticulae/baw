@@ -71,7 +71,7 @@ class ReleaseConfig:
         """
         path = baw.config.changelog(self.root)
         content = baw.utils.file_read(path)
-        header = content.split('## v')[0]
+        header = content.partition('## v')[0]
         splitted = header.splitlines(True)
         collected = [splitted[0]] if splitted else []
         if splitted:

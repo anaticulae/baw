@@ -58,7 +58,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
                 if os.path.isfile(item):
                     os.remove(item)
                 else:
-                    shutil.rmtree(item, onerror=remove_readonly)
+                    shutil.rmtree(item, onexc=remove_readonly)
             except OSError as fail:
                 ret += 1
                 baw.error(fail)
