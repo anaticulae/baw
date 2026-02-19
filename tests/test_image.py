@@ -9,8 +9,6 @@
 
 import os
 
-import pytest
-
 import baw
 import baw.cmd.image.dockerfiles
 import baw.pipefile

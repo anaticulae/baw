@@ -11,7 +11,6 @@ import os
 
 import pytest
 
-import baw.runtime
 import tests
 
 
