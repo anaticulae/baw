@@ -74,7 +74,7 @@ def parse(item: str):
     """
     if item[0] == 'v':
         item = item[1:]
-    parsed = semver.VersionInfo.parse(item)
+    parsed = semver.Version.parse(item)
     return parsed
 
 

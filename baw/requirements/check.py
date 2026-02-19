@@ -32,13 +32,13 @@ def lower(current: str, new: str) -> bool:
     False
     """
     current = baw.requirements.parser.fix_version(current, True)
-    new = baw.requirements.parser.fix_version(new, True)
+    new: str = baw.requirements.parser.fix_version(new, True)
     try:
-        current = semver.VersionInfo.parse(current)
+        current: semver.Version = semver.Version.parse(current)
     except ValueError:
         current: int = int(current)
     try:
-        new = semver.VersionInfo.parse(new)
+        new: semver.Version = semver.Version.parse(new)
     except ValueError:
         new: int = int(new)
     if isinstance(new, int):
