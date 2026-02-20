@@ -27,7 +27,7 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: bool = False, venv: bool = False):
-    for item in [format_source, format_imports]:
+    for item in (format_source, format_imports):
         failure = item(root, verbose=verbose, venv=venv)
         if failure:
             return failure

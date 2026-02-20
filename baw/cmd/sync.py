@@ -57,7 +57,7 @@ def sync(
     ret += baw.gix.update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
     if venv == 'BOTH':
-        for item in [True, False]:
+        for item in (True, False):
             ret += sync_dependencies(
                 root,
                 packages=packages,
@@ -375,7 +375,7 @@ def connected(internal: str, external: str) -> bool:
         Log the failure of a connection process also
     """
     result = True
-    for item in [internal, external]:
+    for item in (internal, external):
         if not item:
             baw.debug(f'Empty pip address: {item}')
             continue

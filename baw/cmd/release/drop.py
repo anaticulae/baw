@@ -79,7 +79,7 @@ def reset_resources(
     changelog = baw.config.changelog(root)
     to_reset = []
     returncode = 0
-    for item in [initpath, changelog]:
+    for item in (initpath, changelog):
         if not os.path.exists(os.path.join(root, item)):
             msg = f'Item {item} does not exists'
             baw.error(msg)

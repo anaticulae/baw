@@ -216,7 +216,7 @@ def determine_new_requirements(
     sync_error = False
     equal = {}
     greater = {}
-    for source, sink in [(parsed.equal, equal), (parsed.greater, greater)]:
+    for source, sink in ((parsed.equal, equal), (parsed.greater, greater)):
         sync_error |= collect_new_packages(
             root,
             source,
