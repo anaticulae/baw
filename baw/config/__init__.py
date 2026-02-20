@@ -146,7 +146,7 @@ def hvcs(root: str) -> str:
     """\
     >>> import baw.project
     >>> hvcs(baw.project.determine_root(__file__))
-    'gitea'
+    'github'
     """
     result = default_config(
         root,
