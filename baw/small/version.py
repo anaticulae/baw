@@ -14,9 +14,6 @@ import semantic_release.cli
 
 
 def main():
-    # run the patch
-    import baw.changelog  # pylint:disable=W0611
-
     # rewrite argv
     sys.argv[0] = 'semantic_release'
     # invoke semantic release
