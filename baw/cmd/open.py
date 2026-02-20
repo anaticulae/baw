@@ -86,15 +86,26 @@ def open_this(path=None, prints: bool = False):
     if not os.path.exists(path):
         baw.error(f'path does not exists: {path}')
         sys.exit(baw.FAILURE)
-    # convert for windows
-    path = path.replace('/', '\\')
     if prints:
         baw.log(path)
         return
-    cmd = f'explorer {path}'
+    if baw.runtime.iswin():
+        # convert for windows
+        path = path.replace('/', '\\')
+        cmd = f'explorer {path}'
+    else:
+        # linux
+        path = baw.forward_slash(path)
+        cmd = f'xdg-open .'
     completed = baw.runtime.run(
         cmd,
         cwd=path,
+        debugging=True,
+        live=True,
     )
-    # dont know why windows returns 1
-    assert completed.returncode == 1, completed
+    if baw.runtime.iswin():
+        # dont know why windows returns 1
+        assert completed.returncode == baw.FAILURE, completed
+    else:
+        # linux
+        assert completed.returncode == baw.SUCCESS, completed
