@@ -10,11 +10,11 @@
 import sys
 
 # TODO: REMOVE LATER
-import semantic_release.cli
+import semantic_release.cli.commands.main
 
 
 def main():
     # rewrite argv
     sys.argv[0] = 'semantic_release'
     # invoke semantic release
-    semantic_release.cli.entry()
+    semantic_release.cli.commands.main.main()
