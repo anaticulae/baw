@@ -13,7 +13,6 @@ import re
 import baw.config
 import baw.gix
 import baw.runtime
-import baw.utils
 
 RELEASE_PATTERN = re.compile(r'(?P<release>v\d+\.\d+\.\d+)')
 
