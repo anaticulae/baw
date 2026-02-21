@@ -29,9 +29,11 @@ def run(root, verbose, release_type, venv: bool = False):
     return baw.SUCCESS
 
 
-def changelog(root: str):
+def changelog(root: str, no_push: bool = True):
     cfg = os.path.join(root, "release.cfg")
     cmd = f'semantic-release -c {cfg} changelog'
+    if no_push:
+        cmd += ' --no-push'
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -40,9 +42,11 @@ def changelog(root: str):
     return completed.returncode
 
 
-def version(root: str):
+def version(root: str, no_push: bool = True):
     cfg = os.path.join(root, "release.cfg")
-    cmd = f'semantic-release -c {cfg} version --no-push'
+    cmd = f'semantic-release -c {cfg} version'
+    if no_push:
+        cmd += ' --no-push'
     completed = baw.runtime.run_target(
         root,
         cmd,
