@@ -48,5 +48,9 @@ def firstversion(root: str) -> bool:
 
 
 def configpath(root: str):
-    config = os.path.join(root, 'release.cfg')
+    tmp = baw.utils.tmp(root)
+    config = os.path.join(
+        tmp,
+        'release.cfg',
+    )
     return config
