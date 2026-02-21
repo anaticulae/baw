@@ -19,8 +19,8 @@ def run(root, verbose, release_type, venv: bool = False):
             verbose,
             venv=venv,
     ):
-        returncode = changelog(root)
-        returncode += version(root)
+        # returncode = changelog(root)
+        returncode = version(root)
     if returncode:
         baw.error('while running semantic-release')
         return returncode
