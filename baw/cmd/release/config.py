@@ -8,13 +8,10 @@
 # =============================================================================
 
 import contextlib
-import functools
 import os
-import textwrap
 
 import baw.config
 import baw.gix
-import baw.project
 import baw.utils
 
 AUTOMATED = 'Automated Release <automated_release@ostia.la>'
@@ -24,10 +21,14 @@ TEMPLATE = baw.utils.file_read(os.path.join(baw.ROOT, 'baw/templates/semantic.cf
 
 @contextlib.contextmanager
 def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
-    generated = TEMPLATE.replace('{{REPO_DIR}}', root)
+    package = baw.config.shortcut(root)
+    generated = TEMPLATE + ''
+    generated = generated.replace('{{REPO_DIR}}', root)
+    generated = generated.replace('{{PACKAGE}}', package)
+    baw.utils.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
-    config = os.path.join(root, 'setup.cfg')
+    config = os.path.join(root, 'release.cfg')
     baw.utils.file_create(config, generated)
     yield config
     # remove file

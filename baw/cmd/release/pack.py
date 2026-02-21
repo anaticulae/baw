@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import baw.cmd.release.config
 import baw.runtime
 import baw.utils
@@ -18,31 +20,35 @@ def run(root, verbose, release_type, venv: bool = False):
             root,
             verbose,
             venv=venv,
-    ) as cfg:
-        cmd = release_cmd(release_type, cfg)
-        completed = baw.runtime.run_target(
-            root,
-            cmd,
-            verbose=verbose,
-            venv=venv,
-        )
-        baw.log(completed.stdout)
-        if NO_RELEASE_MESSAGE in completed.stdout:
-            baw.error('abort release')
-            baw.log('ensure that some (feat) are commited')
-            baw.log('use: `baw release minor` to force release')
-            return baw.FAILURE
-    if completed.returncode:
+    ):
+        returncode = changelog(root)
+        returncode += version(root)
+    if returncode:
         baw.error('while running semantic-release')
-        baw.completed(completed)
-        return completed.returncode
+        return returncode
     return baw.SUCCESS
 
 
-def release_cmd(types, cfg) -> str:
-    release_type = select_release_type(types, cfg=cfg)
-    result = f'baw_semantic_release -v DEBUG publish {release_type}'
-    return result
+def changelog(root: str):
+    cfg = os.path.join(root, "release.cfg")
+    cmd = f'semantic-release -c {cfg} changelog'
+    completed = baw.runtime.run_target(
+        root,
+        cmd,
+    )
+    baw.log(completed)
+    return completed.returncode
+
+
+def version(root: str):
+    cfg = os.path.join(root, "release.cfg")
+    cmd = f'semantic-release -c {cfg} version --no-push'
+    completed = baw.runtime.run_target(
+        root,
+        cmd,
+    )
+    baw.log(completed)
+    return completed.returncode
 
 
 # semantic release returns this message if no new release is provided, cause
