@@ -10,6 +10,7 @@
 import baw.archive.test
 import baw.cmd.complex
 import baw.cmd.lint
+import baw.cmd.release.config
 import baw.cmd.release.drop
 import baw.cmd.release.pack
 import baw.gix
@@ -152,6 +153,10 @@ def run(args: dict) -> int:
     notest = args.get('no_test', False)
     if notest:
         test = False
+    if args.get('release') == 'config':
+        with baw.cmd.release.config.temp_semantic_config(root, verbose=True):
+            pass
+        return baw.SUCCESS
     if args.get('release') == 'drop':
         result = baw.cmd.release.drop.run(
             root,
@@ -178,7 +183,7 @@ def extend_cli(parser):
         'release',
         help='Test, commit, tag and publish',
         nargs='?',
-        choices='major minor patch noop auto drop'.split(),
+        choices='major minor patch noop auto drop config'.split(),
         default='auto',
     )
     parser.add_argument('--no_install', action='store_true', help='skip insta')

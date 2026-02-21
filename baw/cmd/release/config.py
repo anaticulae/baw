@@ -25,7 +25,8 @@ def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     generated = TEMPLATE + ''
     generated = generated.replace('{{REPO_DIR}}', root)
     generated = generated.replace('{{PACKAGE}}', package)
-    baw.utils.log(generated)
+    if verbose:
+        baw.utils.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = configpath(root)
