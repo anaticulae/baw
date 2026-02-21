@@ -9,8 +9,6 @@
 
 import os
 
-import baw.cmd.release.pack
-import baw.gix
 import baw.utils
 import tests
 
@@ -28,12 +26,11 @@ def test_release_simple(simple, monkeypatch, capsys):
     baw.utils.file_create(path, 'CONTENT')
     baw.git_add(root, 'abc.txt')
     baw.git_commit(root, '.', 'feat(abc): feature is welcome')
-    with monkeypatch.context() as patched:
+    with monkeypatch.context():
         # do not open ide
-        patched.setattr(baw.cmd.release.pack, 'release_cmd', lambda _, __: 'ls')
         simple[0]('--verbose release')
     stdout = tests.stdout(capsys)
-    assert 'Completed: `ls` in' in stdout
+    assert 'The next version is: 1.0.0' in stdout
 
 
 def test_release_do_not_drop_first_release(simple, capsys):
