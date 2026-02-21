@@ -28,7 +28,7 @@ def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     baw.utils.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
-    config = os.path.join(root, 'release.cfg')
+    config = configpath(root)
     baw.utils.file_create(config, generated)
     yield config
     # remove file
@@ -45,3 +45,8 @@ def firstversion(root: str) -> bool:
     if not baw.gix.headhash(root):
         return True
     return False
+
+
+def configpath(root: str):
+    config = os.path.join(root, 'release.cfg')
+    return config

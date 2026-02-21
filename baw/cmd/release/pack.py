@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-
 import baw.cmd.release.config
 import baw.runtime
 import baw.utils
@@ -30,7 +28,7 @@ def run(root, verbose, release_type, venv: bool = False):
 
 
 def changelog(root: str, no_push: bool = True):
-    cfg = os.path.join(root, "release.cfg")
+    cfg = baw.cmd.release.config.configpath(root)
     cmd = f'semantic-release -c {cfg} changelog'
     if no_push:
         cmd += ' --no-push'
@@ -43,7 +41,7 @@ def changelog(root: str, no_push: bool = True):
 
 
 def version(root: str, no_push: bool = True):
-    cfg = os.path.join(root, "release.cfg")
+    cfg = baw.cmd.release.config.configpath(root)
     cmd = f'semantic-release -c {cfg} version'
     if no_push:
         cmd += ' --no-push'
