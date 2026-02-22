@@ -372,7 +372,7 @@ def update_gitignore(root: str, verbose: bool = False):
 
 
 def update_userdata(username='supermario', email='test@test.com'):
-    cmd = f'git config --global user.email "{email}" user.name="{username}"'
+    cmd = f'git config --local user.email "{email}" user.name="{username}"'
     process = subprocess.run(  # nosec
         cmd,
         check=False,
@@ -432,7 +432,7 @@ def installed() -> bool:
         root = os.getcwd()
         # ensure that git work inside docker properly. If git user is other
         # than repo owner, git does not work properly without this patch.
-        cmd = f'git config --global --add safe.directory "{root}"'
+        cmd = f'git config --local --add safe.directory "{root}"'
         baw.runtime.run(cmd, cwd=root)
         return True
     return False

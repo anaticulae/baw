@@ -170,5 +170,5 @@ def stderr(capsys) -> str:
 
 
 def ensure_gituser():
-    baw.runtime.run('git config --global user.name "Your Name"')
-    baw.runtime.run('git config --global user.email "you@example.com"')
+    baw.runtime.run('git config --local user.name "Your Name"')
+    baw.runtime.run('git config --local user.email "you@example.com"')
