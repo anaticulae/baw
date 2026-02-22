@@ -16,7 +16,9 @@ import baw.utils
 
 AUTOMATED = 'Automated Release <automated_release@ostia.la>'
 
-TEMPLATE = baw.utils.file_read(os.path.join(baw.ROOT, 'baw/templates/semantic.cfg')) # yapf:disable
+TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
+TEMPLATE = baw.utils.file_read(os.path.join(TEMPLATES, 'semantic.cfg'))
+SEMANTIC = os.path.join(TEMPLATES, 'semantic')
 
 
 @contextlib.contextmanager
@@ -25,6 +27,7 @@ def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
     generated = TEMPLATE + ''
     generated = generated.replace('{{REPO_DIR}}', root)
     generated = generated.replace('{{PACKAGE}}', package)
+    generated = generated.replace('{{TEMPLATE_DIR}}', SEMANTIC)
     if verbose:
         baw.utils.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported

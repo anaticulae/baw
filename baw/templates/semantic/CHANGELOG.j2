@@ -1,0 +1,11 @@
+{% for release in releases %}
+## {{ release.version }}
+
+{% for section, commits in release.sections.items() %}
+### {{ section }}
+{% for commit in commits %}
+- {{ commit.description }}
+{% endfor %}
+{% endfor %}
+
+{% endfor %}
