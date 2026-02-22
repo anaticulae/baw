@@ -12,12 +12,11 @@ import baw.runtime
 import baw.utils
 
 
-def run(root, verbose, release_type, venv: bool = False):
+def run(root, verbose, release_type):  # pylint:disable=W0613
     baw.log('update version tag')
     with baw.cmd.release.config.temp_semantic_config(
             root,
             verbose,
-            venv=venv,
     ):
         # returncode = changelog(root)
         returncode = version(root)

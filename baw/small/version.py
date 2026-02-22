@@ -17,4 +17,4 @@ def main():
     # rewrite argv
     sys.argv[0] = 'semantic_release'
     # invoke semantic release
-    semantic_release.cli.commands.main.main()
+    semantic_release.cli.commands.main.main(None)

@@ -22,7 +22,7 @@ SEMANTIC = os.path.join(TEMPLATES, 'semantic')
 
 
 @contextlib.contextmanager
-def temp_semantic_config(root: str, verbose: bool, venv: bool = False):
+def temp_semantic_config(root: str, verbose: bool):
     package = baw.config.shortcut(root)
     generated = TEMPLATE + ''
     generated = generated.replace('{{REPO_DIR}}', root)
