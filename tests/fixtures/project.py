@@ -25,7 +25,6 @@ EXAMPLE_PROJECT_NAME = 'xkcd'
 def example(testdir, monkeypatch):
     """Creating example project due console"""
     require_baw_git()
-    baw.gix.update_userdata()
     cmd = f'baw --verbose init {EXAMPLE_PROJECT_NAME} "Longtime project"'
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
@@ -53,7 +52,6 @@ def project_example(testdir, monkeypatch):
     with monkeypatch.context() as context:
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
         context.setattr(baw.config, 'bawtmp', tmpdir)
-        baw.gix.update_userdata()
         tests.baaw(['init', 'xcd', '"I Like This Project"'], monkeypatch)
         tests.baaw('plan new', monkeypatch)
         yield testdir.tmpdir

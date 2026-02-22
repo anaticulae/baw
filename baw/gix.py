@@ -371,17 +371,6 @@ def update_gitignore(root: str, verbose: bool = False):
     return baw.SUCCESS
 
 
-def update_userdata(username='supermario', email='test@test.com'):
-    cmd = f'git config --local user.email "{email}" user.name="{username}"'
-    process = subprocess.run(  # nosec
-        cmd,
-        check=False,
-        shell=True,
-        capture_output=True,
-    )
-    evaluate_git_error(process)
-
-
 def tokenizes(root: str, token: str = None) -> str:
     """\
     >>> tokenizes(baw.project.determine_root(__file__), 'UNSET')
