@@ -20,7 +20,6 @@ import tests.fixtures.project
 @tests.longrun
 def test_creating_project(tmpdir):
     """Creating project without venv environment"""
-    tests.ensure_gituser()
     completed = tests.run(
         'baw --verbose init xkcd "Longtime project"',
         cwd=tmpdir,
