@@ -299,7 +299,7 @@ def from_raw_or_path(
         isdir = False
     if fname and isdir:
         # use default file path if exists
-        if newpath := baw.file_find(content, fnames=fname, ftype=ftype):
+        if newpath := file_find(content, fnames=fname, ftype=ftype):
             content = newpath
         else:
             raise FileNotFoundError("directory not found: "
@@ -308,3 +308,18 @@ def from_raw_or_path(
     if len(content.splitlines()) == 1 and os.path.isfile(content):
         content = baw.utils.file_read(content)
     return content
+
+
+def file_find(path, fnames, ftype=None):
+    """Allow multiple file names, select the first one."""
+    if isinstance(fnames, str):
+        fnames = [fnames]
+    for fname in fnames:
+        if ftype:
+            # append file-ext to ftype
+            fname = f'{fname}.{ftype}'
+        newpath = join(path, fname)
+        if not os.path.exists(newpath):
+            continue
+        return newpath
+    return None

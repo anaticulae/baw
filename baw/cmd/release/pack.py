@@ -70,8 +70,8 @@ def select_release_type(typ: str, cfg: str) -> str:
     return typ
 
 
-def require_autopatch(changelog: str) -> bool:
+def require_autopatch(changelog_content: str) -> bool:
     for item in 'Feature Fix Documentation'.split():  # pylint:disable=C0501
-        if f'>>> {item}' in changelog:
+        if f'>>> {item}' in changelog_content:
             return False
     return True

@@ -56,7 +56,7 @@ def upgrade(
         )
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
-            requirements = (requirements, requirements_dev)
+            requirements: tuple = (requirements, requirements_dev)
         if failure:
             # reset requirement
             completed = baw.gix.reset(

@@ -75,7 +75,6 @@ def release(  # pylint:disable=R1260
             root,
             verbose,
             release_type,
-            venv=venv,
     ):
         return returncode
     return baw.SUCCESS

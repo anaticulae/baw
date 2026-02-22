@@ -113,7 +113,6 @@ def check_dependency(
             baw.error(f'not reachable: {index} for package {package}')
             baw.error(completed.stderr)
             sys.exit(completed.returncode)
-            continue
         if completed.returncode and completed.stderr:
             baw.error(completed.stderr)
         if completed.stdout:

@@ -96,7 +96,7 @@ def open_this(path=None, prints: bool = False):
     else:
         # linux
         path = baw.forward_slash(path)
-        cmd = f'xdg-open .'
+        cmd = 'xdg-open .'
     completed = baw.runtime.run(
         cmd,
         cwd=path,
