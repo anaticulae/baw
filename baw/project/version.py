@@ -40,7 +40,7 @@ def determine(root: str, verbose: bool = False) -> str:
     """
     assert os.path.exists(root)
     # f'{short}/__init__.py:__version__'
-    version_path = baw.config.version(root).rstrip(':__version__')
+    version_path = baw.config.version(root).removesuffix(':__version__')
     path = os.path.join(root, version_path)
     content = baw.utils.file_read(path)
     for pattern in VERSION:
