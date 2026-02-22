@@ -291,8 +291,7 @@ def profile():
     except Exception:
         print_runtime(start)
         raise
-    else:
-        print_runtime(start)
+    print_runtime(start)
 
 
 def skip(msg: str):
@@ -431,11 +430,11 @@ def exitx(msg='', returncode=FAILURE):
 def git_hash(root) -> str:
     if not baw.runtime.hasprog("git"):
         exitx("install git, please")
-    completed = baw.runtime.run(
+    done = baw.runtime.run(
         "git describe",
         cwd=root,
     )
-    value = completed.stdout.strip()
+    value = done.stdout.strip()
     if value == static(root):
         return value
     # transform v2.40.1-5-gc1b4bee to
@@ -470,9 +469,9 @@ def files_sort(files: list) -> list:
         item = file_name(item)
         with contextlib.suppress(ValueError):
             # sort items by number
-            item = int(item)
+            item: int = int(item)
             # ensure to compare str and str and not str and int
-            item = str(item).zfill(20)
+            item: str = str(item).zfill(20)
         return item
 
     files = sorted(files, key=number_filename)
@@ -561,32 +560,3 @@ def file_list(  # pylint:disable=R1260
     if sort:
         result = files_sort(result)
     return result
-
-
-def file_name(path: str, ext: bool = False) -> str:
-    """Determine file name without file extension out of file path.
-
-    >>> file_name('/etc/profile.d/helm.sh')
-    'helm'
-    >>> file_name('info.txt')
-    'info'
-    >>> file_name('/etc/.tmp')
-    '.tmp'
-    >>> file_name('.etc')
-    '.etc'
-    >>> file_name('/no/file/ext')
-    'ext'
-    >>> file_name('etc/dev/raw.png', ext=True)
-    'raw.png'
-    """
-    assert path, path
-    path = forward_slash(path)
-    try:
-        _, name = path.rsplit('/', 1)
-    except ValueError:
-        name = path
-    if ext:
-        return name
-    if name[0] == '.':
-        return name
-    return name.split('.')[0]

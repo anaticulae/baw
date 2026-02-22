@@ -271,8 +271,7 @@ def cmds(root: str) -> dict:
         run = cfg['run']
     except KeyError:
         return {}
-    else:
-        result = dict(run.items())
+    result = dict(run.items())
     return result
 
 
@@ -565,9 +564,7 @@ def lookup(*args, default=None):
             if default is not None:
                 return default
             raise SystemExit(f'missing global env: {key}') from error
-        else:
-            item = str(item)
-        result.append(item)
+        result.append(str(item))
     if len(result) == 1:
         return result[0]
     return tuple(result)

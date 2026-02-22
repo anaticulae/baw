@@ -34,7 +34,6 @@ def exists(name: str) -> int:
     if check_baseimage(name):
         baw.error(f'could not find image: {name}')
         sys.exit(baw.FAILURE)
-        return baw.FAILURE
     baw.log('OK')
     return baw.SUCCESS
 
