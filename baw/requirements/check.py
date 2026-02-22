@@ -104,7 +104,7 @@ def inside(current: str, expected: str) -> bool:  # pylint:disable=R1260,R0911,R
             if minor(current) > minor(greater):
                 return False
         else:
-            if minor(current) >= minor(greater):  # pylint:disable=R5601,R5501
+            if minor(current) >= minor(greater):  # pylint:disable=R5501
                 return False
     if major(small) == major(current) and minor(small) == minor(current):
         if patch(small) > patch(current):

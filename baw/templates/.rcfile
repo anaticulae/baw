@@ -16,13 +16,16 @@ disable=C0111,
     C3001,
     E1121,
     R0401,
-    R6103,
     R0901,
     R0903,
+    R0917,
     R2004,
+    R6103,
+    R0913,
     W0149,
     W0160,
-    W0603
+    W0603,
+    W0717,
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
