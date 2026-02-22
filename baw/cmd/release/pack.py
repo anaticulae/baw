@@ -49,6 +49,8 @@ def version(root: str, no_push: bool = True):
         root,
         cmd,
     )
+    if NO_RELEASE_MESSAGE in completed.stdout:
+        return baw.FAILURE
     baw.log(completed)
     return completed.returncode
 
