@@ -96,7 +96,6 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
         baw.log(f'{cmd} in {venv}')
     process = run(cmd=cmd, cwd=venv)
     if iswin():
-        patch_pip(root, verbose=verbose)
         if sys.version_info.major == 3 and sys.version_info.minor == 7:
             # python 3.7
             patch_env(root)
@@ -111,27 +110,6 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
         if process.stderr:
             baw.error(process.stderr)
     return baw.SUCCESS
-
-
-def patch_pip(root, verbose: bool = False):
-    """This patch is required for install pdfminer.six==20181108 under
-    pip==18.1, this can may be removed with new pip or pdfminer. There is a
-    problem with sorting RECORS, cause mixing sort int and str.
-
-    TODO: REMOVE WITH UPGRADED PIP OR PDFMINER
-    """
-    if verbose:
-        baw.log(f'Patching the wheel: {root}')
-    to_patch = os.path.join(
-        virtual(root),
-        'Lib/site-packages/pip/_internal/wheel.py',
-    )
-    if not os.path.exists(to_patch):
-        return
-    template = 'for row in sorted(outrows):'
-    replacement = 'for row in outrows:'
-    content = baw.utils.file_read(to_patch).replace(template, replacement)
-    baw.utils.file_replace(to_patch, content)
 
 
 def patch_env(root):
