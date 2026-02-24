@@ -46,9 +46,7 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
             return failure
     # setup virtual flag, verify this!
     baw.cmd.utils.run_environment(args)
-    func = args.get('func')
-    if func:
-        # TODO: REMOVE ALL METHOD BELOW
+    if func := args.get('func'):
         return func(args)
     if not args.get('ide', False):
         # --ide is a very long running task, sometimes 'endless'.
