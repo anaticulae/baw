@@ -12,7 +12,6 @@ ROOT = None
 __version__ = '1.69.0'
 
 # pylint:disable=wrong-import-position
-import baw.__patch__
 import baw.__root__
 from baw.gix import git_add
 from baw.gix import git_commit
