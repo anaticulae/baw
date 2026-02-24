@@ -114,7 +114,6 @@ def lint(
 
 def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     baw.log('pylint...')
-    # python = baw.config.python(root, venv=venv)
     spelling = baw.config.spelling(root)
     pyconfig = baw.config.pylint(root)
     cmd = f'pylint {run_in}'
