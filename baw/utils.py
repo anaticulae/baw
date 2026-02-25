@@ -136,6 +136,18 @@ SECOND_GUARD = 'OHMANIHAVETGOLEARNMOREPYTHONTHATS'
 
 
 def forward_slash(content: str, save_newline=True):
+    r"""\
+    >>> forward_slash("\\")
+    '/'
+    >>> forward_slash(r"\\\\")
+    '//'
+    >>> forward_slash('\n')
+    '\n'
+    >>> forward_slash(r'C:\\usr\\python\\310\\')
+    'C:/usr/python/310/'
+    >>> forward_slash('\\\n')
+    '/\n'
+    """
     # TODO: HACK
     if PLAINOUTPUT in os.environ:
         return content
