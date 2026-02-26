@@ -48,6 +48,9 @@ def generate(root: str, inject: bool = False, install: bool = False):
     os.unlink(config)
 
 
+DEFAULT_IMAGE = 'alpine:3.23.3'
+
+
 def header(root: str) -> str:
     """\
     >>> header(__file__)
@@ -57,6 +60,9 @@ def header(root: str) -> str:
     if not root:
         sys.exit(baw.FAILURE)
     image = baw.pipefile.docker_image(root)
+    if not image:
+        image = DEFAULT_IMAGE
+        baw.error(f'Could not parse docker image: {image} in {root}')
     result = f'FROM {image}'
     return result
 
