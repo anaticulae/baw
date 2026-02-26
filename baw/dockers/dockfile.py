@@ -20,6 +20,9 @@ import baw.utils
 
 def build(dockerfile: str, tagname: str) -> int:
     image = parse_baseimage(dockerfile)
+    if not image:
+        baw.error(f'empty image: {tagname} {dockerfile}')
+        return baw.FAILURE
     if baw.dockers.image.check_baseimage(image):
         baw.error(f'could not find baseimage {image} in {dockerfile}')
         baw.error(parse_baseimage(dockerfile))
