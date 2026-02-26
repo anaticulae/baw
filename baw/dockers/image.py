@@ -77,11 +77,10 @@ def parse(item: str):
     return parsed
 
 
-def check_baseimage(image: str):
-    # TODO: FIX THIS INTERFACE
+def check_baseimage(image: str) -> bool:
     with baw.dockers.client() as client:
         try:
             client.images.get(image)
         except docker.errors.ImageNotFound:
-            return image
-    return None
+            return False
+    return True
