@@ -60,6 +60,8 @@ def log_service(done):
 def parse_baseimage(path: str):
     lines = baw.utils.file_read(path).splitlines()
     for line in lines:
+        if not line:
+            continue
         if line.startswith('FROM '):
             return line.split(' ')[1].strip()
     raise ValueError(f'could not find `FROM ` in {path}')
