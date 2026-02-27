@@ -26,8 +26,11 @@ with open(os.path.join(ROOT, "requirements.txt"), encoding='utf8') as fp:
     REQUIRES = [line for line in fp.readlines() if line and '#' not in line]
 
 CLASSIFIERS = [
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
 ]
 PACKAGES = [
     'baw',
@@ -95,7 +98,6 @@ if __name__ == "__main__":
         long_description=README,
         packages=PACKAGES,
         platforms='any',
-        url='https://dev.baw.checkitweg.de',
         version=versions(),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
     )
