@@ -101,6 +101,7 @@ if __name__ == "__main__":
         long_description=README,
         packages=PACKAGES,
         platforms='any',
+        url='https://github.com/anaticulae/baw',
         version=versions(),
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
     )
