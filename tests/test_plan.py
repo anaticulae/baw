@@ -11,7 +11,6 @@ import os
 
 import baw.cmd.plan
 import baw.gix
-import baw.utils
 import tests
 
 ROOT = baw.ROOT
