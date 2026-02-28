@@ -99,6 +99,7 @@ if __name__ == "__main__":
         install_requires=REQUIRES,
         licence=LICENCE,
         long_description=README,
+        long_description_content_type='text/markdown',
         packages=PACKAGES,
         platforms='any',
         url='https://github.com/anaticulae/baw',
