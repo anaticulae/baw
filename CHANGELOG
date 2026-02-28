@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.70.2 (2026-02-28)
+
+### Bug Fixes
+
+- **docker**: Cleanup docker file
+  ([`73a134a`](https://github.com/anaticulae/baw/commit/73a134aa6523a62189983df6fd587068d4cf8313))
+
+
 ## v1.70.1 (2026-02-28)
 
 ### Bug Fixes
