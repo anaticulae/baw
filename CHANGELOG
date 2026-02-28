@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.70.1 (2026-02-28)
+
+### Bug Fixes
+
+- **setup**: Adjust readme format
+  ([`f26b92e`](https://github.com/anaticulae/baw/commit/f26b92eed04a475438ce6792bded5b3e242b1dd2))
+
+
 ## v1.70.0 (2026-02-28)
 
 ### Bug Fixes
