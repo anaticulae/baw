@@ -11,14 +11,6 @@ FROM alpine:3.23.3
 
 LABEL maintainer="Helmut Konrad Schewe <helmutus@outlook.com>"
 
-# UBUNTU
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     git \
-#     python3 \
-#     python3-pip \
-#     python3-venv \
-# && rm -rf /var/lib/apt/lists/*
-
 # ALPINE
 RUN apk add --no-cache \
     git \
@@ -37,12 +29,6 @@ ENV SHARED_SPACE=/tmp/shared
 ENV SHARED_TMP=/tmp/shared/tmp
 ENV SHARED_TODO=/tmp/shared/todo
 ENV SHARED_READY=/tmp/shared/ready
-
-ENV GIT_AUTHOR_NAME='Automated Release'
-ENV GIT_AUTHOR_EMAIL='automated_release@ostia.la'
-
-ENV CAELUM_DOCKER_TEST='localhost'
-ENV CAELUM_DOCKER_RUNTIME='localhost'
 
 COPY /baw/templates/.gitignore /var/install/.gitignore
 RUN git config --global --add core.excludesFile /var/install/.gitignore &&\
