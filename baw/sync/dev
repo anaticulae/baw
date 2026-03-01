@@ -20,7 +20,7 @@ pytest_timeout == 2.1.0
 pytest-xdist == 3.8.0
 
 
-setuptools == 65.5.1
+setuptools == 82.0.0
 
 rope == 1.14.0
 
