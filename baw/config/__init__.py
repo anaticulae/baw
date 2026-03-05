@@ -536,7 +536,7 @@ def default_config(root: str, access: callable, default=None) -> bool:
 
 @functools.lru_cache(maxsize=1)
 def bawtmp():
-    path = lookup('BAW')
+    path = lookup('BAW', default='/tmp/.baw')  #nosec B108
     os.makedirs(path, exist_ok=True)
     return path
 
