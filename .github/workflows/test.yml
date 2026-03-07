@@ -1,4 +1,4 @@
-name: tests
+name: Run different types of tests
 
 on:
   push:
