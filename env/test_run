@@ -1,0 +1,50 @@
+#!/usr/bin/bash
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2026 by Helmut Konrad Schewe. All rights reserved.
+# This file is property of Helmut Konrad Schewe. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+push /var/workdir
+
+echo "run test_run"
+
+echo "baw test docs"
+baw test docs
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw test fast"
+baw test fast
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw test long"
+baw test long
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw test all"
+baw test all
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "baw lint"
+baw lint
+if [ $? -ne 0 ]
+then
+    exit 1
+fi
+
+echo "done: run test_run"
