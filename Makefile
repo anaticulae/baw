@@ -5,6 +5,7 @@ CURDIR := $(CURDIR)
 
 NAME = baw
 IMAGE := $(NAME):$(VERSION)
+IMAGE_BASE_NAME := ghcr.io/anaticulae/baw:$(VERSION)
 IMAGE_TEST_NAME := ghcr.io/anaticulae/baw:$(VERSION)-test
 
 docker-build:
@@ -14,8 +15,14 @@ docker-build:
 docker-build-test:
 	docker build -f env/test -t $(IMAGE_TEST_NAME) .
 
+docker-build-base:
+	docker build -f env/base -t $(IMAGE_BASE_NAME) .
+
 docker-upload-test:
 	docker push $(IMAGE_TEST_NAME)
+
+docker-upload-base:
+	docker push $(IMAGE_BASE_NAME)
 
 docker-doctest: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test docs"
