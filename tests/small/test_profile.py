@@ -19,7 +19,7 @@ def test_commits():
     commits = baw.small.profile.commits(baw.ROOT, ranges=ranges)
     expected = (0,)
     if baw.gix.installed():
-        expected = (5,)
+        expected = (3, 4, 5)
         ci = os.environ.get('JENKINS_HOME', False) or os.environ.get(
             'CI', False)
         if ci:
