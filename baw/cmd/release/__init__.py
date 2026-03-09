@@ -13,6 +13,7 @@ import baw.cmd.lint
 import baw.cmd.release.config
 import baw.cmd.release.drop
 import baw.cmd.release.pack
+import baw.cmd.utils
 import baw.gix
 import baw.runtime
 import baw.utils
