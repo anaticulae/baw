@@ -26,7 +26,7 @@ def run(root, verbose, release_type):  # pylint:disable=W0613
     return baw.SUCCESS
 
 
-def changelog(root: str, no_push: bool = True):
+def changelog(root: str, no_push: bool = True) -> int:
     cfg = baw.cmd.release.config.configpath(root)
     cmd = f'semantic-release -c {cfg} changelog'
     if no_push:
@@ -39,7 +39,7 @@ def changelog(root: str, no_push: bool = True):
     return completed.returncode
 
 
-def version(root: str, no_push: bool = True):
+def version(root: str, no_push: bool = True) -> int:
     cfg = baw.cmd.release.config.configpath(root)
     cmd = f'semantic-release -c {cfg} version'
     if no_push:
