@@ -39,12 +39,6 @@ def temp_semantic_config(root: str, verbose: bool):
     os.unlink(config)
 
 
-def version_variables(root: str) -> str:
-    short = baw.config.version(root)
-    result = f'-D "version_variable={short}" '
-    return result
-
-
 def firstversion(root: str) -> bool:
     if not baw.gix.headhash(root):
         return True
