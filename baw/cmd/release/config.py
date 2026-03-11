@@ -14,8 +14,6 @@ import baw.config
 import baw.gix
 import baw.utils
 
-AUTOMATED = 'Automated Release <automated_release@ostia.la>'
-
 TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
 TEMPLATE = baw.utils.file_read(os.path.join(TEMPLATES, 'semantic.cfg'))
 SEMANTIC = os.path.join(TEMPLATES, 'semantic')
