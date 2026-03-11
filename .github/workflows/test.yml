@@ -9,7 +9,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: build docker container
@@ -18,7 +17,6 @@ jobs:
   doctest:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
     - uses: actions/checkout@v4
     - name: run doctest
@@ -27,7 +25,6 @@ jobs:
   fasttest:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
     - uses: actions/checkout@v4
       with:
@@ -39,7 +36,6 @@ jobs:
   longtest:
     runs-on: ubuntu-latest
     needs: fasttest
-
     steps:
     - uses: actions/checkout@v4
     - name: run longtest
@@ -48,7 +44,6 @@ jobs:
   alltest:
     runs-on: ubuntu-latest
     needs: longtest
-
     steps:
     - uses: actions/checkout@v4
     - name: run alltest
@@ -57,7 +52,6 @@ jobs:
   linter:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
     - uses: actions/checkout@v4
     - name: run linter
