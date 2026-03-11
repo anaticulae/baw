@@ -32,7 +32,6 @@ import baw.cmd.sync
 import baw.cmd.test
 import baw.cmd.upgrade
 import baw.run
-import baw.utils
 
 
 def create_parser():  # noqa: Z21
