@@ -15,7 +15,6 @@ import sys
 import pytest
 
 import baw.__main__
-import baw.run
 import baw.runtime
 
 THIS = os.path.dirname(__file__)
