@@ -45,6 +45,15 @@ jobs:
     - name: run longtest
       run: make docker-longtest
 
+  alltest:
+    runs-on: ubuntu-latest
+    needs: longtest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: run alltest
+      run: make docker-alltest
+
   linter:
     runs-on: ubuntu-latest
     needs: build
