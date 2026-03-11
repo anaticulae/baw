@@ -31,7 +31,7 @@ def temp_semantic_config(root: str, verbose: bool):
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = configpath(root)
-    baw.utils.file_create(config, generated)
+    baw.utils.file_replace(config, generated)
     yield config
     # remove file
     os.unlink(config)
