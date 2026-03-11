@@ -1,6 +1,90 @@
 # CHANGELOG
 
 
+## v1.71.0 (2026-03-11)
+
+### Bug Fixes
+
+- **config**: Do not fail if config already exists
+  ([`02002e3`](https://github.com/anaticulae/baw/commit/02002e3c68f2dade282156545318f12b8f036b00))
+
+- **config**: Remove outdated email
+  ([`82cdbaf`](https://github.com/anaticulae/baw/commit/82cdbafb6d97bd9dd631db312f6989a07bf7cfee))
+
+- **release**: Add missing import
+  ([`63ece79`](https://github.com/anaticulae/baw/commit/63ece7911946944acc84aa5631628a3297a631e6))
+
+- **release**: Adjust versions variable
+  ([`3c0f355`](https://github.com/anaticulae/baw/commit/3c0f355331067dcf43a4c5a372dfb0fdf65fd816))
+
+- **release**: Improve logging output
+  ([`3ef6eb0`](https://github.com/anaticulae/baw/commit/3ef6eb0c2f3b5b81675d67f6460071cb2bd96630))
+
+- **setup**: Adjust interface
+  ([`18f84ae`](https://github.com/anaticulae/baw/commit/18f84ae00edc6a2c3b98bc06165a73681674594e))
+
+- **utila**: Use new package name
+  ([`cbc5f00`](https://github.com/anaticulae/baw/commit/cbc5f00a29aa029d45a13d8bc30bcc86ca28fbf2))
+
+### Chores
+
+- **dev**: Increase setuptools
+  ([`950dca0`](https://github.com/anaticulae/baw/commit/950dca011095adaacaadc79450e493d5ae7dcfe3))
+
+- **docker**: Add base docker env
+  ([`86c0eb1`](https://github.com/anaticulae/baw/commit/86c0eb1d2b4d17d9ed8dcb839fbe67261661a444))
+
+- **docker**: Add step to generate test environment and publish
+  ([`0fe51fe`](https://github.com/anaticulae/baw/commit/0fe51fe4bcf1b0b3cc515e717ba2f9606b7c9995))
+
+- **docker**: Extend from base image
+  ([`2e87f16`](https://github.com/anaticulae/baw/commit/2e87f1684028a46eab7e4bcfdb8121abd211f3c1))
+
+- **github**: Add step to generate and publish docker images
+  ([`0938210`](https://github.com/anaticulae/baw/commit/093821035c2aeec754413ea4ca65f3fb5fec5cb4))
+
+- **github**: Rename workflow
+  ([`a785b7f`](https://github.com/anaticulae/baw/commit/a785b7f293bd38816259ac50d7ddcb2253f55916))
+
+- **github**: Run alltest on github
+  ([`e17750c`](https://github.com/anaticulae/baw/commit/e17750cb4aa23c59987f3ce350f4bc83647bc648))
+
+- **semantic**: Add build command
+  ([`fe9f2f7`](https://github.com/anaticulae/baw/commit/fe9f2f7b2de46e96b4955e3bd910228e15395d02))
+
+### Code Style
+
+- **cli**: Remove unused imports
+  ([`6d7748f`](https://github.com/anaticulae/baw/commit/6d7748f9559cd7fbec23ced4d611dd49d29dd6e4))
+
+- **github**: Format file
+  ([`4f10485`](https://github.com/anaticulae/baw/commit/4f10485b55892973f06a65f69e999498435a2c26))
+
+- **tests**: Remove unused imports
+  ([`f089197`](https://github.com/anaticulae/baw/commit/f089197739a6ce95b585d1365f8bb3a0257a78fc))
+
+### Documentation
+
+- **pack**: Extend interface
+  ([`98242dc`](https://github.com/anaticulae/baw/commit/98242dc08510772b7e0f3b5d9081f68d2c73a2c7))
+
+### Features
+
+- **config**: Add default tmp directory
+  ([`c66cf54`](https://github.com/anaticulae/baw/commit/c66cf5429c8bd34215a356a3d4d7c2ead7188537))
+
+### Testing
+
+- **fix**: Disable failing test
+  ([`77f868c`](https://github.com/anaticulae/baw/commit/77f868c86bbb26e6b5995310091ddda4e5e002db))
+
+- **fix**: Make test more robust
+  ([`78058ef`](https://github.com/anaticulae/baw/commit/78058ef72f94a04f3c8b519f3a3d7f36cdf1e68d))
+
+- **refactor**: Remove failing test
+  ([`7e5a5f0`](https://github.com/anaticulae/baw/commit/7e5a5f037264f1b125976668a8e493d0ec15b041))
+
+
 ## v1.70.2 (2026-02-28)
 
 ### Bug Fixes
