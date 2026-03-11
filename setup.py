@@ -24,8 +24,8 @@ with open(os.path.join(ROOT, 'baw/__init__.py'), 'rt', encoding='utf8') as fp:
     VERSION = re.search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 with open(os.path.join(ROOT, "requirements.txt"), encoding='utf8') as fp:
     REQUIRES = [line for line in fp.readlines() if line and '#' not in line]
-with open(os.path.join(ROOT, "LICENCE"), encoding='utf8') as fp:
-    LICENCE = fp.read()
+with open(os.path.join(ROOT, "LICENSE"), encoding='utf8') as fp:
+    LICENSE = fp.read()
 
 CLASSIFIERS = [
     'Programming Language :: Python :: 3.10',
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         entry_points=ENTRY_POINTS,
         include_package_data=True,
         install_requires=REQUIRES,
-        licence=LICENCE,
+        license=LICENSE,
         long_description=README,
         long_description_content_type='text/markdown',
         packages=PACKAGES,
