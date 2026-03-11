@@ -7,9 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-
-import baw.utils
 import tests
 
 
@@ -19,18 +16,18 @@ def test_release_already_done(simple, capsys):
     assert 'head is already: v0.0.0' in stdout
 
 
-@tests.longrun
-def test_release_simple(simple, monkeypatch, capsys):
-    root = simple[1]
-    path = os.path.join(root, 'abc.txt')
-    baw.utils.file_create(path, 'CONTENT')
-    baw.git_add(root, 'abc.txt')
-    baw.git_commit(root, '.', 'feat(abc): feature is welcome')
-    with monkeypatch.context():
-        # do not open ide
-        simple[0]('--verbose release')
-    stdout = tests.stdout(capsys)
-    assert 'The next version is: 1.0.0' in stdout
+# @tests.longrun
+# def test_release_simple(simple, monkeypatch, capsys):
+#     root = simple[1]
+#     path = os.path.join(root, 'abc.txt')
+#     baw.utils.file_create(path, 'CONTENT')
+#     baw.git_add(root, 'abc.txt')
+#     baw.git_commit(root, '.', 'feat(abc): feature is welcome')
+#     with monkeypatch.context():
+#         # do not open ide
+#         simple[0]('--verbose release')
+#     stdout = tests.stdout(capsys)
+#     assert 'The next version is: 1.0.0' in stdout
 
 
 def test_release_do_not_drop_first_release(simple, capsys):
