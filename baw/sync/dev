@@ -7,9 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-# to use utila in nightly properly TODO: REMOVE LATER?
-#utilatest>=0.24.1<1.0.0
-#utilasafe>=0.4.2<1.0.0
+# to use utilo in nightly properly TODO: REMOVE LATER?
+#utilotest>=0.24.1<1.0.0
+#utilosafe>=0.4.2<1.0.0
 
 # baw --test
 pytest == 9.0.2

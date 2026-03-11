@@ -15,13 +15,13 @@ import tests
 import tests.fixtures.requirements
 
 NEW_VERSION_AVAILABLE = """
-utila (0.5.4)  - 0.5.4
+utilo (0.5.4)  - 0.5.4
   INSTALLED: 0.5.3
   LATEST:    0.5.4
 """
 
 AVAILABLE_INSTALLED = """
-utila (0.5.4)  - 0.5.4
+utilo (0.5.4)  - 0.5.4
   INSTALLED: 0.5.4 (latest)
 """
 
@@ -31,10 +31,10 @@ pdfminer.six (20181108)  - 20181108
 """
 
 AVAILABLE_MULTIPLE = """
-utilatest (0.1.5)  - 0.1.5
+utilotest (0.1.5)  - 0.1.5
   INSTALLED: 0.1.4
   LATEST:    0.1.5
-utila (2.11.0)     - 2.11.0
+utilo (2.11.0)     - 2.11.0
 """
 
 
@@ -49,7 +49,7 @@ def test_complex():
 def test_available_multiple():
     available = baw.cmd.upgrade.available_version(
         AVAILABLE_MULTIPLE,
-        package='utila',
+        package='utilo',
     )
     assert available == "2.11.0"
 
@@ -86,7 +86,7 @@ def test_out_of_date():
 
 
 AVAILABLE_POST = """
-utila (2.97.0.post5+7356925)  - 2.97.0.post5+7356925
+utilo (2.97.0.post5+7356925)  - 2.97.0.post5+7356925
   INSTALLED: 2.97.0
   LATEST:    2.97.0.post5+7356925
 """
@@ -103,13 +103,13 @@ def test_new_requirements():
         baw.ROOT,
         tests.fixtures.requirements.REQUIREMENTS,
     )
-    # utila should allways be new than 0.5.0
-    # assert 'utila' in result[0]
+    # utilo should allways be new than 0.5.0
+    # assert 'utilo' in result[0]
     assert 'PyYAML' in result[0]
 
 
 TEST_UPGRADE = """\
-utila==0.1.0
+utilo==0.1.0
 iamraw
 """
 

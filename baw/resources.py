@@ -143,26 +143,26 @@ entry_points={
 """
 
 INIT_CMD = COPYRIGHT + """\
-import utila
-import utila.cli
+import utilo
+import utilo.cli
 
 from {{SHORT}} import __version__
 
 COMMANDS = [] # add additional cmds here
 
-@utila.saveme
+@utilo.saveme
 def main():
-    parser = utila.cli.create_parser(
+    parser = utilo.cli.create_parser(
         COMMANDS,
         version=__version__,
-        config=utila.ParserConfiguration(
+        config=utilo.ParserConfiguration(
             outputparameter=True,
             inputparameter=True,
         ),
     )
-    args = utila.parse(parser)
-    inputpath, output, _ = utila.sources(args)  # pylint:disable=W0612,W0632
-    return utila.SUCCESS
+    args = utilo.parse(parser)
+    inputpath, output, _ = utilo.sources(args)  # pylint:disable=W0612,W0632
+    return utilo.SUCCESS
 """
 
 MAIN_CMD = COPYRIGHT + """\

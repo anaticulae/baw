@@ -20,7 +20,7 @@ Example
     # # Internal packages
     # iamraw==0.1.2
     # serializeraw==0.1.0
-    # utila==0.5.3
+    # utilo==0.5.3
 """
 
 import dataclasses

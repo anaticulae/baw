@@ -25,7 +25,7 @@ rectangle_roundsmall(                        rect_roundsmall(
 rectangle_scale(                             rect_scale(
 rectangle_size(                              rect_size(
 rectangle_width(                             rect_width(
-utila.flatten(                               utila.flat(
+utilo.flatten(                               utilo.flat(
 yaml_from_raw_or_path(                       yaml_load(
 
 FixedFooterInformation(                      FixedFooterInfo(

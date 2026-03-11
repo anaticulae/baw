@@ -14,7 +14,7 @@ pdfminer.six==20181108
 # Internal packages
 iamraw==0.1.2
 serializeraw==0.1.0
-utila==0.5.0
+utilo==0.5.0
 
 # without version
 pip

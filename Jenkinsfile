@@ -63,8 +63,8 @@ pipeline{
         stage('others'){
             when{branch 'develop'}
             parallel{
-                stage('utila'){steps{build job: 'caelum/utila/integrate'}}
-                stage('utilatest'){steps{build job: 'caelum/utilatest/integrate'}}
+                stage('utilo'){steps{build job: 'caelum/utilo/integrate'}}
+                stage('utilotest'){steps{build job: 'caelum/utilotest/integrate'}}
                 stage('dockers'){steps{build job: 'caelum/dockers/integrate'}}
             }
         }

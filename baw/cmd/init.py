@@ -214,7 +214,7 @@ def create_python(
         )
         entry_point_package = f"'{shortcut}.cli',"
 
-        ADDITONAL_REQUIREMENTS.append(f'utila=={utila_current()}')
+        ADDITONAL_REQUIREMENTS.append(f'utilo=={utilo_current()}')
 
     replaced = baw.resources.template_replace(root, baw.resources.SETUP_PY)
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
@@ -234,16 +234,16 @@ def create_requirements(root: str):
     )
 
 
-def utila_current() -> str:
-    """Determine current version of `utila` package.
-    >>> utila_current()
+def utilo_current() -> str:
+    """Determine current version of `utilo` package.
+    >>> utilo_current()
     '...'
     """
     try:
-        import utila
+        import utilo
     except ModuleNotFoundError:
         return 'None'
-    return utila.__version__
+    return utilo.__version__
 
 
 def extend_cli(parser):

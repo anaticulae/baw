@@ -20,7 +20,7 @@ pdfminer.six==20181108
 # Internal packages
 iamraw==0.1.2
 serializeraw==0.1.0
-utila==3.5.0
+utilo==3.5.0
 
 # without version
 pip
@@ -29,7 +29,7 @@ pip
 REQUIREMENTS_GREATER = """
 PyYAML==5.1
 pdfminer.six>=20181108
-utila>=0.5.0
+utilo>=0.5.0
 """
 
 EXPECTED = {
@@ -37,13 +37,13 @@ EXPECTED = {
     'iamraw': '0.1.2',
     'pdfminer.six': '20181108',
     'serializeraw': '0.1.0',
-    'utila': '0.5.0',
+    'utilo': '0.5.0',
     'pip': '',
 }
 
 EXPECTED_GREATER = {
     'pdfminer.six': '20181108',
-    'utila': '0.5.0',
+    'utilo': '0.5.0',
 }
 
 
@@ -51,7 +51,7 @@ def test_replace_requirements():
     upgrades = baw.requirements.NewRequirements(
         equal={
             'PyYAML': ('5.1', '6.3.2'),
-            'utila': ('0.5.0', '3.5.0'),
+            'utilo': ('0.5.0', '3.5.0'),
         },
         greater={},
     )
