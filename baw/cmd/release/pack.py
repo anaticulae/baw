@@ -50,7 +50,10 @@ def version(root: str, no_push: bool = True) -> int:
     )
     if NO_RELEASE_MESSAGE in completed.stdout:
         return baw.FAILURE
-    baw.log(completed)
+    if completed.stderr:
+        baw.error(completed.stderr)
+    baw.log(completed.stdout)
+
     return completed.returncode
 
 
