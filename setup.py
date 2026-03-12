@@ -49,6 +49,7 @@ PACKAGES = [
     'baw.sync',
     'baw.templates',
     'baw.templates.docs',
+    'baw.templates.semantic',
 ]
 ENTRY_POINTS = dict(console_scripts=[
     'baw = baw.__main__:run',
