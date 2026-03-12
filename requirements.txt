@@ -12,12 +12,12 @@ python_semantic_release>=10.5.3,<11.0.0
 docker >=7.1.0, <8.0.0
 
 yapf == 0.43.0
-isort == 7.0.0
+isort==8.0.1
 pytest == 9.0.2
 pytest-xdist == 3.8.0
 pytest-cov == 7.0.0
 
-bandit == 1.9.3
-pylint == 4.0.4
+bandit==1.9.4
+pylint==4.0.5
 
-virtualenv>=20.36.1,<21.0.0
+virtualenv>=21.2.0,<22.0.0
