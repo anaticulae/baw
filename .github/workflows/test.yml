@@ -46,6 +46,9 @@ jobs:
     needs: longtest
     steps:
     - uses: actions/checkout@v4
+      with:
+        # required by test which requires commits
+        fetch-depth: 15
     - name: run alltest
       run: make docker-alltest
 
