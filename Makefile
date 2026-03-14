@@ -38,3 +38,6 @@ docker-alltest: docker-build
 
 docker-lint: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw lint all"
+
+docker-release: docker-build
+	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw release --no_test --no_linter"
