@@ -34,7 +34,7 @@ def version(root: str, no_push: bool = True) -> int:
         root,
         cmd,
     )
-    if NO_RELEASE_MESSAGE in completed.stdout:
+    if NO_RELEASE_MESSAGE in completed.stdout.lower():
         return baw.FAILURE
     if completed.stderr:
         baw.error(completed.stderr)
@@ -45,7 +45,7 @@ def version(root: str, no_push: bool = True) -> int:
 
 # semantic release returns this message if no new release is provided, cause
 # of the absent of new features/bugfixes.
-NO_RELEASE_MESSAGE = 'No release will be made.'
+NO_RELEASE_MESSAGE = 'no release will be made'
 
 
 def select_release_type(typ: str, cfg: str) -> str:
