@@ -1,9 +1,11 @@
-name: Run different types of tests
+name: Run tests
 
 on:
   push:
     branches:
       - '*'
+  pull_request:
+    branches: [ main ]
 
 jobs:
 
