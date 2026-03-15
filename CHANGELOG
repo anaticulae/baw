@@ -1,6 +1,51 @@
 # CHANGELOG
 
 
+## v1.71.1 (2026-03-15)
+
+### Bug Fixes
+
+- **profile**: Add missing commit type to pass tests
+  ([`37eecdf`](https://github.com/anaticulae/baw/commit/37eecdfb0e373496c2a73a50fd7ed17c8b4a728c))
+
+- **setup**: Includes semantic template
+  ([`9dbf0bd`](https://github.com/anaticulae/baw/commit/9dbf0bd5cd485d2eae26319728ed78fb15d77fb6))
+
+### Chores
+
+- **changelog**: Adjust template to skip commit hash
+  ([`51f6faa`](https://github.com/anaticulae/baw/commit/51f6faa19e4afd1cba3546b2dd0cfe2df2b50e6a))
+
+- **github**: Add release step on main
+  ([`54d3142`](https://github.com/anaticulae/baw/commit/54d31427919feca9d582248f8317b459f2271df3))
+
+- **github**: Push release commit to github
+  ([`c6873fb`](https://github.com/anaticulae/baw/commit/c6873fb469d4707b33b096bfef8762a2c3254fad))
+
+- **github**: Rename publish to pip action
+  ([`707a8b1`](https://github.com/anaticulae/baw/commit/707a8b13307659f601f57f5e792ebf35c5695ef1))
+
+- **github**: Upgrade environment
+  ([`e109ca5`](https://github.com/anaticulae/baw/commit/e109ca550314aa24d58bcd53fd270083fa81e3e5))
+
+- **make**: Add project release step
+  ([`e20ceb0`](https://github.com/anaticulae/baw/commit/e20ceb053abfb9fc11041a97bf45c4361256951a))
+
+- **publish**: Just publish tags
+  ([`4d8aa4f`](https://github.com/anaticulae/baw/commit/4d8aa4fb3f0310fb48866bff4ab37b443ca5a9cd))
+
+- **requirements**: Add build to create distribution
+  ([`4d1dc4f`](https://github.com/anaticulae/baw/commit/4d1dc4f0ad4ed82ccaf8db0477ef01bdd74d0f6b))
+
+- **requirements**: Upgrade requirements.txt
+  ([`6bda64a`](https://github.com/anaticulae/baw/commit/6bda64acaf7ae995cdc7940e072f1f93da1510e0))
+
+### Testing
+
+- **fix**: Ensure that flaky test work
+  ([`393fe79`](https://github.com/anaticulae/baw/commit/393fe799fd90a3cc4213037d9472ad082f87d075))
+
+
 ## v1.71.0 (2026-03-11)
 
 ### Bug Fixes
