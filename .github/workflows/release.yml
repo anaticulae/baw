@@ -5,10 +5,22 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
-      - run: make docker-release
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Create release
+        run: |
+          make docker-release
+
+      - name: Push commit and tag
+        run: |
+          git push origin main
+          git push origin --tags
