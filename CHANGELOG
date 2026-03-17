@@ -1,6 +1,28 @@
 # CHANGELOG
 
 
+## v1.71.2 (2026-03-17)
+
+### Bug Fixes
+
+- **release**: Fail release command if not release is made
+  ([`f0e0368`](https://github.com/anaticulae/baw/commit/f0e03686d261a6057b3d356193a786924f8d3091))
+
+### Chores
+
+- **env**: Remove outdated env
+  ([`0b78e85`](https://github.com/anaticulae/baw/commit/0b78e85b1f9e142e120530559355fe83951fe141))
+
+- **github**: Adjust main release
+  ([`b4d6ed7`](https://github.com/anaticulae/baw/commit/b4d6ed770e228dda911b27f4e1aa86571fab3ac0))
+
+- **github**: Allow semantic release to push to main
+  ([`256d6f3`](https://github.com/anaticulae/baw/commit/256d6f3c36a0456de876bf9a674c323cf950d590))
+
+- **github**: Simplify names
+  ([`636d894`](https://github.com/anaticulae/baw/commit/636d8944ac82b9628b730d0e62fcad1b38d1093b))
+
+
 ## v1.71.1 (2026-03-15)
 
 ### Bug Fixes
