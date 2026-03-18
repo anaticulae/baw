@@ -114,7 +114,7 @@ LIBRARY = "@Library('caelum@refs/tags/"
 LIBRARY_END = "') _"
 
 
-def library(root: str, verbose: False):
+def library(root: str, verbose: bool = False):
     path = jenkinsfile(root)
     if not os.path.exists(path):
         baw.error(f'could not find Jenkinsfile: {path}')
