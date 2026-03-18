@@ -16,8 +16,6 @@ import baw
 import baw.config
 import baw.dockers
 import baw.dockers.dockfile
-import baw.dockers.image
-import baw.gix
 import baw.project
 import baw.runtime
 import baw.utils
