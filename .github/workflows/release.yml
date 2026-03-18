@@ -36,18 +36,17 @@ jobs:
           git push origin main
           git push origin --tags
 
-      - name: Get latest Git tag
-        id: get_latest_tag
-        run: |
-          latest_tag=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | head -n1)
-          echo "Latest tag found: $latest_tag"
-          echo "tag=$latest_tag" >> $GITHUB_OUTPUT
-
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.get_latest_tag.outputs.tag }}
-          name: Release ${{ steps.get_latest_tag.outputs.tag }}
-          files: |
-            dist/*
+      # - name: Get latest Git tag
+      #   id: get_latest_tag
+      #   run: |
+      #     latest_tag=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | head -n1)
+      #     echo "Latest tag found: $latest_tag"
+      #     echo "tag=$latest_tag" >> $GITHUB_OUTPUT
+      #
+      # - name: Create GitHub Release
+      #   uses: softprops/action-gh-release@v2
+      #   with:
+      #     tag_name: ${{ steps.get_latest_tag.outputs.tag }}
+      #     name: Release ${{ steps.get_latest_tag.outputs.tag }}
+      #     files: |
+      #       dist/*
