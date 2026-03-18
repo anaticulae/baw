@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-
+env:
+  GITHUB_TOKEN: ${{ secrets.PUSHER }}
+  GH_TOKEN: ${{ secrets.PUSHER }}
 permissions:
   contents: write
 
@@ -20,16 +22,13 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          token: ${{ secrets.PUSHER }}
 
       - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUSHER }}
         run: |
           make docker-release
 
       - name: Push commit and tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUSHER }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
