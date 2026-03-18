@@ -46,7 +46,7 @@ def upgrade(
 IMAGE = re.compile(r"image[ ]'((.{5,})/(.{5,})\:(.{3,}))'")
 
 
-def docker_image(root: str) -> str:
+def docker_image(root: str) -> str | None:
     """Parse dockerimage from Jenkinsfile.
 
     image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
@@ -70,7 +70,7 @@ def docker_image(root: str) -> str:
 ENVIRONMENT = re.compile(r'environment\{(.{5,}?)\}', flags=re.DOTALL)
 
 
-def docker_env(root: str) -> dict:
+def docker_env(root: str) -> dict | None:
     """\
     >>> import baw.project; docker_env(baw.project.determine_root(__file__)) is None
     True
