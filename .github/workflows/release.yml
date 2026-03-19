@@ -24,16 +24,9 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PUSHER }}
 
-      - name: Create release
+      - name: Release and Push
         run: |
           make docker-release
-
-      - name: Push commit and tag
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git push origin main
-          git push origin --tags
 
       # - name: Get latest Git tag
       #   id: get_latest_tag
