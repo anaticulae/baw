@@ -12,24 +12,28 @@ import baw.runtime
 import baw.utils
 
 
-def run(root, verbose, release_type):  # pylint:disable=W0613
+def run(root, verbose, release_type):
     baw.log('update version tag')
     with baw.cmd.release.config.release_config_tmp(
             root,
             verbose,
     ):
-        returncode = run_release(root)
+        returncode = run_release(root, release_type=release_type)
     if returncode:
         baw.error('while running semantic-release')
         return returncode
     return baw.SUCCESS
 
 
-def run_release(root: str, no_push: bool = True) -> int:
+def run_release(root: str, no_push: bool = True, release_type: str = None) -> int: # yapf:disable
     cfg = baw.cmd.release.config.configpath(root)
     cmd = f'semantic-release -c {cfg} version'
     if no_push:
         cmd += ' --no-push'
+    if release_type:
+        # major minor patch
+        if release_type:
+            cmd += f' --{release_type}'
     completed = baw.runtime.run_target(
         root,
         cmd,
