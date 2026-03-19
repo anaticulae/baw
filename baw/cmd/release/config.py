@@ -22,14 +22,12 @@ SEMANTIC = os.path.join(TEMPLATES, 'semantic')
 @contextlib.contextmanager
 def release_config_tmp(root: str, verbose: bool):
     package = baw.config.shortcut(root)
+    upload = str(is_ci()).lower()
     generated = TEMPLATE + ''
     generated = generated.replace('{{REPO_DIR}}', root)
     generated = generated.replace('{{PACKAGE}}', package)
     generated = generated.replace('{{TEMPLATE_DIR}}', SEMANTIC)
-    generated = generated.replace(
-        '{{UPLOAD_TO_VCS_RELEASE}}',
-        str(is_ci()).lower(),
-    )
+    generated = generated.replace('{{UPLOAD_TO_VCS_RELEASE}}', upload)
     if verbose:
         baw.utils.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
