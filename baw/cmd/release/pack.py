@@ -14,7 +14,7 @@ import baw.utils
 
 def run(root, verbose, release_type):  # pylint:disable=W0613
     baw.log('update version tag')
-    with baw.cmd.release.config.temp_semantic_config(
+    with baw.cmd.release.config.release_config_tmp(
             root,
             verbose,
     ):

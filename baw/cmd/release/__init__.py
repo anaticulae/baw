@@ -154,7 +154,7 @@ def run(args: dict) -> int:
     if notest:
         test = False
     if args.get('release') == 'config':
-        with baw.cmd.release.config.temp_semantic_config(root, verbose=True):
+        with baw.cmd.release.config.release_config_tmp(root, verbose=True):
             pass
         return baw.SUCCESS
     if args.get('release') == 'drop':
