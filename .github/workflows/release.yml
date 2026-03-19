@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PUSHER }}
 
-      - name: Create release
+      - name: Release and Push
         run: |
           make docker-release
 
