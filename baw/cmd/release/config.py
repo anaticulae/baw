@@ -26,6 +26,10 @@ def temp_semantic_config(root: str, verbose: bool):
     generated = generated.replace('{{REPO_DIR}}', root)
     generated = generated.replace('{{PACKAGE}}', package)
     generated = generated.replace('{{TEMPLATE_DIR}}', SEMANTIC)
+    generated = generated.replace(
+        '{{UPLOAD_TO_VCS_RELEASE}}',
+        str(is_ci()).lower(),
+    )
     if verbose:
         baw.utils.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
@@ -50,3 +54,10 @@ def configpath(root: str):
         'release.cfg',
     )
     return config
+
+
+def is_ci() -> bool:
+    # jenkins or github
+    ci = os.environ.get('JENKINS_HOME', False) or os.environ.get('CI', False)
+    result = bool(ci)
+    return result
