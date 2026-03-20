@@ -30,7 +30,7 @@ def run_release(root: str, no_push: bool = True, release_type: str = None) -> in
     cmd = f'semantic-release -c {cfg} version'
     if no_push:
         cmd += ' --no-push'
-    if release_type:
+    if release_type and release_type in 'majorminorpatch':
         # major minor patch
         if release_type:
             cmd += f' --{release_type}'
