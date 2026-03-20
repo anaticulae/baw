@@ -40,4 +40,6 @@ docker-lint: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw lint all"
 
 docker-release: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw release --no_test --no_linter"
+	docker run -v $(CURDIR):/var/workdir\
+			-e GH_TOKEN=$(GH_TOKEN) $(IMAGE)\
+			"baw release --no_test --no_linter"
