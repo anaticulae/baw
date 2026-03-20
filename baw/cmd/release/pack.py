@@ -18,7 +18,13 @@ def run(root, verbose, release_type):
             root,
             verbose,
     ):
-        returncode = run_release(root, release_type=release_type)
+        # TODO: MAY CHANGE LATER
+        no_push = False # not baw.cmd.release.config.is_ci()
+        returncode = run_release(
+            root,
+            no_push=no_push,
+            release_type=release_type,
+        )
     if returncode:
         baw.error('while running semantic-release')
         return returncode
