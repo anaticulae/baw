@@ -1,0 +1,30 @@
+version: 2
+updates:
+  # Production dependencies in requirements.txt
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: "auto"
+    filename: "requirements.txt"
+
+  # Development dependencies in requirements.dev
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: "auto"
+    filename: "requirements.dev"
+
+  # Docker image used in Dockerfile
+  - package-ecosystem: "docker"
+    directory: "/"  # Assuming Dockerfile is in the root directory
+    schedule:
+      interval: "weekly"  # Check for updates weekly
+    versioning-strategy: "auto"  # Use the latest available version of the image
+
+  - package-ecosystem: "docker"
+    directory: "/env"  # Assuming Dockerfile is in the root directory
+    schedule:
+      interval: "weekly"  # Check for updates weekly
+    versioning-strategy: "auto"  # Use the latest available version of the image
