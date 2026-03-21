@@ -9,7 +9,7 @@
 
 FROM ghcr.io/anaticulae/baw:86c0eb1
 
-COPY ../env/test_run /var/script/run
+COPY ../env/test/run /var/script/run
 RUN chmod +x /var/script/run
 
 ENTRYPOINT ["sh", "/var/script/run"]
