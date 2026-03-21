@@ -1,6 +1,67 @@
 # CHANGELOG
 
 
+## v1.72.0 (2026-03-21)
+
+### Bug Fixes
+
+- **pack**: Enable release type force
+  ([`e106204`](https://github.com/anaticulae/baw/commit/e1062041a717767c648d882f59629fc441fc966d))
+
+- **pack**: Ensure that correct parameter is used
+  ([`53d1712`](https://github.com/anaticulae/baw/commit/53d171271546a22135c39140e77478cc0e3c52da))
+
+- **pipe**: Adjust interface
+  ([`2803de6`](https://github.com/anaticulae/baw/commit/2803de687c271c212095161380ecbf994816152c))
+
+### Chores
+
+- **github**: Use semantic release to publish
+  ([`e665f6a`](https://github.com/anaticulae/baw/commit/e665f6a87db6a37c3a816e1e328ae4865166de8c))
+
+- **release**: Do not create github release
+  ([`1ea115a`](https://github.com/anaticulae/baw/commit/1ea115ab3a8b5f567e11c02742c87bc3604abc16))
+
+- **release**: Fix release tag
+  ([`3259d35`](https://github.com/anaticulae/baw/commit/3259d3591b4a7f613f12182f78dee46d07772fef))
+
+- **release**: Give semantic release release token
+  ([`b4a69b2`](https://github.com/anaticulae/baw/commit/b4a69b28a3f4ebdedbdd0dc65ba94bd7bafc8c0b))
+
+- **release**: Setup git credentials
+  ([`2b6155d`](https://github.com/anaticulae/baw/commit/2b6155dca07f16d3504db099cc82a5278d88910c))
+
+- **release**: Use token
+  ([`187cc1a`](https://github.com/anaticulae/baw/commit/187cc1a916aa4bd850efb879a29a3130bf7915c2))
+
+### Documentation
+
+- **pipeline**: Fix interface
+  ([`93b924b`](https://github.com/anaticulae/baw/commit/93b924b0f2d5bcb5f0a844dd41977139c52eaa99))
+
+### Features
+
+- **pack**: Skip no release on ci
+  ([`227775d`](https://github.com/anaticulae/baw/commit/227775d08ec1330a56239503f606a52ba91c8eb9))
+
+- **semantic**: Upload release on ci
+  ([`1af6bc6`](https://github.com/anaticulae/baw/commit/1af6bc617fe51657e9df6eaddd762d089ed85bd2))
+
+### Refactoring
+
+- **imports**: Remove unused imports
+  ([`a0d5836`](https://github.com/anaticulae/baw/commit/a0d5836ab9342540efe45d2902a768d2898387a9))
+
+- **pack**: Clarify naming
+  ([`24e102f`](https://github.com/anaticulae/baw/commit/24e102f29e28bd9d29d3f23d82bdee9f4543a7bb))
+
+- **release**: Improve code style
+  ([`86811bc`](https://github.com/anaticulae/baw/commit/86811bc03f1b0f12183a9925fc0be9745e87a4d0))
+
+- **release**: Improve naming
+  ([`3a63fbe`](https://github.com/anaticulae/baw/commit/3a63fbe8c1d58b498c0b28dc854fe01b8c699e8f))
+
+
 ## v1.71.2 (2026-03-17)
 
 ### Bug Fixes

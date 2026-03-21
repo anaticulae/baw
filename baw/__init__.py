@@ -9,7 +9,7 @@
 
 ROOT = None
 
-__version__ = '1.71.2'
+__version__ = '1.72.0'
 
 # pylint:disable=wrong-import-position
 import baw.__root__
