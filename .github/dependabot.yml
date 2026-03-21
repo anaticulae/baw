@@ -1,0 +1,36 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    file: "requirements.txt"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    file: "requirements.dev"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "docker"
+    directory: "/env"
+    schedule:
+      interval: "weekly"
+    file: "base"
+
+  - package-ecosystem: "docker"
+    directory: "/env"
+    schedule:
+      interval: "weekly"
+    file: "test"
