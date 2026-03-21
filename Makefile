@@ -13,10 +13,10 @@ docker-build:
 
 # --progress=plain
 docker-build-test:
-	docker build -f env/test -t $(IMAGE_TEST_NAME) .
+	docker build -f env/test/Dockerfile -t $(IMAGE_TEST_NAME) .
 
 docker-build-base:
-	docker build -f env/base -t $(IMAGE_BASE_NAME) .
+	docker build -f env/base/Dockerfile -t $(IMAGE_BASE_NAME) .
 
 docker-upload-test:
 	docker push $(IMAGE_TEST_NAME)
