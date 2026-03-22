@@ -187,6 +187,8 @@ DOC_CONF = fread(joined('conf.py'))
 ISORT_TEMPLATE = fread(ISORT_PATH)
 CONFTEST_TEMPLATE = fread(CONFTEST_PATH)
 
+WORKFLOWS = '.github/workflows'
+
 # None copies files
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
@@ -199,6 +201,11 @@ FILES = [
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
     (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
+    ('.github/dependabot.yml', fread(joined('.github/dependabot.yml'))),
+    (f'{WORKFLOWS}/docker.yml', fread(joined(f'{WORKFLOWS}/docker.yml'))),
+    (f'{WORKFLOWS}/pypi.yml', fread(joined(f'{WORKFLOWS}/pypi.yml'))),
+    (f'{WORKFLOWS}/release.yml', fread(joined(f'{WORKFLOWS}/release.yml'))),
+    (f'{WORKFLOWS}/test.yml', fread(joined(f'{WORKFLOWS}/test.yml'))),
     # ('setup.py', SETUP_PY),
 ]
 
