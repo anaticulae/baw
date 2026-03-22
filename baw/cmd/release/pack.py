@@ -19,7 +19,7 @@ def run(root, verbose, release_type):
             verbose,
     ):
         # TODO: MAY CHANGE LATER
-        no_push = False # not baw.cmd.release.config.is_ci()
+        no_push = False  # not baw.cmd.release.config.is_ci()
         returncode = run_release(
             root,
             no_push=no_push,
