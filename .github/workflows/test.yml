@@ -10,14 +10,14 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v6
     - name: build docker container
       run: make docker-build
 
   doctest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
     - uses: actions/checkout@v6
@@ -25,7 +25,7 @@ jobs:
       run: make docker-doctest
 
   fasttest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
     - uses: actions/checkout@v6
@@ -36,7 +36,7 @@ jobs:
       run: make docker-fasttest
 
   longtest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: fasttest
     steps:
     - uses: actions/checkout@v6
@@ -44,7 +44,7 @@ jobs:
       run: make docker-longtest
 
   alltest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: longtest
     steps:
     - uses: actions/checkout@v6
@@ -55,7 +55,7 @@ jobs:
       run: make docker-alltest
 
   linter:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
     - uses: actions/checkout@v6
