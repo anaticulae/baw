@@ -1,0 +1,29 @@
+---
+name: Dependabot
+version: 2
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"  # only checks requirements.txt
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"  # main Dockerfile
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    open-pull-requests-limit: 5
+
+  # GitHub Actions workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"  # workflows are under .github/workflows
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    open-pull-requests-limit: 10
