@@ -25,20 +25,21 @@ FOLDERS = [
 TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
 assert os.path.exists(TEMPLATES), f'No template-dir {TEMPLATES}'
 
-WORKSPACE_TEMPLATE = os.path.join(TEMPLATES, '.code-workspace')
-assert os.path.exists(WORKSPACE_TEMPLATE), f'No template {WORKSPACE_TEMPLATE}'
+fread = baw.utils.file_read
 
-GIT_IGNORE_TEMPLATE = os.path.join(TEMPLATES, '.gitignore')
-assert os.path.exists(GIT_IGNORE_TEMPLATE), f'No gitignore {GIT_IGNORE_TEMPLATE}'  # yapf:disable
 
-RCFILE_PATH = os.path.join(TEMPLATES, '.rcfile')
-assert os.path.exists(RCFILE_PATH), f'No rcfile {RCFILE_PATH}'
+def joined(path: str, asserts: bool = True) -> str:
+    result = os.path.join(TEMPLATES, path)
+    if asserts:
+        assert os.path.exists(result), f'Does not exists {result}'
+    return result
 
-ISORT_PATH = os.path.join(TEMPLATES, '.isort.cfg')
-assert os.path.exists(ISORT_PATH), f'No isort {ISORT_PATH}'
 
-CONFTEST_PATH = os.path.join(TEMPLATES, 'conftest.tpy')
-assert os.path.exists(CONFTEST_PATH), f'No testconf {CONFTEST_PATH}'
+WORKSPACE_TEMPLATE = joined('.code-workspace')
+GIT_IGNORE_TEMPLATE = joined('.gitignore')
+RCFILE_PATH = joined('.rcfile')
+ISORT_PATH = joined('.isort.cfg')
+CONFTEST_PATH = joined('conftest.tpy')
 
 README = """\
 # {{SHORT}}
@@ -172,19 +173,19 @@ if __name__ == "__main__":
     main()
 """
 
-CODE_WORKSPACE = baw.utils.file_read(WORKSPACE_TEMPLATE)
-JENKINSFILE = baw.utils.file_read(os.path.join(TEMPLATES, 'Jenkinsfile'))
-GITIGNORE = baw.utils.file_read(os.path.join(TEMPLATES, '.gitignore'))
-SETUP_PY = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.tpy'))
-SETUP_CFG = baw.utils.file_read(os.path.join(TEMPLATES, 'setup.cfg'))
-RELEASE_PLAN = baw.utils.file_read(os.path.join(TEMPLATES, 'docs/plan.rst'))
+CODE_WORKSPACE = fread(WORKSPACE_TEMPLATE)
+JENKINSFILE = fread(joined('Jenkinsfile'))
+GITIGNORE = fread(joined('.gitignore'))
+SETUP_PY = fread(joined('setup.tpy'))
+SETUP_CFG = fread(joined('setup.cfg'))
+RELEASE_PLAN = fread(joined('docs/plan.rst'))
 
-REFACTOR = baw.utils.file_read(os.path.join(TEMPLATES, 'refactor'))
+REFACTOR = fread(joined('refactor'))
 
-DOC_CONF = baw.utils.file_read(os.path.join(TEMPLATES, 'conf.py'))
+DOC_CONF = fread(joined('conf.py'))
 
-ISORT_TEMPLATE = baw.utils.file_read(ISORT_PATH)
-CONFTEST_TEMPLATE = baw.utils.file_read(CONFTEST_PATH)
+ISORT_TEMPLATE = fread(ISORT_PATH)
+CONFTEST_TEMPLATE = fread(CONFTEST_PATH)
 
 # None copies files
 FILES = [
