@@ -135,6 +135,9 @@ def extend_cli(parser):
         help='manage the jenkins file',
         nargs='?',
         const='test',
-        choices='init image library upgrade test'.split(),
+        choices=CHOICES,
     )
     cli.set_defaults(func=run)
+
+
+CHOICES = 'init image library upgrade test'.split()
