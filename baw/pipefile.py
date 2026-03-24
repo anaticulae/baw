@@ -107,6 +107,15 @@ def jenkinsfile(root: str):
     return os.path.join(root, 'Jenkinsfile')
 
 
+def dotgithub(root: str):
+    """\
+    >>> dotgithub(__file__)
+    '....github'
+    """
+    root = baw.project.determine_root(root)
+    return os.path.join(root, '.github')
+
+
 # @Library('caelum@d84cdc61c790353ffe9a62d9af6b1ac2f8c27d4d') _
 LIBRARY = "@Library('caelum@refs/tags/"
 LIBRARY_END = "') _"
