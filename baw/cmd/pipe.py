@@ -10,12 +10,8 @@
 import os
 
 import baw.cmd.utils
-import baw.dockers.image
-import baw.gix
 import baw.pipefile
-import baw.project
 import baw.resources
-import baw.run
 import baw.utils
 
 
