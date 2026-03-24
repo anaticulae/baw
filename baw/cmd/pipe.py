@@ -124,6 +124,7 @@ def run(args: dict):
         )
     if action == 'test':
         baw.error('not implemented')
+    baw.error(f'Select {CHOICES}')
     return baw.FAILURE
 
 
