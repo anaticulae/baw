@@ -17,6 +17,18 @@ import baw.utils
 
 def init(
     root: str,
+    platform: str = 'github',
+    verbose: bool | None = False,
+    venv: bool | None = False,
+):
+    if platform == 'jenkins':
+        return init_jenkins(root, verbose=verbose, venv=venv)
+    baw.error('Nothing todo')
+    return baw.SUCCESS
+
+
+def init_jenkins(
+    root: str,
     verbose: bool | None = False,
     venv: bool | None = False,
 ):
@@ -101,9 +113,11 @@ def image_args() -> str:
 def run(args: dict):
     root = baw.cmd.utils.get_root(args)
     action = args.get('action')
+    platform = f'{args.get("platform")}'
     if action == 'init':
         return init(
             root,
+            platform=platform,
             verbose=args.get('verbose'),
             venv=args.get('venv'),
         )
@@ -133,6 +147,13 @@ def extend_cli(parser):
         nargs='?',
         const='test',
         choices=CHOICES,
+    )
+    cli.add_argument(
+        '--platform',
+        help='Platform',
+        choices='github jenkins'.split(),
+        nargs='?',
+        default='github',
     )
     cli.set_defaults(func=run)
 
