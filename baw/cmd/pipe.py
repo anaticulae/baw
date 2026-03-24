@@ -21,8 +21,8 @@ import baw.utils
 
 def init(
     root: str,
-    verbose: bool = False,
-    venv: bool = False,
+    verbose: bool | None = False,
+    venv: bool | None = False,
 ):
     source = baw.pipefile.jenkinsfile(root)
     if os.path.exists(source):
@@ -49,8 +49,8 @@ def init(
 
 def upgrade(
     root: str,
-    verbose: bool = False,
-    venv: bool = False,
+    verbose: bool | None = False,
+    venv: bool | None = False,
 ):
     source = baw.pipefile.jenkinsfile(root)
     if not os.path.exists(source):
