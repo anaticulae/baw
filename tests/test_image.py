@@ -17,13 +17,13 @@ import tests
 
 # TODO: ENABLE LATER
 # def test_cmd_image_create(simple, capsys):  # pylint:disable=W0621,W0613
-#     simple[0]('pipe init')
+#     simple[0]('pipe init --platform jenkins')
 #     simple[0]('image create')
 
 
 def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
     # docker file requires existing Jenkinsfile
-    simple[0]('pipe init')
+    simple[0]('pipe init --platform jenkins')
     with baw.cmd.image.dockerfiles.generate(simple[1]) as path:
         assert os.path.exists(path)
 
@@ -41,7 +41,7 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
     # docker{
     #     image 'alpine_python_git_baw:v1.0.0'
     # }
-    simple[0]('pipe init')
+    simple[0]('pipe init --platform jenkins')
     simple[0]('image upgrade --prerelease --dockerfile Jenkinsfile')
     stdout = tests.stdout(capsys)
     assert 'start upgrading:' in stdout
@@ -55,7 +55,7 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
 #     'PIPSTABLE',
 # ])
 # def test_cmd_image_pipref_upgrade(simple, capsys, typ):
-#     simple[0]('pipe init')
+#     simple[0]('pipe init --platform jenkins')
 #     root = simple[1]
 #     dockerfile = os.path.join(root, 'DOCKERFILE')
 
