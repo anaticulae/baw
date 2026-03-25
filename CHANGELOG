@@ -1,6 +1,81 @@
 # CHANGELOG
 
 
+## v1.73.0 (2026-03-25)
+
+### Chores
+
+- **docker**: Move to separate folder
+  ([`de4ee34`](https://github.com/anaticulae/baw/commit/de4ee346676853f55269dd1a135a1d32824cba10))
+
+- **github**: Fix version to increase reproduce ability
+  ([`7eda681`](https://github.com/anaticulae/baw/commit/7eda681f5e68a2ff844891df9062c7e95cbb2044))
+
+- **github**: Fix version to increase reproducibility
+  ([`dce83c3`](https://github.com/anaticulae/baw/commit/dce83c3fac7af06b76e2fc60fbdc9dfa9f2dd2e1))
+
+- **github**: Name dependabot action
+  ([`40bf2e7`](https://github.com/anaticulae/baw/commit/40bf2e7a0a015740e32482e4bd2f839acc636f31))
+
+- **github**: Use dependabot to update pip and docker
+  ([`25acc0c`](https://github.com/anaticulae/baw/commit/25acc0c948caa28c2b4b2d7ece1b76a04c00b7e0))
+
+- **pipe**: Organize imports
+  ([`038b572`](https://github.com/anaticulae/baw/commit/038b572498d21826d4c6fcf40b2bfdcdc497b875))
+
+### Code Style
+
+- **yapf**: Format code
+  ([`e5d0ff9`](https://github.com/anaticulae/baw/commit/e5d0ff90ec8383d8bb819de5b69ffd793f32a725))
+
+### Documentation
+
+- **pipe**: Extend interface documentation
+  ([`5e041f6`](https://github.com/anaticulae/baw/commit/5e041f64d714887143ee3259dabe4ce42b2c0ff6))
+
+- **utils**: Extend interface
+  ([`95920a6`](https://github.com/anaticulae/baw/commit/95920a6b734d0f353df08708d5ee7da21341a4fa))
+
+### Features
+
+- **github**: Add templates to init job
+  ([`42d17bf`](https://github.com/anaticulae/baw/commit/42d17bf4327f59d967a1d20f43b455fd499bc69a))
+
+- **pipe**: Add choices
+  ([`1ccfba6`](https://github.com/anaticulae/baw/commit/1ccfba62fe138dc5221043ac42acbb60aaaff326))
+
+- **pipe**: Add makefile
+  ([`75f4f80`](https://github.com/anaticulae/baw/commit/75f4f800abb995b6d019e1db993e0dabe686c35a))
+
+- **pipe**: Add method to determine github workflows path
+  ([`047fdd8`](https://github.com/anaticulae/baw/commit/047fdd897369501bc4e5504cf841406b7621d507))
+
+- **pipe**: Add parameter to change platform
+  ([`9b1bf08`](https://github.com/anaticulae/baw/commit/9b1bf082c45d36c0a5060630ad7174339641b918))
+
+- **pipe**: Generate .github workflows
+  ([`0a40fa7`](https://github.com/anaticulae/baw/commit/0a40fa77369acac5b48894199fc4636711a80220))
+
+- **resources**: Create github workflow on init
+  ([`0c33a61`](https://github.com/anaticulae/baw/commit/0c33a6169424e03e19e04db2cdda03162c8ed6ee))
+
+### Refactoring
+
+- **pipe**: Clarify code
+  ([`6f589ec`](https://github.com/anaticulae/baw/commit/6f589ecaf671e7e2292b33adeb062e518647d8ad))
+
+- **resources**: Shorten code
+  ([`64a5477`](https://github.com/anaticulae/baw/commit/64a54774f57d8b1b30b2c71fc8cd28c14389d160))
+
+- **scripts**: Move alias script
+  ([`afe3ee5`](https://github.com/anaticulae/baw/commit/afe3ee58e8af97212f86a13fc1b6f7471957d6e7))
+
+### Testing
+
+- **image**: Adjust to new interface
+  ([`dfeaf6d`](https://github.com/anaticulae/baw/commit/dfeaf6d38ade9daa5e5edfec2b3c8313bacf933e))
+
+
 ## v1.72.0 (2026-03-21)
 
 ### Bug Fixes
