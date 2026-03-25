@@ -6,8 +6,8 @@ CURDIR := $(CURDIR)
 
 NAME = {{PACKAGE}}
 IMAGE := $(NAME):$(VERSION)
-IMAGE_BASE_NAME := ghcr.io/anaticulae/{{PACKAGE}}:$(VERSION)
-IMAGE_TEST_NAME := ghcr.io/anaticulae/{{PACKAGE}}:$(VERSION)-test
+IMAGE_BASE_NAME := ghcr.io/anaticulae/$(IMAGE)
+IMAGE_TEST_NAME := ghcr.io/anaticulae/$(IMAGE)-test
 
 docker-build:
 	docker build -t $(IMAGE) .
