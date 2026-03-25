@@ -146,13 +146,15 @@ def create_folder(root: str):
         baw.log(f'create folder {item}')
 
 
-def create_files(root: str):
+def create_files(root: str, todo: list = None):
     """Copy file to generated template. Before copying, replce template vars
 
     Args:
         root(str): generated project location
+        todo(list): list to generate resources
     """
-    for item, content in baw.resources.FILES:
+    todo = baw.resources.FILES if todo is None else todo
+    for item, content in todo:
         create = os.path.join(root, item)
         replaced = baw.resources.template_replace(root, content)
         operation_type = 'template' if content != replaced else 'copy'

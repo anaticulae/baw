@@ -201,12 +201,15 @@ FILES = [
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
     (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
+    # ('setup.py', SETUP_PY),
+]
+
+DOTGITHUB = [
     ('.github/dependabot.yml', fread(joined('.github/dependabot.yml'))),
     (f'{WORKFLOWS}/docker.yml', fread(joined(f'{WORKFLOWS}/docker.yml'))),
     (f'{WORKFLOWS}/pypi.yml', fread(joined(f'{WORKFLOWS}/pypi.yml'))),
     (f'{WORKFLOWS}/release.yml', fread(joined(f'{WORKFLOWS}/release.yml'))),
     (f'{WORKFLOWS}/test.yml', fread(joined(f'{WORKFLOWS}/test.yml'))),
-    # ('setup.py', SETUP_PY),
 ]
 
 
