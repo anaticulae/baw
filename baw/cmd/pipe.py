@@ -45,9 +45,10 @@ def init_github(
             todo=baw.resources.DOTGITHUB,
         )
         baw.git_add(root, '.github')
+        baw.git_add(root, os.path.join('Makefile'))
         failure = baw.git_commit(
             root,
-            source=source,
+            source=(source, os.path.join('Makefile')),
             message='chore(github): add .github',
             verbose=verbose,
         )
