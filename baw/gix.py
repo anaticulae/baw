@@ -69,7 +69,13 @@ def git_add(
     evaluate_git_error(cmd)
 
 
-def git_commit(root, source, message, tag: str = None, verbose: int = 0):
+def git_commit(
+    root,
+    source,
+    message,
+    tag: str | None = None,
+    verbose: int | bool | None = 0,
+):
     assert os.path.exists(root)
     message = f'"{message}"'
     if verbose:
@@ -212,8 +218,8 @@ def tag_drop(
 def git_stash(
     root: str,
     *,
-    verbose: bool = False,
-    venv: bool = False,
+    verbose: bool | None = False,
+    venv: bool | None = False,
 ) -> int:
     """Save uncommited/not versonied content to improve testability.
 
