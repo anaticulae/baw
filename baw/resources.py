@@ -210,6 +210,7 @@ DOTGITHUB = [
     (f'{WORKFLOWS}/pypi.yml', fread(joined(f'{WORKFLOWS}/pypi.yml'))),
     (f'{WORKFLOWS}/release.yml', fread(joined(f'{WORKFLOWS}/release.yml'))),
     (f'{WORKFLOWS}/test.yml', fread(joined(f'{WORKFLOWS}/test.yml'))),
+    ('Makefile', fread(joined('Makefile'))),
 ]
 
 
