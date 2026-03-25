@@ -14,9 +14,14 @@ import pytest
 import tests
 
 
-def test_cmd_pipeline_init(simple):
+def test_cmd_pipeline_init_jenkins(simple):
     simple[0]('pipe init --platform jenkins')
     assert os.path.exists(simple[1].join('Jenkinsfile'))
+
+
+def test_cmd_pipeline_init_github(simple):
+    simple[0]('pipe init --platform github')
+    assert os.path.exists(simple[1].join('.github'))
 
 
 def test_cmd_pipeline_lib_error(simple, capsys):

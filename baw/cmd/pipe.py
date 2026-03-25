@@ -9,6 +9,7 @@
 
 import os
 
+import baw.cmd.init
 import baw.cmd.utils
 import baw.pipefile
 import baw.resources
@@ -20,10 +21,39 @@ def init(
     platform: str = 'github',
     verbose: bool | None = False,
     venv: bool | None = False,
-):
+) -> int:
     if platform == 'jenkins':
         return init_jenkins(root, verbose=verbose, venv=venv)
+    if platform == 'github':
+        return init_github(root, verbose=verbose, venv=venv)
     baw.error('Nothing todo')
+    return baw.SUCCESS
+
+
+def init_github(
+    root: str,
+    verbose: bool | None = False,
+    venv: bool | None = False,
+) -> int:
+    source = baw.pipefile.dotgithub(root)
+    if os.path.exists(source):
+        baw.error(f'.github already exists: {source}')
+        return baw.FAILURE
+    with baw.git_stash(root, verbose=verbose, venv=venv):
+        baw.cmd.init.create_files(
+            root,
+            todo=baw.resources.DOTGITHUB,
+        )
+        baw.git_add(root, '.github')
+        failure = baw.git_commit(
+            root,
+            source=source,
+            message='chore(github): add .github',
+            verbose=verbose,
+        )
+        if failure:
+            return failure
+    baw.log('.github added')
     return baw.SUCCESS
 
 
@@ -31,7 +61,7 @@ def init_jenkins(
     root: str,
     verbose: bool | None = False,
     venv: bool | None = False,
-):
+) -> int:
     source = baw.pipefile.jenkinsfile(root)
     if os.path.exists(source):
         baw.error(f'Jenkinsfile already exists: {source}')
@@ -87,6 +117,18 @@ def upgrade(
 
 
 def create_jenkinsfile(root: str):
+    newest = baw.pipefile.image_newest()
+    args = image_args()
+    replaced = baw.resources.template_replace(
+        root,
+        template=baw.resources.JENKINSFILE,
+        docker_image_test_name=newest,
+        docker_image_test_args=args,
+    )
+    return replaced
+
+
+def create_dotgithub(root: str):
     newest = baw.pipefile.image_newest()
     args = image_args()
     replaced = baw.resources.template_replace(
