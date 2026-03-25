@@ -1,5 +1,4 @@
 ---
-name: Dependabot
 version: 2
 updates:
   # Python dependencies
