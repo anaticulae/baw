@@ -11,6 +11,7 @@ import os
 
 import pytest
 
+import baw.utils
 import tests
 
 
@@ -20,8 +21,12 @@ def test_cmd_pipeline_init_jenkins(simple):
 
 
 def test_cmd_pipeline_init_github(simple):
+    root = simple[1]
     simple[0]('pipe init --platform github')
-    assert os.path.exists(simple[1].join('.github'))
+    assert os.path.exists(root.join('.github'))
+    makefile = os.path.join(root, 'Makefile')
+    content = baw.utils.file_read(makefile)
+    assert '{{PACKAGE}}' not in content
 
 
 def test_cmd_pipeline_lib_error(simple, capsys):

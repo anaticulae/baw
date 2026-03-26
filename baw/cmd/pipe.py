@@ -39,11 +39,12 @@ def init_github(
     if os.path.exists(source):
         baw.error(f'.github already exists: {source}')
         return baw.FAILURE
+    todo = [(
+        key,
+        baw.resources.template_replace(root, template=value),
+    ) for key, value in baw.resources.DOTGITHUB]
     with baw.git_stash(root, verbose=verbose, venv=venv):
-        baw.cmd.init.create_files(
-            root,
-            todo=baw.resources.DOTGITHUB,
-        )
+        baw.cmd.init.create_files(root, todo=todo)
         baw.git_add(root, '.github')
         baw.git_add(root, os.path.join('Makefile'))
         failure = baw.git_commit(
