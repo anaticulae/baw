@@ -1,6 +1,20 @@
 # CHANGELOG
 
 
+## v1.73.1 (2026-03-26)
+
+### Bug Fixes
+
+- **dependabot**: Remove invalid field
+  ([`1264615`](https://github.com/anaticulae/baw/commit/126461580aba8fd5424f81af8e8104f3273acf87))
+
+- **make**: Adjust template generation
+  ([`14e20a6`](https://github.com/anaticulae/baw/commit/14e20a668bf1ae96e7a8fde8325a01c6b0233065))
+
+- **pipe**: Verify that template is replaced
+  ([`0345e38`](https://github.com/anaticulae/baw/commit/0345e38091f4dc2c7ab945cc8fe7e4614074aef4))
+
+
 ## v1.73.0 (2026-03-25)
 
 ### Chores
