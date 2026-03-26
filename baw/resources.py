@@ -234,6 +234,7 @@ def template_replace(root: str, template: str, **kwargs) -> str:
     year = str(time.localtime(time.time()).tm_year)
 
     template = template.replace('{{SHORT}}', short)
+    template = template.replace('{{PACKAGE}}', short)
     template = template.replace('{{SOURCES}}', ', '.join(source))
     template = template.replace('{{NAME}}', name_)
     template = template.replace('{{VERSION}}', version_tag)
