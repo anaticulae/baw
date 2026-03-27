@@ -46,10 +46,10 @@ def init_github(
     with baw.git_stash(root, verbose=verbose, venv=venv):
         baw.cmd.init.create_files(root, todo=todo)
         baw.git_add(root, '.github')
-        baw.git_add(root, os.path.join('Makefile'))
+        baw.git_add(root, 'Makefile')
         failure = baw.git_commit(
             root,
-            source=(source, os.path.join('Makefile')),
+            source=(source, 'Makefile'),
             message='chore(github): add .github',
             verbose=verbose,
         )
