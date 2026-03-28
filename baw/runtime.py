@@ -14,6 +14,8 @@ import subprocess
 import sys
 import time
 
+import utilo
+
 import baw
 import baw.config
 import baw.utils
@@ -114,7 +116,7 @@ def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pyl
 
 def patch_env(root):
     path = os.path.join(virtual(root), 'Scripts/activate.bat')
-    content = baw.utils.file_read(path)
+    content = utilo.file_read(path)
     content = content.partition(':END')[0]  # remove content after :END
     baw.utils.file_remove(path)
     baw.utils.file_create(path, content=content)

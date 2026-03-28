@@ -12,6 +12,8 @@ import os
 import re
 import sys
 
+import utilo
+
 import baw
 import baw.config
 import baw.dockers
@@ -57,7 +59,7 @@ def docker_image(root: str) -> str | None:
     if not os.path.exists(path):
         baw.error(f'require Jenkinsfile in {root}')
         sys.exit(baw.FAILURE)
-    jenkins = baw.utils.file_read(path)
+    jenkins = utilo.file_read(path)
     parsed = IMAGE.search(jenkins)
     if not parsed:
         return None
@@ -77,7 +79,7 @@ def docker_env(root: str) -> dict | None:
     if not os.path.exists(path):
         baw.error(f'require Jenkinsfile in {root}')
         sys.exit(baw.FAILURE)
-    jenkins = baw.utils.file_read(path)
+    jenkins = utilo.file_read(path)
     parsed = ENVIRONMENT.search(jenkins)
     if not parsed:
         return None
@@ -126,7 +128,7 @@ def library(root: str, verbose: bool = False):
     if not os.path.exists(path):
         baw.error(f'could not find Jenkinsfile: {path}')
         return baw.FAILURE
-    current = baw.utils.file_read(path)
+    current = utilo.file_read(path)
     newest = library_newest(verbose=verbose)
     if newest in current:
         baw.error(f'already newst caelum: {newest}')

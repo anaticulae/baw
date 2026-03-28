@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw.cmd.init
 import baw.cmd.utils
 import baw.pipefile
@@ -97,7 +99,7 @@ def upgrade(
         baw.error(f'Jenkinsfile does not exists: {source}')
         return baw.FAILURE
     replaced = baw.pipefile.upgrade(root, always=True)
-    before = baw.utils.file_read(source)
+    before = utilo.file_read(source)
     if replaced.strip() == before.strip():
         baw.log('Jenkinsfile unchanged, skip upgrade')
         return baw.SUCCESS

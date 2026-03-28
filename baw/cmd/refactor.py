@@ -10,6 +10,8 @@
 import re
 import sys
 
+import utilo
+
 import baw.cmd.utils
 import baw.gix
 import baw.resources
@@ -43,7 +45,7 @@ def pattern_run(root: str, verbose: bool) -> bool:
     splitted = todo()
     changed = False
     for path in files(root):
-        content = baw.utils.file_read(path)
+        content = utilo.file_read(path)
         before = hash(content)
         for key, value in splitted.items():
             content = content.replace(key, value)

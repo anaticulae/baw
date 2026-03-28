@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utilo
+
 import baw.utils
 import tests
 
@@ -31,7 +33,7 @@ def test_bsa_single_small_document(testdir):
     improved = testdir.tmpdir.join('simple.txt')
     cmd = f'cat {single} | baw_single  > {improved}'
     tests.run(cmd, cwd=testdir.tmpdir)
-    result = baw.utils.file_read(improved)
+    result = utilo.file_read(improved)
     assert result == EXPECTED
 
 
@@ -42,5 +44,5 @@ def test_bsa_single_huge_document(testdir):
     improved = testdir.tmpdir.join('simple.txt')
     cmd = f'cat {single} | baw_single  > {improved}'
     tests.run(cmd, cwd=testdir.tmpdir)
-    result = baw.utils.file_read(improved).strip()
+    result = utilo.file_read(improved).strip()
     assert result == raw

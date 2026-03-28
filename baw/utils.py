@@ -20,6 +20,8 @@ import sys
 import time
 import webbrowser
 
+import utilo
+
 import baw.runtime
 
 BAW_EXT = '.baw'
@@ -462,7 +464,7 @@ def static(root):
     if not short:
         exitx(msg=f"missing short `{short}` def in .baw: {root}")
     path = os.path.join(root, short, "__init__.py")
-    content = baw.utils.file_read(path)
+    content = utilo.file_read(path)
     result = re.search(r"__version__ = \'(.*?)\'", content).group(1)
     return result
 

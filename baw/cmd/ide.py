@@ -102,7 +102,7 @@ def generate_conftest(root: str):
         return
 
     # TODO: MAY ENABLE LATER
-    # if len(baw.utils.file_read(output)) < len(baw.resources.CONFTEST_TEMPLATE):
+    # if len(utilo.file_read(output)) < len(baw.resources.CONFTEST_TEMPLATE):
     #     baw.utils.file_replace(output, baw.resources.CONFTEST_TEMPLATE)
 
 

@@ -7,9 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utilo
+
 import baw.cmd.release.config
 import baw.runtime
-import baw.utils
 
 
 def run(root, verbose, release_type):
@@ -63,7 +64,7 @@ def select_release_type(typ: str, cfg: str) -> str:
     # select a release-type let semantic release decide. If only some
     # style are commited but we want the release, we have to overwrite
     # default action.
-    if require_autopatch(baw.utils.file_read(cfg)):
+    if require_autopatch(utilo.file_read(cfg)):
         typ = 'patch'
     typ = '' if typ == 'auto' else f'--{typ}'
     return typ

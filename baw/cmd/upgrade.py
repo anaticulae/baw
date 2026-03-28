@@ -11,6 +11,8 @@ import concurrent.futures
 import os
 import re
 
+import utilo
+
 import baw.cmd.complex
 import baw.cmd.sync
 import baw.cmd.utils
@@ -145,7 +147,7 @@ def upgrade_requirements(
         baw.error(msg)
         return baw.FAILURE
     baw.log(f'\nStart upgrading requirements: {req_path}')
-    content = baw.utils.file_read(req_path)
+    content = utilo.file_read(req_path)
     if not content.strip():
         baw.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchronizing process and quit with SUCCESS

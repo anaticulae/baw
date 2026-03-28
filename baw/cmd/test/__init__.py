@@ -11,6 +11,8 @@ import os
 import shutil
 import sys
 
+import utilo
+
 import baw.archive.test
 import baw.cmd.baseline
 import baw.cmd.test.cov
@@ -266,7 +268,7 @@ def create_pytest_config(root: str) -> str:
     pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.pini')
     # using ROOT to get location from baw-tool
     assert os.path.exists(pytest_ini), f'no testconfig available {pytest_ini}'
-    config = baw.utils.file_read(pytest_ini)
+    config = utilo.file_read(pytest_ini)
     path = os.path.join(root, 'pytest.ini')
     baw.utils.file_replace(
         path,

@@ -10,6 +10,8 @@
 import os
 import shutil
 
+import utilo
+
 import baw.config
 import baw.resources
 import baw.runtime
@@ -82,13 +84,13 @@ def generate_docs(root: str, verbose: bool, venv: bool) -> int:
         path = os.path.join(root, filename)
         if not os.path.exists(path):
             continue
-        loaded = baw.utils.file_read(path)
+        loaded = utilo.file_read(path)
         baw.utils.file_replace(os.path.join(doctmp, filename), loaded)
     for filename in 'changelog.rst'.split():
         path = os.path.join(doctmp, 'pages', filename)
         if not os.path.exists(path):
             continue
-        loaded = baw.utils.file_read(path)
+        loaded = utilo.file_read(path)
         loaded = loaded.replace('../../', '../')
         baw.utils.file_replace(path, loaded)
     return baw.SUCCESS

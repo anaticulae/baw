@@ -10,6 +10,7 @@
 import os
 
 import pytest
+import utilo
 
 import baw.config
 import baw.utils
@@ -40,5 +41,5 @@ def test_regression_format_keep_single_list(minimal, monkeypatch):  # pylint:dis
     baw.utils.file_create(path, source)
     assert os.path.exists(path)
     tests.baaw('format', monkeypatch=monkeypatch)
-    read = baw.utils.file_read(path)
+    read = utilo.file_read(path)
     assert read == source
