@@ -1,6 +1,35 @@
 # CHANGELOG
 
 
+## v1.74.0 (2026-03-30)
+
+### Chores
+
+- **refactor**: Use utilo
+  ([`aa7b4b2`](https://github.com/anaticulae/baw/commit/aa7b4b224ffb1797dd94b964476c3c90e47f00e4))
+
+- **requirements**: Add utilo
+  ([`1703c03`](https://github.com/anaticulae/baw/commit/1703c0380a62bd4b2bf2b5dc5b9bc8808213a0be))
+
+### Code Style
+
+- **pack**: Format code
+  ([`86e19ad`](https://github.com/anaticulae/baw/commit/86e19ad4e14ecc88b9f14c261af1a9d8c63c68d8))
+
+### Documentation
+
+- **git**: Extend interface documentation
+  ([`e4c9baf`](https://github.com/anaticulae/baw/commit/e4c9bafca069cde59af76c2faffcff32a0d19589))
+
+### Features
+
+- **git**: Add method to verify if current is release tag
+  ([`f8b9d41`](https://github.com/anaticulae/baw/commit/f8b9d41880eb4ebef42189317909e43111a9af24))
+
+- **semantic**: Run release on every commit
+  ([`3624787`](https://github.com/anaticulae/baw/commit/3624787fbca1752c70a45868d0254bb8d96c18b5))
+
+
 ## v1.73.1 (2026-03-26)
 
 ### Bug Fixes
@@ -13,6 +42,11 @@
 
 - **pipe**: Verify that template is replaced
   ([`0345e38`](https://github.com/anaticulae/baw/commit/0345e38091f4dc2c7ab945cc8fe7e4614074aef4))
+
+### Chores
+
+- **release**: 1.73.1
+  ([`0b21f1b`](https://github.com/anaticulae/baw/commit/0b21f1bbb034cef42248fda305ade94e415b0231))
 
 
 ## v1.73.0 (2026-03-25)
@@ -36,6 +70,9 @@
 
 - **pipe**: Organize imports
   ([`038b572`](https://github.com/anaticulae/baw/commit/038b572498d21826d4c6fcf40b2bfdcdc497b875))
+
+- **release**: 1.73.0
+  ([`5eb1c5b`](https://github.com/anaticulae/baw/commit/5eb1c5b907852712b54bbf5e2b922217bb87f472))
 
 ### Code Style
 
@@ -108,6 +145,9 @@
 - **github**: Use semantic release to publish
   ([`e665f6a`](https://github.com/anaticulae/baw/commit/e665f6a87db6a37c3a816e1e328ae4865166de8c))
 
+- **release**: 1.72.0
+  ([`384399f`](https://github.com/anaticulae/baw/commit/384399f2e7f9b4cbebf0c5948f4a468f181cee48))
+
 - **release**: Do not create github release
   ([`1ea115a`](https://github.com/anaticulae/baw/commit/1ea115ab3a8b5f567e11c02742c87bc3604abc16))
 
@@ -172,6 +212,9 @@
 - **github**: Simplify names
   ([`636d894`](https://github.com/anaticulae/baw/commit/636d8944ac82b9628b730d0e62fcad1b38d1093b))
 
+- **release**: 1.71.2
+  ([`dcec93a`](https://github.com/anaticulae/baw/commit/dcec93ac08c95d15ce55a2fc166eaa956f76e463))
+
 
 ## v1.71.1 (2026-03-15)
 
@@ -205,6 +248,9 @@
 
 - **publish**: Just publish tags
   ([`4d8aa4f`](https://github.com/anaticulae/baw/commit/4d8aa4fb3f0310fb48866bff4ab37b443ca5a9cd))
+
+- **release**: 1.71.1
+  ([`a5f5c6e`](https://github.com/anaticulae/baw/commit/a5f5c6e4773bde049bbf4c22cd2c9be09da51e51))
 
 - **requirements**: Add build to create distribution
   ([`4d1dc4f`](https://github.com/anaticulae/baw/commit/4d1dc4f0ad4ed82ccaf8db0477ef01bdd74d0f6b))
@@ -266,6 +312,9 @@
 - **github**: Run alltest on github
   ([`e17750c`](https://github.com/anaticulae/baw/commit/e17750cb4aa23c59987f3ce350f4bc83647bc648))
 
+- **release**: 1.71.0
+  ([`58ef751`](https://github.com/anaticulae/baw/commit/58ef7515bb11f2250444c9c7b05adf075bc18bda))
+
 - **semantic**: Add build command
   ([`fe9f2f7`](https://github.com/anaticulae/baw/commit/fe9f2f7b2de46e96b4955e3bd910228e15395d02))
 
@@ -309,6 +358,11 @@
 - **docker**: Cleanup docker file
   ([`73a134a`](https://github.com/anaticulae/baw/commit/73a134aa6523a62189983df6fd587068d4cf8313))
 
+### Chores
+
+- **release**: 1.70.2
+  ([`bd1fcdb`](https://github.com/anaticulae/baw/commit/bd1fcdb0b5d1c5121a59c2006f8c45c81d62993e))
+
 
 ## v1.70.1 (2026-02-28)
 
@@ -316,6 +370,11 @@
 
 - **setup**: Adjust readme format
   ([`f26b92e`](https://github.com/anaticulae/baw/commit/f26b92eed04a475438ce6792bded5b3e242b1dd2))
+
+### Chores
+
+- **release**: 1.70.1
+  ([`d1da283`](https://github.com/anaticulae/baw/commit/d1da283cb77481a1b56b1b461a131983d1beb43d))
 
 
 ## v1.70.0 (2026-02-28)
@@ -464,6 +523,9 @@
 
 - **publish**: Add workflow to automate publish to pypi
   ([`16fa2b8`](https://github.com/anaticulae/baw/commit/16fa2b8fbb46f0ceb99703b5a8b9d326f345e577))
+
+- **release**: 1.70.0
+  ([`a85ec4d`](https://github.com/anaticulae/baw/commit/a85ec4d140e21447d6481388a3089c2bbf8a5570))
 
 - **release**: Disable linter to release with warnings
   ([`8b01a92`](https://github.com/anaticulae/baw/commit/8b01a924c9ac2b007d20e91556d12919d54deaa8))
