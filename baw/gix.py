@@ -115,6 +115,22 @@ def is_clean(root, verbose: bool = True):
     return 'nothing to commit, working tree clean' in process.stdout
 
 
+def is_release(root) -> bool:
+    """Verify if current tag is release tag.
+
+    >>> is_release(__file__)
+    '...'
+    """
+    if not installed():
+        return False
+    head = headhash(root)
+    if head is None:
+        return False
+    if head.startswith('v'):
+        return True
+    return False
+
+
 def modified(root: str, verbose: bool = False):
     completed = baw.runtime.run_target(
         root,
