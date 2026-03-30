@@ -32,7 +32,11 @@ def run(root, verbose, release_type):
     return baw.SUCCESS
 
 
-def run_release(root: str, no_push: bool = True, release_type: str | None = None) -> int: # yapf:disable
+def run_release(
+    root: str,
+    no_push: bool = True,
+    release_type: str | None = None,
+) -> int:
     cfg = baw.cmd.release.config.configpath(root)
     cmd = f'semantic-release -c {cfg} version'
     if no_push:
