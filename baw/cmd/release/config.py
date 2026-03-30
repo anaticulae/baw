@@ -10,12 +10,14 @@
 import contextlib
 import os
 
+import utilo
+
 import baw.config
 import baw.gix
 import baw.utils
 
 TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
-TEMPLATE = baw.utils.file_read(os.path.join(TEMPLATES, 'semantic.cfg'))
+TEMPLATE = utilo.file_read(os.path.join(TEMPLATES, 'semantic.cfg'))
 SEMANTIC = os.path.join(TEMPLATES, 'semantic')
 
 

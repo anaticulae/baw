@@ -11,8 +11,9 @@ import contextlib
 import os
 import sys
 
+import utilo
+
 import baw.cmd.info
-import baw.cmd.pipe
 import baw.cmd.utils
 import baw.config
 import baw.pipefile
@@ -105,7 +106,7 @@ def resources(root: str) -> str:
     conftest = os.path.join(root, 'tests/conftest.py')
     if not os.path.exists(conftest):
         return ''
-    if 'RESOURCES' not in baw.utils.file_read(conftest):
+    if 'RESOURCES' not in utilo.file_read(conftest):
         # resource generator step is not required
         return ''
     result = ''

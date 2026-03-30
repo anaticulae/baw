@@ -10,8 +10,9 @@
 import os
 import re
 
+import utilo
+
 import baw.config
-import baw.utils
 
 # support __version__ = "1.0.0" and __version__ = '1.0.0' and '1.0.0'
 VERSION = (
@@ -42,7 +43,7 @@ def determine(root: str, verbose: bool = False) -> str:
     # f'{short}/__init__.py:__version__'
     version_path = baw.config.version(root).removesuffix(':__version__')
     path = os.path.join(root, version_path)
-    content = baw.utils.file_read(path)
+    content = utilo.file_read(path)
     for pattern in VERSION:
         parsed = re.search(pattern, content)
         if not parsed:

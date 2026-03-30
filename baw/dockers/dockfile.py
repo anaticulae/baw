@@ -12,6 +12,7 @@ import re
 import sys
 
 import docker.errors
+import utilo
 
 import baw.dockers
 import baw.dockers.image
@@ -26,7 +27,7 @@ def build(dockerfile: str, tagname: str) -> int:
     if not baw.dockers.image.check_baseimage(image):
         baw.error(f'could not find baseimage {image} in {dockerfile}')
         baw.error(parse_baseimage(dockerfile))
-        baw.error(baw.utils.file_read(dockerfile))
+        baw.error(utilo.file_read(dockerfile))
         sys.exit(baw.FAILURE)
     path = os.path.split(dockerfile)[0]
     try:
@@ -61,7 +62,7 @@ def log_service(done):
 
 
 def parse_baseimage(path: str):
-    lines = baw.utils.file_read(path).splitlines()
+    lines = utilo.file_read(path).splitlines()
     for line in lines:
         if not line:
             continue
@@ -92,7 +93,7 @@ def docker_image_upgrade(
     # >>> docker_image_upgrade(baw.pipefile.jenkinsfile(__file__), always=True)
     # '@Library(...pipeline{...}\n'
     """
-    content = baw.utils.file_read(path)
+    content = utilo.file_read(path)
     parsed = IMAGE.findall(content)
     if not parsed:
         baw.error(f'could not parse: {path}')

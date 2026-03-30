@@ -10,6 +10,7 @@
 import os
 
 import pytest
+import utilo
 
 import baw.config.change
 import baw.utils
@@ -22,7 +23,7 @@ def test_cmd_test_cov_simple(simple, capsys):
     simple[0]('info covreport')
     lines = tests.stdout(capsys).strip().splitlines()
     path = os.path.join(lines[-1], 'index.html')
-    content = baw.utils.file_read(path)
+    content = utilo.file_read(path)
     assert '100%' in content
 
 

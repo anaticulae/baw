@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw.config
 import baw.utils
 
@@ -23,7 +25,7 @@ def is_tested(root: str, hashed: str) -> bool:
     archive = path_tested(root)
     if not os.path.exists(archive):
         return False
-    content = baw.utils.file_read(archive)
+    content = utilo.file_read(archive)
     lines = content.splitlines()
     if any(line.strip() == hashed for line in lines):
         return True

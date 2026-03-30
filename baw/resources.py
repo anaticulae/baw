@@ -11,6 +11,8 @@
 import os
 import time
 
+import utilo
+
 import baw
 import baw.config
 import baw.project.version
@@ -25,7 +27,7 @@ FOLDERS = [
 TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
 assert os.path.exists(TEMPLATES), f'No template-dir {TEMPLATES}'
 
-fread = baw.utils.file_read
+fread = utilo.file_read
 
 
 def joined(path: str, asserts: bool = True) -> str:

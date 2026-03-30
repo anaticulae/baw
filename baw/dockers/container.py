@@ -10,6 +10,7 @@
 import os
 
 import docker.errors
+import utilo
 
 import baw
 import baw.dockers
@@ -187,7 +188,7 @@ def tar_content(
         if completed.returncode:
             baw.error(f'tar failed: {cmd}')
             baw.completed(completed)
-        content = baw.utils.file_read_binary(base)
+        content = utilo.file_read_binary(base)
     return content
 
 

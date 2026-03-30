@@ -115,6 +115,22 @@ def is_clean(root, verbose: bool = True):
     return 'nothing to commit, working tree clean' in process.stdout
 
 
+def is_release(root) -> bool:
+    """Verify if current tag is release tag.
+
+    >>> is_release(baw.determine_root(__file__)) in (True, False)
+    True
+    """
+    if not installed():
+        return False
+    head = headhash(root)
+    if head is None:
+        return False
+    if head.startswith('v'):
+        return True
+    return False
+
+
 def modified(root: str, verbose: bool = False):
     completed = baw.runtime.run_target(
         root,
@@ -307,7 +323,7 @@ def headtag(root: str, venv: bool, verbose: bool = False):
     return completed.stdout.strip()
 
 
-def headhash(root: str) -> str:
+def headhash(root: str) -> str | None:
     if not installed():
         return None
     cmd = 'git rev-parse --verify HEAD'

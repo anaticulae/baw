@@ -13,6 +13,7 @@ import re
 import sys
 import urllib.request
 
+import utilo
 from pip import __version__ as pip_version
 
 import baw.cmd.utils
@@ -208,8 +209,7 @@ def required_installation(
 ):
     current = pip_list(root, verbose=verbose, venv=venv)
     requested = [
-        baw.requirements.parser.parse(baw.utils.file_read(item))
-        for item in txts
+        baw.requirements.parser.parse(utilo.file_read(item)) for item in txts
     ]
     missing = [
         baw.requirements.upgrade.diff(current, item, minimal)
@@ -291,7 +291,7 @@ def get_install_cmd(
     if extra_url:
         pip = f'{pip} --extra-index-url {extra_url}'
     testing_url = baw.config.package_testing()
-    if '.post' not in baw.utils.file_read(requirements):
+    if '.post' not in utilo.file_read(requirements):
         testing_url = None
     if testing_url:
         pip += f'--extra-index-url {testing_url} '

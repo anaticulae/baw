@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw.cmd.upgrade
 import baw.requirements.upgrade
 import tests
@@ -122,7 +124,7 @@ def test_upgrading(tmpdir):
     )
     # use default requirements.txt
     baw.cmd.upgrade.upgrade_requirements(tmpdir)
-    loaded = baw.utils.file_read(requirements_path)
+    loaded = utilo.file_read(requirements_path)
     assert loaded != TEST_UPGRADE
 
 

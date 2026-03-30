@@ -13,6 +13,8 @@ import os
 import re
 import sys
 
+import utilo
+
 import baw
 import baw.cmd.image
 import baw.cmd.utils
@@ -161,7 +163,7 @@ def requirement_hash(root: str, verbose: bool = False) -> str:
         path = os.path.join(root, fname)
         if not os.path.exists(path):
             continue
-        content += baw.utils.file_read(path)
+        content += utilo.file_read(path)
     hashed = str(baw.utils.binhash(content))
     if verbose:
         name = baw.config.shortcut(root)
@@ -306,7 +308,7 @@ def from_raw_or_path(
                                     f"{content} {fname} {ftype}")
     # filepath must not have any line breaks
     if len(content.splitlines()) == 1 and os.path.isfile(content):
-        content = baw.utils.file_read(content)
+        content = utilo.file_read(content)
     return content
 
 

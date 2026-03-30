@@ -11,6 +11,8 @@ import contextlib
 import os
 import sys
 
+import utilo
+
 import baw.cmd.image.clean
 import baw.cmd.image.dockerfiles
 import baw.cmd.info
@@ -84,7 +86,7 @@ PIPSTABLE = '<<PIPSTABLE>>'
 
 @contextlib.contextmanager
 def dockerfile_resolve_gitdescribe(dockerfile: str):
-    content = baw.utils.file_read(dockerfile)
+    content = utilo.file_read(dockerfile)
     described = describe(dockerfile)
     if no_replace := described == content:  # pylint:disable=W0612
         yield dockerfile
@@ -100,7 +102,7 @@ def dockerfile_resolve_gitdescribe(dockerfile: str):
 
 
 def describe(dockerfile: str) -> str:
-    content = baw.utils.file_read(dockerfile)
+    content = utilo.file_read(dockerfile)
     root = baw.determine_root(dockerfile)
     if REFRENCE in content:
         current = baw.gix.describe(root)

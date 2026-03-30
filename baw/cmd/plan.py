@@ -12,6 +12,8 @@ import enum
 import os
 import re
 
+import utilo
+
 import baw
 import baw.project.version
 import baw.resources
@@ -70,7 +72,7 @@ def create(
     baw.log(f'create new release plan: {outpath}')
 
     overview = os.path.join(releases(root), 'releases.rst')
-    loaded = baw.utils.file_read(overview)
+    loaded = utilo.file_read(overview)
     # TODO: REFACTOR THIS HACK
     if major == 0 and minor == '1':  # pylint:disable=C2001
         # first release plan
@@ -182,7 +184,7 @@ def status(root: str) -> Status:
     plan = current_plan(root)
     if plan is None:
         return Status.EMPTY
-    loaded = baw.utils.file_read(plan)
+    loaded = utilo.file_read(plan)
     todos = loaded.count('* [ ]')
     dones = loaded.count('* [x]')
     if todos:

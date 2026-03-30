@@ -9,6 +9,8 @@
 
 import re
 
+import utilo
+
 import baw.config
 import baw.project
 import baw.utils
@@ -22,7 +24,7 @@ def coverage_min(root, value: float, can_decrease: bool = False):  # pylint:disa
     value = int(float(value))
     root = baw.project.determine_root(root)
     path = baw.config.config_path(root)
-    content = baw.utils.file_read(path)
+    content = utilo.file_read(path)
     exists = 'coverage_min' in content
     new = f'coverage_min = {value}\n'
     if exists:
