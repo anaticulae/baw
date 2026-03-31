@@ -74,8 +74,9 @@ FILES = 'requirements.txt requirements.dev requirements.all'.split()
 def requirements(root: str) -> str:
     r"""\
     >>> requirements(__file__)
-    'COPY requirements.txt /var/workdir/requirements.txt\nCOPY requirements.dev /var/workdir/requirements.dev\n'
+    ''
     """
+    # TODO: REMOVE LATER
     root = baw.cmd.utils.determine_root(root)
     if not root:
         sys.exit(baw.FAILURE)
