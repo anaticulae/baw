@@ -42,21 +42,15 @@ ENV PATH="/opt/venv/bin:$PATH"
 # TODO: INVESTIGATE THIS HACK
 RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
 
-COPY /requirements.txt\
-     /baw/sync/dev\
-     /baw/sync/doc\
-        /var/install/
-
 WORKDIR /var/install
 
-RUN pip install --upgrade pip &&\
-    pip install -r requirements.txt &&\
-    pip install -r dev &&\
-    pip install -r doc
+COPY pyproject.toml .
+
+RUN pip install .
 
 COPY . /var/install
 
-RUN pip install --no-deps . && baw --help
+RUN pip install . && baw --help
 
 WORKDIR /var/outdir
 WORKDIR /var/workdir
