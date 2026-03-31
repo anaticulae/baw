@@ -1,0 +1,114 @@
+[build-system]
+requires = [
+    "setuptools>=82.0.1",
+    "wheel>=0.46.3"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "baw"
+version = "1.74.0"
+description = "A simple console-application to manage project complexity."
+readme = "README"
+requires-python = ">=3.12"
+authors = [
+  {name = "Helmut Konrad Schewe", email = "helmutus@outlook.com"}
+]
+
+dependencies = [
+    "utilo>=2.107.0,<3.0.0",
+
+    "semver>=3.0.4,<4.0.0",
+    "python_semantic_release>=10.5.3,<11.0.0",
+    "docker >=7.1.0,<8.0.0",
+
+    "yapf == 0.43.0",
+    "isort==8.0.1",
+
+    "bandit==1.9.4",
+    "pylint==4.0.5",
+
+    "pytest == 9.0.2",
+    "pytest-xdist == 3.8.0",
+    "pytest-cov == 7.1.0",
+
+    "build==1.4.2",
+    "virtualenv>=21.2.0,<22.0.0",
+    "setuptools == 82.0.1",
+]
+
+# Optional but recommended metadata
+keywords = []
+classifiers = [
+  'Programming Language :: Python :: 3.12',
+  'Programming Language :: Python :: 3.13',
+  'Programming Language :: Python :: 3.14',
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.scripts]
+baw = "baw.__main__:run"
+baw_cprofile_show = "baw.small.cprofile:main"
+baw_profile = "baw.small.profile:main"
+baw_regen = "baw.small.regen:main"
+baw_semantic_release = "baw.small.version:main"
+baw_single = "baw.small.single:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest_instafail == 0.4.2",
+    "pytest_localserver == 0.7.0",
+    "pytest_timeout == 2.1.0",
+
+    "rope == 1.14.0",
+    "pyenchant == 3.2.0",
+]
+
+doc = [
+    "added-value == 0.21.3",
+    "commonmark == 0.9.1",
+    "recommonmark == 0.7.1",
+    "Sphinx == 9.1.0",
+    "sphinx-autodoc-typehints==1.19.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/anaticulae/baw"
+Repository = "https://github.com/anaticulae/baw"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "baw",
+    "baw.archive",
+    "baw.cmd",
+    "baw.cmd.image",
+    "baw.cmd.release",
+    "baw.cmd.test",
+    "baw.config",
+    "baw.dockers",
+    "baw.project",
+    "baw.requirements",
+    "baw.small",
+    "baw.sync",
+    "baw.templates",
+    "baw.templates.docs",
+    "baw.templates.semantic",
+]
+exclude = [
+    "tests*",
+]
+
+[tool.setuptools.package-data]
+baw = [
+    "templates/*",
+    "templates/.*",
+    "templates/*/*",
+    "templates/*/.*",
+    "templates/.github/dependabot.yml",
+    "templates/.github/workflows/*.yml",
+]
+
+[tool.setuptools]
+include-package-data = true
