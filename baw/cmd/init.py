@@ -222,7 +222,7 @@ def create_python(
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
-    baw.utils.file_create(os.path.join(root, 'setup.py'), replaced)
+    baw.utils.file_create(os.path.join(root, 'pyproject.toml'), replaced)
 
 
 def create_requirements(root: str):

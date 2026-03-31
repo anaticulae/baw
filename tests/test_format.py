@@ -20,7 +20,7 @@ import tests
 @pytest.fixture
 def minimal(testdir):
     baw.config.create(testdir.tmpdir, 'abc', 'alphabet')
-    baw.utils.file_create('setup.py', '# setup')
+    baw.utils.file_create('pyproject.toml', '# setup')
     os.makedirs(testdir.tmpdir.join('abc'))
     return testdir.tmpdir
 
