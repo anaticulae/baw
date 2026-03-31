@@ -21,12 +21,15 @@ def determine_root(path) -> str | None:
     return current
 
 
-def ispython(root: str) -> str:
+PROJECTS = 'pyproject.toml'.split()
+
+
+def is_pyproject(root: str) -> bool:
     """\
-    >>> ispython(determine_root(__path__))
+    >>> is_pyproject(determine_root(__path__))
     True
     """
-    for item in 'setup.py'.split():  # pylint:disable=consider-using-any-or-all
+    for item in PROJECTS:
         if os.path.exists(os.path.join(root, item)):
             return True
     return False
