@@ -1,0 +1,53 @@
+[build-system]
+requires = [
+    "setuptools>=82.0.1",
+    "wheel>=0.46.3"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{SHORT}}"
+version = "0.1.0"
+description = ""
+readme = "README"
+requires-python = ">=3.12"
+authors = [
+  {name = "Helmut Konrad Schewe", email = "helmutus@outlook.com"}
+]
+
+dependencies = [
+]
+
+# Optional but recommended metadata
+keywords = []
+classifiers = [
+  'Programming Language :: Python :: 3.12',
+  'Programming Language :: Python :: 3.13',
+  'Programming Language :: Python :: 3.14',
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.scripts]
+baw = "baw.__main__:run"
+baw_cprofile_show = "baw.small.cprofile:main"
+baw_profile = "baw.small.profile:main"
+baw_regen = "baw.small.regen:main"
+baw_semantic_release = "baw.small.version:main"
+baw_single = "baw.small.single:main"
+
+[project.urls]
+Homepage = "https://github.com/anaticulae/{{SHORT}}"
+Repository = "https://github.com/anaticulae/{{SHORT}}"
+
+{{ENTRY_POINT}}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "{{SHORT}}",
+    {{ENTRY_POINT_PACKAGE}}
+]
+exclude = [
+    "tests*",
+]
