@@ -29,7 +29,4 @@ def is_pyproject(root: str) -> bool:
     >>> is_pyproject(determine_root(__path__))
     True
     """
-    for item in PROJECTS:
-        if os.path.exists(os.path.join(root, item)):
-            return True
-    return False
+    return any(os.path.exists(os.path.join(root, item)) for item in PROJECTS)
