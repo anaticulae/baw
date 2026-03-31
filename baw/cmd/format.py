@@ -37,7 +37,7 @@ def format_repository(root: str, verbose: bool = False, venv: bool = False):
 def sources(root: str):
     """\
     >>> import baw.project; sources(baw.determine_root(__file__))
-    ['setup.py', 'tests', 'baw']
+    ['tests', 'baw']
     """
     result = []
     for item in 'setup.py tests'.split():
