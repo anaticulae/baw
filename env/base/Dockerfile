@@ -34,14 +34,14 @@ RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
 
 # cache requirements
 WORKDIR /var/install
-COPY ../../requirements.txt /var/install
+COPY ../../pyproject.toml /var/install
 RUN python -m pip install --upgrade pip setuptools wheel &&\
-    pip install -r requirements.txt
+    pip install .
 
 # install baw as base application
 COPY ../.. /var/install
 
-RUN python3 setup.py install &&\
+RUN pip install . &&\
     baw --help
 
 # remove baw app source code
