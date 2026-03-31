@@ -179,7 +179,6 @@ CODE_WORKSPACE = fread(WORKSPACE_TEMPLATE)
 JENKINSFILE = fread(joined('Jenkinsfile'))
 GITIGNORE = fread(joined('.gitignore'))
 SETUP_PY = fread(joined('setup.tpy'))
-SETUP_CFG = fread(joined('setup.cfg'))
 RELEASE_PLAN = fread(joined('docs/plan.rst'))
 
 REFACTOR = fread(joined('refactor'))
