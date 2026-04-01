@@ -204,14 +204,13 @@ def eval_sync(pip, completed, *, verbose: bool) -> int:
 
 def required_installation(
     root,
-    txts: list,
+    requirements: str,
     minimal: bool = False,
     venv: bool = False,
     verbose: bool = False,
 ):
-    requested = [
-        baw.requirements.parser.parse(utilo.file_read(item)) for item in txts
-    ]
+    # TODO: REFACTOR LATER
+    requested = [baw.requirements.parser.parse(requirements)]
     current = pip_list(root, verbose=verbose, venv=venv)
     missing = [
         baw.requirements.upgrade.diff(current, item, minimal)
@@ -239,60 +238,63 @@ def pyproject_packages(root: str) -> dict:
 
     >>> pyproject_packages(baw.determine_root(__file__))
     {'requirements':...'], 'dev': ['...'], 'doc': ['...]}
+
+    toml does not exists
+    >>> pyproject_packages(__file__)
+    {}
     """
     base = os.path.join(root, 'pyproject.toml')
+    if not os.path.exists(base):
+        return {}
     with open(base, "rb") as f:
         config = tomllib.load(f)
     project = config['project']
     result = {
-        'requirements': project['dependencies'],
-        'dev': project['optional-dependencies']['dev'],
-        'doc': project['optional-dependencies']['doc'],
+        'requirements': project.get('dependencies', []),
+        'dev': project.get('optional-dependencies', {}).get('dev', []),
+        'doc': project.get('optional-dependencies', {}).get('doc', []),
     }
     return result
 
 
-def determine_resources(root: str, packages: str) -> list:
+def determine_resources(root: str, packages: str) -> str:
     """Determine requirements depending on `packages` choice.
 
     Args:
         root(str): root of generated project
         packages(str): select package to install
     Returns:
-        list of absolute paths to requirements.txt's
+        A single requirement file as a string.
 
     Choices(packages):
         - all: install project, test and doc environment
         - dev: install pytest, pycov etc.
         - doc: install Sphinx requirements
-        - requirements: only install project requirements.txt
+        - requirements: only install project pytoml.dependencies
     """
-    resources = []
-    requirements_dev = 'baw/sync/dev'
-    requirements_doc = 'baw/sync/doc'
+    baw_packages = pyproject_packages(baw.determine_root(__file__))
+    project_packages = pyproject_packages(baw.determine_root(root))
+
+    collected = []
     if packages == 'dev':
-        resources.append(requirements_dev)
+        collected.extend(baw_packages['dev'])
     if packages == 'doc':
-        resources.append(requirements_doc)
+        collected.extend(baw_packages['doc'])
     if packages == 'all':
-        resources.append(requirements_dev)
-        resources.append(requirements_doc)
+        collected.extend(baw_packages['doc'])
+        collected.extend(baw_packages['dev'])
     # Requirements_dev is a `global` file from baw project. This file is not
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
     # make path absolute in project
-    resources = [os.path.join(baw.ROOT, to_install) for to_install in resources]
     if packages in {'dev', 'all'}:
-        if os.path.exists(os.path.join(root, 'requirements.dev')):
-            resources.append(os.path.join(root, 'requirements.dev'))
+        collected.extend(project_packages.get('dev', []))
     if packages in {'extra', 'all'}:
-        if os.path.exists(os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)):
-            resources.append(os.path.join(root, baw.utils.REQUIREMENTS_EXTRA))
+        collected.extend(project_packages.get('extra', []))
     # local project file
-    local_requirement = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
-    if os.path.exists(local_requirement):
-        resources.append(local_requirement)
-    return resources
+    collected.extend(project_packages.get('requirements', []))
+    result = baw.NEWLINE.join(collected)
+    return result
 
 
 def get_install_cmd(
