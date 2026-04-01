@@ -20,6 +20,7 @@ import baw.cmd.generate
 import baw.cmd.ide
 import baw.cmd.image
 import baw.cmd.info
+import baw.cmd.init
 import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.pipe
