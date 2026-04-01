@@ -11,6 +11,7 @@ import contextlib
 import os
 import re
 import sys
+import tomllib
 import urllib.request
 
 import utilo
@@ -230,6 +231,24 @@ def required_installation(
             result.equal.pop(key)
             continue
         baw.log(f'duplicated requirement: {key}')
+    return result
+
+
+def pyproject_packages(root: str) -> dict:
+    """Determine requirements out of pytoml-file.
+
+    >>> pyproject_packages(baw.determine_root(__file__))
+    {'requirements':...'], 'dev': ['...'], 'doc': ['...]}
+    """
+    base = os.path.join(root, 'pyproject.toml')
+    with open(base, "rb") as f:
+        config = tomllib.load(f)
+    project = config['project']
+    result = {
+        'requirements': project['dependencies'],
+        'dev': project['optional-dependencies']['dev'],
+        'doc': project['optional-dependencies']['doc'],
+    }
     return result
 
 
