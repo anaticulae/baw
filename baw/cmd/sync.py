@@ -19,6 +19,7 @@ from pip import __version__ as pip_version
 import baw.cmd.utils
 import baw.config
 import baw.gix
+import baw.project.version
 import baw.requirements
 import baw.requirements.parser
 import baw.requirements.upgrade
