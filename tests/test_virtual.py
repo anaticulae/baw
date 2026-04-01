@@ -13,7 +13,6 @@ environment afterwards.
 import os
 
 import baw.runtime
-import baw.utils
 import tests
 
 
