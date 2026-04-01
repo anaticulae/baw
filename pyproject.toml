@@ -91,7 +91,6 @@ include = [
     "baw.project",
     "baw.requirements",
     "baw.small",
-    "baw.sync",
     "baw.templates",
     "baw.templates.docs",
     "baw.templates.semantic",
