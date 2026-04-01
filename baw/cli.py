@@ -106,11 +106,6 @@ def add_parameter(parser):
         action='store_true',
         help='Do not modify stdout/stderr',
     )
-    parser.add_argument(
-        '--venv',
-        action='store_true',
-        help='Use virtual environment',
-    )
     # TODO count V to determine verbosity. -VVV
     parser.add_argument(
         '--verbose',
