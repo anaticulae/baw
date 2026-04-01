@@ -208,10 +208,10 @@ def required_installation(
     venv: bool = False,
     verbose: bool = False,
 ):
-    current = pip_list(root, verbose=verbose, venv=venv)
     requested = [
         baw.requirements.parser.parse(utilo.file_read(item)) for item in txts
     ]
+    current = pip_list(root, verbose=verbose, venv=venv)
     missing = [
         baw.requirements.upgrade.diff(current, item, minimal)
         for item in requested
