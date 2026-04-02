@@ -45,9 +45,7 @@ def destroy(path: str):
 
 def virtual(root: str, creates: bool = True) -> str:
     assert root
-    name: str = 'global'
-    if not baw.config.venv_global():
-        name = baw.config.shortcut(root)
+    name = baw.config.shortcut(root)
     venv = os.path.join(baw.config.bawtmp(), 'venv', name)
     if os.path.exists(venv):
         return venv

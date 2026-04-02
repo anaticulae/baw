@@ -48,36 +48,6 @@ COVERAGE_MAX = 100
 HVCS = 'gitea'
 
 
-def venv_global() -> bool:
-    """Use global venv.
-
-    >>> str(venv_global())
-    '...'
-    """
-    single = str(os.environ.get('BAW_VENV_GLOBAL', default='')).lower()
-    if '1' in single or 'true' in single:
-        if baw.utils.testing():
-            # do not use global for baw project
-            return False
-        return True
-    return False
-
-
-def venv_always() -> bool:
-    """Always use the venv.
-
-    >>> str(venv_always())
-    '...'
-    """
-    single = str(os.environ.get('BAW_VENV_ALWAYS', default='')).lower()
-    if '1' in single or 'true' in single:
-        if baw.utils.testing():
-            # do not use global for baw project
-            return False
-        return True
-    return False
-
-
 def gitea_server() -> str:
     """\
     For example: 169.254.149.20:6300

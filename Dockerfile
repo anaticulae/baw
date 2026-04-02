@@ -18,9 +18,6 @@ RUN apk add --no-cache \
     py3-pip \
     python3-dev
 
-ENV BAW_VENV_GLOBAL=0
-ENV BAW_VENV_ALWAYS=0
-
 ENV BAW=/tmp/dev
 
 ENV PYLINTHOME=/tmp/pylint
