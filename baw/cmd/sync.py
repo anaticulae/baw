@@ -242,7 +242,13 @@ def pyproject_packages(root: str) -> dict:
     toml does not exists
     >>> pyproject_packages(__file__)
     {}
+
+    >>> pyproject_packages(None)
+    {'requirements': [], 'dev': [], 'doc': []}
     """
+    if not root:
+        baw.error(f'pyproject_packages: root is {root}')
+        return {'requirements': [], 'dev': [], 'doc': []}
     base = os.path.join(root, 'pyproject.toml')
     if not os.path.exists(base):
         return {}
@@ -274,15 +280,16 @@ def determine_resources(root: str, packages: str) -> str:
     """
     baw_packages = pyproject_packages(baw.determine_root(__file__))
     project_packages = pyproject_packages(baw.determine_root(root))
-
+    if not baw_packages:
+        baw.error(f'no baw_packages {baw_packages}')
     collected = []
     if packages == 'dev':
-        collected.extend(baw_packages['dev'])
+        collected.extend(baw_packages.get('dev', []))
     if packages == 'doc':
-        collected.extend(baw_packages['doc'])
+        collected.extend(baw_packages.get('doc', []))
     if packages == 'all':
-        collected.extend(baw_packages['doc'])
-        collected.extend(baw_packages['dev'])
+        collected.extend(baw_packages.get('doc', []))
+        collected.extend(baw_packages.get('dev', []))
     # Requirements_dev is a `global` file from baw project. This file is not
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
