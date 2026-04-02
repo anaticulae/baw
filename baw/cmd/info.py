@@ -31,7 +31,7 @@ def evaluate(args: dict):
     returncode = prints(
         root=root,
         value=value,
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
     )
     return returncode
 

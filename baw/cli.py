@@ -106,14 +106,15 @@ def add_parameter(parser):
         action='store_true',
         help='Do not modify stdout/stderr',
     )
-    # TODO count V to determine verbosity. -VVV
     parser.add_argument(
-        '--verbose',
-        action='store_true',
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
         help='Extend verbosity of logging',
     )
     parser.add_argument(
-        '-v',
+        '-V',
         '--version',
         action='store_true',
         help='Show version of this program',

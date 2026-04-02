@@ -21,7 +21,7 @@ def run(args: dict):
         root=root,
         packages=args.get('packages'),
         minimal=args.get('minimal', False),
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
         venv=venv,
     )
     return result

@@ -365,7 +365,7 @@ def run(args: dict):
         testconfig=testconfig,
         noinstall=args.get('no_install', False),
         cov_report=not args.get('no_report', False),
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
         venv=args.get('venv', False),
     )
     return result

@@ -20,7 +20,7 @@ def evaluate(args):
     root = baw.cmd.utils.get_root(args)
     result = format_repository(
         root,
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
         venv=args.get('venv', False),
     )
     return result

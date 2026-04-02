@@ -17,7 +17,7 @@ def evaluate(args: dict):
     result = install(
         root=root,
         venv=args.get('venv', False),
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
         dev=args.get('dev', False),
         remove=args.get('remove', False),
     )
