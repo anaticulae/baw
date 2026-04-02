@@ -465,7 +465,10 @@ def static(root):
         exitx(msg=f"missing short `{short}` def in .baw: {root}")
     path = os.path.join(root, short, "__init__.py")
     content = utilo.file_read(path)
-    result = re.search(r"__version__ = \'(.*?)\'", content).group(1)
+    searched = re.search(r"__version__ = \'(.*?)\'", content)
+    if not searched:
+        return None
+    result = searched.group(1)
     return result
 
 
