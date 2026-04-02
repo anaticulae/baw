@@ -86,7 +86,7 @@ def create(
     commit(root, message)
 
 
-def close(root: str, verbose: bool = False):
+def close(root: str, verbose: int = 0):
     baw.log('close current release plan')
     current_status = status(root)
     assert current_status == Status.DONE, current_status
@@ -103,7 +103,7 @@ def close(root: str, verbose: bool = False):
     commit(root, message, verbose=verbose)
 
 
-def commit(root: str, message: str, verbose: bool = False):
+def commit(root: str, message: str, verbose: int = 0):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
     baw.git_add(root, pattern=plan)
@@ -197,7 +197,7 @@ def status(root: str) -> Status:
     return Status.OPEN
 
 
-def code_quality(root: str, verbose: bool = False) -> CodeQuality:
+def code_quality(root: str, verbose: int = 0) -> CodeQuality:
     # Your code has been rated at 9.24/10
     completed = baw.runtime.run_target(
         root,

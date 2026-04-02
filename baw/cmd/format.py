@@ -20,13 +20,13 @@ def evaluate(args):
     root = baw.cmd.utils.get_root(args)
     result = format_repository(
         root,
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
         venv=args.get('venv', False),
     )
     return result
 
 
-def format_repository(root: str, verbose: bool = False, venv: bool = False):
+def format_repository(root: str, verbose: int = 0, venv: bool = False):
     for item in (format_source, format_imports):
         failure = item(root, verbose=verbose, venv=venv)
         if failure:
@@ -48,7 +48,7 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: bool = False, venv: bool = False) -> int:  # pylint:disable=W0613
+def format_source(root: str, verbose: int = 0, venv: bool = False) -> int:  # pylint:disable=W0613
     baw.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
@@ -71,7 +71,7 @@ def format_source(root: str, verbose: bool = False, venv: bool = False) -> int: 
     return completed
 
 
-def format_imports(root: str, verbose: bool = False, venv: bool = False):
+def format_imports(root: str, verbose: int = 0, venv: bool = False):
     if not baw.runtime.installed('isort', root=root):
         return baw.FAILURE
     project_sources = baw.config.sources(root)
@@ -106,7 +106,7 @@ def format_(
     cmd: str,
     info: str = 'format source',
     *,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ):
     baw.log(info)

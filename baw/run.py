@@ -99,7 +99,7 @@ def run_bisect(args):
         root,
         commits=commits,
         args=cmds,
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
     )
     return result
 
@@ -109,7 +109,7 @@ def run_venv(args):
     result = baw.runtime.create(
         root,
         clean=args.get('clean', '') in 'venv all',
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
     )
     return result
 
@@ -118,7 +118,7 @@ def run_doc(args: dict):
     root = baw.cmd.utils.get_root(args)
     result = baw.cmd.doc.doc(
         root=root,
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
     )
     return result
 
@@ -128,7 +128,7 @@ def run_lint(args: dict):
     result = baw.cmd.lint.lint(
         root=root,
         scope=args['action'],
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
     )
     return result
 

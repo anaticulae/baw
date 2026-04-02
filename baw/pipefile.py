@@ -123,7 +123,7 @@ LIBRARY = "@Library('caelum@refs/tags/"
 LIBRARY_END = "') _"
 
 
-def library(root: str, verbose: bool = False):
+def library(root: str, verbose: int = 0):
     path = jenkinsfile(root)
     if not os.path.exists(path):
         baw.error(f'could not find Jenkinsfile: {path}')
@@ -180,7 +180,7 @@ def library_newest(  # pylint:disable=W0613
     branch: str = 'master',
     repo: str = 'jenkins',
     user: str = 'caelum',
-    verbose: bool = False,
+    verbose: int = 0,
 ) -> str:
     # ENABLE LATER
     # """\

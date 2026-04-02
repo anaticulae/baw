@@ -22,7 +22,7 @@ VERSION = (
 )
 
 
-def determine(root: str, verbose: bool = False) -> str:
+def determine(root: str, verbose: int = 0) -> str:
     """Determine current version out of __init__.py file
 
     Args:

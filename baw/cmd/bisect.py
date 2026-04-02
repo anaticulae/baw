@@ -19,7 +19,7 @@ def cli(
     commits: str,
     args: list,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     baw.log(commits)
     commits = commits.split('^')
@@ -50,7 +50,7 @@ def bisect(
     bad: str,
     good: str,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ) -> int:
     cmd = f'git bisect start {bad} {good} && git bisect run sh -c "baw {verify}"'
     completed = baw.runtime.run_target(

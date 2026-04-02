@@ -46,7 +46,7 @@ def git_add(
     root: str,
     pattern: str,
     update: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     """Stage items matching on given pattern
 
@@ -104,7 +104,7 @@ def git_commit(
     return process.returncode
 
 
-def is_clean(root, verbose: bool = True):
+def is_clean(root, verbose: int = 4):
     update_gitignore(root, verbose=verbose)
     process = baw.runtime.run_target(
         root,
@@ -131,7 +131,7 @@ def is_release(root) -> bool:
     return False
 
 
-def modified(root: str, verbose: bool = False):
+def modified(root: str, verbose: int = 0):
     completed = baw.runtime.run_target(
         root,
         'git status -s -b',
@@ -148,7 +148,7 @@ def reset(
     root: str,
     files: str,
     *,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ) -> int:
     """Reset files from git repository.
@@ -215,7 +215,7 @@ def tag_drop(
     tag: str,
     root: str,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ) -> bool:
     baw.log(f'Remove tag: {tag}')
     completed = baw.runtime.run_target(
@@ -234,7 +234,7 @@ def tag_drop(
 def git_stash(
     root: str,
     *,
-    verbose: bool | None = False,
+    verbose: int | None = False,
     venv: bool | None = False,
 ) -> int:
     """Save uncommited/not versonied content to improve testability.
@@ -288,7 +288,7 @@ def git_stash(
     return completed.returncode
 
 
-def stash_pop(root: str, venv: bool, verbose: bool = False) -> int:
+def stash_pop(root: str, venv: bool, verbose: int = 0) -> int:
     cmd = 'git stash pop'
     completed = baw.runtime.run_target(
         root,
@@ -301,7 +301,7 @@ def stash_pop(root: str, venv: bool, verbose: bool = False) -> int:
     return completed.returncode
 
 
-def headtag(root: str, verbose: bool = False):
+def headtag(root: str, verbose: int = 0):
     """Determine tag of current head of branch.
 
     Return None if no Tag is given.
@@ -378,7 +378,7 @@ def branchname(root: str) -> str:
     return name
 
 
-def update_gitignore(root: str, verbose: bool = False):
+def update_gitignore(root: str, verbose: int = 0):
     if verbose:
         baw.log('sync gitexclude')
     exclude = os.path.join(root, GIT_REPO_EXCLUDE)

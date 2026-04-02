@@ -21,7 +21,7 @@ import baw.utils
 def init(
     root: str,
     platform: str = 'github',
-    verbose: bool | None = False,
+    verbose: int | None = False,
     venv: bool | None = False,
 ) -> int:
     if platform == 'jenkins':
@@ -34,7 +34,7 @@ def init(
 
 def init_github(
     root: str,
-    verbose: bool | None = False,
+    verbose: int | None = False,
     venv: bool | None = False,
 ) -> int:
     source = baw.pipefile.dotgithub(root)
@@ -63,7 +63,7 @@ def init_github(
 
 def init_jenkins(
     root: str,
-    verbose: bool | None = False,
+    verbose: int | None = False,
     venv: bool | None = False,
 ) -> int:
     source = baw.pipefile.jenkinsfile(root)
@@ -91,7 +91,7 @@ def init_jenkins(
 
 def upgrade(
     root: str,
-    verbose: bool | None = False,
+    verbose: int | None = False,
     venv: bool | None = False,
 ):
     source = baw.pipefile.jenkinsfile(root)

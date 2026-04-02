@@ -61,7 +61,7 @@ def run_linter(root: str, verbose: bool) -> int:
 def lint(
     root: str,
     scope: Scope = Scope.ALL,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
     log_always: bool = True,
 ) -> int:

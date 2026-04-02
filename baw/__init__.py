@@ -7,9 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-ROOT = None
+from importlib.metadata import version
 
-__version__ = '1.74.0'
+__version__ = version('baw')
+
+ROOT = None
 
 # pylint:disable=wrong-import-position
 import baw.__root__

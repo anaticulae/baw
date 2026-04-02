@@ -8,12 +8,14 @@
 #==============================================================================
 
 import contextlib
+import importlib.metadata
 import os
 import re
 import sys
 import tomllib
 import urllib.request
 
+import packaging.requirements
 import utilo
 from pip import __version__ as pip_version
 
@@ -35,7 +37,7 @@ def sync(
     *,
     minimal: bool = False,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ) -> int:
     """Sync packages which are defined in requirements.txt
 
@@ -88,7 +90,7 @@ def check_dependency(
     *,
     pre: bool = False,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     """Check if packages need an upgrade."""
     python = baw.config.python(root, venv=venv)
@@ -143,7 +145,7 @@ def sync_dependencies(  # pylint:disable=R1260
     packages: str,
     *,
     minimal: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ) -> int:
     baw.utils.check_root(root)
@@ -207,7 +209,7 @@ def required_installation(
     requirements: str,
     minimal: bool = False,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     # TODO: REFACTOR LATER
     requested = [baw.requirements.parser.parse(requirements)]
@@ -242,7 +244,13 @@ def pyproject_packages(root: str) -> dict:
     toml does not exists
     >>> pyproject_packages(__file__)
     {}
+
+    >>> pyproject_packages(None)
+    {'requirements': [], 'dev': [], 'doc': []}
     """
+    if not root:
+        baw.error(f'pyproject_packages: root is {root}')
+        return {'requirements': [], 'dev': [], 'doc': []}
     base = os.path.join(root, 'pyproject.toml')
     if not os.path.exists(base):
         return {}
@@ -254,6 +262,25 @@ def pyproject_packages(root: str) -> dict:
         'dev': project.get('optional-dependencies', {}).get('dev', []),
         'doc': project.get('optional-dependencies', {}).get('doc', []),
     }
+    return result
+
+
+def pyproject_packages_meta() -> dict:
+    result = {'requirements': [], 'dev': [], 'doc': []}
+
+    dist = importlib.metadata.distribution("baw")
+    parsed = [
+        packaging.requirements.Requirement(r) for r in dist.requires or []
+    ]
+
+    for item in parsed:
+        line = f'{item.name} {item.specifier}'
+        if item.marker:
+            marker = str(item.marker).split(' ')[2]
+            marker = marker.replace('"', '')
+        else:
+            marker = 'requirements'
+        result[marker].append(line)
     return result
 
 
@@ -272,17 +299,18 @@ def determine_resources(root: str, packages: str) -> str:
         - doc: install Sphinx requirements
         - requirements: only install project pytoml.dependencies
     """
-    baw_packages = pyproject_packages(baw.determine_root(__file__))
+    baw_packages = pyproject_packages_meta()
     project_packages = pyproject_packages(baw.determine_root(root))
-
+    if not baw_packages:
+        baw.error(f'no baw_packages {baw_packages}')
     collected = []
     if packages == 'dev':
-        collected.extend(baw_packages['dev'])
+        collected.extend(baw_packages.get('dev', []))
     if packages == 'doc':
-        collected.extend(baw_packages['doc'])
+        collected.extend(baw_packages.get('doc', []))
     if packages == 'all':
-        collected.extend(baw_packages['doc'])
-        collected.extend(baw_packages['dev'])
+        collected.extend(baw_packages.get('doc', []))
+        collected.extend(baw_packages.get('dev', []))
     # Requirements_dev is a `global` file from baw project. This file is not
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
@@ -302,7 +330,7 @@ def get_install_cmd(
     requirements: str,
     *,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
     timeout: int = 30,
 ):
     pip_index, extra_url = baw.config.package_address()
@@ -360,7 +388,7 @@ def host(url: str) -> str:
 
 def pip_list(
     root,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ) -> baw.requirements.Requirements:
     python = baw.config.python(root, venv=venv)
@@ -409,7 +437,7 @@ def connected(internal: str, external: str) -> bool:
     return result
 
 
-def should_skip(msg: str, verbose: bool = False):
+def should_skip(msg: str, verbose: int = 0):
     if not verbose and 'Requirement already' in msg:
         baw.log('.', end='')
         return True
@@ -425,7 +453,7 @@ def run(args: dict):
         root=root,
         packages=args.get('packages'),
         minimal=args.get('minimal', False),
-        verbose=args.get('verbose', False),
+        verbose=args.get('verbose', 0),
         venv=venv,
     )
     return result

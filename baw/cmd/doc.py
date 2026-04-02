@@ -18,7 +18,7 @@ import baw.runtime
 import baw.utils
 
 
-def doc(root: str, venv: bool = False, verbose: bool = False) -> int:
+def doc(root: str, venv: bool = False, verbose: int = 0) -> int:
     """Run Sphinx doc generation
 
     The result is locatated in `doc/html` as html-report. The stderr and
