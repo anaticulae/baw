@@ -1,12 +1,119 @@
 # CHANGELOG
 
 
+## v1.75.0 (2026-04-02)
+
+### Bug Fixes
+
+- **alias**: Remove virtual parameter
+  ([`c8eea3d`](https://github.com/anaticulae/baw/commit/c8eea3dd3492ce406a92c5d2e6e5b43acec3cba0))
+
+- **project**: Adjust test
+  ([`2633f3f`](https://github.com/anaticulae/baw/commit/2633f3f06aee696fc9a8744a685c00d7408c3ceb))
+
+- **sync**: Do not determine baw root
+  ([`3eb9792`](https://github.com/anaticulae/baw/commit/3eb979259634066eb9b0fce3a7133f0bba97f1d5))
+
+- **sync**: Do not fail on missing root
+  ([`eeea075`](https://github.com/anaticulae/baw/commit/eeea0758628197fc30e688f28d2648f12be4e2cc))
+
+- **utils**: Do not fail on failing regex
+  ([`61164dd`](https://github.com/anaticulae/baw/commit/61164dda955f67ed02a3766d21c92f77cd3e6ff8))
+
+- **version**: Add missing var
+  ([`cd278cc`](https://github.com/anaticulae/baw/commit/cd278ccbb9eeec1bb3b464155dbe89ea71959a83))
+
+### Chores
+
+- **docker**: Adjust setup
+  ([`fc98c93`](https://github.com/anaticulae/baw/commit/fc98c93b73a2a3e066790ba64f97d99d38d2eaa3))
+
+- **docker**: Adjust to new build env
+  ([`cc3a393`](https://github.com/anaticulae/baw/commit/cc3a39376af1052e13f4f04f774d1a47978592e9))
+
+- **pyproject**: Add modern build env
+  ([`479f4bc`](https://github.com/anaticulae/baw/commit/479f4bc52963599650ca3b296dd47652fff02797))
+
+- **requirements**: Remove outdated requirements
+  ([`9f2bdff`](https://github.com/anaticulae/baw/commit/9f2bdffec0082b43660a20ec17e749a3bd5f8a2a))
+
+- **resource**: Adjust project generator
+  ([`5a7eb09`](https://github.com/anaticulae/baw/commit/5a7eb0978999b3384c2499e9f6987e177c04b78a))
+
+- **setup**: Change to pyproject
+  ([`d191337`](https://github.com/anaticulae/baw/commit/d191337ab739fcfff2df482c3e7da892ec6f9894))
+
+- **setup**: Define version variable
+  ([`c81ae27`](https://github.com/anaticulae/baw/commit/c81ae27c8fd5d2596b486da949e769fbb5be46b3))
+
+- **setup**: Remove old setup
+  ([`e62125c`](https://github.com/anaticulae/baw/commit/e62125c13e2868ff4515b179b7128af1cbc38330))
+
+- **setup**: Remove outdated setup
+  ([`9b4b2fb`](https://github.com/anaticulae/baw/commit/9b4b2fbd2978a7e26dae3a61af6d19c7ff8eda7d))
+
+### Code Style
+
+- **cli**: Add missing import
+  ([`15494cd`](https://github.com/anaticulae/baw/commit/15494cd78a349c7476e4d9609e19a7a3c65765bd))
+
+- **test**: Organize imports
+  ([`f2259e4`](https://github.com/anaticulae/baw/commit/f2259e4d4c440d230252e7797874e5ba628208b7))
+
+### Documentation
+
+- **project**: Extend interface documentation
+  ([`5ef8913`](https://github.com/anaticulae/baw/commit/5ef8913324a5bf8d5b3282a351e82a18bf49be70))
+
+### Features
+
+- **cmd**: Replace verbose with verbose level
+  ([`b494cda`](https://github.com/anaticulae/baw/commit/b494cda4532b7bdd4270ac9aa2bcaff46017e9c5))
+
+- **sync**: Add method to determine requirements out of pytoml
+  ([`0481429`](https://github.com/anaticulae/baw/commit/0481429451c58684b28e00d54eab413f3e46a0b0))
+
+- **sync**: Determine requirements out of meta definition
+  ([`63bbc20`](https://github.com/anaticulae/baw/commit/63bbc2059b3ebcc1f55dacc25867d10d83974535))
+
+- **sync**: Use pytoml requirements
+  ([`cd6b191`](https://github.com/anaticulae/baw/commit/cd6b1913106b60c29a14257c217a816f64c560b1))
+
+- **version**: Use metadata to determine version
+  ([`8569d93`](https://github.com/anaticulae/baw/commit/8569d93a115283088d03a02e6cdadb852376fe77))
+
+### Refactoring
+
+- **clean**: Solve import error
+  ([`d7af5a2`](https://github.com/anaticulae/baw/commit/d7af5a2dbfafcb0f96078c9801c0ec3612bbe4c9))
+
+- **config**: Add mssing space
+  ([`bebed03`](https://github.com/anaticulae/baw/commit/bebed03fd6eb19d49f66c667a1b9d1af81367411))
+
+- **project**: Adjust linter
+  ([`6c32100`](https://github.com/anaticulae/baw/commit/6c32100abd4979d5ba4030a982009e3231547b47))
+
+- **sync**: Add missing import
+  ([`d1aa748`](https://github.com/anaticulae/baw/commit/d1aa7484ee477d28c6fbf06c182b0f05bb6e9776))
+
+- **sync**: Improve code style
+  ([`a70d611`](https://github.com/anaticulae/baw/commit/a70d611fcbb1f0277325f4cea84ddc73b7b969c4))
+
+### Testing
+
+- **refactor**: Clarify test
+  ([`6c5752d`](https://github.com/anaticulae/baw/commit/6c5752dacb1de8efc1ca45387105c23358ba3fc6))
+
+
 ## v1.74.0 (2026-03-30)
 
 ### Chores
 
 - **refactor**: Use utilo
   ([`aa7b4b2`](https://github.com/anaticulae/baw/commit/aa7b4b224ffb1797dd94b964476c3c90e47f00e4))
+
+- **release**: 1.74.0
+  ([`c6d0aba`](https://github.com/anaticulae/baw/commit/c6d0abaa42bd494916825b858dce6df6e7a7d791))
 
 - **requirements**: Add utilo
   ([`1703c03`](https://github.com/anaticulae/baw/commit/1703c0380a62bd4b2bf2b5dc5b9bc8808213a0be))
