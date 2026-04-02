@@ -140,9 +140,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 """
 
 ENTRY_POINT = """\
-entry_points={
-            'console_scripts': ['{{SHORT}} = {{SHORT}}.cli:main'],
-},
+[project.scripts]
+{{SHORT}} = "{{SHORT}}.cli:main"
 """
 
 INIT_CMD = COPYRIGHT + """\
@@ -178,8 +177,7 @@ if __name__ == "__main__":
 CODE_WORKSPACE = fread(WORKSPACE_TEMPLATE)
 JENKINSFILE = fread(joined('Jenkinsfile'))
 GITIGNORE = fread(joined('.gitignore'))
-SETUP_PY = fread(joined('setup.tpy'))
-SETUP_CFG = fread(joined('setup.cfg'))
+SETUP_PY = fread(joined('pyproject'))
 RELEASE_PLAN = fread(joined('docs/plan.rst'))
 
 REFACTOR = fread(joined('refactor'))
@@ -203,7 +201,6 @@ FILES = [
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
     (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
-    # ('setup.py', SETUP_PY),
 ]
 
 DOTGITHUB = [

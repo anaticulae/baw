@@ -24,9 +24,6 @@ def get_root(args):
 
 
 def run_environment(args):
-    if baw.config.venv_always():
-        # overwrite venv selection
-        args['venv'] = True
     root = setup_environment(
         args['raw'],
         args.get('venv', False),

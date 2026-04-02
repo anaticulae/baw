@@ -30,7 +30,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
     venv: bool = False,
     all_: bool = False,
 ):
-    baw.utils.check_root(root)
+    baw.check_root(root)
     baw.log('start cleaning')
     if all_:
         docs, resources, tests, tmp, venv = True, True, True, True, True

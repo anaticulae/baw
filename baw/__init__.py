@@ -22,6 +22,7 @@ from baw.runtime import hasprog
 from baw.utils import FAILURE
 from baw.utils import NEWLINE
 from baw.utils import SUCCESS
+from baw.utils import check_root
 from baw.utils import completed
 from baw.utils import debug
 from baw.utils import error

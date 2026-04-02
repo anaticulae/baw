@@ -27,7 +27,6 @@ outdir/
 *.tmp
 ..code-workspace
 .coverage*
-setup.cfg
 pytest.ini
 report.xml
 docs.xml

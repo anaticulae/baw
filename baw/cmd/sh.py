@@ -10,9 +10,7 @@
 import sys
 
 import baw.cmd.utils
-import baw.run
 import baw.runtime
-import baw.utils
 
 
 def run_shell(args: dict):
@@ -24,7 +22,6 @@ def run_shell(args: dict):
         cwd=root,
         verbose=False,
         debugging=True,
-        venv=args['venv'],
     )
     if completed.returncode:
         sys.exit(completed.returncode)

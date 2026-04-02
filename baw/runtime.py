@@ -45,9 +45,7 @@ def destroy(path: str):
 
 def virtual(root: str, creates: bool = True) -> str:
     assert root
-    name: str = 'global'
-    if not baw.config.venv_global():
-        name = baw.config.shortcut(root)
+    name = baw.config.shortcut(root)
     venv = os.path.join(baw.config.bawtmp(), 'venv', name)
     if os.path.exists(venv):
         return venv
@@ -385,17 +383,15 @@ def runs(
     return baw.SUCCESS
 
 
-def installed(program: str, root: str, venv: bool = False):
+def installed(program: str, root: str):
     done = run_target(
         root,
         cmd=f'which {program}',
-        venv=venv,
         verbose=False,
     )
     if done.returncode == baw.SUCCESS:
         return True
     baw.error(f'not installed: {program}')
-    baw.error(f'venv: {venv}')
     baw.error(f'python: {sys.executable}')
     baw.error(f'path: {" ".join(sys.path)}')
     return False

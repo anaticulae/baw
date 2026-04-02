@@ -91,10 +91,8 @@ def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1
 
 
 def print_tmp(root: str):
-    name: str = 'global'
-    if not baw.config.venv_global():
-        root = baw.project.determine_root(root)
-        name = os.path.split(root)[1]
+    root = baw.project.determine_root(root)
+    name = os.path.split(root)[1]
     tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
     baw.log(tmpdir)
     sys.exit(baw.SUCCESS)

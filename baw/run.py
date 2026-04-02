@@ -38,9 +38,6 @@ def run_main():  # pylint:disable=R0911,R1260,too-many-branches
         return baw.SUCCESS
     if run_version(args):
         return baw.SUCCESS
-    if args.get('venv', False):
-        if failure := run_venv(args):
-            return failure
     if args.get('bisect', False):
         if failure := run_bisect(args):
             return failure
@@ -103,7 +100,6 @@ def run_bisect(args):
         commits=commits,
         args=cmds,
         verbose=args.get('verbose', False),
-        venv=args.get('venv', False),
     )
     return result
 
@@ -123,7 +119,6 @@ def run_doc(args: dict):
     result = baw.cmd.doc.doc(
         root=root,
         verbose=args.get('verbose', False),
-        venv=args.get('venv', False),
     )
     return result
 
@@ -134,7 +129,6 @@ def run_lint(args: dict):
         root=root,
         scope=args['action'],
         verbose=args.get('verbose', False),
-        venv=args.get('venv', False),
     )
     return result
 

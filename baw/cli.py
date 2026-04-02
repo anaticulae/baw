@@ -20,6 +20,7 @@ import baw.cmd.generate
 import baw.cmd.ide
 import baw.cmd.image
 import baw.cmd.info
+import baw.cmd.init
 import baw.cmd.install
 import baw.cmd.lint
 import baw.cmd.pipe
@@ -104,11 +105,6 @@ def add_parameter(parser):
         '--raw',
         action='store_true',
         help='Do not modify stdout/stderr',
-    )
-    parser.add_argument(
-        '--venv',
-        action='store_true',
-        help='Use virtual environment',
     )
     # TODO count V to determine verbosity. -VVV
     parser.add_argument(

@@ -29,7 +29,6 @@ def release(  # pylint:disable=R1260
     sync: bool = True,
     test: bool = True,
     verbose: bool = False,
-    venv: bool = True,
     require_clean: bool = True,
     no_linter: bool = False,
 ) -> int:
@@ -47,7 +46,6 @@ def release(  # pylint:disable=R1260
         test(bool): running test suite before release: first release
                     0.0.0 does not require any testing.
         verbose(bool): log additional output
-        venv(bool): run in venv environment
         require_clean(bool): check that repository is clean
         no_linter(bool): skip running linter
     Return:
@@ -59,7 +57,7 @@ def release(  # pylint:disable=R1260
            release-message and create a version tag.
     """
     baw.utils.verbose('require release?', verbose=verbose)
-    if returncode := require_release(root, venv):
+    if returncode := require_release(root):
         # break release cycle on master
         return baw.SUCCESS
     baw.utils.verbose('check repository', verbose=verbose)
@@ -67,10 +65,10 @@ def release(  # pylint:disable=R1260
         return returncode
     if not no_linter:
         baw.utils.verbose('run linter', verbose=verbose)
-        if returncode := baw.cmd.lint.run_linter(root, verbose, venv):
+        if returncode := baw.cmd.lint.run_linter(root, verbose):
             return returncode
     baw.utils.verbose('run test', verbose=verbose)
-    if returncode := run_test(root, sync, test, stash, verbose, venv):
+    if returncode := run_test(root, sync, test, stash, verbose):
         return returncode
     if returncode := baw.cmd.release.pack.run(
             root,
@@ -81,8 +79,8 @@ def release(  # pylint:disable=R1260
     return baw.SUCCESS
 
 
-def require_release(root, venv):
-    current_head = baw.gix.headtag(root, venv=venv)
+def require_release(root):
+    current_head = baw.gix.headtag(root)
     if not current_head:
         return baw.SUCCESS
     if current_head.isnumeric():
@@ -108,7 +106,6 @@ def run_test(
     test: bool,
     stash: bool,
     verbose: bool,
-    venv: bool,
 ):
     if not sync and not test:
         return baw.SUCCESS
@@ -127,7 +124,6 @@ def run_test(
             test=test,
             testconfig=['-n', 'auto'],
             verbose=verbose,
-            venv=venv,
         )
         return returncode
     baw.log('release was already tested successfully')
@@ -138,15 +134,9 @@ def run(args: dict) -> int:
     root = baw.cmd.utils.get_root(args)
     # always publish after release
     args['publish'] = True
-    venv = args.get('venv', True)
-    # overwrite venv flag if given
-    novenv = args.get('no_venv', False)
     no_linter = args.get('no_linter', False)
     sync = not args.get('no_sync', False)
-    if novenv:
-        baw.log('do not use venv')
-        venv = False
-    if not baw.runtime.installed('semantic-release', root, venv=venv):
+    if not baw.runtime.installed('semantic-release', root):
         return baw.FAILURE
     test = True
     # do not test before releasing
@@ -160,7 +150,6 @@ def run(args: dict) -> int:
     if args.get('release') == 'drop':
         result = baw.cmd.release.drop.run(
             root,
-            venv=venv,
             verbose=args['verbose'],
         )
         return result
@@ -170,7 +159,6 @@ def run(args: dict) -> int:
         release_type=args['release'],
         verbose=args['verbose'],
         test=test,
-        venv=venv,
         no_linter=no_linter,
         sync=sync,
     )

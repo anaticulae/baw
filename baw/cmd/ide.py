@@ -28,7 +28,7 @@ def ide_open(root: str, packages: tuple = None) -> int:
 
     baw.log('generate')
     generate_workspace(root, packages=packages)
-    if baw.project.ispython(root):
+    if baw.project.is_pyproject(root):
         generate_sort_config(root)
         generate_conftest(root)
 

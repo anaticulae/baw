@@ -64,7 +64,7 @@ def can_publish(
     pre: bool = False,
     verbose: bool = False,
 ) -> int:
-    tag = baw.gix.headtag(root, venv=False, verbose=verbose)
+    tag = baw.gix.headtag(root, verbose=verbose)
     if tag and pre:
         baw.error('Stable release already published')
         return baw.SUCCESS
@@ -89,16 +89,9 @@ def distribution_format() -> str:
 
 def run(args: dict):
     root = baw.cmd.utils.get_root(args)
-    venv = args['venv']
-    # overwrite venv flag if given
-    novenv = args.get('no_venv', False)
-    if novenv:
-        baw.log('do not use venv')
-        venv = False
     result = publish(
         root=root,
         pre=args['pre'],
-        venv=venv,
         verbose=args['verbose'],
     )
     return result

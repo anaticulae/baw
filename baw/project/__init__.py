@@ -12,7 +12,7 @@ import os
 import baw.utils
 
 
-def determine_root(path) -> str:
+def determine_root(path) -> str | None:
     current = str(path)
     while not os.path.exists(os.path.join(current, baw.utils.BAW_EXT)):  # pylint:disable=W0149
         current, base = os.path.split(current)
@@ -21,12 +21,12 @@ def determine_root(path) -> str:
     return current
 
 
-def ispython(root: str) -> str:
+PROJECTS = 'pyproject.toml'.split()
+
+
+def is_pyproject(root: str) -> bool:
     """\
-    >>> ispython(determine_root(__path__))
+    >>> is_pyproject(determine_root(__path__))
     True
     """
-    for item in 'setup.py'.split():  # pylint:disable=consider-using-any-or-all
-        if os.path.exists(os.path.join(root, item)):
-            return True
-    return False
+    return any(os.path.exists(os.path.join(root, item)) for item in PROJECTS)
