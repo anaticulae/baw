@@ -101,7 +101,7 @@ def completed(completed, force: bool = False):  # pylint:disable=W0621
         log(completed.stderr)
 
 
-def verbose(msg: str = '', end: str = NEWLINE, verbose: bool = False):  # pylint:disable=W0621
+def verbose(msg: str = '', end: str = NEWLINE, verbose: int = 0):  # pylint:disable=W0621
     if not verbose:
         return
     log(msg=msg, end=end)

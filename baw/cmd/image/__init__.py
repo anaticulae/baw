@@ -32,7 +32,7 @@ def create(  # pylint:disable=W0613
     dockerfile: str = None,
     generate: bool = False,
     install: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ):
     root = baw.cmd.utils.determine_root(root)

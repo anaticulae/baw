@@ -23,7 +23,7 @@ def sync_and_test(
     stash: bool = False,
     sync: bool = False,
     test: bool = True,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ):
     verbose = False if quiet else verbose

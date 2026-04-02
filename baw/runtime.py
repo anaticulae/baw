@@ -66,7 +66,7 @@ def has_virtual(root: str) -> bool:
     return False
 
 
-def create(root: str, clean: bool = False, verbose: bool = False) -> int:  # pylint:disable=R1260
+def create(root: str, clean: bool = False, verbose: int = 0) -> int:  # pylint:disable=R1260
     """Create `venv` folder in project root, do nothing if folder exists
 
     This method creates the folder and does the init via python `venv`-module.
@@ -130,7 +130,7 @@ def run_target(
     runtimelog: bool = True,
     skip_error_code: set = None,
     skip_error_message: list = None,
-    verbose: bool = True,
+    verbose: int = 4,
     venv: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run target
@@ -362,7 +362,7 @@ def run(
 def runs(
     cmds: str,
     cwd: str,
-    verbose: bool = False,
+    verbose: int = 0,
     workers: int = 12,
 ) -> int:
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:

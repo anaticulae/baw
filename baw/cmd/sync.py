@@ -37,7 +37,7 @@ def sync(
     *,
     minimal: bool = False,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ) -> int:
     """Sync packages which are defined in requirements.txt
 
@@ -90,7 +90,7 @@ def check_dependency(
     *,
     pre: bool = False,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     """Check if packages need an upgrade."""
     python = baw.config.python(root, venv=venv)
@@ -145,7 +145,7 @@ def sync_dependencies(  # pylint:disable=R1260
     packages: str,
     *,
     minimal: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ) -> int:
     baw.utils.check_root(root)
@@ -209,7 +209,7 @@ def required_installation(
     requirements: str,
     minimal: bool = False,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     # TODO: REFACTOR LATER
     requested = [baw.requirements.parser.parse(requirements)]
@@ -330,7 +330,7 @@ def get_install_cmd(
     requirements: str,
     *,
     venv: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
     timeout: int = 30,
 ):
     pip_index, extra_url = baw.config.package_address()
@@ -388,7 +388,7 @@ def host(url: str) -> str:
 
 def pip_list(
     root,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ) -> baw.requirements.Requirements:
     python = baw.config.python(root, venv=venv)
@@ -437,7 +437,7 @@ def connected(internal: str, external: str) -> bool:
     return result
 
 
-def should_skip(msg: str, verbose: bool = False):
+def should_skip(msg: str, verbose: int = 0):
     if not verbose and 'Requirement already' in msg:
         baw.log('.', end='')
         return True

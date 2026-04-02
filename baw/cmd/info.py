@@ -36,7 +36,7 @@ def evaluate(args: dict):
     return returncode
 
 
-def prints(root, value: str, verbose: bool = False) -> int:  # pylint:disable=R1260,R0911
+def prints(root, value: str, verbose: int = 0) -> int:  # pylint:disable=R1260,R0911
     if value == 'tmp':
         print_tmp(root)
         return baw.SUCCESS
@@ -98,7 +98,7 @@ def print_tmp(root: str):
     sys.exit(baw.SUCCESS)
 
 
-def pip_version(root: str, verbose: bool = False):
+def pip_version(root: str, verbose: int = 0):
     """\
     >>> import baw;pip_version(baw.ROOT)
     '...'
@@ -146,7 +146,7 @@ def print_cov() -> int:
     sys.exit(baw.SUCCESS)
 
 
-def requirement_hash(root: str, verbose: bool = False) -> str:
+def requirement_hash(root: str, verbose: int = 0) -> str:
     """\
     >>> import baw
     >>> requirement_hash(baw.ROOT)

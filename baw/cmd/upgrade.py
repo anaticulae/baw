@@ -29,7 +29,7 @@ def upgrade(
     root: str,
     *,
     notests: bool = True,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
     generate: bool = True,
     pre: bool = True,

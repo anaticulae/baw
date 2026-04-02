@@ -20,7 +20,7 @@ import baw.utils
 
 def run(
     root: str,
-    verbose: bool = True,
+    verbose: int = 4,
 ):
     if not baw.gix.is_clean(root, verbose=False):
         baw.error(f'clean before refactor: {root}')

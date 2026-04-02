@@ -25,7 +25,7 @@ def publish(
     *,
     pre: bool = False,
     venv: bool = True,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     """Push release to defined repository
 
@@ -62,7 +62,7 @@ def publish(
 def can_publish(
     root: str,
     pre: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
 ) -> int:
     tag = baw.gix.headtag(root, verbose=verbose)
     if tag and pre:

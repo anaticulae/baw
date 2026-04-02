@@ -104,7 +104,7 @@ def file_count(path: str):
 def baaw(
     cmd,
     monkeypatch,
-    verbose: bool = True,
+    verbose: int = 4,
     expect=True,
 ):
     cmd = cmd_split(cmd)

@@ -51,7 +51,7 @@ def init(
     name: str,
     cmdline: bool = False,
     *,
-    verbose: bool = False,
+    verbose: int = 0,
     formatter: bool = False,
 ) -> int:
     """Init project due generatig file and folder

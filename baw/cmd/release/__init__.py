@@ -28,7 +28,7 @@ def release(  # pylint:disable=R1260
     stash: bool = True,
     sync: bool = True,
     test: bool = True,
-    verbose: bool = False,
+    verbose: int = 0,
     require_clean: bool = True,
     no_linter: bool = False,
 ) -> int:

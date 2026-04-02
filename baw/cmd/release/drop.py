@@ -19,7 +19,7 @@ RELEASE_PATTERN = re.compile(r'(?P<release>v\d+\.\d+\.\d+)')
 
 def run(
     root: str,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     """Remove the last release tag and commit.
 
@@ -69,7 +69,7 @@ def can_drop(root: str, verbose: bool) -> bool:
 
 def reset_resources(
     root: str,
-    verbose: bool = False,
+    verbose: int = 0,
 ):
     short = baw.config.shortcut(root)
     initpath = os.path.join(short, '__init__.py')

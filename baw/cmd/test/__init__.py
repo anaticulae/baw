@@ -43,7 +43,7 @@ def run_test(  # pylint:disable=R0914,R1260
     stash: bool = False,
     noinstall: bool = False,
     cov_report: bool = False,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ) -> int:
     """Running test-step in root/tests
@@ -211,7 +211,7 @@ def create_test_cmd(  # pylint:disable=R0914
     markers: str,
     cov_report: bool = True,
     doctest: bool = True,
-    verbose: bool = False,
+    verbose: int = 0,
     venv: bool = False,
 ):
     """\
