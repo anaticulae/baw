@@ -278,7 +278,7 @@ def determine_resources(root: str, packages: str) -> str:
         - doc: install Sphinx requirements
         - requirements: only install project pytoml.dependencies
     """
-    baw_packages = pyproject_packages(baw.determine_root(__file__))
+    baw_packages = pyproject_packages(baw.ROOT)
     project_packages = pyproject_packages(baw.determine_root(root))
     if not baw_packages:
         baw.error(f'no baw_packages {baw_packages}')
