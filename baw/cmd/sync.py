@@ -8,12 +8,14 @@
 #==============================================================================
 
 import contextlib
+import importlib.metadata
 import os
 import re
 import sys
 import tomllib
 import urllib.request
 
+import packaging.requirements
 import utilo
 from pip import __version__ as pip_version
 
@@ -263,6 +265,25 @@ def pyproject_packages(root: str) -> dict:
     return result
 
 
+def pyproject_packages_meta() -> dict:
+    result = {'requirements': [], 'dev': [], 'doc': []}
+
+    dist = importlib.metadata.distribution("baw")
+    parsed = [
+        packaging.requirements.Requirement(r) for r in dist.requires or []
+    ]
+
+    for item in parsed:
+        line = f'{item.name} {item.specifier}'
+        if item.marker:
+            marker = str(item.marker).split(' ')[2]
+            marker = marker.replace('"', '')
+        else:
+            marker = 'requirements'
+        result[marker].append(line)
+    return result
+
+
 def determine_resources(root: str, packages: str) -> str:
     """Determine requirements depending on `packages` choice.
 
@@ -278,7 +299,7 @@ def determine_resources(root: str, packages: str) -> str:
         - doc: install Sphinx requirements
         - requirements: only install project pytoml.dependencies
     """
-    baw_packages = pyproject_packages(baw.ROOT)
+    baw_packages = pyproject_packages_meta()
     project_packages = pyproject_packages(baw.determine_root(root))
     if not baw_packages:
         baw.error(f'no baw_packages {baw_packages}')
