@@ -39,7 +39,7 @@ class Scope(enum.Enum):
         return scope
 
 
-def run_linter(root: str, verbose: bool, venv: bool) -> int:
+def run_linter(root: str, verbose: bool) -> int:
     if not baw.config.basic(root):
         return baw.SUCCESS
     if not baw.config.fail_on_finding(root):
@@ -49,7 +49,6 @@ def run_linter(root: str, verbose: bool, venv: bool) -> int:
             root,
             scope=Scope.MINIMAL,
             verbose=verbose,
-            venv=venv,
             log_always=False,
     ):
         baw.error('could not release, solve this errors first.')

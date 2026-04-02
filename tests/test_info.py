@@ -56,17 +56,6 @@ def test_cmd_requirement_verbose_info(monkeypatch, capsys):
     assert len(stdout.split('_')) == 1
 
 
-def test_cmd_info_venv_fix(monkeypatch, capsys):
-    """\
-    Exepect `c/tmp/dev/tmp/baw`, not `venv: /c/tmp/dev/; c/tmp/dev/tmp/baw`
-    """
-    cmd = '--venv info tmp'
-    tests.baaw(cmd, monkeypatch, verbose=False)
-    stdout = tests.stdout(capsys)
-    assert 'venv:' not in stdout
-    assert ' ' not in stdout.strip()
-
-
 def test_cmd_info_clean(simple, capsys):  # pylint:disable=W0621,W0613
     """Ensure that workspace is clean."""
     simple[0]('info clean')

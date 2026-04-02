@@ -19,7 +19,6 @@ RELEASE_PATTERN = re.compile(r'(?P<release>v\d+\.\d+\.\d+)')
 
 def run(
     root: str,
-    venv: bool = False,
     verbose: bool = False,
 ):
     """Remove the last release tag and commit.
@@ -30,9 +29,9 @@ def run(
     4. Remove tag
     """
     baw.log('Start dropping release')
-    if not can_drop(root, venv, verbose):
+    if not can_drop(root, verbose):
         return baw.FAILURE
-    current_release = baw.gix.headtag(root, venv, verbose)
+    current_release = baw.gix.headtag(root, verbose)
     baw.log(current_release)
     # remove the last release commit
     # git reset HEAD~1
@@ -42,19 +41,19 @@ def run(
         baw.error(f'while removing the last commit: {completed}')
         return completed.returncode
     # git checkout CHANGELOG.md, {{NAME}}/__init__..py
-    completed = reset_resources(root, venv=venv, verbose=verbose)
+    completed = reset_resources(root, verbose=verbose)
     if completed:
         return completed
     # git tag -d HEAD
-    if not baw.gix.tag_drop(current_release, root, venv=venv, verbose=verbose):
+    if not baw.gix.tag_drop(current_release, root, verbose=verbose):
         return baw.FAILURE
     # TODO: ? remove upstream ? or just overwrite ?
     return baw.SUCCESS
 
 
-def can_drop(root: str, venv: bool, verbose: bool) -> bool:
+def can_drop(root: str, verbose: bool) -> bool:
     baw.log('Detect current release:')
-    if not (headtag := baw.gix.headtag(root, venv, verbose)):
+    if not (headtag := baw.gix.headtag(root, verbose)):
         baw.error('No tag detected')
         return False
     matched = RELEASE_PATTERN.match(headtag)
@@ -70,7 +69,6 @@ def can_drop(root: str, venv: bool, verbose: bool) -> bool:
 
 def reset_resources(
     root: str,
-    venv: bool = False,
     verbose: bool = False,
 ):
     short = baw.config.shortcut(root)
@@ -92,7 +90,6 @@ def reset_resources(
     completed = baw.gix.reset(
         root,
         to_reset,
-        venv=venv,
         verbose=verbose,
     )
     return completed

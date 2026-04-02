@@ -9,7 +9,6 @@
 
 import baw.cmd.test
 import baw.cmd.utils
-import baw.utils
 
 
 def run(args: dict):
@@ -20,7 +19,6 @@ def run(args: dict):
     completed = baw.cmd.test.run_test(
         root,
         generate=pattern,
-        venv=args['venv'],
         verbose=args['verbose'],
     )
     return completed

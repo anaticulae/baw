@@ -301,7 +301,7 @@ def stash_pop(root: str, venv: bool, verbose: bool = False) -> int:
     return completed.returncode
 
 
-def headtag(root: str, venv: bool, verbose: bool = False):
+def headtag(root: str, verbose: bool = False):
     """Determine tag of current head of branch.
 
     Return None if no Tag is given.
@@ -315,7 +315,6 @@ def headtag(root: str, venv: bool, verbose: bool = False):
         skip_error_code={129},
         skip_error_message=["error: malformed object name 'HEAD'"],
         verbose=verbose,
-        venv=venv,
     )
     # could not collect any git tag of current head
     if completed.returncode:

@@ -385,17 +385,15 @@ def runs(
     return baw.SUCCESS
 
 
-def installed(program: str, root: str, venv: bool = False):
+def installed(program: str, root: str):
     done = run_target(
         root,
         cmd=f'which {program}',
-        venv=venv,
         verbose=False,
     )
     if done.returncode == baw.SUCCESS:
         return True
     baw.error(f'not installed: {program}')
-    baw.error(f'venv: {venv}')
     baw.error(f'python: {sys.executable}')
     baw.error(f'path: {" ".join(sys.path)}')
     return False
