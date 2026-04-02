@@ -77,6 +77,9 @@ doc = [
 Homepage = "https://github.com/anaticulae/baw"
 Repository = "https://github.com/anaticulae/baw"
 
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = [
