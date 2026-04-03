@@ -9,6 +9,7 @@
 
 import baw.cmd.release
 import baw.gix
+import baw.runtime
 
 
 def test_commit_with_tag(simple):
