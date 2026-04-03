@@ -25,7 +25,7 @@ def test_modified(simple):
     baw.runtime.run_target(root, 'touch ABC')
     assert not baw.is_clean(root)
     modified = baw.gix.modified(root)
-    expected = '## master\n?? ABC'
+    expected = '## main\n?? ABC'
     assert modified == expected
 
 
