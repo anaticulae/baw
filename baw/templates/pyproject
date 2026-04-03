@@ -34,6 +34,9 @@ Repository = "https://github.com/anaticulae/{{SHORT}}"
 
 {{ENTRY_POINT}}
 
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = [
