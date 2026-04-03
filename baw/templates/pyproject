@@ -28,14 +28,6 @@ classifiers = [
 license = "MIT"
 license-files = ["LICENSE"]
 
-[project.scripts]
-baw = "baw.__main__:run"
-baw_cprofile_show = "baw.small.cprofile:main"
-baw_profile = "baw.small.profile:main"
-baw_regen = "baw.small.regen:main"
-baw_semantic_release = "baw.small.version:main"
-baw_single = "baw.small.single:main"
-
 [project.urls]
 Homepage = "https://github.com/anaticulae/{{SHORT}}"
 Repository = "https://github.com/anaticulae/{{SHORT}}"
