@@ -193,8 +193,8 @@ WORKFLOWS = '.github/workflows'
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
     ('.git/info/exclude', GITIGNORE),
-    ('CHANGELOG.md', CHANGELOG),
-    ('README.md', README),
+    ('CHANGELOG', CHANGELOG),
+    ('README', README),
     ('docs/index.rst', INDEX_RST),
     ('docs/releases/backlog.rst', BACKLOG_RST),
     ('docs/releases/releases.rst', RELEASE_RST),
