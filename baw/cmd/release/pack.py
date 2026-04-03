@@ -13,14 +13,12 @@ import baw.cmd.release.config
 import baw.runtime
 
 
-def run(root, verbose, release_type):
+def run(root, verbose, release_type, no_push: bool = False):
     baw.log('update version tag')
     with baw.cmd.release.config.release_config_tmp(
             root,
             verbose,
     ):
-        # TODO: MAY CHANGE LATER
-        no_push = False  # not baw.cmd.release.config.is_ci()
         returncode = run_release(
             root,
             no_push=no_push,
