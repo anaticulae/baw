@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.76.1 (2026-04-04)
+
+### Bug Fixes
+
+- **pyproject**: Define content Type to pass pypi
+  ([`bc3d327`](https://github.com/anaticulae/baw/commit/bc3d32708fe24f72cf4249a83b2d190b69d8c7be))
+
+
 ## v1.76.0 (2026-04-04)
 
 ### Bug Fixes
