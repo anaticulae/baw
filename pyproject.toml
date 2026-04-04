@@ -58,7 +58,7 @@ baw_single = "baw.small.single:main"
 [project.optional-dependencies]
 dev = [
     "pytest_instafail == 0.4.2",
-    "pytest_localserver == 0.7.0",
+    "pytest_localserver == 0.10.0",
     "pytest_timeout == 2.1.0",
 
     "rope == 1.14.0",
