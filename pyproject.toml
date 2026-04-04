@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 name = "baw"
 version = "1.76.0"
 description = "A simple console-application to manage project complexity."
-readme = "README"
+readme = {"README", content-type = "text/markdown"}
 requires-python = ">=3.12"
 authors = [
   {name = "Helmut Konrad Schewe", email = "helmutus@outlook.com"}
