@@ -31,6 +31,7 @@ def release(  # pylint:disable=R1260
     verbose: int = 0,
     require_clean: bool = True,
     no_linter: bool = False,
+    no_push: bool = False,
 ) -> int:
     """Running release. Running test, commit and tag.
 
@@ -48,6 +49,7 @@ def release(  # pylint:disable=R1260
         verbose(bool): log additional output
         require_clean(bool): check that repository is clean
         no_linter(bool): skip running linter
+        no_push(bool): do not push to hvcs
     Return:
         0 if success else > 0
 
@@ -74,6 +76,7 @@ def release(  # pylint:disable=R1260
             root,
             verbose,
             release_type,
+            no_push=no_push,
     ):
         return returncode
     return baw.SUCCESS
@@ -161,6 +164,7 @@ def run(args: dict) -> int:
         test=test,
         no_linter=no_linter,
         sync=sync,
+        no_push=args.get('no_push', False),
     )
     return result
 
@@ -179,4 +183,5 @@ def extend_cli(parser):
     parser.add_argument('--no_venv', action='store_true', help='skip venv')
     parser.add_argument('--no_linter', action='store_true', help='skip linter')
     parser.add_argument('--no_sync', action='store_true', help='skip sync')
+    parser.add_argument('--no_push', action='store_true', help='do not push')
     parser.set_defaults(func=run)

@@ -35,7 +35,7 @@ def init(root: str):
         return
     baw.log('git init')
     cmd = subprocess.run(  # nosec
-        ['git', 'init'],
+        'git init -b main'.split(),
         check=False,
         capture_output=True,
     )

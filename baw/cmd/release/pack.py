@@ -13,14 +13,12 @@ import baw.cmd.release.config
 import baw.runtime
 
 
-def run(root, verbose, release_type):
+def run(root, verbose, release_type, no_push: bool = False):
     baw.log('update version tag')
     with baw.cmd.release.config.release_config_tmp(
             root,
             verbose,
     ):
-        # TODO: MAY CHANGE LATER
-        no_push = False  # not baw.cmd.release.config.is_ci()
         returncode = run_release(
             root,
             no_push=no_push,
@@ -38,7 +36,12 @@ def run_release(
     release_type: str | None = None,
 ) -> int:
     cfg = baw.cmd.release.config.configpath(root)
-    cmd = f'semantic-release -c {cfg} version'
+    cmd = 'semantic-release '
+    cmd += f'-c {cfg} '
+    cmd += '-c pyproject.toml '
+    cmd += '-vvv '
+    cmd += '--strict '
+    cmd += 'version '
     if no_push:
         cmd += ' --no-push'
     if release_type:
