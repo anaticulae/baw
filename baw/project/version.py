@@ -9,6 +9,7 @@
 
 import os
 import re
+import tomllib
 
 import utilo
 
@@ -42,7 +43,17 @@ def determine(root: str, verbose: int = 0) -> str:
     assert os.path.exists(root)
     current = None
     # f'{short}/__init__.py:__version__'
-    version_path = baw.config.version(root).removesuffix(':__version__')
+    version_path = baw.config.version(root)
+    if ':project.version' in version_path:
+        version_path = version_path.removesuffix(':project.version')
+        with open(version_path, "rb") as f:
+            config = tomllib.load(f)
+        version = config['project']['version']
+        if verbose:
+            return config['project']['name'] + f'=={version}'
+        return version
+
+    version_path = version_path.removesuffix(':__version__')
     path = os.path.join(root, version_path)
     content = utilo.file_read(path)
     for pattern in VERSION:
