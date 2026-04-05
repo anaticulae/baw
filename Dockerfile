@@ -31,10 +31,11 @@ COPY /baw/templates/.gitignore /var/install/.gitignore
 RUN git config --global --add core.excludesFile /var/install/.gitignore &&\
     git config --global --add safe.directory /var/workdir
 
-# Create venv
-RUN python3 -m venv /opt/venv
+# Create venv.
+RUN python -m venv /opt/venv
 # Use venv's pip explicitly
 ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip
 
 # TODO: INVESTIGATE THIS HACK
 RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
