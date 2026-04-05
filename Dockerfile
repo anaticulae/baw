@@ -22,11 +22,6 @@ ENV BAW=/tmp/dev
 
 ENV PYLINTHOME=/tmp/pylint
 
-ENV SHARED_SPACE=/tmp/shared
-ENV SHARED_TMP=/tmp/shared/tmp
-ENV SHARED_TODO=/tmp/shared/todo
-ENV SHARED_READY=/tmp/shared/ready
-
 COPY /baw/templates/.gitignore /var/install/.gitignore
 RUN git config --global --add core.excludesFile /var/install/.gitignore &&\
     git config --global --add safe.directory /var/workdir
