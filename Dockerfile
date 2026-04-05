@@ -37,9 +37,6 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --upgrade pip
 
-# TODO: INVESTIGATE THIS HACK
-RUN mkdir -m 777 /.local /.cache /.pylint.d && chmod -R 777 /tmp
-
 WORKDIR /var/install
 
 COPY pyproject.toml .
