@@ -79,6 +79,8 @@ Repository = "https://github.com/anaticulae/baw"
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG"
 
 [tool.setuptools.packages.find]
 where = ["."]
