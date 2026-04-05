@@ -10,7 +10,7 @@
 import os
 
 import baw
-import baw.runtime
+import baw.gix
 import tests
 
 CREATE_FILE = """

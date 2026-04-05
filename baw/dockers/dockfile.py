@@ -14,6 +14,7 @@ import sys
 import docker.errors
 import utilo
 
+import baw
 import baw.dockers
 import baw.dockers.image
 import baw.utils

@@ -9,10 +9,12 @@
 
 import os
 
+import pytest
 import utilo
 
 import baw.cmd.upgrade
 import baw.requirements.upgrade
+import baw.runtime
 import tests
 import tests.fixtures.requirements
 
@@ -210,3 +212,32 @@ def test_smart_replace_comment():
         new='selenium==4.4.3',
     )
     assert replaced != REQUIREMENTS
+
+
+@tests.hasbaw
+@tests.hasgit
+@tests.longrun
+@pytest.mark.usefixtures('testdir')
+def test_upgrade_version_number(simple, monkeypatch):
+    root = simple[1]
+
+    upgrade = """\
+        git config advice.setUpstreamFailure false
+        touch ABC
+        git add .
+        git commit -a -m "feat(hello): this is comm"
+    """.splitlines()
+
+    for cmd in upgrade:
+        baw.runtime.run_target(root, cmd)
+
+    content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
+    assert 'version = "0.0.0"' in content, content
+
+    tests.baaw(
+        'release minor --no_test --no_sync --no_linter --no_push',
+        monkeypatch,
+    )
+
+    content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
+    assert 'version = "0.1.0"' in content, content

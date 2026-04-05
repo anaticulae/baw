@@ -11,9 +11,9 @@ import os
 
 import tests
 
-# TODO: ENABLE LATER
-# def test_run_doc(simple):
-#     simple[0]('doc')
+
+def test_run_doc(simple):
+    simple[0]('doc')
 
 
 @tests.nightly

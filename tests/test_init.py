@@ -10,9 +10,7 @@
 import os
 
 import pytest
-import utilo
 
-import baw.runtime
 import tests
 
 
@@ -47,32 +45,3 @@ def test_escaping_single_collon(monkeypatch):
 def test_run_complex_cmd(monkeypatch, cmd):
     """Run help and version and format cmd to reach basic test coverage"""
     tests.baaw(cmd, monkeypatch)
-
-
-@tests.hasbaw
-@tests.hasgit
-@tests.longrun
-@pytest.mark.usefixtures('testdir')
-def test_upgrade_version_number(simple, monkeypatch):
-    root = simple[1]
-
-    upgrade = """\
-        git config advice.setUpstreamFailure false
-        touch ABC
-        git add .
-        git commit -a -m "feat(hello): this is comm"
-    """.splitlines()
-
-    for cmd in upgrade:
-        baw.runtime.run_target(root, cmd)
-
-    content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
-    assert 'version = "0.0.0"' in content, content
-
-    tests.baaw(
-        'release minor --no_test --no_sync --no_linter --no_push',
-        monkeypatch,
-    )
-
-    content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
-    assert 'version = "0.1.0"' in content, content
