@@ -9,6 +9,7 @@
 
 import baw
 import baw.archive.test
+import baw.config
 
 
 def test_tested(testdir):
