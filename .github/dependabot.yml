@@ -7,9 +7,13 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "main"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "deps"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
 
   # Docker dependencies
   - package-ecosystem: "docker"
