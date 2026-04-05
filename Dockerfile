@@ -43,6 +43,7 @@ WORKDIR /var/install
 
 COPY pyproject.toml .
 
+RUN pip install .[dev,doc]
 RUN pip install .
 
 COPY . /var/install
