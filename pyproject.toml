@@ -57,20 +57,20 @@ baw_single = "baw.small.single:main"
 
 [project.optional-dependencies]
 dev = [
-    "pytest_instafail == 0.4.2",
-    "pytest_localserver == 0.7.0",
-    "pytest_timeout == 2.1.0",
+    "pytest_instafail == 0.5.0",
+    "pytest_localserver == 0.10.0",
+    "pytest_timeout == 2.4.0",
 
     "rope == 1.14.0",
-    "pyenchant == 3.2.0",
+    "pyenchant == 3.3.0",
 ]
 
 doc = [
-    "added-value == 0.21.3",
+    "added-value == 0.24.0",
     "commonmark == 0.9.1",
     "recommonmark == 0.7.1",
     "Sphinx == 9.1.0",
-    "sphinx-autodoc-typehints==1.19.2",
+    "sphinx-autodoc-typehints==3.9.11",
 ]
 
 [project.urls]
