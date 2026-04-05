@@ -35,9 +35,7 @@ def run_release(
     no_push: bool = True,
     release_type: str | None = None,
 ) -> int:
-    cfg = baw.cmd.release.config.configpath(root)
     cmd = 'semantic-release '
-    cmd += f'-c {cfg} '
     cmd += '-c pyproject.toml '
     cmd += '-vvv '
     cmd += '--strict '
