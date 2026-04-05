@@ -2,6 +2,33 @@
 
 <!-- version list -->
 
+## v1.76.2 (2026-04-05)
+
+### Bug Fixes
+
+- **docs**: Remove outdated venv
+  ([`6160278`](https://github.com/anaticulae/baw/commit/6160278054a6353f729b65e160083d76ee16dd5d))
+
+### Chores
+
+- **fix**: Install missing requirements
+  ([`47d4984`](https://github.com/anaticulae/baw/commit/47d49840f03ecf700bb71179a542556b5eac7252))
+
+### Testing
+
+- **doc**: Enable unit test
+  ([`2082b9c`](https://github.com/anaticulae/baw/commit/2082b9c3be8943d53a96ad2f75ea45ff165c68e1))
+
+- **refactor**: Move to other file
+  ([`02d80a2`](https://github.com/anaticulae/baw/commit/02d80a22696c2df4f5be065b1fe85779373eb85f))
+
+- **refactor**: Organize imports
+  ([`31e0caf`](https://github.com/anaticulae/baw/commit/31e0cafd30c88cf5953b0d09d55f44359718023d))
+
+- **refactor**: Organize imports
+  ([`51403cb`](https://github.com/anaticulae/baw/commit/51403cb8764035efa7c71fb2086bbada5cf08780))
+
+
 ## v1.76.1 (2026-04-04)
 
 ### Bug Fixes
