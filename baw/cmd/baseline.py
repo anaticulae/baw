@@ -12,7 +12,7 @@ import os
 
 import baw
 import baw.cmd.test
-import baw.config
+import baw.cmd.utils
 import baw.gix
 
 MESSAGE = """\
