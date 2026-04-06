@@ -9,7 +9,7 @@ updates:
     target-branch: "main"
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "deps"
+      prefix: "deps(dependabot)"
     groups:
       all-dependencies:
         patterns:
