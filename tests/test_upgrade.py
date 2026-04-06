@@ -240,3 +240,6 @@ def test_upgrade_version_number(simple, monkeypatch):
 
     content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
     assert 'version = "0.1.0"' in content, content
+
+    changelog = utilo.file_read(os.path.join(root, 'CHANGELOG'))
+    assert 'v0.1.0' in changelog
