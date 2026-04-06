@@ -1,6 +1,142 @@
 # CHANGELOG
 
 
+## v1.76.4 (2026-04-06)
+
+### Bug Fixes
+
+- **semantic**: Remove template dir
+  ([`6ca78e9`](https://github.com/anaticulae/baw/commit/6ca78e9f9e515342e9d30ec4420bee78725caaa8))
+
+### Chores
+
+- **pyproject**: Set missing changelog format
+  ([`5cc5c80`](https://github.com/anaticulae/baw/commit/5cc5c80e745c02ea83f129bbbccdb9dc6946387d))
+
+- **release**: Run release on dependabot update
+  ([`824bdd5`](https://github.com/anaticulae/baw/commit/824bdd552ba5abb436ef61782bb63b725a6939c4))
+
+### Documentation
+
+- **README**: Remove outdated docker information
+  ([`3d51993`](https://github.com/anaticulae/baw/commit/3d51993ff6a7b5d37abbab5ceaf2a9701c579193))
+
+
+## v1.76.3 (2026-04-05)
+
+### Bug Fixes
+
+- **release**: Semantic release just accept a single config
+  ([`0c832aa`](https://github.com/anaticulae/baw/commit/0c832aa3322ac29950b0fe7fefe6de83dbdb932f))
+
+### Chores
+
+- **dependabot**: Upgrade multiple packages in one pr
+  ([`f5ecac5`](https://github.com/anaticulae/baw/commit/f5ecac502459a0d1e2db119bbd22920283d9d09b))
+
+- **docker**: Remove hack
+  ([`eea61df`](https://github.com/anaticulae/baw/commit/eea61df25f49776d3e4e7e4f3f3b605e6f78503d))
+
+- **docker**: Remove outdated env
+  ([`a07226d`](https://github.com/anaticulae/baw/commit/a07226d8c77fa3ba6596b66c059ec38b05044fff))
+
+- **docker**: Upgrade pip
+  ([`710cafc`](https://github.com/anaticulae/baw/commit/710cafcd086fdd05102967b27f596404d01c50cb))
+
+- **pyproject**: Always generate a release
+  ([`756bbeb`](https://github.com/anaticulae/baw/commit/756bbebfbc2a9d43e2862bbbe11b709cebaa9828))
+
+- **toml**: Just use a single changelog
+  ([`4e0c841`](https://github.com/anaticulae/baw/commit/4e0c841084e9a1ea29e64a64e8185be40445af53))
+
+
+## v1.76.2 (2026-04-05)
+
+### Bug Fixes
+
+- **docs**: Remove outdated venv
+  ([`6160278`](https://github.com/anaticulae/baw/commit/6160278054a6353f729b65e160083d76ee16dd5d))
+
+### Chores
+
+- **fix**: Install missing requirements
+  ([`47d4984`](https://github.com/anaticulae/baw/commit/47d49840f03ecf700bb71179a542556b5eac7252))
+
+### Testing
+
+- **doc**: Enable unit test
+  ([`2082b9c`](https://github.com/anaticulae/baw/commit/2082b9c3be8943d53a96ad2f75ea45ff165c68e1))
+
+- **refactor**: Move to other file
+  ([`02d80a2`](https://github.com/anaticulae/baw/commit/02d80a22696c2df4f5be065b1fe85779373eb85f))
+
+- **refactor**: Organize imports
+  ([`31e0caf`](https://github.com/anaticulae/baw/commit/31e0cafd30c88cf5953b0d09d55f44359718023d))
+
+- **refactor**: Organize imports
+  ([`51403cb`](https://github.com/anaticulae/baw/commit/51403cb8764035efa7c71fb2086bbada5cf08780))
+
+
+## v1.76.1 (2026-04-04)
+
+### Bug Fixes
+
+- **pyproject**: Define content Type to pass pypi
+  ([`bc3d327`](https://github.com/anaticulae/baw/commit/bc3d32708fe24f72cf4249a83b2d190b69d8c7be))
+
+
+## v1.76.0 (2026-04-04)
+
+### Bug Fixes
+
+- **resource**: Do not use file types
+  ([`47e1e6c`](https://github.com/anaticulae/baw/commit/47e1e6cd84630750017fdcb68fd128b56e37cc6f))
+
+- **semantic**: Do not update python file just toml
+  ([`777f2dc`](https://github.com/anaticulae/baw/commit/777f2dcb08cb6d032b4bb8c535454c65e56286e8))
+
+- **template**: Add version upgrade command
+  ([`be56ae9`](https://github.com/anaticulae/baw/commit/be56ae94fd0aec5cd6deeb50570cb86847bd7683))
+
+- **template**: Adjust default template
+  ([`f2b578b`](https://github.com/anaticulae/baw/commit/f2b578bcf88dcd0ea5577488a78e0272ed1d2672))
+
+- **template**: Remove baw code
+  ([`b5f5ec6`](https://github.com/anaticulae/baw/commit/b5f5ec6ead3e9a28d12d08ab51495145d1815615))
+
+### Chores
+
+- **toml**: Adjust version number
+  ([`5aa1b14`](https://github.com/anaticulae/baw/commit/5aa1b14a5dd57e8f752d9c9c68ed0eb9fe8b097c))
+
+### Code Style
+
+- **test**: Organize imports
+  ([`e633588`](https://github.com/anaticulae/baw/commit/e633588f7aeba842416f72eb105409aa47d923be))
+
+### Features
+
+- **config**: Determine version out of toml
+  ([`cc5b9f4`](https://github.com/anaticulae/baw/commit/cc5b9f4d2e130652147938b07deb90cd074ffef7))
+
+- **git**: Use more modern default branch name
+  ([`836dffe`](https://github.com/anaticulae/baw/commit/836dffefb985017029f698c2ee428d3d34df38ad))
+
+- **init**: Generate LICENSE file
+  ([`73a947c`](https://github.com/anaticulae/baw/commit/73a947cc5a03271a677e1c4a970995b313191074))
+
+- **release**: Add option to skip pushing to hvcs
+  ([`5bfc18d`](https://github.com/anaticulae/baw/commit/5bfc18d9ecb74f38ce71507b6e6bd2c7892c28a6))
+
+- **semantic**: Improve build command
+  ([`c7c313b`](https://github.com/anaticulae/baw/commit/c7c313bee3ae3e3159887464e1aa3ac068663a8f))
+
+### Testing
+
+- **release**: Ensure that version is upgraded
+  ([`6b0ad5e`](https://github.com/anaticulae/baw/commit/6b0ad5ee53de5f0fc99176300dd0fb44925e10f0))
+
+
 ## v1.75.0 (2026-04-02)
 
 ### Bug Fixes
@@ -33,6 +169,9 @@
 
 - **pyproject**: Add modern build env
   ([`479f4bc`](https://github.com/anaticulae/baw/commit/479f4bc52963599650ca3b296dd47652fff02797))
+
+- **release**: 1.75.0
+  ([`20c08ac`](https://github.com/anaticulae/baw/commit/20c08aca72fd2ce6e4607d2dce9411365b4b9e11))
 
 - **requirements**: Remove outdated requirements
   ([`9f2bdff`](https://github.com/anaticulae/baw/commit/9f2bdffec0082b43660a20ec17e749a3bd5f8a2a))
