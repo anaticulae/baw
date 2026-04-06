@@ -217,7 +217,6 @@ def test_smart_replace_comment():
 @tests.hasbaw
 @tests.hasgit
 @tests.longrun
-@pytest.mark.usefixtures('testdir')
 def test_upgrade_version_number(simple, monkeypatch):
     root = simple[1]
 
