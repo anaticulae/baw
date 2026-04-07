@@ -9,7 +9,6 @@
 
 import os
 
-import pytest
 import utilo
 
 import baw.cmd.upgrade
@@ -214,11 +213,7 @@ def test_smart_replace_comment():
     assert replaced != REQUIREMENTS
 
 
-@tests.hasbaw
-@tests.hasgit
-@tests.longrun
-@pytest.mark.usefixtures('testdir')
-def test_upgrade_version_number(simple, monkeypatch):
+def commit_and_release(simple, monkeypatch):
     root = simple[1]
 
     upgrade = """\
@@ -239,5 +234,24 @@ def test_upgrade_version_number(simple, monkeypatch):
         monkeypatch,
     )
 
+
+@tests.hasbaw
+@tests.hasgit
+@tests.longrun
+def test_upgrade_version_number(simple, monkeypatch):
+    root = simple[1]
+    commit_and_release(simple, monkeypatch)
+
     content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
     assert 'version = "0.1.0"' in content, content
+
+
+@tests.hasbaw
+@tests.hasgit
+@tests.longrun
+def test_upgrade_changelog(simple, monkeypatch):
+    root = simple[1]
+    commit_and_release(simple, monkeypatch)
+
+    changelog = utilo.file_read(os.path.join(root, 'CHANGELOG'))
+    assert 'v0.1.0' in changelog

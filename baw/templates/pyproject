@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 name = "{{SHORT}}"
 version = "0.0.0"
 description = ""
-readme = "README"
+readme = {file = "README", content-type = "text/markdown"}
 requires-python = ">=3.12"
 authors = [
   {name = "Helmut Konrad Schewe", email = "helmutus@outlook.com"}
@@ -36,6 +36,14 @@ Repository = "https://github.com/anaticulae/{{SHORT}}"
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG"
+[tool.semantic_release.changelog]
+mode = "init"
+output_format = "md"
+[tool.semantic_release.commit_parser_options]
+# allways generate a new version
+patch_tags = ["fix", "perf", "build", "chore", "ci", "docs", "style", "refactor", "test", "deps"]
 
 [tool.setuptools.packages.find]
 where = ["."]
