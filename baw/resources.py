@@ -37,7 +37,7 @@ def joined(path: str, asserts: bool = True) -> str:
     return result
 
 
-LICENSE_TEMPLATE = joined('LICENSE')
+LICENSE_TEMPLATE = fread(joined('LICENSE'))
 WORKSPACE_TEMPLATE = joined('.code-workspace')
 GIT_IGNORE_TEMPLATE = joined('.gitignore')
 RCFILE_PATH = joined('.rcfile')
