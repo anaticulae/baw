@@ -10,6 +10,7 @@
 import os
 
 import pytest
+import utilo
 
 import tests
 
@@ -22,6 +23,14 @@ def test_init_project_in_empty_folder(project_example):
     """
     index = project_example.join('docs/index.rst')
     assert os.path.exists(index)
+
+
+def test_init_license(project_example):
+    index = project_example.join('LICENSE')
+    assert os.path.exists(index)
+    content = utilo.file_read(index)
+    assert len(content) > 500
+    assert 'MIT License' in content
 
 
 @tests.hasbaw
