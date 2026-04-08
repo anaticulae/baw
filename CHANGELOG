@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.76.6 (2026-04-08)
+
+### Bug Fixes
+
+- **resources**: Read license template correctly
+  ([`3cb3ee4`](https://github.com/anaticulae/baw/commit/3cb3ee411b22d654284a4fb0f8c61207751d7035))
+
+
 ## v1.76.5 (2026-04-07)
 
 ### Bug Fixes
