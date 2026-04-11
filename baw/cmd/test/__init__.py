@@ -44,7 +44,6 @@ def run_test(  # pylint:disable=R0914,R1260
     noinstall: bool = False,
     cov_report: bool = False,
     verbose: int = 0,
-    venv: bool = False,
 ) -> int:
     """Running test-step in root/tests
 
@@ -68,7 +67,6 @@ def run_test(  # pylint:disable=R0914,R1260
         noinstall(bool): do not run install step before testing
         cov_report(bool): generate and open cov report
         verbose(bool): extend logging
-        venv(bool): run cmd in venv environment
     Returns:
         returncode(int): 0 if successful else > 0
     """
@@ -103,10 +101,9 @@ def run_test(  # pylint:disable=R0914,R1260
         quiet=quiet,
         cov_report=cov_report,
         verbose=verbose,
-        venv=venv,
     )
     environment = baw.git_stash if stash else baw.utils.empty
-    with environment(root, verbose=verbose, venv=venv):
+    with environment(root, verbose=verbose):
         completed = baw.runtime.run_target(
             root,
             cmd,
@@ -116,7 +113,6 @@ def run_test(  # pylint:disable=R0914,R1260
             verbose=verbose,
             # no tests available => no problem
             skip_error_code={NO_TEST_TO_RUN},
-            venv=venv,
         )
     if completed.returncode == baw.SUCCESS:
         if generate_only:
@@ -212,11 +208,10 @@ def create_test_cmd(  # pylint:disable=R0914
     cov_report: bool = True,
     doctest: bool = True,
     verbose: int = 0,
-    venv: bool = False,
 ):
     """\
     >>> create_test_cmd(baw.project.determine_root(__file__), instafail=True, pdb=True, coverage=True, quiet=True, parameter=[],
-    ... generate_only=False, markers='', cov_report=True, doctest=True, verbose=False, venv=False)
+    ... generate_only=False, markers='', cov_report=True, doctest=True, verbose=False)
     Disable coverage report...'
     """
     pytest_ini = create_pytest_config(root)
@@ -247,7 +242,7 @@ def create_test_cmd(  # pylint:disable=R0914
     # python -m to include sys path of cwd
     # --basetemp define temp directory where the tests run
     # run pytest
-    python = baw.config.python(root, venv=venv)
+    python = baw.config.python(root)
     plugins = determine_plugins(root)
     cmd = (f'{python} -m pytest -c {pytest_ini} {manual_parameter} '
            f'{override_testconfig} {debugger} {cov} {generate_only} '
@@ -366,7 +361,6 @@ def run(args: dict):
         noinstall=args.get('no_install', False),
         cov_report=not args.get('no_report', False),
         verbose=args.get('verbose', 0),
-        venv=args.get('venv', False),
     )
     return result
 

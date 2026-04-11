@@ -30,7 +30,6 @@ def upgrade(
     *,
     notests: bool = True,
     verbose: int = 0,
-    venv: bool = False,
     generate: bool = True,
     pre: bool = True,
     packages: str = 'requirements',
@@ -39,7 +38,7 @@ def upgrade(
 
     force: upgrade dev requirements also
     """
-    with baw.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose):
         returnvalue = check_upgrade(root, packages=packages, pre=pre)
         if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
@@ -54,7 +53,6 @@ def upgrade(
             test=not notests,
             testconfig=None,
             verbose=verbose,
-            venv=venv,
         )
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
@@ -65,7 +63,6 @@ def upgrade(
                 root,
                 requirements,
                 verbose=verbose,
-                venv=venv,
             )
             baw.error('Upgrading failed')
             assert not completed
@@ -127,7 +124,6 @@ def upgrade_requirements(
     root: str,
     requirements: str = baw.utils.REQUIREMENTS_TXT,
     pre: bool = False,
-    venv: bool = False,
 ) -> int:
     """Take requirements.txt, replace version number with current
     available version on pip repository.
@@ -136,7 +132,6 @@ def upgrade_requirements(
         root(str): generated project
         requirements(str): relative path to requirements
         pre(bool): include pre-releases
-        venv(bool): run in venv environment
     Returns:
         SUCCESS if file was upgraded
     """
@@ -152,7 +147,7 @@ def upgrade_requirements(
         baw.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchronizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
-    upgraded = determine_new_requirements(root, content, venv=venv, pre=pre)
+    upgraded = determine_new_requirements(root, content, pre=pre)
     if upgraded is None:
         return baw.FAILURE
     replaced = baw.requirements.upgrade.replace(content, upgraded)
@@ -206,7 +201,6 @@ def determine_new_requirements(
     requirements: str,
     *,
     pre: bool = False,
-    venv: bool = False,
 ) -> baw.requirements.NewRequirements:
     parsed = baw.requirements.parser.parse(
         requirements,
@@ -224,7 +218,6 @@ def determine_new_requirements(
             source,
             sink,
             pre=pre,
-            venv=venv,
         )
     if sync_error:
         # check if some packages are found
@@ -240,7 +233,6 @@ def collect_new_packages(  # pylint:disable=R0914
     sink,
     *,
     pre=False,
-    venv=False,
     verbose=False,
 ) -> bool:
     sync_error = False
@@ -252,7 +244,6 @@ def collect_new_packages(  # pylint:disable=R0914
                 root,
                 package,
                 pre=pre,
-                venv=venv,
                 verbose=verbose,
             ): (package, version) for package, version in source.items()
         }
@@ -316,7 +307,6 @@ def run(args):
         root=root,
         packages=args['upgrade'],
         pre=args['pre'],
-        venv=False,
         verbose=args['verbose'],
     )
     return result

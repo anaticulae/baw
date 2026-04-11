@@ -27,15 +27,12 @@ def clean(  # pylint:disable=R1260,too-many-branches
     resources: bool = False,
     tests: bool = False,
     tmp: bool = False,
-    venv: bool = False,
     all_: bool = False,
 ):
     baw.check_root(root)
     baw.log('start cleaning')
     if all_:
-        docs, resources, tests, tmp, venv = True, True, True, True, True
-    if venv:
-        clean_venv(root)
+        docs, resources, tests, tmp = True, True, True, True
     if docs:
         clean_docs(root)
     if tmp:
@@ -148,29 +145,6 @@ TESTS = """
 ResourceDir = collections.namedtuple('ResourceDir', 'path')
 
 
-def clean_venv(root: str):
-    """Clean venv environment of given project
-
-    Args:
-        root(str): generated project
-    Hint:
-        Try to remove .venv folder
-    Raises:
-        SystemExit if cleaning not work
-    """
-    venv_path = baw.runtime.virtual(root)
-    if not os.path.exists(venv_path):
-        baw.log(f'venv environment does not exist {venv_path}')
-        return
-    baw.log(f'clean venv: {venv_path}')
-    try:
-        shutil.rmtree(venv_path)
-    except OSError as fail:
-        baw.error(fail)
-        sys.exit(baw.FAILURE)
-    baw.log('done')
-
-
 def remove_readonly(func, path, _):  # pylint:disable=W0613
     """Clear the readonly bit and reattempt the removal"""
     os.chmod(path, stat.S_IWRITE)
@@ -184,7 +158,6 @@ def run(args):
     resources = xclean == 'resources'
     tests = xclean == 'tests'
     tmp = xclean == 'tmp'
-    venv = xclean == 'venv'
     all_ = xclean == 'all'
     if xclean == 'ci':
         docs = True
@@ -196,7 +169,6 @@ def run(args):
         resources=resources,
         tests=tests,
         tmp=tmp,
-        venv=venv,
         all_=all_,
         root=root,
     )

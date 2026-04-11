@@ -24,7 +24,6 @@ def sync_and_test(
     sync: bool = False,
     test: bool = True,
     verbose: int = 0,
-    venv: bool = False,
 ):
     verbose = False if quiet else verbose
     if sync:
@@ -32,7 +31,6 @@ def sync_and_test(
             root,
             packages=packages,
             verbose=verbose,
-            venv=venv,
         )
         if ret:
             baw.error('\nSync failed, could not release.\n')
@@ -48,7 +46,6 @@ def sync_and_test(
         stash=stash,
         testconfig=testconfig,
         verbose=verbose,
-        venv=venv,
     )
     if ret:
         if not quiet:

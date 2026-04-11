@@ -23,11 +23,10 @@ import tests
 def test_sync_novenv():
     baw.cmd.sync.sync(
         baw.ROOT,
-        venv=False,
         verbose=False,
     )
 
 
 def test_pip_list():
-    parsed = baw.cmd.sync.pip_list(baw.ROOT, venv=False)
+    parsed = baw.cmd.sync.pip_list(baw.ROOT)
     assert len(parsed.equal) >= 10, parsed.equal

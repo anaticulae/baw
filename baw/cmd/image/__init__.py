@@ -33,7 +33,6 @@ def create(  # pylint:disable=W0613
     generate: bool = False,
     install: bool = False,
     verbose: int = 0,
-    venv: bool = False,
 ):
     root = baw.cmd.utils.determine_root(root)
     if dockerfile:
@@ -202,7 +201,6 @@ def run(args: dict):  # pylint:disable=R0911
             generate=args.get('generate'),
             install=args.get('install'),
             verbose=args.get('verbose'),
-            venv=args.get('venv'),
         )
     if action == 'upgrade':
         return upgrade(

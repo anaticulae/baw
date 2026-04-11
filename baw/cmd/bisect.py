@@ -18,7 +18,6 @@ def cli(
     root: str,
     commits: str,
     args: list,
-    venv: bool = False,
     verbose: int = 0,
 ):
     baw.log(commits)
@@ -38,7 +37,6 @@ def cli(
         verify=verify,
         bad=bad,
         good=good,
-        venv=venv,
         verbose=verbose,
     )
     return completed
@@ -49,7 +47,6 @@ def bisect(
     verify: str,
     bad: str,
     good: str,
-    venv: bool = False,
     verbose: int = 0,
 ) -> int:
     cmd = f'git bisect start {bad} {good} && git bisect run sh -c "baw {verify}"'
@@ -58,7 +55,6 @@ def bisect(
         cmd=cmd,
         cwd=root,
         verbose=verbose,
-        venv=venv,
     )
 
     important = collect_findings(completed.stdout)
@@ -70,7 +66,6 @@ def bisect(
         cmd='git bisect reset',
         cwd=root,
         verbose=verbose,
-        venv=venv,
     )
     return baw.SUCCESS
 

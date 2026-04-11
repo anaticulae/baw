@@ -16,7 +16,6 @@ def evaluate(args: dict):
     root = baw.cmd.utils.get_root(args)
     result = install(
         root=root,
-        venv=args.get('venv', False),
         verbose=args.get('verbose', 0),
         dev=args.get('dev', False),
         remove=args.get('remove', False),
@@ -29,13 +28,12 @@ def install(
     *,
     dev: bool = False,
     remove: bool = False,
-    venv: bool = False,
     verbose: int = 0,
 ):
     if remove:
-        remove_current(root, venv=venv, verbose=verbose)
+        remove_current(root, verbose=verbose)
     # -f always install newest one
-    python = baw.config.python(root, venv=venv)
+    python = baw.config.python(root)
     cmd = f'{python} '
     cmd += '-mpip install -e .' if dev else 'setup.py install -f'
     # run target
@@ -44,7 +42,6 @@ def install(
         cmd,
         root,
         verbose=verbose,
-        venv=venv,
     )
     if completed.returncode:
         baw.log(completed.stdout)
@@ -54,7 +51,7 @@ def install(
     return completed.returncode
 
 
-def remove_current(root: str, venv: bool = False, verbose: int = 0):
+def remove_current(root: str, verbose: int = 0):
     package = baw.config.shortcut(root)
     for _ in range(10):
         cmd = f'pip uninstall {package} --yes'
@@ -62,7 +59,6 @@ def remove_current(root: str, venv: bool = False, verbose: int = 0):
             root,
             cmd=cmd,
             verbose=verbose,
-            venv=venv,
         )
         if completed.stderr:
             break

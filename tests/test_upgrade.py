@@ -167,7 +167,6 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #     result = baw.cmd.upgrade.upgrade(
 #         path,
 #         verbose=True,
-#         venv=False,
 #         generate=False,  # do not change - see test.py/generate_only
 #         notests=False,
 #     )
@@ -182,7 +181,6 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #     result = baw.cmd.upgrade.upgrade(
 #         path,
 #         verbose=False,
-#         venv=False,
 #         generate=False,  # see above
 #     )
 #     assert result == baw.SUCCESS

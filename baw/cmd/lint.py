@@ -62,7 +62,6 @@ def lint(
     root: str,
     scope: Scope = Scope.ALL,
     verbose: int = 0,
-    venv: bool = False,
     log_always: bool = True,
 ) -> int:
     """Run statical code analysis on `root`.
@@ -73,7 +72,6 @@ def lint(
                     minimal, exclude todos from analysis; todo, exclude
                     all expect todos.
         verbose(bool): increase logging
-        venv(bool): run cmd in venv environment
         log_always(bool): suppress logging if False and process completed
                           successful
     Returns:
@@ -89,7 +87,6 @@ def lint(
         bandit,
         root,
         run_in,
-        venv,
         log_always,
         verbose,
     )
@@ -98,7 +95,6 @@ def lint(
         root,
         scope,
         run_in,
-        venv,
         log_always,
         verbose,
     )
@@ -111,7 +107,7 @@ def lint(
     return returncode
 
 
-def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
+def pylint(root, scope, run_in, log_always: bool, verbose: int) -> int:
     baw.log('pylint...')
     spelling = baw.config.spelling(root)
     pyconfig = baw.config.pylint(root)
@@ -138,7 +134,6 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
         root,
         cmd,
         cwd=root,
-        venv=venv,
         verbose=verbose,
     )
     if completed.returncode:
@@ -148,9 +143,8 @@ def pylint(root, scope, run_in, venv, log_always: bool, verbose: int) -> int:
     return completed.returncode
 
 
-def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
+def bandit(root, run_in, log_always: bool, verbose: int) -> int:
     baw.log('bandit...')
-    # python = baw.config.python(root, venv=venv)
     cmd = f'bandit {run_in} -r '
     cmd += '--skip B101'  # skip assert is used
     cmd += ',B404'  # import subprocess
@@ -158,7 +152,6 @@ def bandit(root, run_in, venv, log_always: bool, verbose: int) -> int:
         root,
         cmd,
         cwd=root,
-        venv=venv,
         verbose=verbose,
     )
     if completed.returncode:

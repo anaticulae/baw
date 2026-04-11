@@ -14,13 +14,9 @@ import subprocess
 import sys
 import time
 
-import utilo
-
 import baw
 import baw.config
 import baw.utils
-
-VENV_FOLDER = '.venv'
 
 NO_EXECUTABLE = 127
 
@@ -43,83 +39,6 @@ def destroy(path: str):
     return True
 
 
-def virtual(root: str, creates: bool = True) -> str:
-    assert root
-    name = baw.config.shortcut(root)
-    venv = os.path.join(baw.config.bawtmp(), 'venv', name)
-    if os.path.exists(venv):
-        return venv
-    outdated = os.path.join(root, VENV_FOLDER)
-    if os.path.exists(outdated):
-        baw.error(f'use outdated venv: {outdated}')
-        return outdated
-    if creates:
-        os.makedirs(venv, exist_ok=True)
-    return venv
-
-
-def has_virtual(root: str) -> bool:
-    assert root
-    venv = virtual(root, creates=False)
-    if os.path.exists(venv):
-        return True
-    return False
-
-
-def create(root: str, clean: bool = False, verbose: int = 0) -> int:  # pylint:disable=R1260
-    """Create `venv` folder in project root, do nothing if folder exists
-
-    This method creates the folder and does the init via python `venv`-module.
-
-    Args:
-        root(str): project root
-        clean(bool): venv path is removed before creating new environment
-        verbose(bool): explain what is being done
-    Returns:
-        SUCCESS if creating was was succesfull else FAILURE
-    """
-    venv = virtual(root)
-    if not os.path.exists(venv):
-        baw.log(f'create venv: {venv}')
-        os.makedirs(venv, exist_ok=True)
-    if os.path.exists(venv) and list(os.scandir(venv)):
-        if verbose:
-            baw.log(f'venv: {venv}')
-        return baw.SUCCESS
-    python = baw.config.python(root, venv=False)
-    # use system site packages in docker env
-    action = '--copies' if baw.runtime.iswin() else '--system-site-packages'
-    cmd = f'{python} -m virtualenv . {action}'
-    if clean:
-        cmd = f'{cmd} --clear'
-    if verbose:
-        baw.log(f'{cmd} in {venv}')
-    process = run(cmd=cmd, cwd=venv)
-    if iswin():
-        if sys.version_info.major == 3 and sys.version_info.minor == 7:
-            # python 3.7
-            patch_env(root)
-    if process.returncode:
-        baw.error(cmd)
-        baw.error('While creating virtual environment:')
-        baw.log(process.stdout)
-        baw.error(process.stderr)
-        return baw.FAILURE
-    if verbose:
-        baw.log(process.stdout)
-        if process.stderr:
-            baw.error(process.stderr)
-    return baw.SUCCESS
-
-
-def patch_env(root):
-    path = os.path.join(virtual(root), 'Scripts/activate.bat')
-    content = utilo.file_read(path)
-    content = content.partition(':END')[0]  # remove content after :END
-    baw.utils.file_remove(path)
-    baw.utils.file_create(path, content=content)
-
-
 def run_target(
     root: str,
     cmd: str,
@@ -131,7 +50,6 @@ def run_target(
     skip_error_code: set = None,
     skip_error_message: list = None,
     verbose: int = 4,
-    venv: bool = False,
 ) -> subprocess.CompletedProcess:
     """Run target
 
@@ -149,7 +67,6 @@ def run_target(
         skip_error_message(list): list of error messages which are
                                   expected as no problem
         verbose(bool): explain what is beeing done
-        venv(bool): run in venv environment
 
     Returns:
         CompletedProcess - os process which was runned
@@ -167,32 +84,13 @@ def run_target(
         return baw.FAILURE
     if verbose:
         baw.log(cmd)
-    if venv:
-        try:
-            completed = _run_venv(
-                root,
-                cmd=cmd,
-                cwd=root,
-                debugging=debugging,
-                env=env,
-            )
-        except RuntimeError as fail:
-            message = str(fail)
-            process = subprocess.CompletedProcess(
-                cmd,
-                NO_EXECUTABLE,
-                stdout=message,
-                stderr=message,
-            )
-            return process
-    else:
-        # run local
-        completed = run(
-            cmd=cmd,
-            cwd=cwd,
-            debugging=debugging,
-            env=env,
-        )
+    # run local
+    completed = run(
+        cmd=cmd,
+        cwd=cwd,
+        debugging=debugging,
+        env=env,
+    )
     log_result(
         completed,
         cwd,
@@ -273,54 +171,6 @@ def log_result(  # pylint:disable=R1260,R0912
         baw.completed(completed)
         if start is not None:
             baw.utils.print_runtime(start)
-
-
-def _run_venv(
-    root: str,
-    cmd: str,
-    cwd: str,
-    env: dict = None,
-    debugging: bool = False,
-) -> subprocess.CompletedProcess:
-    """Run cmd with venv environment
-
-    Args:
-        root(str): project root to locate `venv`-folder
-        cmd(str): cmd to execute
-        cwd(str): working directory where cmd is executed
-        env(dict): replace enviroment variables
-        debugging(bool): run pdb when error occurs
-    Raises:
-        RuntimeError: if venv path does not exists
-    Returns:
-        CompletedProcess
-    """
-    windows = sys.platform == 'win32'
-    activate = os.path.join(
-        virtual(root),
-        'Scripts' if windows else 'bin',
-        'activate',
-    )
-    deactivate = os.path.join(virtual(root), 'Scripts/deactivate')
-    if not os.path.exists(activate):
-        msg = f'Path `{activate}` does not exists.\nRegenerate the venv'
-        raise RuntimeError(msg)
-    if windows:
-        activate = f'{activate}.bat'
-        deactivate = f'{deactivate}.bat'
-    else:
-        activate = f'. {activate}'
-        # linux does not require a deactivate script, its just a function
-        # which was create by activate
-        deactivate = 'deactivate'
-    execute = f'{activate} && {cmd} && {deactivate}'
-    process = run(
-        execute,
-        cwd,
-        env=env,
-        debugging=debugging,
-    )
-    return process
 
 
 def run(

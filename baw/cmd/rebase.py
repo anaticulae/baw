@@ -14,15 +14,11 @@ import baw.run
 
 def run(args: dict):
     root = baw.cmd.utils.run_environment(args)
-    venv = args.get('venv', False)
-    if venv:
-        baw.run.run_venv(args)
     result = baw.cmd.sync.sync(
         root=root,
         packages=args.get('packages'),
         minimal=args.get('minimal', False),
         verbose=args.get('verbose', 0),
-        venv=venv,
     )
     return result
 
