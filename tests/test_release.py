@@ -19,6 +19,9 @@ def test_release_already_done(simple, capsys):
     assert 'head is already: v0.0.0' in stdout
 
 
+MESSAGE = 'The next version is: 1.0.0'
+
+
 @tests.longrun
 def test_release_simple(simple, monkeypatch, capsys):
     root = simple[1]
@@ -28,9 +31,10 @@ def test_release_simple(simple, monkeypatch, capsys):
     baw.git_commit(root, '.', 'feat(abc): feature is welcome')
     with monkeypatch.context():
         # do not open ide
-        simple[0]('-v release')
-    stdout = tests.stdout(capsys)
-    assert 'The next version is: 1.0.0' in stdout
+        simple[0]('-v release --no_push')
+    output = capsys.readouterr()
+    # semantic release writes log to std-err
+    assert MESSAGE in output.err
 
 
 def test_release_do_not_drop_first_release(simple, capsys):
