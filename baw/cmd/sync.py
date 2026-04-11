@@ -36,7 +36,6 @@ def sync(
     packages: str = 'dev',
     *,
     minimal: bool = False,
-    venv: bool = False,
     verbose: int = 0,
 ) -> int:
     """Sync packages which are defined in requirements.txt
@@ -49,9 +48,6 @@ def sync(
                         - extra
                         - all
         minimal(bool): if True use minimal version in requirement file
-        venv(bool): if True sync the venv environment
-                       if BOTH sync venv and local environment
-                       if False sync local environment
         verbose(bool): if True, increase verbosity of logging
     Returns:
         summed exit code of sync processes
@@ -61,26 +57,12 @@ def sync(
     baw.log()
     ret += baw.gix.update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
-    if venv == 'BOTH':
-        for item in (True, False):
-            ret += sync_dependencies(
-                root,
-                packages=packages,
-                minimal=minimal,
-                venv=item,
-                verbose=verbose,
-            )
-            if ret:
-                # Fast fail, if one failes, don't check the rest
-                return ret
-    else:
-        ret += sync_dependencies(
-            root,
-            packages=packages,
-            minimal=minimal,
-            venv=venv,
-            verbose=verbose,
-        )
+    ret += sync_dependencies(
+        root,
+        packages=packages,
+        minimal=minimal,
+        verbose=verbose,
+    )
     return ret
 
 
@@ -89,11 +71,10 @@ def check_dependency(
     package: str,
     *,
     pre: bool = False,
-    venv: bool = False,
     verbose: int = 0,
 ):
     """Check if packages need an upgrade."""
-    python = baw.config.python(root, venv=venv)
+    python = baw.config.python(root)
     lookup = sources(pre)
     lookup = (None,) if lookup == (None, None) else lookup
     for index in lookup:
@@ -108,7 +89,6 @@ def check_dependency(
             root,
             pip,
             verbose=verbose,
-            venv=venv,
             skip_error_code=[23, 2],  # package not found
         )
         if completed.returncode == 23:
@@ -146,10 +126,9 @@ def sync_dependencies(  # pylint:disable=R1260
     *,
     minimal: bool = False,
     verbose: int = 0,
-    venv: bool = False,
 ) -> int:
     baw.utils.check_root(root)
-    baw.log('sync venv' if venv else 'sync local')
+    baw.log('sync')
     resources = determine_resources(root, packages)
     pip_index, extra_url = baw.config.package_address()
     if not connected(pip_index, extra_url):
@@ -160,7 +139,6 @@ def sync_dependencies(  # pylint:disable=R1260
         resources,
         minimal=minimal,
         verbose=verbose,
-        venv=venv,
     )
     if not required.equal and not required.greater:
         return baw.SUCCESS
@@ -171,7 +149,6 @@ def sync_dependencies(  # pylint:disable=R1260
     cmd, pip = get_install_cmd(
         root=root,
         requirements=requirements,
-        venv=venv,
         verbose=verbose,
     )
     if verbose:
@@ -181,7 +158,6 @@ def sync_dependencies(  # pylint:disable=R1260
         cmd,
         cwd=root,
         verbose=False,
-        venv=venv,
     )
     baw.utils.file_remove(requirements)
     returncode = eval_sync(pip, completed, verbose=verbose)
@@ -208,12 +184,11 @@ def required_installation(
     root,
     requirements: str,
     minimal: bool = False,
-    venv: bool = False,
     verbose: int = 0,
 ):
     # TODO: REFACTOR LATER
     requested = [baw.requirements.parser.parse(requirements)]
-    current = pip_list(root, verbose=verbose, venv=venv)
+    current = pip_list(root, verbose=verbose)
     missing = [
         baw.requirements.upgrade.diff(current, item, minimal)
         for item in requested
@@ -329,7 +304,6 @@ def get_install_cmd(
     root: str,
     requirements: str,
     *,
-    venv: bool = False,
     verbose: int = 0,
     timeout: int = 30,
 ):
@@ -350,7 +324,7 @@ def get_install_cmd(
     config = '--retries 2 --disable-pip-version-check '
     if require_legacy_solver():
         config += '--use-deprecated=legacy-resolver '
-    python = baw.config.python(root, venv=venv)
+    python = baw.config.python(root)
     warning = '' if verbose else '--no-warn-conflicts'
     # prepare cmd
     cmd = f'{python} -mpip install {warning} {pip} '
@@ -389,9 +363,8 @@ def host(url: str) -> str:
 def pip_list(
     root,
     verbose: int = 0,
-    venv: bool = False,
 ) -> baw.requirements.Requirements:
-    python = baw.config.python(root, venv=venv)
+    python = baw.config.python(root)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
         baw.log(cmd)
@@ -400,10 +373,9 @@ def pip_list(
         cmd,
         cwd=root,
         verbose=False,
-        venv=venv,
     )
     if completed.returncode and completed.stderr:
-        baw.error(f'{cmd}, {verbose}, {venv}')
+        baw.error(f'{cmd}, {verbose}')
         baw.error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
@@ -446,15 +418,11 @@ def should_skip(msg: str, verbose: int = 0):
 
 def run(args: dict):
     root = baw.cmd.utils.run_environment(args)
-    venv = args.get('venv', False)
-    if venv:
-        baw.run.run_venv(args)
     result = sync(
         root=root,
         packages=args.get('packages'),
         minimal=args.get('minimal', False),
         verbose=args.get('verbose', 0),
-        venv=venv,
     )
     return result
 

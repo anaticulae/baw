@@ -41,4 +41,6 @@ def test_clean_files_and_dirs(simple):
     simple[0]('clean all')
     cleaned_project = set(os.listdir(root))
     # .gitdir remains
-    assert len(cleaned_project) == base + 2 + 2 - 3
+    expected = base + 2 + 2 - 4
+    print(cleaned_project)
+    assert len(cleaned_project) == expected

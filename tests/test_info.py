@@ -15,7 +15,6 @@ import tests
 @pytest.mark.parametrize('cmd, expected', (
     ('covreport', 'report'),
     ('tmp', 'tmp'),
-    ('venv', 'venv'),
     ('shortcut', 'baw'),
     ('name', 'Beta Alpha Omega'),
     ('requirement', ''),

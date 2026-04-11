@@ -21,14 +21,13 @@ def evaluate(args):
     result = format_repository(
         root,
         verbose=args.get('verbose', 0),
-        venv=args.get('venv', False),
     )
     return result
 
 
-def format_repository(root: str, verbose: int = 0, venv: bool = False):
+def format_repository(root: str, verbose: int = 0):
     for item in (format_source, format_imports):
-        failure = item(root, verbose=verbose, venv=venv)
+        failure = item(root, verbose=verbose)
         if failure:
             return failure
     return baw.SUCCESS
@@ -48,12 +47,12 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: int = 0, venv: bool = False) -> int:  # pylint:disable=W0613
+def format_source(root: str, verbose: int = 0) -> int:  # pylint:disable=W0613
     baw.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
     yapf = '-i --style=google --no-local-style'
-    parallel = '-p' if not baw.utils.testing() and not venv else ''
+    parallel = '-p' if not baw.utils.testing() else ''
     template_skip = '-e *.tpy'
     todo = []
     for item in sources(root):
@@ -71,7 +70,7 @@ def format_source(root: str, verbose: int = 0, venv: bool = False) -> int:  # py
     return completed
 
 
-def format_imports(root: str, verbose: int = 0, venv: bool = False):
+def format_imports(root: str, verbose: int = 0):
     if not baw.runtime.installed('isort', root=root):
         return baw.FAILURE
     project_sources = baw.config.sources(root)
@@ -90,14 +89,12 @@ def format_imports(root: str, verbose: int = 0, venv: bool = False):
         "--line-width 999",  # do not break imports
     ]
     isort: str = ' '.join(isort)
-    # python = baw.config.python(root, venv=False)
     cmd = f'isort {isort}'
     return format_(
         root,
         cmd=cmd,
         info='sort imports',
         verbose=verbose,
-        venv=venv,
     )
 
 
@@ -107,7 +104,6 @@ def format_(
     info: str = 'format source',
     *,
     verbose: int = 0,
-    venv: bool = False,
 ):
     baw.log(info)
     folder = baw.config.sources(root)
@@ -126,7 +122,6 @@ def format_(
                     root=root,
                     cmd=cmdx,
                     cwd=source,
-                    venv=venv,
                     verbose=verbose,
                 ))
         for future in concurrent.futures.as_completed(waitfor):

@@ -104,16 +104,6 @@ def run_bisect(args):
     return result
 
 
-def run_venv(args):
-    root = baw.cmd.utils.get_root(args)
-    result = baw.runtime.create(
-        root,
-        clean=args.get('clean', '') in 'venv all',
-        verbose=args.get('verbose', 0),
-    )
-    return result
-
-
 def run_doc(args: dict):
     root = baw.cmd.utils.get_root(args)
     result = baw.cmd.doc.doc(

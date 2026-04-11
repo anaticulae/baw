@@ -364,9 +364,7 @@ def config_path(root: str) -> str:
 
 
 @functools.lru_cache
-def python(root: str, venv: bool = False) -> str:
-    if venv:
-        return 'python'
+def python(root: str) -> str:
     result = default_config(
         root,
         lambda x: x['project']['python'],

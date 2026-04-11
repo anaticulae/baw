@@ -40,9 +40,6 @@ def prints(root, value: str, verbose: int = 0) -> int:  # pylint:disable=R1260,R
     if value == 'tmp':
         print_tmp(root)
         return baw.SUCCESS
-    if value == 'venv':
-        print_venv(root)
-        return baw.SUCCESS
     if value == 'covreport':
         print_covreport(root)
         return baw.SUCCESS
@@ -111,15 +108,6 @@ def pip_version(root: str, verbose: int = 0):
         name = baw_name(root)
         result = f'{name}=={result}'
     return result
-
-
-def print_venv(root: str):
-    tmpdir = baw.runtime.virtual(
-        root,
-        creates=False,
-    )
-    baw.log(tmpdir)
-    sys.exit(baw.SUCCESS)
 
 
 def print_covreport(root: str):

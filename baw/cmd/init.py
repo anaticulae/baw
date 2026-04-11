@@ -89,7 +89,6 @@ def init(
         completed = baw.cmd.format.format_repository(
             root,
             verbose=verbose,
-            venv=False,
         )
         if completed:
             return completed

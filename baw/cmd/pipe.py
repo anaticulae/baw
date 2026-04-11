@@ -22,12 +22,11 @@ def init(
     root: str,
     platform: str = 'github',
     verbose: int | None = False,
-    venv: bool | None = False,
 ) -> int:
     if platform == 'jenkins':
-        return init_jenkins(root, verbose=verbose, venv=venv)
+        return init_jenkins(root, verbose=verbose)
     if platform == 'github':
-        return init_github(root, verbose=verbose, venv=venv)
+        return init_github(root, verbose=verbose)
     baw.error('Nothing todo')
     return baw.SUCCESS
 
@@ -35,7 +34,6 @@ def init(
 def init_github(
     root: str,
     verbose: int | None = False,
-    venv: bool | None = False,
 ) -> int:
     source = baw.pipefile.dotgithub(root)
     if os.path.exists(source):
@@ -45,7 +43,7 @@ def init_github(
         key,
         baw.resources.template_replace(root, template=value),
     ) for key, value in baw.resources.DOTGITHUB]
-    with baw.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose):
         baw.cmd.init.create_files(root, todo=todo)
         baw.git_add(root, '.github')
         baw.git_add(root, os.path.join('Makefile'))
@@ -64,14 +62,13 @@ def init_github(
 def init_jenkins(
     root: str,
     verbose: int | None = False,
-    venv: bool | None = False,
 ) -> int:
     source = baw.pipefile.jenkinsfile(root)
     if os.path.exists(source):
         baw.error(f'Jenkinsfile already exists: {source}')
         return baw.FAILURE
     replaced = create_jenkinsfile(root)
-    with baw.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose):
         baw.utils.file_create(
             source,
             content=replaced,
@@ -92,7 +89,6 @@ def init_jenkins(
 def upgrade(
     root: str,
     verbose: int | None = False,
-    venv: bool | None = False,
 ):
     source = baw.pipefile.jenkinsfile(root)
     if not os.path.exists(source):
@@ -103,7 +99,7 @@ def upgrade(
     if replaced.strip() == before.strip():
         baw.log('Jenkinsfile unchanged, skip upgrade')
         return baw.SUCCESS
-    with baw.git_stash(root, verbose=verbose, venv=venv):
+    with baw.git_stash(root, verbose=verbose):
         baw.utils.file_replace(
             source,
             content=replaced,
@@ -165,13 +161,11 @@ def run(args: dict):
             root,
             platform=platform,
             verbose=args.get('verbose'),
-            venv=args.get('venv'),
         )
     if action in {'image', 'upgrade'}:  # TODO: REMOVE UPGRADE LATER
         return upgrade(
             root,
             verbose=args.get('verbose'),
-            venv=args.get('venv'),
         )
     if action == 'library':
         return baw.pipefile.library(

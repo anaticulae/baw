@@ -24,14 +24,9 @@ def publish(
     root: str,
     *,
     pre: bool = False,
-    venv: bool = True,
     verbose: int = 0,
 ):
-    """Push release to defined repository
-
-    Hint:
-        publish run's always in venv environment
-    """
+    """Push release to defined repository."""
     baw.log('publish start')
     if failure := can_publish(root, pre=pre, verbose=verbose):
         return failure
@@ -47,7 +42,6 @@ def publish(
         root,
         verbose=verbose,
         skip_error_message=[SDIST_UPLOAD_WARNING],
-        venv=venv,
     )
     if completed.returncode == baw.SUCCESS:
         if pre:

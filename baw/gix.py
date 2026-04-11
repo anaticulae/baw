@@ -149,7 +149,6 @@ def reset(
     files: str,
     *,
     verbose: int = 0,
-    venv: bool = False,
 ) -> int:
     """Reset files from git repository.
 
@@ -157,7 +156,6 @@ def reset(
         root(str): root to generated project
         files(str or iterable): files to reset
         verbose(bool): increase logging
-        venv(bool): run in venv environment
     Returns:
         0 if baw.SUCCESS else FAILURE
     """
@@ -167,7 +165,6 @@ def reset(
         root,
         cmd=f'git checkout -q {to_reset}',
         verbose=verbose,
-        venv=venv,
     )
     if completed.returncode:
         msg = f'while checkout out {to_reset}\n{completed}'
@@ -214,14 +211,12 @@ def push(root: str) -> int:
 def tag_drop(
     tag: str,
     root: str,
-    venv: bool = False,
     verbose: int = 0,
 ) -> bool:
     baw.log(f'Remove tag: {tag}')
     completed = baw.runtime.run_target(
         root=root,
         cmd=f'git tag -d {tag}',
-        venv=venv,
         verbose=verbose,
     )
     if completed.returncode:
@@ -235,13 +230,11 @@ def git_stash(
     root: str,
     *,
     verbose: int | None = False,
-    venv: bool | None = False,
 ) -> int:
     """Save uncommited/not versonied content to improve testability.
 
     Args:
         root(str): root of execution
-        venv(bool): run in venv environment
         verbose(bool): increase logging
     Yields:
         Context: to run user operation which requires stashed environment.
@@ -259,7 +252,6 @@ def git_stash(
         root,
         cmd,
         verbose=verbose,
-        venv=venv,
     )
     if completed.returncode:
         baw.completed(completed)
@@ -281,20 +273,19 @@ def git_stash(
             raise err
         return baw.SUCCESS
     # unstash to recreate dirty environment
-    stash_pop(root, venv, verbose)
+    stash_pop(root, verbose)
     # reraise except from user code
     if err:
         raise err
     return completed.returncode
 
 
-def stash_pop(root: str, venv: bool, verbose: int = 0) -> int:
+def stash_pop(root: str, verbose: int = 0) -> int:
     cmd = 'git stash pop'
     completed = baw.runtime.run_target(
         root,
         cmd,
         verbose=verbose,
-        venv=venv,
     )
     if completed.returncode:
         baw.error(completed.stderr)

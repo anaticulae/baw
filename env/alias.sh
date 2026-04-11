@@ -62,5 +62,4 @@ alias pipi="baw install --remove --dev"
 alias remove="pip uninstall --yes ."
 
 alias tmp="baw open tmp"
-alias venv="baw open venv"
 alias blt="baw open lasttest"
