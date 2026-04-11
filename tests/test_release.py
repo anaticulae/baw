@@ -28,7 +28,7 @@ def test_release_simple(simple, monkeypatch, capsys):
     baw.git_commit(root, '.', 'feat(abc): feature is welcome')
     with monkeypatch.context():
         # do not open ide
-        simple[0]('--verbose release')
+        simple[0]('-v release')
     stdout = tests.stdout(capsys)
     assert 'The next version is: 1.0.0' in stdout
 
