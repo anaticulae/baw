@@ -60,8 +60,8 @@ def release(  # pylint:disable=R1260
     """
     baw.utils.verbose('require release?', verbose=verbose)
     if returncode := require_release(root):
-        # break release cycle on master
-        return baw.SUCCESS
+        # break release cycle on master ???
+        return returncode
     baw.utils.verbose('check repository', verbose=verbose)
     if returncode := check_repository(root, require_clean):
         return returncode

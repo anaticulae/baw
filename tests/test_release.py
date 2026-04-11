@@ -14,7 +14,11 @@ import tests
 
 
 def test_release_already_done(simple, capsys):
-    simple[0]('--verbose release')
+    simple[0](
+        '--verbose release',
+        expect=False,
+        verbose=2,
+    )
     stdout = tests.stdout(capsys)
     assert 'head is already: v0.0.0' in stdout
 
