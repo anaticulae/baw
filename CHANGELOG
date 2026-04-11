@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v1.77.0 (2026-04-11)
+
+### Bug Fixes
+
+- **release**: Fail baw if semantic fails
+  ([`6062337`](https://github.com/anaticulae/baw/commit/6062337abbbbb5fa74034ca5ee459000bdaa501c))
+
+### Features
+
+- **release**: Pass verbose level to semantic release
+  ([`40b932d`](https://github.com/anaticulae/baw/commit/40b932de404f0d767c8b10c7224f9b4137fd68c6))
+
+### Testing
+
+- **release**: Enable old unit test
+  ([`ec4fad1`](https://github.com/anaticulae/baw/commit/ec4fad190695a79e12c2c7853d81d372f1da177a))
+
+
 ## v1.76.6 (2026-04-08)
 
 ### Bug Fixes
