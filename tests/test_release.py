@@ -44,4 +44,3 @@ def test_release_do_not_drop_first_release(simple, capsys):
     )
     stderr = tests.stderr(capsys)
     assert 'Could not remove v0.0.0 release' in stderr
-    assert 'Could not remove v0.0.0 release' in stderr

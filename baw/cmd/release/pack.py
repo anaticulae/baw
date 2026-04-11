@@ -53,6 +53,7 @@ def run_release(
     completed = baw.runtime.run_target(
         root,
         cmd,
+        verbose=verbose,
     )
     if NO_RELEASE_MESSAGE in completed.stderr.lower():
         return baw.FAILURE
