@@ -50,7 +50,7 @@ def run_release(
         root,
         cmd,
     )
-    if NO_RELEASE_MESSAGE in completed.stdout.lower():
+    if NO_RELEASE_MESSAGE in completed.stderr.lower():
         return baw.FAILURE
     if completed.stderr:
         baw.error(completed.stderr)
