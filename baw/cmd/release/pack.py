@@ -23,6 +23,7 @@ def run(root, verbose, release_type, no_push: bool = False):
             root,
             no_push=no_push,
             release_type=release_type,
+            verbose=verbose,
         )
     if returncode:
         baw.error('while running semantic-release')
@@ -34,10 +35,13 @@ def run_release(
     root: str,
     no_push: bool = True,
     release_type: str | None = None,
+    verbose: int = 0,
 ) -> int:
     cmd = 'semantic-release '
     cmd += '-c pyproject.toml '
-    cmd += '-vvv '
+    if verbose:
+        level = 'v' * verbose
+        cmd += f'-{level} '
     cmd += '--strict '
     cmd += 'version '
     if no_push:
