@@ -66,7 +66,7 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
 #         content += f'\nRUN echo <<{typ}>>'
 #         return content
 
-#     baw.utils.file_create(dockerfile, create())
+#     utilo.file_create(dockerfile, create())
 #     baw.git_commit(root, 'DOCKERFILE', 'verify pipref')
 #     tmpname = f'tmp_baw_test_cmd_image_pipref_{typ.lower()}'
 #     # create dockerfile to verify PIPREF-replacement

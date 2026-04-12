@@ -42,5 +42,5 @@ def mark_tested(root: str, hashed: str) -> bool:
     if os.path.exists(archive):
         baw.utils.file_append(archive, hashed)
     else:
-        baw.utils.file_create(archive, hashed)
+        utilo.file_create(archive, hashed)
     return True

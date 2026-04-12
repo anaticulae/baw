@@ -119,7 +119,7 @@ iamraw
 
 def test_upgrading(tmpdir):
     requirements_path = os.path.join(tmpdir, baw.utils.REQUIREMENTS_TXT)
-    baw.utils.file_create(
+    utilo.file_create(
         requirements_path,
         TEST_UPGRADE,
     )
@@ -162,7 +162,7 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 #         assert 0
 #     """)
 #     failingtest_path = 'tests/test_failed.py'
-#     baw.utils.file_create(failingtest_path, failed_test)
+#     utilo.file_create(failingtest_path, failed_test)
 #     commit_all()
 #     result = baw.cmd.upgrade.upgrade(
 #         path,

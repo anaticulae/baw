@@ -10,7 +10,9 @@
 import os
 import textwrap
 
-import baw.utils
+import utilo
+
+import baw
 import tests
 import tests.fixtures.project
 
@@ -48,13 +50,13 @@ def test_test_with_import(example):
             import %s.%s
     """) % (tests.fixtures.project.EXAMPLE_PROJECT_NAME, python_file)
     write = example.join('tests/my_test.py')
-    baw.utils.file_create(write, test_me)
+    utilo.file_create(write, test_me)
     assert os.path.exists(write)
     empty_python = example.join(
         tests.fixtures.project.EXAMPLE_PROJECT_NAME,
         f'{python_file}.py',
     )
-    baw.utils.file_create(empty_python)
+    utilo.file_create(empty_python)
     assert os.path.exists(empty_python)
     # install requirements first and run test later
     cmd = 'baw test'
@@ -84,7 +86,7 @@ def test_all():
 
 def test_cmd_test_all(simple):
     root = simple[1]
-    baw.utils.file_create(
+    utilo.file_create(
         os.path.join(root, 'tests/test_simple.py'),
         content=SIMPLE,
     )

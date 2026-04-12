@@ -101,7 +101,7 @@ def project_with_test(example):  # pylint:disable=W0621
             pass
     """)
     write = example.join('tests/my_test.py')
-    baw.utils.file_create(write, test_me)
+    utilo.file_create(write, test_me)
     assert os.path.exists(write)
     return example
 

@@ -9,7 +9,6 @@
 
 import utilo
 
-import baw.utils
 import tests
 
 MESSAGES = """
@@ -29,7 +28,7 @@ WASD
 
 def test_bsa_single_small_document(testdir):
     single = testdir.tmpdir.join('single.txt')
-    baw.utils.file_create(single, MESSAGES)
+    utilo.file_create(single, MESSAGES)
     improved = testdir.tmpdir.join('simple.txt')
     cmd = f'cat {single} | baw_single  > {improved}'
     tests.run(cmd, cwd=testdir.tmpdir)
@@ -40,7 +39,7 @@ def test_bsa_single_small_document(testdir):
 def test_bsa_single_huge_document(testdir):
     single = testdir.tmpdir.join('single.txt')
     raw = '\n'.join(str(item).zfill(10) for item in range(500000))
-    baw.utils.file_create(single, raw)
+    utilo.file_create(single, raw)
     improved = testdir.tmpdir.join('simple.txt')
     cmd = f'cat {single} | baw_single  > {improved}'
     tests.run(cmd, cwd=testdir.tmpdir)
