@@ -17,6 +17,7 @@ authors = [
 
 dependencies = [
     "utilo>=2.107.0,<3.0.0",
+    "utilosafe>=1.0.0,<2.0.0",
 
     "semver>=3.0.4,<4.0.0",
     "python_semantic_release>=10.5.3,<11.0.0",
