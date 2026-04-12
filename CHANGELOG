@@ -1,7 +1,36 @@
 # CHANGELOG
 
 
-## v1.76.6 (2026-04-08)
+## v1.77.0 (2026-04-12)
+
+### Bug Fixes
+
+- **release**: Fail baw if semantic fails
+  ([`0c8c994`](https://github.com/anaticulae/baw/commit/0c8c99465f040fc5ed78e7077201eccac0f81db2))
+
+- **release**: Fail release step if release is already done
+  ([`ede8a09`](https://github.com/anaticulae/baw/commit/ede8a09687b25c8b68fe73f77bee5b2eed140010))
+
+### Chores
+
+- **make**: Run tests in parallel
+  ([`7b7cb92`](https://github.com/anaticulae/baw/commit/7b7cb923342f5dbcd55553d1fba48b8245d60660))
+
+### Features
+
+- **release**: Pass verbose level to semantic release
+  ([`d323233`](https://github.com/anaticulae/baw/commit/d3232333e84fb39b6c525a300406618df71a6ab3))
+
+- **venv**: Remove outdated venv
+  ([`7be85f2`](https://github.com/anaticulae/baw/commit/7be85f29ac7c618d22965681c3e8d356b4cdbab2))
+
+### Testing
+
+- **release**: Enable old unit test
+  ([`a3efc74`](https://github.com/anaticulae/baw/commit/a3efc7410df3bb4ed9a56fb204d6e95ef7514bda))
+
+
+## v1.76.6 (2026-04-12)
 
 ### Bug Fixes
 
