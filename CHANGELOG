@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v1.77.1 (2026-04-13)
+
+### Bug Fixes
+
+- **dependabot**: Upgrade in a single pr
+  ([`2100be0`](https://github.com/anaticulae/baw/commit/2100be065027f1316997a5e4a28640b91acd51b4))
+
+### Chores
+
+- **pyproject**: Add utilosafe
+  ([`7f5fb29`](https://github.com/anaticulae/baw/commit/7f5fb291749b11359442b068670d251d6c6a624f))
+
+### Testing
+
+- **fix**: Remove duplicated line
+  ([`b50aae2`](https://github.com/anaticulae/baw/commit/b50aae24115308f062551e9a96b5279667015cd8))
+
+
 ## v1.77.0 (2026-04-12)
 
 ### Bug Fixes
