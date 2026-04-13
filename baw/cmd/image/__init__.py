@@ -92,7 +92,7 @@ def dockerfile_resolve_gitdescribe(dockerfile: str):
         return
     # tmp file must be in the same path as dockerfile to COPY correctly
     newpath = os.path.join(os.path.split(dockerfile)[0], 'dockertmp')
-    baw.utils.file_create(
+    utilo.file_create(
         newpath,
         content=described,
     )

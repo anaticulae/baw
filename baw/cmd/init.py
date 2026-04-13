@@ -13,6 +13,8 @@ Initialize a new repository due init. Add content afterwards and stash it.
 
 import os
 
+import utilo
+
 import baw.cmd
 import baw.cmd.format
 import baw.cmd.release
@@ -156,6 +158,7 @@ def create_files(root: str, todo: list = None):
     for item, content in todo:
         create = os.path.join(root, item)
         replaced = baw.resources.template_replace(root, content)
+        replaced = replaced.strip() + baw.NEWLINE
         operation_type = 'template' if content != replaced else 'copy'
         if os.path.exists(create):
             baw.utils.skip(f'{operation_type} {item}')
@@ -163,7 +166,7 @@ def create_files(root: str, todo: list = None):
         baw.log(f'{operation_type} {item}')
         parent = os.path.dirname(create)
         os.makedirs(parent, exist_ok=True)
-        baw.utils.file_create(create, content=replaced)
+        utilo.file_create(create, content=replaced)
 
 
 def create_python(
@@ -183,7 +186,7 @@ def create_python(
     # TODO: DIRTY
     python_project = os.path.join(root, shortcut)
     os.makedirs(python_project, exist_ok=True)
-    baw.utils.file_create(
+    utilo.file_create(
         os.path.join(python_project, '__init__.py'),
         baw.resources.INIT,
     )
@@ -201,11 +204,11 @@ def create_python(
             root,
             baw.resources.INIT_CMD,
         )
-        baw.utils.file_create(
+        utilo.file_create(
             os.path.join(python_project, '__main__.py'),
             main_replaced,
         )
-        baw.utils.file_create(
+        utilo.file_create(
             os.path.join(python_cmdline, '__init__.py'),
             init_replaced,
         )
@@ -221,7 +224,7 @@ def create_python(
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
-    baw.utils.file_create(os.path.join(root, 'pyproject.toml'), replaced)
+    utilo.file_create(os.path.join(root, 'pyproject.toml'), replaced)
 
 
 def create_requirements(root: str):
@@ -240,10 +243,6 @@ def utilo_current() -> str:
     >>> utilo_current()
     '...'
     """
-    try:
-        import utilo
-    except ModuleNotFoundError:
-        return 'None'
     return utilo.__version__
 
 

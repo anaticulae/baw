@@ -3,13 +3,17 @@ version: 2
 updates:
   # Python dependencies
   - package-ecosystem: "pip"
-    directory: "/"  # only checks requirements.txt
+    directory: "/"
     schedule:
       interval: "weekly"
     target-branch: "main"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
     commit-message:
-      prefix: "deps"
+      prefix: "deps(dependabot)"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
 
   # Docker dependencies
   - package-ecosystem: "docker"

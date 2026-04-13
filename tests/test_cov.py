@@ -49,7 +49,7 @@ source = it
 
 
 def test_cmd_test_cov_no_root(testdir, monkeypatch, capsys):
-    baw.utils.file_create(
+    utilo.file_create(
         '.baw',
         MISSING_TEST_RESOURCE,
     )

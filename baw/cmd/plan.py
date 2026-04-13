@@ -68,7 +68,7 @@ def create(
         coverage=coverage,
     )
     outpath = os.path.join(releases(root), f'{major}.{minor}.0.rst')
-    baw.utils.file_create(outpath, replaced)
+    utilo.file_create(outpath, replaced)
     baw.log(f'create new release plan: {outpath}')
 
     overview = os.path.join(releases(root), 'releases.rst')

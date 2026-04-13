@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw.cmd.lint
 import baw.utils
 import tests
@@ -22,7 +24,7 @@ def test_linter_run_with_scope(example, capsys):
 
     # create error file
     todofile = os.path.join(root, 'xkcd/todo.py')
-    baw.utils.file_create(todofile, '# TODO: Hello\n')
+    utilo.file_create(todofile, '# TODO: Hello\n')
 
     returncode = baw.cmd.lint.lint(root)
     # assert returncode >= baw.FAILURE, f'{returncode} {capsys.readouterr()}'

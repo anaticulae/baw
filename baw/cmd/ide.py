@@ -11,6 +11,8 @@ the user and start the ide afterwards. """
 
 import os
 
+import utilo
+
 import baw.config
 import baw.project
 import baw.resources
@@ -98,7 +100,7 @@ def generate_conftest(root: str):
         return
     output = os.path.join(testpath, 'conftest.py')
     if not os.path.exists(output):
-        baw.utils.file_create(output, baw.resources.CONFTEST_TEMPLATE)
+        utilo.file_create(output, baw.resources.CONFTEST_TEMPLATE)
         return
 
     # TODO: MAY ENABLE LATER

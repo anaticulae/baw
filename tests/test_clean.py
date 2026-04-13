@@ -10,6 +10,8 @@
 
 import os
 
+import utilo
+
 import baw.utils
 import tests
 
@@ -31,11 +33,11 @@ def test_clean_files_and_dirs(simple):
     assert tests.file_count(root) == base + 2
 
     for item in ('.coverage', 'do_not_clean.txt'):
-        baw.utils.file_create(os.path.join(root, item))
+        utilo.file_create(os.path.join(root, item))
     assert tests.file_count(root) == base + 2 + 2
 
     nested_file = os.path.join(root, 'build', '.coverage')
-    baw.utils.file_create(nested_file)
+    utilo.file_create(nested_file)
     assert os.path.exists(nested_file)
     # run clean task
     simple[0]('clean all')

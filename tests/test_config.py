@@ -10,9 +10,9 @@
 import os
 
 import pytest
+import utilo
 
 import baw.config
-import baw.utils
 import tests
 
 PROJECT = os.path.join(tests.DATA, '.baw')
@@ -35,7 +35,7 @@ fail_on_finding = True
 def configuration(testdir):
     root = str(testdir.tmpdir)
     path = os.path.join(root, '.baw')
-    baw.utils.file_create(path, CONFIG)
+    utilo.file_create(path, CONFIG)
     return root
 
 

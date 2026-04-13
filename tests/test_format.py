@@ -20,7 +20,7 @@ import tests
 @pytest.fixture
 def minimal(testdir):
     baw.config.create(testdir.tmpdir, 'abc', 'alphabet')
-    baw.utils.file_create('pyproject.toml', '# setup')
+    utilo.file_create('pyproject.toml', '# setup')
     os.makedirs(testdir.tmpdir.join('abc'))
     return testdir.tmpdir
 
@@ -38,7 +38,7 @@ def test_regression_format_keep_single_list(minimal, monkeypatch):  # pylint:dis
     """
     source = 'import baw.utils as bu\n'
     path = os.path.join(minimal, 'abc/hello.py')
-    baw.utils.file_create(path, source)
+    utilo.file_create(path, source)
     assert os.path.exists(path)
     tests.baaw('format', monkeypatch=monkeypatch)
     read = utilo.file_read(path)
