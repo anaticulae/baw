@@ -43,6 +43,7 @@ GIT_IGNORE_TEMPLATE = joined('.gitignore')
 RCFILE_PATH = joined('.rcfile')
 ISORT_PATH = joined('.isort.cfg')
 CONFTEST_PATH = joined('conftest.tpy')
+DOCKER = fread(joined('Dockerfile'))
 
 README = """\
 # {{SHORT}}
@@ -194,6 +195,7 @@ WORKFLOWS = '.github/workflows'
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
     ('.git/info/exclude', GITIGNORE),
+    ('Dockerfile', DOCKER),
     ('CHANGELOG', CHANGELOG),
     ('LICENSE', LICENSE_TEMPLATE),
     ('README', README),
@@ -202,7 +204,7 @@ FILES = [
     ('docs/releases/releases.rst', RELEASE_RST),
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
-    (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
+    # (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
 ]
 
 DOTGITHUB = [
