@@ -220,7 +220,7 @@ def create_python(
 
         ADDITONAL_REQUIREMENTS.append(f'utilo=={utilo_current()}')
 
-    replaced = baw.resources.template_replace(root, baw.resources.SETUP_PY)
+    replaced = baw.resources.template_replace(root, baw.resources.PYPROJECT)
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 

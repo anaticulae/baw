@@ -178,7 +178,7 @@ if __name__ == "__main__":
 CODE_WORKSPACE = fread(WORKSPACE_TEMPLATE)
 JENKINSFILE = fread(joined('Jenkinsfile'))
 GITIGNORE = fread(joined('.gitignore'))
-SETUP_PY = fread(joined('pyproject'))
+PYPROJECT = fread(joined('pyproject'))
 RELEASE_PLAN = fread(joined('docs/plan.rst'))
 
 REFACTOR = fread(joined('refactor'))
