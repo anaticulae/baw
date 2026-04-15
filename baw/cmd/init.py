@@ -83,7 +83,6 @@ def init(
     baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
-    create_requirements(root)
     baw.gix.update_gitignore(root)
     baw.log()  # write newline
     if formatter:
@@ -225,17 +224,6 @@ def create_python(
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
     utilo.file_create(os.path.join(root, 'pyproject.toml'), replaced)
-
-
-def create_requirements(root: str):
-    baw.log('add requirements')
-    content = ''
-    for item in ADDITONAL_REQUIREMENTS:
-        content += item + baw.NEWLINE
-    baw.utils.file_append(
-        os.path.join(root, baw.utils.REQUIREMENTS_TXT),
-        content,
-    )
 
 
 def utilo_current() -> str:
