@@ -22,7 +22,7 @@ SEMANTIC = os.path.join(TEMPLATES, 'semantic')
 
 
 @contextlib.contextmanager
-def release_config_tmp(root: str, verbose: bool):
+def release_config_tmp(root: str, verbose: int):
     package = baw.config.shortcut(root)
     upload = str(is_ci()).lower()
     generated = TEMPLATE + ''

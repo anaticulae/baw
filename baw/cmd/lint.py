@@ -39,7 +39,7 @@ class Scope(enum.Enum):
         return scope
 
 
-def run_linter(root: str, verbose: bool) -> int:
+def run_linter(root: str, verbose: int) -> int:
     if not baw.config.basic(root):
         return baw.SUCCESS
     if not baw.config.fail_on_finding(root):

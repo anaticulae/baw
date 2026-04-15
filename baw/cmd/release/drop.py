@@ -51,7 +51,7 @@ def run(
     return baw.SUCCESS
 
 
-def can_drop(root: str, verbose: bool) -> bool:
+def can_drop(root: str, verbose: int) -> bool:
     baw.log('Detect current release:')
     if not (headtag := baw.gix.headtag(root, verbose)):
         baw.error('No tag detected')

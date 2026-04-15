@@ -108,7 +108,7 @@ def init(
     return baw.SUCCESS
 
 
-def first_commit(root, verbose: bool) -> int:
+def first_commit(root, verbose: int) -> int:
     """This is a replacement for semantic_release cause project setup
     does not worker proper like in the past(4.1.1) anymore."""
     baw.git_add(
