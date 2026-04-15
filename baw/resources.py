@@ -134,9 +134,10 @@ COPYRIGHT = """\
 REQUIREMENTS = COPYRIGHT
 
 INIT = COPYRIGHT + """
+import importlib.metadata
 import os
 
-__version__ = '0.0.0'
+__version__ = importlib.metadata.version('{{SHORT}}')
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 """

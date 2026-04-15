@@ -187,7 +187,7 @@ def create_python(
     os.makedirs(python_project, exist_ok=True)
     utilo.file_create(
         os.path.join(python_project, '__init__.py'),
-        baw.resources.INIT,
+        baw.resources.INIT.replace('{{SHORT}}', shortcut),
     )
 
     entry_point = ''
