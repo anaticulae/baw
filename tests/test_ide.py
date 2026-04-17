@@ -10,6 +10,7 @@
 import pytest
 
 import baw.cmd.ide
+import baw.utils
 import tests
 
 
@@ -21,7 +22,25 @@ def workspace(testdir, monkeypatch):
     return space
 
 
-def test_ide_open(workspace, monkeypatch):
+def test_ide_open(workspace, monkeypatch):  # pylint:disable=W0621
+    with monkeypatch.context() as patched:
+        # do not open ide
+        patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
+        baw.cmd.ide.ide_open(workspace)
+
+
+CONFIG = 'pyproject.toml'
+
+
+def test_ide_invalid_pyproject(workspace, monkeypatch):  # pylint:disable=W0621
+    # make config invalid
+    previous = baw.utils.file_read(CONFIG)
+    assert previous
+    before = 'dependencies = ['
+    assert before in previous
+    after = previous.replace(before, before[0:-4])
+    baw.file_replace(CONFIG, after)
+
     with monkeypatch.context() as patched:
         # do not open ide
         patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
