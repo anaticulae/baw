@@ -12,7 +12,6 @@ import importlib.metadata
 import os
 import re
 import sys
-import tomllib
 import urllib.request
 
 import packaging.requirements
@@ -229,8 +228,7 @@ def pyproject_packages(root: str) -> dict:
     base = os.path.join(root, 'pyproject.toml')
     if not os.path.exists(base):
         return {}
-    with open(base, "rb") as f:
-        config = tomllib.load(f)
+    config = baw.project.version.load_toml(base)
     project = config['project']
     result = {
         'requirements': project.get('dependencies', []),

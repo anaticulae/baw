@@ -32,7 +32,7 @@ def test_ide_open(workspace, monkeypatch):  # pylint:disable=W0621
 CONFIG = 'pyproject.toml'
 
 
-def test_ide_invalid_pyproject(workspace, monkeypatch):  # pylint:disable=W0621
+def test_ide_invalid_pyproject(workspace, monkeypatch, capsys):  # pylint:disable=W0621
     # make config invalid
     previous = baw.utils.file_read(CONFIG)
     assert previous
@@ -40,8 +40,11 @@ def test_ide_invalid_pyproject(workspace, monkeypatch):  # pylint:disable=W0621
     assert before in previous
     after = previous.replace(before, before[0:-4])
     baw.file_replace(CONFIG, after)
-
+    # run baw
     with monkeypatch.context() as patched:
         # do not open ide
         patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
-        baw.cmd.ide.ide_open(workspace)
+        with pytest.raises(SystemExit):
+            baw.cmd.ide.ide_open(workspace)
+    error = tests.stderr(capsys)
+    assert 'invalid config pyproject.toml' in error
