@@ -46,8 +46,7 @@ def determine(root: str, verbose: int = 0) -> str:
     version_path = baw.config.version(root)
     if ':project.version' in version_path:
         version_path = version_path.removesuffix(':project.version')
-        with open(version_path, "rb") as f:
-            config = tomllib.load(f)
+        config = load_toml(version_path)
         version = config['project']['version']
         if verbose:
             return config['project']['name'] + f'=={version}'
@@ -68,6 +67,16 @@ def determine(root: str, verbose: int = 0) -> str:
         shorts = baw.config.shortcut(root)
         current = f'{shorts}=={current}'
     return current
+
+
+def load_toml(path: str) -> dict:
+    with open(path, "rb") as f:
+        try:
+            config = tomllib.load(f)
+        except tomllib.TOMLDecodeError as error:
+            baw.error(f'invalid config {path}')
+            baw.exitx(msg=str(error))
+    return config
 
 
 # TODO: IMPROVE THIS, USE EXTERNAL BIB

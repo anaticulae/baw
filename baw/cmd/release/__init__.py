@@ -108,7 +108,7 @@ def run_test(
     sync: bool,
     test: bool,
     stash: bool,
-    verbose: bool,
+    verbose: int,
 ):
     if not sync and not test:
         return baw.SUCCESS

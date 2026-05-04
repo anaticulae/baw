@@ -41,7 +41,7 @@ def run(
     sys.exit(baw.SUCCESS)
 
 
-def pattern_run(root: str, verbose: bool) -> bool:
+def pattern_run(root: str, verbose: int) -> bool:
     splitted = todo()
     changed = False
     for path in files(root):

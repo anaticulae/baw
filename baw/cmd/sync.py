@@ -12,7 +12,6 @@ import importlib.metadata
 import os
 import re
 import sys
-import tomllib
 import urllib.request
 
 import packaging.requirements
@@ -164,7 +163,7 @@ def sync_dependencies(  # pylint:disable=R1260
     return returncode
 
 
-def eval_sync(pip, completed, *, verbose: bool) -> int:
+def eval_sync(pip, completed, *, verbose: int) -> int:
     if 'NewConnectionError' in completed.stdout:
         baw.error(f'Could not reach server: {pip}')
         return completed.returncode
@@ -229,8 +228,7 @@ def pyproject_packages(root: str) -> dict:
     base = os.path.join(root, 'pyproject.toml')
     if not os.path.exists(base):
         return {}
-    with open(base, "rb") as f:
-        config = tomllib.load(f)
+    config = baw.project.version.load_toml(base)
     project = config['project']
     result = {
         'requirements': project.get('dependencies', []),

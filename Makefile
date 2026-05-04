@@ -5,8 +5,9 @@ CURDIR := $(CURDIR)
 
 NAME = baw
 IMAGE := $(NAME):$(VERSION)
-IMAGE_BASE_NAME := ghcr.io/anaticulae/baw:$(VERSION)
-IMAGE_TEST_NAME := ghcr.io/anaticulae/baw:$(VERSION)-test
+IMAGE_BASE_NAME := ghcr.io/anaticulae/$(IMAGE)
+IMAGE_TEST_NAME := ghcr.io/anaticulae/$(IMAGE)-test
+IMAGE_PYTH_NAME := ghcr.io/anaticulae/$(IMAGE)-python
 
 docker-build:
 	docker build -t $(IMAGE) .
@@ -17,6 +18,9 @@ docker-build-test:
 
 docker-build-base:
 	docker build -f env/base/Dockerfile -t $(IMAGE_BASE_NAME) .
+
+docker-build-python:
+	docker build -f env/python/Dockerfile -t $(IMAGE_PYTH_NAME) .
 
 docker-upload-test:
 	docker push $(IMAGE_TEST_NAME)

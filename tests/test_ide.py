@@ -7,28 +7,44 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
+import pytest
 
 import baw.cmd.ide
-import baw.config
 import baw.utils
+import tests
 
 
-def test_ide_open(testdir, monkeypatch):
-    workspace = str(testdir)
-
+@pytest.fixture
+def workspace(testdir, monkeypatch):
     name = 'short'
+    tests.baaw(f'init {name} "I\'ts magic"', monkeypatch)
+    space = str(testdir)
+    return space
 
-    baw.config.create(workspace, name, 'description')
-    testdir.mkpydir(name)
-    baw.utils.file_append(
-        os.path.join(workspace, name, '__init__.py'),
-        '__version__ = "1.0.0"\n',
-    )
-    # test folder
-    testdir.mkpydir('tests')
 
+def test_ide_open(workspace, monkeypatch):  # pylint:disable=W0621
     with monkeypatch.context() as patched:
         # do not open ide
         patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
         baw.cmd.ide.ide_open(workspace)
+
+
+CONFIG = 'pyproject.toml'
+
+
+def test_ide_invalid_pyproject(workspace, monkeypatch, capsys):  # pylint:disable=W0621
+    # make config invalid
+    previous = baw.utils.file_read(CONFIG)
+    assert previous
+    before = 'dependencies = ['
+    assert before in previous
+    after = previous.replace(before, before[0:-4])
+    baw.file_replace(CONFIG, after)
+    # run baw
+    with monkeypatch.context() as patched:
+        # do not open ide
+        patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
+        with pytest.raises(SystemExit):
+            baw.cmd.ide.ide_open(workspace)
+    error = tests.stderr(capsys)
+    assert 'invalid config pyproject.toml' in error

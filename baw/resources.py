@@ -43,6 +43,7 @@ GIT_IGNORE_TEMPLATE = joined('.gitignore')
 RCFILE_PATH = joined('.rcfile')
 ISORT_PATH = joined('.isort.cfg')
 CONFTEST_PATH = joined('conftest.tpy')
+DOCKER = fread(joined('Dockerfile'))
 
 README = """\
 # {{SHORT}}
@@ -133,9 +134,10 @@ COPYRIGHT = """\
 REQUIREMENTS = COPYRIGHT
 
 INIT = COPYRIGHT + """
+import importlib.metadata
 import os
 
-__version__ = '0.0.0'
+__version__ = importlib.metadata.version('{{SHORT}}')
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 """
@@ -178,7 +180,7 @@ if __name__ == "__main__":
 CODE_WORKSPACE = fread(WORKSPACE_TEMPLATE)
 JENKINSFILE = fread(joined('Jenkinsfile'))
 GITIGNORE = fread(joined('.gitignore'))
-SETUP_PY = fread(joined('pyproject'))
+PYPROJECT = fread(joined('pyproject'))
 RELEASE_PLAN = fread(joined('docs/plan.rst'))
 
 REFACTOR = fread(joined('refactor'))
@@ -194,6 +196,7 @@ WORKFLOWS = '.github/workflows'
 FILES = [
     # ('..code-workspace', CODE_WORKSPACE),
     ('.git/info/exclude', GITIGNORE),
+    ('Dockerfile', DOCKER),
     ('CHANGELOG', CHANGELOG),
     ('LICENSE', LICENSE_TEMPLATE),
     ('README', README),
@@ -202,7 +205,7 @@ FILES = [
     ('docs/releases/releases.rst', RELEASE_RST),
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
-    (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
+    # (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),
 ]
 
 DOTGITHUB = [

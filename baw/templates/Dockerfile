@@ -7,10 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-FROM {{baw_base}}
+FROM ghcr.io/anaticulae/baw:447bf27
 
-MAINTAINER HELMUT KONRAD SCHEWE
+WORKDIR /var/install
 
-ENV RUNJOB="exit 1"
+COPY pyproject.toml .
 
-ENTRYPOINT RUNJOB
+# RUN pip install .[dev]
+RUN pip install .
+
+COPY . /var/install
+
+RUN pip install .
+
+WORKDIR /var/workdir
+
+ENTRYPOINT ["sh", "-c"]

@@ -83,7 +83,6 @@ def init(
     baw.config.create(root, shortcut, name)
     create_python(root, shortcut, cmdline=cmdline)
     create_files(root)
-    create_requirements(root)
     baw.gix.update_gitignore(root)
     baw.log()  # write newline
     if formatter:
@@ -97,7 +96,7 @@ def init(
     if returncode := first_commit(root, verbose):
         return returncode
     # Deactivate options to reach fast reaction
-    # TODO: Think aboud activating later? Add test flag?
+    # TODO: Think about activating later? Add test flag?
     # Reduces times of creating from 8 to 2 secs
     # quality = baw.cmd.plan.code_quality(root)
     # baw.cmd.plan.create(
@@ -109,7 +108,7 @@ def init(
     return baw.SUCCESS
 
 
-def first_commit(root, verbose: bool) -> int:
+def first_commit(root, verbose: int) -> int:
     """This is a replacement for semantic_release cause project setup
     does not worker proper like in the past(4.1.1) anymore."""
     baw.git_add(
@@ -188,7 +187,7 @@ def create_python(
     os.makedirs(python_project, exist_ok=True)
     utilo.file_create(
         os.path.join(python_project, '__init__.py'),
-        baw.resources.INIT,
+        baw.resources.INIT.replace('{{SHORT}}', shortcut),
     )
 
     entry_point = ''
@@ -220,22 +219,11 @@ def create_python(
 
         ADDITONAL_REQUIREMENTS.append(f'utilo=={utilo_current()}')
 
-    replaced = baw.resources.template_replace(root, baw.resources.SETUP_PY)
+    replaced = baw.resources.template_replace(root, baw.resources.PYPROJECT)
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
     utilo.file_create(os.path.join(root, 'pyproject.toml'), replaced)
-
-
-def create_requirements(root: str):
-    baw.log('add requirements')
-    content = ''
-    for item in ADDITONAL_REQUIREMENTS:
-        content += item + baw.NEWLINE
-    baw.utils.file_append(
-        os.path.join(root, baw.utils.REQUIREMENTS_TXT),
-        content,
-    )
 
 
 def utilo_current() -> str:

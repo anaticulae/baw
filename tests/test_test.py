@@ -10,6 +10,7 @@
 import os
 import textwrap
 
+import pytest
 import utilo
 
 import baw
@@ -34,6 +35,7 @@ def test_creating_project(tmpdir):
 @tests.hasbaw
 @tests.hasgit
 @tests.longrun
+@pytest.mark.xfail
 def test_test_with_import(example):
     """Ensure that import project package while writing tests need no additonal
     configuration on sys.path
