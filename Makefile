@@ -28,6 +28,9 @@ docker-upload-test:
 docker-upload-base:
 	docker push $(IMAGE_BASE_NAME)
 
+docker-upload-python:
+	docker push $(IMAGE_PYTH_NAME)
+
 docker-doctest: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test docs"
 
