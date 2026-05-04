@@ -22,9 +22,11 @@ jobs:
       - name: Build image
         run: |
           make docker-build-base
+          make docker-build-python
           make docker-build-test
 
       - name: Push image
         run: |
           make docker-upload-base
+          make docker-upload-python
           make docker-upload-test
