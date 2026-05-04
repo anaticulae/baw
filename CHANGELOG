@@ -1,6 +1,63 @@
 # CHANGELOG
 
 
+## v1.78.0 (2026-05-04)
+
+### Bug Fixes
+
+- **init**: Use dynamic versioning
+  ([`94e1a74`](https://github.com/anaticulae/baw/commit/94e1a744a05288c8764ca784f0ee01adfe1d1f6e))
+
+- **requirements**: Remove outdated requirement creation
+  ([`880edf0`](https://github.com/anaticulae/baw/commit/880edf02cf5a3d9660696f0c42afe78de6ee3a99))
+
+- **template**: Adjust default template
+  ([`81244ca`](https://github.com/anaticulae/baw/commit/81244ca07923768d51ea72ce3bb8caace58b1826))
+
+### Chores
+
+- **docker**: Add new docker base file
+  ([`1f2acc8`](https://github.com/anaticulae/baw/commit/1f2acc8cf02f4a23fc9015e5ad43c94386eef960))
+
+- **make**: Cleanup make template
+  ([`4abbaa3`](https://github.com/anaticulae/baw/commit/4abbaa3d84def55caa3c911e6171c159acf840ac))
+
+### Code Style
+
+- **lang**: Fix lang
+  ([`e7726a4`](https://github.com/anaticulae/baw/commit/e7726a4e40d7893cb668ca4235b04087c40e606f))
+
+### Features
+
+- **docker**: Generate basic docker file
+  ([`be2e817`](https://github.com/anaticulae/baw/commit/be2e817c0fa53ef1d54dadacd073c11351905342))
+
+- **env**: Add python based docker image
+  ([`bea8983`](https://github.com/anaticulae/baw/commit/bea8983b02f6fb77805b7945d693d58712e90fb0))
+
+- **version**: Move pyproject loader to separate method
+  ([`0d442f8`](https://github.com/anaticulae/baw/commit/0d442f80d2edc2c10ea734fc34ac08bb46237d06))
+
+### Refactoring
+
+- **cmd**: Adjust interface datatype
+  ([`b900cdf`](https://github.com/anaticulae/baw/commit/b900cdf77402cfc425ac475814e9c964158dd066))
+
+- **resource**: Improve naming
+  ([`4d4dd04`](https://github.com/anaticulae/baw/commit/4d4dd04da189859b98f5d0c61adce2ca5d7a86b4))
+
+- **test**: Make code more clear
+  ([`dea80cf`](https://github.com/anaticulae/baw/commit/dea80cfed580214349883df71a2082ba4094b048))
+
+### Testing
+
+- **fix**: Disable failing unit tests
+  ([`9f9dd71`](https://github.com/anaticulae/baw/commit/9f9dd719ff023bbf59cc7b7a114a1c2588d85627))
+
+- **ide**: Add test with invalid project config
+  ([`4f0097c`](https://github.com/anaticulae/baw/commit/4f0097c76c5166b1f8f3aee64a31eb96b32098de))
+
+
 ## v1.77.1 (2026-04-13)
 
 ### Bug Fixes
