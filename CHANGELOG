@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.78.1 (2026-05-04)
+
+### Bug Fixes
+
+- **make**: Add missing rule
+  ([`2963309`](https://github.com/anaticulae/baw/commit/296330909e73f714fa0d004c82aec7415bdbd7ff))
+
+
 ## v1.78.0 (2026-05-04)
 
 ### Bug Fixes
