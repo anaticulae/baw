@@ -239,4 +239,8 @@ def extend_cli(parser):
     inix.add_argument('shortcut', help='Project name')
     inix.add_argument('description', help='Project description')
     inix.add_argument('--cmdline', action='store_true')
+    inix.add_argument("--type",
+                      choices=["python", "data"],
+                      default="python",
+                      help="project type")
     inix.set_defaults(func=evaluate)
