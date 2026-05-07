@@ -52,5 +52,14 @@ def test_escaping_single_collon(monkeypatch):
 @tests.longrun
 @pytest.mark.usefixtures('testdir')
 def test_run_complex_cmd(monkeypatch, cmd):
-    """Run help and version and format cmd to reach basic test coverage"""
+    """run help and version and format cmd to reach basic test coverage"""
     tests.baaw(cmd, monkeypatch)
+
+
+@tests.hasbaw
+@tests.hasgit
+def test_init_simple_data(testdir, monkeypatch):
+    cmd = 'init wasd "bla bla bal" --type=data'
+    tests.baaw(cmd, monkeypatch)
+    content = utilo.file_read(utilo.join(testdir.tmpdir, 'VERSION'))
+    assert '0.0.0' in content, content

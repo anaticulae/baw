@@ -85,12 +85,7 @@ def init(
     baw.gix.init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
-    todo = baw.resources.FILES
-    if ptype == 'python':
-        create_python(root, shortcut, cmdline=cmdline)
-    if ptype == 'data':
-        todo = baw.resources.NORMAL
-    create_files(root, todo=todo)
+    create_project_files(root, shortcut, ptype, cmdline)
     baw.gix.update_gitignore(root)
     baw.log()  # write newline
     if formatter:
@@ -114,6 +109,19 @@ def init(
     # )
     # baw.cmd.plan.create(root)
     return baw.SUCCESS
+
+
+def create_project_files(root, shortcut, ptype, cmdline):
+    todo = baw.resources.FILES
+    if ptype == 'python':
+        create_python(root, shortcut, cmdline=cmdline)
+    if ptype == 'data':
+        baw.utils.file_create(
+            os.path.join(root, 'VERSION'),
+            content="__version__='0.0.0'",
+        )
+        todo = baw.resources.NORMAL
+    create_files(root, todo=todo)
 
 
 def first_commit(root, verbose: int) -> int:
