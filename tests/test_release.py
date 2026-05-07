@@ -48,3 +48,29 @@ def test_release_do_not_drop_first_release(simple, capsys):
     )
     stderr = tests.stderr(capsys)
     assert 'Could not remove v0.0.0 release' in stderr
+
+
+@tests.hasbaw
+@tests.hasgit
+@tests.longrun
+def test_release_non_python(testdir, monkeypatch, capsys):
+    cmd = 'init wasd "bla bla bal" --type=data'
+    tests.baaw(cmd, monkeypatch)
+    no_remote()
+    root = testdir.tmpdir
+    path = os.path.join(root, 'abc.txt')
+    baw.file_create(path, 'CONTENT')
+    baw.git_add(root, 'abc.txt')
+    baw.git_commit(root, '.', 'feat(abc): feature is welcome')
+    with monkeypatch.context():
+        # do not open ide
+        cmd = '-v release --no_push'
+        tests.baaw(cmd, monkeypatch)
+    output = capsys.readouterr()
+    # semantic release writes log to std-err
+    assert MESSAGE in output.err
+
+
+def no_remote():
+    tests.run('git remote remove origin')
+    tests.run('git remote add origin https://rando23203142smddmd.com/fake/repo.git') # yapf:disable
