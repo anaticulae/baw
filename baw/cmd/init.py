@@ -114,6 +114,8 @@ def init(
 DATA_PROJECT = """\
 [project]
 version='0.0.0'
+[tool.semantic_release]
+version_toml = ["VERSION:project.version"]
 """
 
 

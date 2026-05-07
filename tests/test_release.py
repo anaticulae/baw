@@ -9,8 +9,11 @@
 
 import os
 
+import utilo
+
 import baw
 import tests
+import tests.fixtures.project
 
 
 def test_release_already_done(simple, capsys):
@@ -56,7 +59,7 @@ def test_release_do_not_drop_first_release(simple, capsys):
 def test_release_non_python(testdir, monkeypatch, capsys):
     cmd = 'init wasd "bla bla bal" --type=data'
     tests.baaw(cmd, monkeypatch)
-    no_remote()
+    tests.fixtures.project.no_remote()
     root = testdir.tmpdir
     path = os.path.join(root, 'abc.txt')
     baw.file_create(path, 'CONTENT')
@@ -66,11 +69,12 @@ def test_release_non_python(testdir, monkeypatch, capsys):
         # do not open ide
         cmd = '-v release --no_push'
         tests.baaw(cmd, monkeypatch)
+        # determine next version
+        cmd = '-V'
+        tests.baaw(cmd, monkeypatch)
     output = capsys.readouterr()
     # semantic release writes log to std-err
     assert MESSAGE in output.err
-
-
-def no_remote():
-    tests.run('git remote remove origin')
-    tests.run('git remote add origin https://rando23203142smddmd.com/fake/repo.git') # yapf:disable
+    # TODO: nescio cur 1.0.0?
+    version = utilo.file_read(utilo.join(testdir.tmpdir, 'VERSION'))
+    assert '1.0.0' in version
