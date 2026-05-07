@@ -41,11 +41,14 @@ def simple(example, monkeypatch):  # pylint:disable=W0621
         tests.baaw,
         monkeypatch=monkeypatch,
     )
+    no_remote()
+    yield runner, example
+
+
+def no_remote():
     # ensure that origin is set/faked
     tests.run('git remote remove origin')
     tests.run('git remote add origin https://rando23203142smddmd.com/fake/repo.git') # yapf:disable
-    yield runner, example
-
 
 @pytest.fixture
 def project_example(testdir, monkeypatch):

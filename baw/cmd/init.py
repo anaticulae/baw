@@ -32,14 +32,16 @@ def evaluate(args):
     directory = baw.cmd.utils.run_environment(args)
     #  No GIT found, exit 1
     with baw.utils.handle_error(ValueError, code=baw.FAILURE):
-        shortcut, description, cmdline = (
+        shortcut, description, cmdline, ptype = (
             args['shortcut'],
             args['description'],
             args['cmdline'],
+            args['type'],
         )
         completed = init(
             directory,
             shortcut,
+            ptype=ptype,
             name=description,
             cmdline=cmdline,
             verbose=args['verbose'],
@@ -53,6 +55,7 @@ def init(
     name: str,
     cmdline: bool = False,
     *,
+    ptype: str = 'python',
     verbose: int = 0,
     formatter: bool = False,
 ) -> int:
@@ -63,6 +66,7 @@ def init(
         shortcut(str): short name of project
         name(str): long name of generated project, used in documentation
         cmdline(bool): add default cmdline template to use project as cli
+        ptype(str): python or data
         verbose(bool): increase logging
         formatter(bool): run yapf and isort
     Raises:
@@ -81,8 +85,7 @@ def init(
     baw.gix.init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
-    create_python(root, shortcut, cmdline=cmdline)
-    create_files(root)
+    create_project_files(root, shortcut, ptype, cmdline)
     baw.gix.update_gitignore(root)
     baw.log()  # write newline
     if formatter:
@@ -106,6 +109,27 @@ def init(
     # )
     # baw.cmd.plan.create(root)
     return baw.SUCCESS
+
+
+DATA_PROJECT = """\
+[project]
+version='0.0.0'
+[tool.semantic_release]
+version_toml = ["VERSION:project.version"]
+"""
+
+
+def create_project_files(root, shortcut, ptype, cmdline):
+    todo = baw.resources.FILES
+    if ptype == 'python':
+        create_python(root, shortcut, cmdline=cmdline)
+    if ptype == 'data':
+        baw.utils.file_create(
+            os.path.join(root, 'VERSION'),
+            content=DATA_PROJECT,
+        )
+        todo = baw.resources.NORMAL
+    create_files(root, todo=todo)
 
 
 def first_commit(root, verbose: int) -> int:
@@ -239,4 +263,8 @@ def extend_cli(parser):
     inix.add_argument('shortcut', help='Project name')
     inix.add_argument('description', help='Project description')
     inix.add_argument('--cmdline', action='store_true')
+    inix.add_argument("--type",
+                      choices=["python", "data"],
+                      default="python",
+                      help="project type")
     inix.set_defaults(func=evaluate)

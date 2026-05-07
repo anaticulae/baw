@@ -192,9 +192,7 @@ CONFTEST_TEMPLATE = fread(CONFTEST_PATH)
 
 WORKFLOWS = '.github/workflows'
 
-# None copies files
-FILES = [
-    # ('..code-workspace', CODE_WORKSPACE),
+NORMAL = [
     ('.git/info/exclude', GITIGNORE),
     ('Dockerfile', DOCKER),
     ('CHANGELOG', CHANGELOG),
@@ -203,6 +201,11 @@ FILES = [
     ('docs/index.rst', INDEX_RST),
     ('docs/releases/backlog.rst', BACKLOG_RST),
     ('docs/releases/releases.rst', RELEASE_RST),
+]
+
+# None copies files
+FILES = NORMAL + [
+    # ('..code-workspace', CODE_WORKSPACE),
     ('tests/__init__.py', COPYRIGHT),
     ('tests/conftest.py', CONFTEST_TEMPLATE),
     # (baw.utils.REQUIREMENTS_TXT, REQUIREMENTS),

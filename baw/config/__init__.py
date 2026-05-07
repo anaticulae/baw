@@ -474,6 +474,7 @@ def version(root: str) -> str:
     """
     path = os.path.join(root, 'VERSION')
     if os.path.exists(path):
+        # data project
         return 'VERSION:__version__'
     path = os.path.join(root, 'pyproject.toml')
     if os.path.exists(path):
