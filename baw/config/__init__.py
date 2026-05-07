@@ -479,6 +479,9 @@ def version(root: str) -> str:
     if os.path.exists(path):
         return 'pyproject.toml:project.version'
     short = shortcut(root)
+    if not os.path.exists(os.path.join(root, short, '__init__.py')):
+        # data project
+        return os.path.join(root, '.baw')
     result = f'{short}/__init__.py:__version__'
     return result
 
