@@ -32,14 +32,16 @@ def evaluate(args):
     directory = baw.cmd.utils.run_environment(args)
     #  No GIT found, exit 1
     with baw.utils.handle_error(ValueError, code=baw.FAILURE):
-        shortcut, description, cmdline = (
+        shortcut, description, cmdline, ptype = (
             args['shortcut'],
             args['description'],
             args['cmdline'],
+            args['type'],
         )
         completed = init(
             directory,
             shortcut,
+            ptype=ptype,
             name=description,
             cmdline=cmdline,
             verbose=args['verbose'],
@@ -53,6 +55,7 @@ def init(
     name: str,
     cmdline: bool = False,
     *,
+    ptype: str = 'python',
     verbose: int = 0,
     formatter: bool = False,
 ) -> int:
@@ -63,6 +66,7 @@ def init(
         shortcut(str): short name of project
         name(str): long name of generated project, used in documentation
         cmdline(bool): add default cmdline template to use project as cli
+        ptype(str): python or data
         verbose(bool): increase logging
         formatter(bool): run yapf and isort
     Raises:
@@ -81,8 +85,12 @@ def init(
     baw.gix.init(root)
     create_folder(root)
     baw.config.create(root, shortcut, name)
-    create_python(root, shortcut, cmdline=cmdline)
-    create_files(root)
+    todo = baw.resources.FILES
+    if ptype == 'python':
+        create_python(root, shortcut, cmdline=cmdline)
+    if ptype == 'data':
+        todo = baw.resources.NORMAL
+    create_files(root, todo=todo)
     baw.gix.update_gitignore(root)
     baw.log()  # write newline
     if formatter:
