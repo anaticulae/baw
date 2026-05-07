@@ -1,6 +1,41 @@
 # CHANGELOG
 
 
+## v1.79.0 (2026-05-07)
+
+### Bug Fixes
+
+- **project**: Adjust version variable
+  ([`35bd8d5`](https://github.com/anaticulae/baw/commit/35bd8d5bc13e3518c5c8a5ac8f7dbcb3ca5a10f9))
+
+### Features
+
+- **init**: Add option to define different project type
+  ([`9d7c168`](https://github.com/anaticulae/baw/commit/9d7c1689027c85a356611fb756e64a6929f2b7f9))
+
+- **init**: Make file creation project type dependent
+  ([`b5687f9`](https://github.com/anaticulae/baw/commit/b5687f909d0bd242ab36b2bd74da0947c7b8349e))
+
+- **release**: Skip pyproject on data project
+  ([`8922ac0`](https://github.com/anaticulae/baw/commit/8922ac0d643d04636ed1177114e34fcba3ef2855))
+
+- **resources**: Add separate non pythonic file list
+  ([`049d0e3`](https://github.com/anaticulae/baw/commit/049d0e32849597e5d911809648f8cce982261d3c))
+
+### Refactoring
+
+- **init**: Simplify code
+  ([`6e013d2`](https://github.com/anaticulae/baw/commit/6e013d22f6597e3b8173a5e3937cb16a0d595d93))
+
+### Testing
+
+- **refactor**: Simplify code
+  ([`ac119fa`](https://github.com/anaticulae/baw/commit/ac119fad3cd77cdd308484ceb1d926baa70724dc))
+
+- **release**: Verify data project release
+  ([`b36ef2e`](https://github.com/anaticulae/baw/commit/b36ef2e60ec224c892fd4316294810c08ed05dcb))
+
+
 ## v1.78.1 (2026-05-04)
 
 ### Bug Fixes
