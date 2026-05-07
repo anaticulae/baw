@@ -38,7 +38,10 @@ def run_release(
     verbose: int = 0,
 ) -> int:
     cmd = 'semantic-release '
-    cmd += '-c pyproject.toml '
+    if is_dataproject(root):
+        cmd += '-c VERSION:__version__'
+    else:
+        cmd += '-c pyproject.toml '
     if verbose:
         level = 'v' * verbose
         cmd += f'-{level} '
@@ -62,6 +65,12 @@ def run_release(
     baw.log(completed.stdout)
 
     return completed.returncode
+
+
+def is_dataproject(root) -> bool:
+    if utilo.exists(utilo.join(root, 'VERSION')):
+        return True
+    return False
 
 
 # semantic release returns this message if no new release is provided, cause
