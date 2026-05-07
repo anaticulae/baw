@@ -39,7 +39,7 @@ def run_release(
 ) -> int:
     cmd = 'semantic-release '
     if is_dataproject(root):
-        cmd += '-c VERSION:__version__'
+        cmd += '-c VERSION '
     else:
         cmd += '-c pyproject.toml '
     if verbose:

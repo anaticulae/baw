@@ -111,6 +111,12 @@ def init(
     return baw.SUCCESS
 
 
+DATA_PROJECT = """\
+[project]
+version='0.0.0'
+"""
+
+
 def create_project_files(root, shortcut, ptype, cmdline):
     todo = baw.resources.FILES
     if ptype == 'python':
@@ -118,7 +124,7 @@ def create_project_files(root, shortcut, ptype, cmdline):
     if ptype == 'data':
         baw.utils.file_create(
             os.path.join(root, 'VERSION'),
-            content="__version__='0.0.0'",
+            content=DATA_PROJECT,
         )
         todo = baw.resources.NORMAL
     create_files(root, todo=todo)
