@@ -75,7 +75,6 @@ def run_open(args):
 
 
 def run_ide(args):
-    # # create a new git repository with template code
     # open vscode
     root = baw.cmd.utils.run_environment(args)
     packages = None
