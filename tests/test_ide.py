@@ -76,4 +76,4 @@ def test_ide_invalid_pyproject(workspace, monkeypatch, capsys):  # pylint:disabl
         with pytest.raises(SystemExit):
             baw.cmd.ide.ide_open(workspace)
     error = tests.stderr(capsys)
-    assert 'invalid config pyproject.toml' in error
+    assert 'fter a key in a key/value pair (at line 18, column 13)' in error
