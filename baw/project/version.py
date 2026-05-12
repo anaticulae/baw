@@ -46,7 +46,7 @@ def determine(root: str, verbose: int = 0) -> str:
     version_path = baw.config.version(root)
     if ':project.version' in version_path:
         version_path = version_path.removesuffix(':project.version')
-        config = load_toml(version_path)
+        config = load_toml(utilo.join(root, version_path))
         version = config['project']['version']
         if verbose:
             return config['project']['name'] + f'=={version}'
