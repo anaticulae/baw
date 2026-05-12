@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    tags-ignore: # do not run release on released branch
+      - '*'
+
 env:
   GH_TOKEN: ${{ secrets.REPO }}
 permissions:
