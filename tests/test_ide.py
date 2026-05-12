@@ -7,7 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+import pathlib
+
 import pytest
+import utilo
 
 import baw.cmd.ide
 import baw.utils
@@ -27,6 +31,31 @@ def test_ide_open(workspace, monkeypatch):  # pylint:disable=W0621
         # do not open ide
         patched.setattr(baw.cmd.ide, 'start', lambda root: baw.SUCCESS)
         baw.cmd.ide.ide_open(workspace)
+
+
+def test_ide_open_in_subfolder(workspace, monkeypatch):  # pylint:disable=W0621
+    with monkeypatch.context():
+        no_code(workspace, monkeypatch)
+        # do not open ide
+        utilo.run(
+            cmd='baw ide',
+            cwd=utilo.join(workspace, 'tests'),
+        )
+
+
+def no_code(tmpdir, monkeypatch):
+    """Do not open vscode via 'baw ide'"""
+    fake_bin = pathlib.Path(tmpdir) / "bin"
+    fake_bin.mkdir()
+
+    fake_code = fake_bin / "code"
+
+    fake_code.write_text("#!/bin/sh\n"
+                         "true \"$@\"\n")
+
+    fake_code.chmod(0o755)
+
+    monkeypatch.setenv("PATH", f"{fake_bin}:{os.environ['PATH']}")
 
 
 CONFIG = 'pyproject.toml'
