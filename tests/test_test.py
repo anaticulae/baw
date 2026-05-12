@@ -8,6 +8,8 @@
 # =============================================================================
 
 import os
+import subprocess
+import sys
 import textwrap
 
 import pytest
@@ -32,11 +34,25 @@ def test_creating_project(tmpdir):
     assert os.path.exists(os.path.join(tmpdir, '.git'))
 
 
+@pytest.fixture
+def tmp_install(tmp_path):
+    sys.path.insert(0, str(tmp_path))
+    subprocess.run(  # nosec
+        [
+            sys.executable, "-m", "pip", "install", "--target",
+            str(tmp_path), "."
+        ],
+        check=True,
+        stdout=subprocess.DEVNULL,  # hide output if you want
+        stderr=subprocess.DEVNULL)
+    yield
+    sys.path.pop(0)  # restore original sys.path
+
+
 @tests.hasbaw
 @tests.hasgit
 @tests.longrun
-@pytest.mark.xfail
-def test_test_with_import(example):
+def test_test_with_import(example, tmp_install):  # pylint:disable=W0613,W0621
     """Ensure that import project package while writing tests need no additonal
     configuration on sys.path
 
@@ -61,8 +77,7 @@ def test_test_with_import(example):
     utilo.file_create(empty_python)
     assert os.path.exists(empty_python)
     # install requirements first and run test later
-    cmd = 'baw test'
-    completed = tests.run(cmd, example)
+    completed = tests.run('baw test', cwd=example)
 
     assert not completed.returncode, completed.stderr + completed.stdout
 
