@@ -18,6 +18,7 @@ from tests.fixtures.project import project_example_done  # pylint:disable=W0611
 from tests.fixtures.project import project_with_cmd  # pylint:disable=W0611
 from tests.fixtures.project import project_with_test  # pylint:disable=W0611
 from tests.fixtures.project import simple  # pylint:disable=W0611
+from tests.fixtures.project import tmp_install  # pylint:disable=W0611
 
 pytest_plugins = 'pytester'  # pylint: disable=invalid-name
 
