@@ -8,11 +8,8 @@
 # =============================================================================
 
 import os
-import subprocess
-import sys
 import textwrap
 
-import pytest
 import utilo
 
 import baw
@@ -32,21 +29,6 @@ def test_creating_project(tmpdir):
     error = f'{completed.stderr}\n{completed.stdout}'
     assert completed.returncode == baw.SUCCESS, error
     assert os.path.exists(os.path.join(tmpdir, '.git'))
-
-
-@pytest.fixture
-def tmp_install(tmp_path):
-    sys.path.insert(0, str(tmp_path))
-    subprocess.run(  # nosec
-        [
-            sys.executable, "-m", "pip", "install", "--target",
-            str(tmp_path), "."
-        ],
-        check=True,
-        stdout=subprocess.DEVNULL,  # hide output if you want
-        stderr=subprocess.DEVNULL)
-    yield
-    sys.path.pop(0)  # restore original sys.path
 
 
 @tests.hasbaw

@@ -9,6 +9,8 @@
 
 import functools
 import os
+import subprocess
+import sys
 import textwrap
 
 import pytest
@@ -114,3 +116,18 @@ def require_baw_git():
         pytest.skip('install baw')
     if not baw.gix.installed():
         pytest.skip('install git')
+
+
+@pytest.fixture
+def tmp_install(tmp_path):
+    sys.path.insert(0, str(tmp_path))
+    subprocess.run(  # nosec
+        [
+            sys.executable, "-m", "pip", "install", "--target",
+            str(tmp_path), "."
+        ],
+        check=True,
+        stdout=subprocess.DEVNULL,  # hide output if you want
+        stderr=subprocess.DEVNULL)
+    yield
+    sys.path.pop(0)  # restore original sys.path
