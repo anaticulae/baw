@@ -1,6 +1,33 @@
 # CHANGELOG
 
 
+## v1.79.1 (2026-05-12)
+
+### Bug Fixes
+
+- **version**: Fix config path in subfolder
+  ([`0afe558`](https://github.com/anaticulae/baw/commit/0afe558f7e318c546b688053675e0c872d7fe03c))
+
+### Documentation
+
+- **run**: Remove invalid doc
+  ([`b1fc3c3`](https://github.com/anaticulae/baw/commit/b1fc3c36d7f2044641990ef5fff0988fcaeabc5f))
+
+### Testing
+
+- **cov**: Enable unit test
+  ([`9532e07`](https://github.com/anaticulae/baw/commit/9532e07a4ce1952a1d1c1a7509e4fbebed3927a6))
+
+- **ide**: Ensure that command find row by themself
+  ([`bde29fe`](https://github.com/anaticulae/baw/commit/bde29fed7a6c096b6d6b2427c38e628f109a47f7))
+
+- **ix**: Enable unit test
+  ([`1120d0a`](https://github.com/anaticulae/baw/commit/1120d0af674271ef776b468f4cde4c7d027943f1))
+
+- **refactor**: Move fixture
+  ([`e9372be`](https://github.com/anaticulae/baw/commit/e9372be169621c7fc8f15b744f8e8b3bce821909))
+
+
 ## v1.79.0 (2026-05-07)
 
 ### Bug Fixes
