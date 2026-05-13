@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v1.79.11 (2026-05-13)
+
+### Chores
+
+- **make**: Skip release on existing release
+  ([`cf7e254`](https://github.com/anaticulae/baw/commit/cf7e2549e8acdcaaba6de1eb9355437f479541c0))
+
+### Code Style
+
+- **tests**: Remove unused import
+  ([`14b8672`](https://github.com/anaticulae/baw/commit/14b8672c4f2f95829a5c80768466789a2b53ce1a))
+
+
 ## v1.79.10 (2026-05-12)
 
 ### Chores
