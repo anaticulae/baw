@@ -13,7 +13,6 @@ import pytest
 import utilo
 
 import baw.config.change
-import baw.utils
 import tests
 
 

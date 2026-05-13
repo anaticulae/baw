@@ -47,6 +47,11 @@ docker-lint: docker-build
 	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw lint all"
 
 docker-release: docker-build
-	docker run -v $(CURDIR):/var/workdir\
+	@if git describe --exact-match --tags HEAD >/dev/null 2>&1; then \
+		echo "Current commit is already tagged, skipping release."; \
+	else \
+		docker run \
+			-v $(CURDIR):/var/workdir\
 			-e GH_TOKEN=$(GH_TOKEN) $(IMAGE)\
-			"baw release --no_test --no_linter"
+			"baw release --no_test --no_linter"; \
+	fi
