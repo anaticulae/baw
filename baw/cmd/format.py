@@ -97,7 +97,7 @@ def format_toml(root: str, verbose: int = 0) -> int:
 
 def format_yaml(root: str, verbose: int = 0) -> int:
     utilo.log('format yaml')
-    cmd = f'yamlfix {root} --exclude="*build*" --exclude="*venv*"'
+    cmd = f'yamlfix {root} --exclude="**/build/**" --exclude="**/venv/**"'
     completed = utilo.run(cmd, cwd=root)
     utilo.debug(completed)
     utilo.log('format yaml: completed')
