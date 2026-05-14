@@ -210,7 +210,7 @@ def run(
 
 
 def runs(
-    cmds: str,
+    cmds: list,
     cwd: str,
     verbose: int = 0,
     workers: int = 12,

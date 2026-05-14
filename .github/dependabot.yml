@@ -1,46 +1,45 @@
 ---
 version: 2
+
 updates:
   # Python dependencies
-  - package-ecosystem: "pip"
-    directory: "/"  # only checks requirements.txt
+  - package-ecosystem: pip
+    directory: /  # only checks requirements.txt
     schedule:
-      interval: "weekly"
-    target-branch: "main"
+      interval: weekly
+    target-branch: main
     open-pull-requests-limit: 5
     commit-message:
-      prefix: "deps(dependabot)"
+      prefix: deps(dependabot)
     groups:
       all-dependencies:
         patterns:
-          - "*"
+          - '*'
 
   # Docker dependencies
-  - package-ecosystem: "docker"
-    directory: "/"  # main Dockerfile
+  - package-ecosystem: docker
+    directory: /  # main Dockerfile
     schedule:
-      interval: "weekly"
-    target-branch: "main"
+      interval: weekly
+    target-branch: main
     open-pull-requests-limit: 5
-
-  - package-ecosystem: "docker"
-    directory: "/env/base"  # base Dockerfile
+  - package-ecosystem: docker
+    directory: /env/base  # base Dockerfile
     schedule:
-      interval: "weekly"
-    target-branch: "main"
+      interval: weekly
+    target-branch: main
     open-pull-requests-limit: 5
-
-  - package-ecosystem: "docker"
-    directory: "/env/test"  # test Dockerfile
+  - package-ecosystem: docker
+    directory: /env/test  # test Dockerfile
     schedule:
-      interval: "weekly"
-    target-branch: "main"
+      interval: weekly
+    target-branch: main
     open-pull-requests-limit: 5
 
   # GitHub Actions workflows
-  - package-ecosystem: "github-actions"
-    directory: "/"  # workflows are under .github/workflows
+  - package-ecosystem: github-actions
+    directory: /  # workflows are under .github/workflows
     schedule:
-      interval: "weekly"
-    target-branch: "main"
+      interval: weekly
+    target-branch: main
     open-pull-requests-limit: 10
