@@ -1,6 +1,66 @@
 # CHANGELOG
 
 
+## v1.80.0 (2026-05-14)
+
+### Bug Fixes
+
+- **formatter**: Do not format build or venv
+  ([`f49226d`](https://github.com/anaticulae/baw/commit/f49226dc0a0f075e4c6436b60ef5d3b447f84da2))
+
+### Chores
+
+- **pyproject**: Add yaml formatter
+  ([`b2a87ff`](https://github.com/anaticulae/baw/commit/b2a87ffaf8a9be43b3b298e61e690b04ad647d76))
+
+### Code Style
+
+- **format**: Fix typo
+  ([`9b41272`](https://github.com/anaticulae/baw/commit/9b4127268341a422de51ff7962e5bd6a948c67f8))
+
+- **format**: Format pyproject
+  ([`792b2b1`](https://github.com/anaticulae/baw/commit/792b2b1b191831a16423b234ee5813e59f75be58))
+
+- **yaml**: Format data
+  ([`fa7d3d9`](https://github.com/anaticulae/baw/commit/fa7d3d90ced84922b3378f67acf06f05800d1ea7))
+
+- **yammfix**: Make file more beautiful
+  ([`51e5b20`](https://github.com/anaticulae/baw/commit/51e5b20289df0a05da26caea70236fcaa466b5fd))
+
+### Documentation
+
+- **runtime**: Adjust data type
+  ([`e95fa7d`](https://github.com/anaticulae/baw/commit/e95fa7d989ce2c90fdb0cf32a5acf963dec72e5d))
+
+### Features
+
+- **format**: Add complete message
+  ([`c785de3`](https://github.com/anaticulae/baw/commit/c785de35b5cd4ab1d809a660f7b5bb32e060a69b))
+
+- **format**: Add toml formatter
+  ([`9096464`](https://github.com/anaticulae/baw/commit/9096464d204fa8d2a0766e3d10e3e16f6488daa1))
+
+- **format**: Enable yaml formatter for .github
+  ([`fbf9198`](https://github.com/anaticulae/baw/commit/fbf9198e27d702843e1d22f61143a88e1b725563))
+
+- **format**: Pass verbose level to multiple formatter
+  ([`a6e7e6e`](https://github.com/anaticulae/baw/commit/a6e7e6efffec51cbde5365a994b6ddbe0d478699))
+
+- **yamlfix**: Extend standard config template
+  ([`402ff4c`](https://github.com/anaticulae/baw/commit/402ff4cd68946866991eb45e5384828e3506a1f0))
+
+### Refactoring
+
+- **format**: Move isort config to constant
+  ([`99a8bfb`](https://github.com/anaticulae/baw/commit/99a8bfbfb8c43925ce4cce2f11f8ad1beefabce1))
+
+- **format**: Solve linter warnings
+  ([`c843190`](https://github.com/anaticulae/baw/commit/c84319061116ea2102388925bf94d56db6abbecf))
+
+- **toml**: Move toml loader to separate file
+  ([`3c38068`](https://github.com/anaticulae/baw/commit/3c380686dc47b175e90cfe303d8a53c63b28dbae))
+
+
 ## v1.79.11 (2026-05-13)
 
 ### Chores
