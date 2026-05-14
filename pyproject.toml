@@ -36,6 +36,8 @@ dependencies = [
     "build==1.4.2",
     "virtualenv>=21.2.0,<22.0.0",
     "setuptools == 82.0.1",
+
+    "tomli-w==1.2.0"
 ]
 
 # Optional but recommended metadata

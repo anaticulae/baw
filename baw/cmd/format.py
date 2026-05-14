@@ -10,6 +10,9 @@
 import concurrent.futures
 import os
 
+import tomli_w
+import utilo
+
 import baw.cmd.utils
 import baw.config
 import baw.runtime
@@ -26,7 +29,7 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: int = 0):
-    for item in (format_source, format_imports):
+    for item in (format_source, format_toml, format_imports):
         failure = item(root, verbose=verbose)
         if failure:
             return failure
@@ -70,6 +73,26 @@ def format_source(root: str, verbose: int = 0) -> int:
     )
     baw.log('format source: completed')
     return completed
+
+
+def format_toml(root: str, verbose: int = 0) -> int:
+    files = utilo.file_list(
+        root,
+        include=[
+            'toml',
+        ],
+        recursive=True,
+        absolute=True,
+    )
+    for item in files:
+        if '/tmp/' in item:  # nosec:B108
+            continue
+        if '/venv/' in item:
+            continue
+        config = baw.utils.load_toml(item)
+        content = tomli_w.dumps(config)
+        utilo.file_replace(item, content)
+    return baw.SUCCESS
 
 
 def format_imports(root: str, verbose: int = 0):
