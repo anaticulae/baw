@@ -1,7 +1,7 @@
 [build-system]
 requires = [
     "setuptools>=82.0.1",
-    "wheel>=0.46.3"
+    "wheel>=0.46.3",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -9,46 +9,42 @@ build-backend = "setuptools.build_meta"
 name = "baw"
 version = "1.79.11"
 description = "A simple console-application to manage project complexity."
-readme = {file = "README", content-type = "text/markdown"}
 requires-python = ">=3.12"
 authors = [
-  {name = "Helmut Konrad Schewe", email = "helmutus@outlook.com"}
+    { name = "Helmut Konrad Schewe", email = "helmutus@outlook.com" },
 ]
-
 dependencies = [
     "utilo>=2.107.0,<3.0.0",
     "utilosafe>=1.0.0,<2.0.0",
-
     "semver>=3.0.4,<4.0.0",
     "python_semantic_release>=10.5.3,<11.0.0",
     "docker >=7.1.0,<8.0.0",
-
     "yapf == 0.43.0",
     "isort==8.0.1",
-
     "bandit==1.9.4",
     "pylint==4.0.5",
-
     "pytest == 9.0.2",
     "pytest-xdist == 3.8.0",
     "pytest-cov == 7.1.0",
-
     "build==1.4.2",
     "virtualenv>=21.2.0,<22.0.0",
     "setuptools == 82.0.1",
-
-    "tomli-w==1.2.0"
+    "tomli-w==1.2.0",
 ]
-
-# Optional but recommended metadata
 keywords = []
 classifiers = [
-  'Programming Language :: Python :: 3.12',
-  'Programming Language :: Python :: 3.13',
-  'Programming Language :: Python :: 3.14',
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 license = "MIT"
-license-files = ["LICENSE"]
+license-files = [
+    "LICENSE",
+]
+
+[project.readme]
+file = "README"
+content-type = "text/markdown"
 
 [project.scripts]
 baw = "baw.__main__:run"
@@ -63,11 +59,9 @@ dev = [
     "pytest_instafail == 0.5.0",
     "pytest_localserver == 0.10.0",
     "pytest_timeout == 2.4.0",
-
     "rope == 1.14.0",
     "pyenchant == 3.3.0",
 ]
-
 doc = [
     "added-value == 0.24.0",
     "commonmark == 0.9.1",
@@ -81,18 +75,38 @@ Homepage = "https://github.com/anaticulae/baw"
 Repository = "https://github.com/anaticulae/baw"
 
 [tool.semantic_release]
-version_toml = ["pyproject.toml:project.version"]
-[tool.semantic_release.changelog.default_templates]
-changelog_file = "CHANGELOG"
+version_toml = [
+    "pyproject.toml:project.version",
+]
+
 [tool.semantic_release.changelog]
 mode = "init"
 output_format = "md"
+
+[tool.semantic_release.changelog.default_templates]
+changelog_file = "CHANGELOG"
+
 [tool.semantic_release.commit_parser_options]
-# allways generate a new version
-patch_tags = ["fix", "perf", "build", "chore", "ci", "docs", "style", "refactor", "test", "deps"]
+patch_tags = [
+    "fix",
+    "perf",
+    "build",
+    "chore",
+    "ci",
+    "docs",
+    "style",
+    "refactor",
+    "test",
+    "deps",
+]
+
+[tool.setuptools]
+include-package-data = true
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = [
+    ".",
+]
 include = [
     "baw",
     "baw.archive",
@@ -122,6 +136,3 @@ baw = [
     "templates/.github/dependabot.yml",
     "templates/.github/workflows/*.yml",
 ]
-
-[tool.setuptools]
-include-package-data = true
