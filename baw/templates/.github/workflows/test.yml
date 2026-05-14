@@ -1,63 +1,57 @@
+---
 name: Tests
 
 on:
   push:
-    branches:
-      - '*'
+    branches: ['*']
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-
   build:
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v6
-    - name: build docker container
-      run: make docker-build
-
+      - uses: actions/checkout@v6
+      - name: build docker container
+        run: make docker-build
   doctest:
     runs-on: ubuntu-24.04
     needs: build
     steps:
-    - uses: actions/checkout@v6
-    - name: run doctest
-      run: make docker-doctest
-
+      - uses: actions/checkout@v6
+      - name: run doctest
+        run: make docker-doctest
   fasttest:
     runs-on: ubuntu-24.04
     needs: build
     steps:
-    - uses: actions/checkout@v6
-      with:
+      - uses: actions/checkout@v6
+        with:
         # required by test which requires commits
-        fetch-depth: 15
-    - name: run fasttest
-      run: make docker-fasttest
-
+          fetch-depth: 15
+      - name: run fasttest
+        run: make docker-fasttest
   longtest:
     runs-on: ubuntu-24.04
     needs: fasttest
     steps:
-    - uses: actions/checkout@v6
-    - name: run longtest
-      run: make docker-longtest
-
+      - uses: actions/checkout@v6
+      - name: run longtest
+        run: make docker-longtest
   alltest:
     runs-on: ubuntu-24.04
     needs: longtest
     steps:
-    - uses: actions/checkout@v6
-      with:
+      - uses: actions/checkout@v6
+        with:
         # required by test which requires commits
-        fetch-depth: 15
-    - name: run alltest
-      run: make docker-alltest
-
+          fetch-depth: 15
+      - name: run alltest
+        run: make docker-alltest
   linter:
     runs-on: ubuntu-24.04
     needs: build
     steps:
-    - uses: actions/checkout@v6
-    - name: run linter
-      run: make docker-lint
+      - uses: actions/checkout@v6
+      - name: run linter
+        run: make docker-lint

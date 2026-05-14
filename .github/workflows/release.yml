@@ -1,14 +1,16 @@
+---
 name: Release
 
 on:
   push:
-    branches:
-      - main
-    tags-ignore: # do not run release on released branch
-      - '*'
+    branches: [main]
+    tags-ignore: ['*']
+
+  # do not run release on released branch
 
 env:
   GH_TOKEN: ${{ secrets.REPO }}
+
 permissions:
   contents: write
 
@@ -18,26 +20,22 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-release-${{ github.ref_name }}
       cancel-in-progress: false
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.REPO }}
-
       - name: Set up GitHub Token
         run: |
           git config --global user.name "Helmut Konrad Schewe"
           git config --global user.email "helmutus@outlook.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/anaticulae/baw.git
-
       - name: Release and Push
         run: |
           make docker-release
-
       - name: Push commit and tag
-        run: |
+        run: |-
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git push origin main
