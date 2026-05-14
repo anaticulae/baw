@@ -29,7 +29,7 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: int = 0):
-    for item in (format_source, format_toml, format_imports, format_yaml):
+    for item in (format_python, format_toml, format_imports, format_yaml):
         try:
             # TODO: MAKE VERBOSE LEVEL GOBAL
             failure = item(root, verbose=verbose)
@@ -54,7 +54,7 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: int = 0) -> int:
+def format_python(root: str, verbose: int = 0) -> int:
     baw.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
