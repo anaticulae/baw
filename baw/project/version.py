@@ -9,11 +9,11 @@
 
 import os
 import re
-import tomllib
 
 import utilo
 
 import baw.config
+import baw.utils
 
 # support __version__ = "1.0.0" and __version__ = '1.0.0' and '1.0.0'
 VERSION = (
@@ -46,7 +46,7 @@ def determine(root: str, verbose: int = 0) -> str:
     version_path = baw.config.version(root)
     if ':project.version' in version_path:
         version_path = version_path.removesuffix(':project.version')
-        config = load_toml(utilo.join(root, version_path))
+        config = baw.utils.load_toml(utilo.join(root, version_path))
         version = config['project']['version']
         if verbose:
             return config['project']['name'] + f'=={version}'
@@ -67,16 +67,6 @@ def determine(root: str, verbose: int = 0) -> str:
         shorts = baw.config.shortcut(root)
         current = f'{shorts}=={current}'
     return current
-
-
-def load_toml(path: str) -> dict:
-    with open(path, "rb") as f:
-        try:
-            config = tomllib.load(f)
-        except tomllib.TOMLDecodeError as error:
-            baw.error(f'invalid config {path}')
-            baw.exitx(msg=str(error))
-    return config
 
 
 # TODO: IMPROVE THIS, USE EXTERNAL BIB

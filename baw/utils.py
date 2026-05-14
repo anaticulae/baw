@@ -18,10 +18,12 @@ import random
 import re
 import sys
 import time
+import tomllib
 import webbrowser
 
 import utilo
 
+import baw
 import baw.runtime
 
 BAW_EXT = '.baw'
@@ -577,3 +579,13 @@ def file_list(  # pylint:disable=R1260
     if sort:
         result = files_sort(result)
     return result
+
+
+def load_toml(path: str) -> dict:
+    with open(path, "rb") as f:
+        try:
+            config = tomllib.load(f)
+        except tomllib.TOMLDecodeError as err:
+            baw.error(f'invalid config {path}')
+            baw.exitx(msg=str(err))
+    return config

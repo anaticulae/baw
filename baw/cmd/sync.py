@@ -228,7 +228,7 @@ def pyproject_packages(root: str) -> dict:
     base = os.path.join(root, 'pyproject.toml')
     if not os.path.exists(base):
         return {}
-    config = baw.project.version.load_toml(base)
+    config = baw.utils.load_toml(base)
     project = config['project']
     result = {
         'requirements': project.get('dependencies', []),
