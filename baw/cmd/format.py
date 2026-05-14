@@ -154,6 +154,7 @@ def format_(
     testpath = os.path.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
+    # TODO: LIMIT MAX_WORKERS?
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         waitfor = []
         for item in folder:
