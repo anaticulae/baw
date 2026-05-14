@@ -76,27 +76,30 @@ def format_imports(root: str, verbose: int = 0):
         return baw.FAILURE
     project_sources = baw.config.sources(root)
     short = ' -p '.join(project_sources)
-    isort = [
-        "-o",
-        "pytest",
-        '-p',
-        short,
-        "-p",
-        "tests",
-        "--ot",
-        "--sl",  # force single line
-        "--ns",  # override default skip of __init__
-        "__init__.py",
-        "--line-width 999",  # do not break imports
-    ]
-    isort: str = ' '.join(isort)
+    isort: str = ' '.join(ISORT) % short
     cmd = f'isort {isort}'
-    return format_(
+    completed = format_(
         root,
         cmd=cmd,
         info='sort imports',
         verbose=verbose,
     )
+    return completed
+
+
+ISORT = (
+    "-o",
+    "pytest",
+    '-p',
+    '%s',
+    "-p",
+    "tests",
+    "--ot",
+    "--sl",  # force single line
+    "--ns",  # override default skip of __init__
+    "__init__.py",
+    "--line-width 999",  # do not break imports
+)
 
 
 def format_(
