@@ -30,6 +30,7 @@ dependencies = [
     "virtualenv>=21.2.0,<22.0.0",
     "setuptools == 82.0.1",
     "tomli-w==1.2.0",
+    "yamlfix==1.19.1",
 ]
 keywords = []
 classifiers = [
