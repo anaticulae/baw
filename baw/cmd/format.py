@@ -47,7 +47,7 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: int = 0) -> int:  # pylint:disable=W0613
+def format_source(root: str, verbose: int = 0) -> int:
     baw.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
@@ -66,6 +66,7 @@ def format_source(root: str, verbose: int = 0) -> int:  # pylint:disable=W0613
         todo,
         cwd=root,
         workers=len(todo),
+        verbose=verbose,
     )
     return completed
 
