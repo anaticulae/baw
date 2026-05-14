@@ -172,7 +172,7 @@ def format_(
             if completed.returncode:
                 baw.error(f'error while formatting {completed.stderr}')
                 return baw.FAILURE
-    baw.log(f'{info}: complete\n')
+    baw.log(f'{info}: completed\n')
     return baw.SUCCESS
 
 
