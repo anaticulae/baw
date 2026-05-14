@@ -29,7 +29,7 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: int = 0):
-    for item in (format_source, format_toml, format_imports):
+    for item in (format_source, format_toml, format_imports, format_yaml):
         failure = item(root, verbose=verbose)
         if failure:
             return failure
@@ -92,6 +92,21 @@ def format_toml(root: str, verbose: int = 0) -> int:
         config = baw.utils.load_toml(item)
         content = tomli_w.dumps(config)
         utilo.file_replace(item, content)
+    return baw.SUCCESS
+
+
+def format_yaml(root: str, verbose: int = 0) -> int:
+    utilo.log('format yaml')
+    cmd = f'yamlfix {root} --exclude="*build*" --exclude="*venv*"'
+    completed = utilo.run(cmd, cwd=root)
+    utilo.debug(completed)
+    utilo.log('format yaml: completed')
+    if completed.stdout.strip():
+        utilo.log(completed.stdout)
+    if completed.returncode:
+        if completed.stderr:
+            utilo.error(completed.stderr)
+        return completed.returncode
     return baw.SUCCESS
 
 
