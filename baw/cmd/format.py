@@ -68,6 +68,7 @@ def format_source(root: str, verbose: int = 0) -> int:
         workers=len(todo),
         verbose=verbose,
     )
+    baw.log('format source: completed')
     return completed
 
 
