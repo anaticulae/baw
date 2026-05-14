@@ -30,7 +30,11 @@ def evaluate(args):
 
 def format_repository(root: str, verbose: int = 0):
     for item in (format_source, format_toml, format_imports, format_yaml):
-        failure = item(root, verbose=verbose)
+        try:
+            # TODO: MAKE VERBOSE LEVEL GOBAL
+            failure = item(root, verbose=verbose)
+        except TypeError:
+            failure = item(root)
         if failure:
             return failure
     return baw.SUCCESS
@@ -75,7 +79,7 @@ def format_source(root: str, verbose: int = 0) -> int:
     return completed
 
 
-def format_toml(root: str, verbose: int = 0) -> int:
+def format_toml(root: str) -> int:
     files = utilo.file_list(
         root,
         include=[
@@ -95,7 +99,7 @@ def format_toml(root: str, verbose: int = 0) -> int:
     return baw.SUCCESS
 
 
-def format_yaml(root: str, verbose: int = 0) -> int:
+def format_yaml(root: str) -> int:
     utilo.log('format yaml')
     cmd = f'yamlfix {root} --exclude="**/build/**" --exclude="**/venv/**"'
     completed = utilo.run(cmd, cwd=root)
