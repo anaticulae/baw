@@ -137,3 +137,7 @@ baw = [
     "templates/.github/dependabot.yml",
     "templates/.github/workflows/*.yml",
 ]
+
+[tool.yamlfix]
+line_length = 69
+section_whitelines = 1
