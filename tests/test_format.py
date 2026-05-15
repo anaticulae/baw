@@ -62,3 +62,22 @@ def test_format_yaml(testdir):
     utilo.file_create('valid.yml', content=VALID)
     returncode = baw.cmd.format.format_yaml(testdir.tmpdir)
     assert not returncode
+
+
+INVALID_YAML = """\
+[build-system]
+requires = [
+    "setuptools>=82.0.1",
+    "wheel>=0.46.3",
+]
+build-backend = "setuptools.build_meta"
+{{SHORT}}
+"""
+
+
+def test_format_toml_invalid(testdir):
+    # format toml as yaml to invoke error
+    utilo.file_create('invalid.toml', content=INVALID_YAML)
+    with pytest.raises(SystemExit):
+        returncode = baw.cmd.format.format_toml(testdir.tmpdir, filters=False)
+        assert returncode

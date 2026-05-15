@@ -79,7 +79,7 @@ def format_python(root: str, verbose: int = 0) -> int:
     return completed
 
 
-def format_toml(root: str) -> int:
+def format_toml(root: str, filters: bool = True) -> int:
     files = utilo.file_list(
         root,
         include=[
@@ -89,10 +89,11 @@ def format_toml(root: str) -> int:
         absolute=True,
     )
     for item in files:
-        if '/tmp/' in item:  # nosec:B108
-            continue
-        if '/venv/' in item:
-            continue
+        if filters:
+            if '/tmp/' in item:  # nosec:B108
+                continue
+            if '/venv/' in item:
+                continue
         config = baw.utils.load_toml(item)
         content = tomli_w.dumps(config)
         utilo.file_replace(item, content)
