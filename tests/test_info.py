@@ -63,8 +63,7 @@ def test_cmd_info_clean(simple, capsys):  # pylint:disable=W0621,W0613
     assert 'clean' in stdout
 
 
-@pytest.mark.xfail
-def test_cmd_info_cov(simple, capsys):
+def test_cmd_info_cov(simple, capsys, tmp_install):# pylint:disable=W0613
     simple[0]('info cov')
     stdout = tests.stdout(capsys)
     assert '100.0' in stdout
