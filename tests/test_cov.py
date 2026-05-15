@@ -26,9 +26,8 @@ def test_cmd_test_cov_simple(simple, capsys, tmp_install):  # pylint:disable=W06
     assert '100%' in content
 
 
-@pytest.mark.xfail
 @pytest.mark.parametrize('report', (True, False))
-def test_cmd_test_cov_report(report, simple, capsys):
+def test_cmd_test_cov_report(report, simple, capsys, tmp_install):  # pylint:disable=W0613
     noreport = '' if report else '--no_report'
     # do not generate html-report
     simple[0](f'--verbose test --cov -n1 {noreport}')

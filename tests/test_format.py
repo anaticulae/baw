@@ -12,8 +12,8 @@ import os
 import pytest
 import utilo
 
+import baw.cmd.format
 import baw.config
-import baw.utils
 import tests
 
 
@@ -43,3 +43,41 @@ def test_regression_format_keep_single_list(minimal, monkeypatch):  # pylint:dis
     tests.baaw('format', monkeypatch=monkeypatch)
     read = utilo.file_read(path)
     assert read == source
+
+
+VALID = """\
+---
+version: 2
+
+updates:
+  # Python dependencies
+  - package-ecosystem: pip
+    directory: /  # only checks requirements.txt
+    schedule:
+      interval: weekly
+"""
+
+
+def test_format_yaml(testdir):
+    utilo.file_create('valid.yml', content=VALID)
+    returncode = baw.cmd.format.format_yaml(testdir.tmpdir)
+    assert not returncode
+
+
+INVALID_YAML = """\
+[build-system]
+requires = [
+    "setuptools>=82.0.1",
+    "wheel>=0.46.3",
+]
+build-backend = "setuptools.build_meta"
+{{SHORT}}
+"""
+
+
+def test_format_toml_invalid(testdir):
+    # format toml as yaml to invoke error
+    utilo.file_create('invalid.toml', content=INVALID_YAML)
+    with pytest.raises(SystemExit):
+        returncode = baw.cmd.format.format_toml(testdir.tmpdir, filters=False)
+        assert returncode
