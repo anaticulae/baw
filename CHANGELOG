@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.80.1 (2026-05-20)
+
+### Bug Fixes
+
+- **env**: Ensure that dependencies are installed
+  ([`3e73371`](https://github.com/anaticulae/baw/commit/3e73371cb503b300b572008a81a13c4b9ec600f1))
+
+
 ## v1.80.0 (2026-05-14)
 
 ### Bug Fixes
