@@ -41,8 +41,9 @@ RUN python -m pip install --upgrade pip setuptools wheel &&\
 # install baw as base application
 COPY ../.. /var/install
 
-RUN pip install . &&\
-    baw --help
+RUN pip install .\
+    && pip install .[dev,doc]\
+    && baw --version && baw --help
 
 # remove baw app source code
 RUN rm -rf /var/install
