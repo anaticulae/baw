@@ -23,10 +23,10 @@ dependencies = [
     "isort==8.0.1",
     "bandit==1.9.4",
     "pylint==4.0.5",
-    "pytest == 9.0.2",
+    "pytest == 9.0.3",
     "pytest-xdist == 3.8.0",
     "pytest-cov == 7.1.0",
-    "build==1.4.2",
+    "build==1.5.0",
     "virtualenv>=21.2.0,<22.0.0",
     "setuptools == 82.0.1",
     "tomli-w==1.2.0",
@@ -68,7 +68,7 @@ doc = [
     "commonmark == 0.9.1",
     "recommonmark == 0.7.1",
     "Sphinx == 9.1.0",
-    "sphinx-autodoc-typehints==3.9.11",
+    "sphinx-autodoc-typehints==3.10.2",
 ]
 
 [project.urls]
