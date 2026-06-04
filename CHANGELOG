@@ -1,6 +1,66 @@
 # CHANGELOG
 
 
+## v1.81.0 (2026-06-04)
+
+### Bug Fixes
+
+- **upgrade**: Do not try to commit if nothing changed
+  ([`aa89251`](https://github.com/anaticulae/baw/commit/aa89251e183c9816fe759a434a3995a8cd9e8ec9))
+
+- **upgrade**: Remove unused error message
+  ([`2f564ab`](https://github.com/anaticulae/baw/commit/2f564ab4d7c25eb1c61cbc9c6522d6ba3ca72396))
+
+### Chores
+
+- **project**: Adjust requirement
+  ([`5632075`](https://github.com/anaticulae/baw/commit/56320755e907494fb3ca7f0f51269754b3b76c14))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`8c37f52`](https://github.com/anaticulae/baw/commit/8c37f52819901debc6c0783fcd2709a5e9887ada))
+
+### Code Style
+
+- **upgrade**: Simplify code
+  ([`d391756`](https://github.com/anaticulae/baw/commit/d391756a9b450aa846cea055f3e90121b4492319))
+
+### Features
+
+- **baw**: Extend public interface
+  ([`0d5d725`](https://github.com/anaticulae/baw/commit/0d5d7251e5bfdf1d06af2839be512b71504f2dac))
+
+- **requirements**: Extend logging
+  ([`25f0dac`](https://github.com/anaticulae/baw/commit/25f0daca6e8d722dbef4b234ebf472646874b689))
+
+- **toml**: Add public method to create toml file
+  ([`79fbecf`](https://github.com/anaticulae/baw/commit/79fbecfca4c83b609f2ef30ece55f12c14fdbac4))
+
+- **upgrade**: Add toml upgrader
+  ([`dec5b7e`](https://github.com/anaticulae/baw/commit/dec5b7e6c6e48ed81a386ba51cf26f42921e8c3d))
+
+- **upgrade**: Upgrade pyproject.toml
+  ([`4f0570c`](https://github.com/anaticulae/baw/commit/4f0570cdcf11ef7e485010ddf661ac7cf16386c2))
+
+- **upgrade**: Upgrade pyproject.toml if exists
+  ([`8fe1d81`](https://github.com/anaticulae/baw/commit/8fe1d815bd8bb0e5b84a10c90732dfbb4c0d019e))
+
+### Refactoring
+
+- **format**: Simplify code
+  ([`a784802`](https://github.com/anaticulae/baw/commit/a7848023b52885401ba92c0b54c62831f79cb06c))
+
+- **requirements**: Rename method to prepare toml upgrader
+  ([`bbaac2d`](https://github.com/anaticulae/baw/commit/bbaac2dfb49135152d68e8f7cc4a8afb0969ee2e))
+
+- **upgrade**: Prepare toml upgrader
+  ([`3e7ecbe`](https://github.com/anaticulae/baw/commit/3e7ecbea5943bdba84c4def910512823062b8993))
+
+### Testing
+
+- **docs**: Extend test cov
+  ([`03363d4`](https://github.com/anaticulae/baw/commit/03363d419c04676271fcfbbd90afe3a6ee794f62))
+
+
 ## v1.80.1 (2026-05-20)
 
 ### Bug Fixes
