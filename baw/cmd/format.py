@@ -10,7 +10,6 @@
 import concurrent.futures
 import os
 
-import tomli_w
 import utilo
 
 import baw.cmd.utils
@@ -93,9 +92,8 @@ def format_toml(root: str) -> int:
             continue
         if '/venv/' in item:
             continue
-        config = baw.utils.load_toml(item)
-        content = tomli_w.dumps(config)
-        utilo.file_replace(item, content)
+        config = baw.load_toml(item)
+        baw.write_toml(item, config)
     return baw.SUCCESS
 
 
