@@ -136,7 +136,6 @@ def upgrade_requirements(
         SUCCESS if file was upgraded
     """
     req_path = os.path.join(root, requirements)
-    msg = f'Path does not exists {req_path}'
     if not os.path.exists(req_path):
         msg = f'Could not locate any requirements: {req_path}'
         baw.error(msg)
