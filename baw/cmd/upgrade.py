@@ -151,8 +151,8 @@ def upgrade_requirements_toml(root: str) -> int:
         baw.error(msg)
         return baw.FAILURE
     baw.log(f'\nStart upgrading: {req_path}')
+    changed = False
     toml = baw.load_toml(req_path)
-
     for path in (
             'project.dependencies',
             'project.optional-dependencies.dev',
@@ -175,7 +175,10 @@ def upgrade_requirements_toml(root: str) -> int:
         if replaced == content:
             baw.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
             continue
-        update_path(replaced.splitlines(), path, toml)
+        changed |= update_path(replaced.splitlines(), path, toml)
+    if not changed:
+        baw.log('Nothing todo!')
+        return baw.FAILURE
     baw.write_toml(req_path, toml)
     baw.log('Upgrading finished')
     return baw.SUCCESS
