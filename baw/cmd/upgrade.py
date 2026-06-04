@@ -25,6 +25,7 @@ import baw.requirements.upgrade
 import baw.utils
 
 
+# pylint:disable=too-many-return-statements
 def upgrade(
     root: str,
     *,
@@ -39,6 +40,21 @@ def upgrade(
     force: upgrade dev requirements also
     """
     with baw.git_stash(root, verbose=verbose):
+        if utilo.exists(utilo.join(root, 'pyproject.toml')):
+            returnvalue = upgrade_requirements_toml(root)
+            if returnvalue:
+                return returnvalue
+            failure = baw.git_commit(
+                root,
+                source='pyproject.toml',
+                message='chore(requirements): upgrade pyproject.toml',
+                verbose=verbose,
+            )
+            if failure:
+                return failure
+            return utilo.SUCCESS
+        # TODO: REMOVE OUTDATED BEHAVIOR
+        # upgrade possible requirements.txt
         returnvalue = check_upgrade(root, packages=packages, pre=pre)
         if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
@@ -148,7 +164,7 @@ def upgrade_requirements_toml(root: str) -> int:
             utilo.log(f'skip: {path}')
             continue
         content = utilo.NEWLINE.join(datum)
-        print(content)
+        utilo.debug(content)
         upgraded = determine_new_requirements(
             root,
             requirements=content,
@@ -168,20 +184,21 @@ def upgrade_requirements_toml(root: str) -> int:
 def from_path(content, path):
     # TODO: MOVE TO UTILO
     for item in path.split('.'):
-        content = content.get(item, dict())
+        content = content.get(item, {})
     if not content:
         return None
     return content
 
 
-def update_path(datum, path: str, content: dict):
+def update_path(datum, path: str, content: dict) -> bool:
     # TODO: MOVE TO UTILO
     todo = path.split('.')
     for item in todo[0:-1]:
-        content = content.get(item, dict())
+        content = content.get(item, {})
     if not content:
-        return None
+        return False
     content[todo[-1]] = datum
+    return True
 
 
 def upgrade_requirements_txt(
