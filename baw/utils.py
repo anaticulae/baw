@@ -583,6 +583,11 @@ def file_list(  # pylint:disable=R1260
 
 
 def load_toml(path: str) -> dict:
+    """\
+    >>> load_toml('pyproject.toml')
+    {'build-system': {'requires':... 'section_whitelines': 1}}}
+    """
+    config = {}
     with open(path, "rb") as f:
         try:
             config = tomllib.load(f)
