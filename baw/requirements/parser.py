@@ -48,6 +48,12 @@ def parse(content: str, upgrade: bool = False) -> baw.requirements.Requirements:
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
         baw.error('duplicated package definition')
         baw.error(content)
+        baw.log()
+        baw.error(common_keys)
+        baw.log()
+        baw.error(equal)
+        baw.log()
+        baw.error(greater)
         sys.exit(baw.FAILURE)
     result = baw.requirements.Requirements(equal=equal, greater=greater)
     return result
