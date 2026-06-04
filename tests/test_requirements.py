@@ -63,20 +63,20 @@ def test_replace_requirements():
 
 
 def test_requirements_parser():
-    result = baw.requirements.parser.parse(
+    result = baw.requirements.parser.parse_txt(
         tests.fixtures.requirements.REQUIREMENTS)
     assert result, 'requirements parsing error'
     assert result.equal == EXPECTED
 
 
 def test_requirements_parser_greater_equal():
-    result = baw.requirements.parser.parse(REQUIREMENTS_GREATER)
+    result = baw.requirements.parser.parse_txt(REQUIREMENTS_GREATER)
     assert result, 'requirements parsing error'
     assert result.greater == EXPECTED_GREATER
 
 
 def test_requirements_diff_equal():
-    parsed = baw.requirements.parser.parse(
+    parsed = baw.requirements.parser.parse_txt(
         tests.fixtures.requirements.REQUIREMENTS)
     empty = baw.requirements.upgrade.diff(parsed, parsed)
     assert not empty.equal, empty

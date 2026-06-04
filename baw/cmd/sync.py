@@ -186,7 +186,7 @@ def required_installation(
     verbose: int = 0,
 ):
     # TODO: REFACTOR LATER
-    requested = [baw.requirements.parser.parse(requirements)]
+    requested = [baw.requirements.parser.parse_txt(requirements)]
     current = pip_list(root, verbose=verbose)
     missing = [
         baw.requirements.upgrade.diff(current, item, minimal)
@@ -377,7 +377,7 @@ def pip_list(
         baw.error(completed.stderr)
         sys.exit(completed.returncode)
     content = completed.stdout
-    parsed = baw.requirements.parser.parse(content)
+    parsed = baw.requirements.parser.parse_txt(content)
     return parsed
 
 

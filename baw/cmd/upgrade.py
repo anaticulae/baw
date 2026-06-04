@@ -202,7 +202,7 @@ def determine_new_requirements(
     *,
     pre: bool = False,
 ) -> baw.requirements.NewRequirements:
-    parsed = baw.requirements.parser.parse(
+    parsed = baw.requirements.parser.parse_txt(
         requirements,
         upgrade=True,
     )
