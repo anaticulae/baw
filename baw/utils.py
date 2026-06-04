@@ -29,6 +29,7 @@ import baw.runtime
 BAW_EXT = '.baw'
 TMP = '.tmp'
 
+REQUIREMENTS = 'pyproject.toml'
 REQUIREMENTS_TXT = 'requirements.txt'
 REQUIREMENTS_DEV = 'requirements.dev'
 REQUIREMENTS_EXTRA = 'requirements.ext'

@@ -122,11 +122,11 @@ REQUIREMENTS_UPTODATE = 100
 
 def upgrade_requirements(
     root: str,
-    requirements: str = baw.utils.REQUIREMENTS_TXT,
+    requirements: str = baw.utils.REQUIREMENTS,
     pre: bool = False,
 ) -> int:
-    """Take requirements.txt, replace version number with current
-    available version on pip repository.
+    """Take pyproject.toml or requirements.txt, replace version number with
+    current available version on pip repository.
 
     Args:
         root(str): generated project
