@@ -79,13 +79,13 @@ def upgrade(
 
 
 def check_upgrade(root, packages, pre: bool = False):
-    failure = upgrade_requirements(root, pre=pre)
+    failure = upgrade_requirements_txt(root, pre=pre)
     requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
     if not os.path.exists(requirements_dev) or packages == 'requirements':
         requirements_dev = None
     failure_dev = REQUIREMENTS_UPTODATE
     if requirements_dev:
-        failure_dev = upgrade_requirements(
+        failure_dev = upgrade_requirements_txt(
             root,
             requirements=baw.utils.REQUIREMENTS_DEV,
             pre=pre,
@@ -96,7 +96,7 @@ def check_upgrade(root, packages, pre: bool = False):
         requirements_extra = None
     failure_extra = REQUIREMENTS_UPTODATE
     if requirements_extra:
-        failure_extra = upgrade_requirements(
+        failure_extra = upgrade_requirements_txt(
             root,
             requirements=baw.utils.REQUIREMENTS_EXTRA,
             pre=pre,
@@ -120,7 +120,7 @@ def check_upgrade(root, packages, pre: bool = False):
 REQUIREMENTS_UPTODATE = 100
 
 
-def upgrade_requirements(
+def upgrade_requirements_txt(
     root: str,
     requirements: str = baw.utils.REQUIREMENTS,
     pre: bool = False,

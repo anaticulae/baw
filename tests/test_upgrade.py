@@ -125,7 +125,7 @@ def test_upgrading(tmpdir):
         TEST_UPGRADE,
     )
     # use default requirements.txt
-    baw.cmd.upgrade.upgrade_requirements(tmpdir)
+    baw.cmd.upgrade.upgrade_requirements_txt(tmpdir)
     loaded = utilo.file_read(requirements_path)
     assert loaded != TEST_UPGRADE
 
