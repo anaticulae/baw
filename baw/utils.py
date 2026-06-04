@@ -21,6 +21,7 @@ import time
 import tomllib
 import webbrowser
 
+import tomli_w
 import utilo
 
 import baw
@@ -595,3 +596,8 @@ def load_toml(path: str) -> dict:
             baw.error(f'invalid config {path}')
             baw.exitx(msg=str(err))
     return config
+
+
+def write_toml(path: str, config: dict):
+    content = tomli_w.dumps(config)
+    utilo.file_replace(path, content)
