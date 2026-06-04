@@ -151,7 +151,7 @@ def upgrade_requirements(
         return baw.FAILURE
     replaced = baw.requirements.upgrade.replace(content, upgraded)
     if replaced == content:
-        baw.log('Requirements are up to date.\n')
+        baw.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
         return REQUIREMENTS_UPTODATE
     # write new requirements
     baw.utils.file_replace(req_path, replaced)
