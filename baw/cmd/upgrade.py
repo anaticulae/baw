@@ -120,9 +120,73 @@ def check_upgrade(root, packages, pre: bool = False):
 REQUIREMENTS_UPTODATE = 100
 
 
+def upgrade_requirements_toml(root: str) -> int:
+    """Take pyproject.toml, replace version number with current available
+    version on pip repository.
+
+    Args:
+        root(str): generated project
+    Returns:
+        SUCCESS if file was upgraded
+    """
+    req_path = utilo.join(root, 'pyproject.toml')
+    if not os.path.exists(req_path):
+        msg = f'Could not locate any requirements: {req_path}'
+        baw.error(msg)
+        return baw.FAILURE
+    baw.log(f'\nStart upgrading: {req_path}')
+    toml = baw.load_toml(req_path)
+
+    for path in (
+            'project.dependencies',
+            'project.optional-dependencies.dev',
+            'project.optional-dependencies.doc',
+    ):
+        utilo.log(path)
+        datum = from_path(toml, path)
+        if not datum:
+            utilo.log(f'skip: {path}')
+            continue
+        content = utilo.NEWLINE.join(datum)
+        print(content)
+        upgraded = determine_new_requirements(
+            root,
+            requirements=content,
+        )
+        if upgraded is None:
+            return baw.FAILURE
+        replaced = baw.requirements.upgrade.replace(content, upgraded)
+        if replaced == content:
+            baw.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
+            continue
+        update_path(replaced.splitlines(), path, toml)
+    baw.write_toml(req_path, toml)
+    baw.log('Upgrading finished')
+    return baw.SUCCESS
+
+
+def from_path(content, path):
+    # TODO: MOVE TO UTILO
+    for item in path.split('.'):
+        content = content.get(item, dict())
+    if not content:
+        return None
+    return content
+
+
+def update_path(datum, path: str, content: dict):
+    # TODO: MOVE TO UTILO
+    todo = path.split('.')
+    for item in todo[0:-1]:
+        content = content.get(item, dict())
+    if not content:
+        return None
+    content[todo[-1]] = datum
+
+
 def upgrade_requirements_txt(
     root: str,
-    requirements: str = baw.utils.REQUIREMENTS,
+    requirements: str = baw.utils.REQUIREMENTS_TXT,
     pre: bool = False,
 ) -> int:
     """Take pyproject.toml or requirements.txt, replace version number with

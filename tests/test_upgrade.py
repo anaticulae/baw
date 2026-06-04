@@ -146,6 +146,14 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
     assert 'Requirements are up to date' in stdout, stdout
 
 
+def test_upgrade_requirements_toml(project_example):
+    before = utilo.file_read(utilo.join(project_example, 'pyproject.toml'))
+    replaced = baw.cmd.upgrade.upgrade_requirements_toml(project_example)
+    assert replaced == utilo.SUCCESS
+    after = utilo.file_read(utilo.join(project_example, 'pyproject.toml'))
+    assert before != after
+
+
 # @tests.hasgit
 # @tests.nightly
 # def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
