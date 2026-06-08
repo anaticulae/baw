@@ -1,6 +1,60 @@
 # CHANGELOG
 
 
+## v1.82.0 (2026-06-08)
+
+### Bug Fixes
+
+- **requirements**: Ensure pep 503
+  ([`03bb7da`](https://github.com/anaticulae/baw/commit/03bb7da299429eb26718b0224e29ba3e60b124fe))
+
+- **upgrade**: Add old behavior to possible test before committing upgrade
+  ([`fdcd419`](https://github.com/anaticulae/baw/commit/fdcd41905698d113027c9cf04419b0df8c1f83f9))
+
+- **upgrade**: Replace upper limit with pypi if version is larger
+  ([`8cf7a02`](https://github.com/anaticulae/baw/commit/8cf7a0262e8d487273e90f8eb357b9862f83f714))
+
+### Code Style
+
+- **templates**: Format pyproject
+  ([`e7050a5`](https://github.com/anaticulae/baw/commit/e7050a5dd319d8ebcccc12a3814d23cdf74c8b4f))
+
+- **test**: Remove unused import
+  ([`fabd288`](https://github.com/anaticulae/baw/commit/fabd288698b2c51d03475833c61abbc80c494b7a))
+
+### Documentation
+
+- **requirements**: Clarify log message
+  ([`7e7defa`](https://github.com/anaticulae/baw/commit/7e7defa2a6d40bb911a33f87a5162d0ee8028d35))
+
+### Features
+
+- **upgrade**: Make logging more verbose
+  ([`e5c1b6a`](https://github.com/anaticulae/baw/commit/e5c1b6aa789353861aeb45ef3416490154c2e274))
+
+### Refactoring
+
+- **test**: Simplify code
+  ([`81fc566`](https://github.com/anaticulae/baw/commit/81fc56639a5591cf4c28612a4ce06b38ae3bdb18))
+
+- **upgrade**: Clarify naming
+  ([`19ef8a9`](https://github.com/anaticulae/baw/commit/19ef8a95a4ae12482190dd15d332efa7ba39c233))
+
+- **upgrade**: Clarify naming
+  ([`0622e6e`](https://github.com/anaticulae/baw/commit/0622e6ec6f2cc676d3b74d936666e28d33c55ca1))
+
+### Testing
+
+- **upgrade**: Enable unit test
+  ([`740eabd`](https://github.com/anaticulae/baw/commit/740eabdde424c11674f3e09f4d5f8548e9127e5f))
+
+- **upgrade**: Ensure that non pep 503 requirement upgrade works
+  ([`0a30d00`](https://github.com/anaticulae/baw/commit/0a30d009e9b6e04a90ecb3a9f720a29f8a7a2fae))
+
+- **upgrade**: Replace with utilo code
+  ([`253accd`](https://github.com/anaticulae/baw/commit/253accd8c085fad220da18f55d091a8708d104f0))
+
+
 ## v1.81.0 (2026-06-04)
 
 ### Bug Fixes
