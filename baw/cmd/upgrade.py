@@ -44,6 +44,27 @@ def upgrade(
             returnvalue = upgrade_requirements_toml(root)
             if returnvalue:
                 return returnvalue
+            failure = baw.cmd.complex.sync_and_test(
+                root,
+                generate=generate,  # generate test data
+                packages='dev',  # minimal requirements is required
+                quiet=True,
+                stash=False,
+                sync=not notests,  # install new packages
+                test=not notests,
+                testconfig=None,
+                verbose=verbose,
+            )
+            if failure:
+                # reset requirement
+                completed = baw.gix.reset(
+                    root,
+                    'pyproject.toml',
+                    verbose=verbose,
+                )
+                baw.error('Upgrading failed')
+                assert not completed
+                return failure
             failure = baw.git_commit(
                 root,
                 source='pyproject.toml',
@@ -59,30 +80,9 @@ def upgrade(
         if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
         requirements_dev = returnvalue
-        failure = baw.cmd.complex.sync_and_test(
-            root,
-            generate=generate,  # generate test data
-            packages='dev',  # minimal requirements is required
-            quiet=True,
-            stash=False,
-            sync=not notests,  # install new packages
-            test=not notests,
-            testconfig=None,
-            verbose=verbose,
-        )
         requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
             requirements: tuple = (requirements, requirements_dev)
-        if failure:
-            # reset requirement
-            completed = baw.gix.reset(
-                root,
-                requirements,
-                verbose=verbose,
-            )
-            baw.error('Upgrading failed')
-            assert not completed
-            return failure
         failure = baw.git_commit(
             root,
             source=requirements,
@@ -344,20 +344,23 @@ def collect_new_packages(  # pylint:disable=R0914
             baw.error('could not reach package repository')
             sync_error = True
             continue
-        upgraded = check_package(dependency, package, version, pre)
-        if not upgraded:
+        pypi_max = check_package(dependency, package, version, pre)
+        if not pypi_max:
             sync_error = True
             continue
-        if upgraded is True:
+        if pypi_max is True:
             # no upgrade required
             continue
-        sink[package] = upgraded  #(old, new)
+        sink[package] = pypi_max  #(old, new)
     return sync_error
 
 
 def check_package(dependency: str, package: str, version: str, pre: bool):
     available = available_version(dependency, package=package)
     installed = installed_version(dependency)
+    utilo.debug(f'package: {package}')
+    utilo.debug(f'available: {available}')
+    utilo.debug(f'installed: {installed}')
     if installed:
         if baw.requirements.check.lower(
                 current=installed,

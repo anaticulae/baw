@@ -10,33 +10,44 @@
 import contextlib
 import difflib
 
+import baw.project.version
 import baw.requirements
 import baw.requirements.check
 
 
 def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
-    for package, [old, new] in update.equal.items():
+    for package, [old, pypi] in update.equal.items():
         # no version was given for old package
         pattern = f'{package}'
         if old:
             pattern += f'=={old}'
-        replacement = f'{package}=={new}'
-        baw.log(f'replace requirement:\n{pattern}\n{replacement}')
+        replacement = f'{package}=={pypi}'
+        baw.log(f'replace requirement(==):\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
-    for package, [old, new] in update.greater.items():
+    for package, [old, pypi] in update.greater.items():
         if isinstance(old, str):
-            if baw.requirements.check.lower(old, new):
+            if baw.requirements.check.lower(old, pypi):
                 # skip lower version
                 continue
             pattern = f'{package}>=,{old}'
-            replacement = f'{package}>=,{new}'
+            replacement = f'{package}>=,{pypi}'
         else:
-            if baw.requirements.check.lower(old[0], new):
+            if baw.requirements.check.lower(old[0], pypi):
                 # skip lower version
                 continue
             # TODO: first approach of greater equal replacement
-            pattern = f'{package}>={old[0]},<{old[1]}'
-            replacement = f'{package}>={new},<{old[1]}'
+            # pypi > old[1]
+            if not baw.requirements.check.lower(old[1], pypi):
+                # old: ['38.0.0', '47.0.0']
+                # pypi: 48.0.0
+                # Expected = >=48.0.0,<49.0.0
+
+                pypi_plus = f'{baw.project.version.major(pypi) + 1}.0.0'
+                replacement = f'{package}>={pypi},<{pypi_plus}'
+            else:
+                # TODO INVESTIAGE LATER
+                replacement = f'{package}>={pypi},<{old[1]}'
+        pattern = f'{package}>={old[0]},<{old[1]}'
         if pattern == replacement:
             continue
         baw.log(f'replace requirement:\n{pattern}\n{replacement}')
@@ -60,15 +71,24 @@ def replace_in_line(line, old, new):
     """\
     >>> replace_in_line('semver>=2.13.0,<3.0.0;', old='semver>=2.13.0,<3.0.0;', new='semver>=3.0.4,<3.0.0;')
     'semver>=3.0.4,<3.0.0;'
+    >>> replace_in_line('auto-doc==1', 'auto_doc==1', 'auto_doc==2')
+    'auto-doc==2'
     """
     if '#' in line:
         # complex
         return line.split('#')[0] + ' ' + line.split('#')[1].strip()
-    # TODO: ENSURE THAT WHITESPACES PRESERVED
     # simple
-    line = line.replace(' ', '')
-    old = old.replace(' ', '')
+    line = ensure_pep503(line)
+    old = ensure_pep503(old)
+    new = ensure_pep503(new)
     return line.replace(old, new)
+
+
+def ensure_pep503(line: str) -> str:
+    line = line.replace(' ', '')  # TODO: SOMETHING WRONG HERE?
+    line = line.lower()
+    line = line.replace('_', '-')
+    return line
 
 
 def line_match(line, old) -> bool:

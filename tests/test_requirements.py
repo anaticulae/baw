@@ -7,14 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import baw.cmd.upgrade
 import baw.requirements
 import baw.requirements.parser
 import baw.requirements.upgrade
 import tests.fixtures.requirements
 
 REPLACED = """
-PyYAML==6.3.2
+pyyaml==6.3.2
 pdfminer.six==20181108
 
 # Internal packages

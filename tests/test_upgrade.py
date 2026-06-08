@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+import textwrap
 
 import pytest
 import utilo
@@ -154,47 +155,125 @@ def test_upgrade_requirements_toml(project_example):
     assert before != after
 
 
-# @tests.hasgit
-# @tests.nightly
-# def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
-#     path = project_example
+def commit_all(path, msg='Upgrade requirements'):
+    completed = baw.runtime.run_target(
+        path,
+        f'git add . && git commit -m "{msg}"',
+    )
+    assert completed.returncode == utilo.SUCCESS, str(completed)
 
-#     def commit_all():
-#         completed = baw.runtime.run_target(
-#             path,
-#             'git add . && git commit -m "Upgrade requirements"',
-#         )
-#         assert completed.returncode == baw.SUCCESS, str(completed)
 
-#     # yapf in a higher version is provided by dev environment
-#     baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
-#     failed_test = textwrap.dedent("""\
-#     def test_me():
-#         assert 0
-#     """)
-#     failingtest_path = 'tests/test_failed.py'
-#     utilo.file_create(failingtest_path, failed_test)
-#     commit_all()
-#     result = baw.cmd.upgrade.upgrade(
-#         path,
-#         verbose=True,
-#         generate=False,  # do not change - see test.py/generate_only
-#         notests=False,
-#     )
-#     assert result == baw.FAILURE
-#     stdout = tests.stdout(capsys)
-#     assert stdout
-#     assert 'Reset' in stdout, stdout
-#     # Reuse venv environment
-#     # remove failing test
-#     baw.utils.file_remove(failingtest_path)
-#     commit_all()
-#     result = baw.cmd.upgrade.upgrade(
-#         path,
-#         verbose=False,
-#         generate=False,  # see above
-#     )
-#     assert result == baw.SUCCESS
+# yapf in a higher version is provided by dev environment
+YAPF = """\
+[project.optional-dependencies]
+dev = [
+    "yapf == 0.10.0",
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+@tests.nightly
+def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
+    path = project_example
+    # yapf in a higher version is provided by dev environment
+    content = utilo.file_read(utilo.join(path, 'pyproject.toml'))
+    content = content.replace('[tool.semantic_release]', YAPF)
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    failed_test = textwrap.dedent("""\
+    def test_me():
+        assert 0
+    """)
+    failingtest_path = 'tests/test_failed.py'
+    utilo.file_create(failingtest_path, failed_test)
+    commit_all(path)
+    result = baw.cmd.upgrade.upgrade(
+        path,
+        verbose=True,
+        generate=False,  # do not change - see test.py/generate_only
+        notests=False,
+    )
+    assert result == baw.FAILURE
+    stdout = tests.stdout(capsys)
+    assert stdout
+    assert 'Reset' in stdout, stdout
+    # Reuse venv environment
+    # remove failing test
+    utilo.file_remove(failingtest_path)
+    commit_all(path)
+    result = baw.cmd.upgrade.upgrade(
+        path,
+        verbose=False,
+        generate=False,  # see above
+    )
+    assert result == baw.SUCCESS
+
+
+MINUS = """\
+[project.optional-dependencies]
+dev = [
+    "sphinx-autorun == 1.0.0",
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+def test_upgrade_minus_lowerminus(project_example):
+    path = project_example
+    pyproject = utilo.join(path, 'pyproject.toml')
+    content = utilo.file_read(pyproject)
+    content = content.replace('[tool.semantic_release]', MINUS)
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    assert "sphinx-autorun == 1.0.0" in content
+    tests.run('baw upgrade', cwd=path)
+    content = utilo.file_read(pyproject)
+    assert "sphinx-autorun==2.0.0" in content
+
+
+MORE_THAN_ONE_MAJOR = """\
+[project.optional-dependencies]
+dev = [
+    "cryptography>=38.0.0,<47.0.0"
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+def test_upgrade_more_than_one_major(project_example):
+    """\
+    Before this patch:
+
+    dependencies = [
+        "cryptography>=38.0.0,<47.0.0",
+    ]
+    Upgrades to:
+        "cryptography>=48.0.0,<47.0.0",
+    Instead of:
+        "cryptography>=48.0.0,<49.0.0",
+    Current max on pypi is 48.0.0
+    """
+    path = project_example
+    pyproject = utilo.join(path, 'pyproject.toml')
+    content = utilo.file_read(pyproject)
+    content = content.replace('[tool.semantic_release]', MORE_THAN_ONE_MAJOR)
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    assert "cryptography>=38.0.0,<47.0.0" in content
+    utilo.run('baw upgrade', cwd=path, live=True)
+    content = utilo.file_read(pyproject)
+    assert "<47.0.0" not in content
+    assert "cryptography>=48.0.0,<49.0.0" in content
+
 
 REQUIREMENTS = """\
 # =============================================================================
@@ -225,12 +304,12 @@ def test_smart_replace_comment():
 def commit_and_release(simple, monkeypatch):
     root = simple[1]
 
-    upgrade = """\
+    upgrade = utilo.splitlines("""\
         git config advice.setUpstreamFailure false
         touch ABC
         git add .
         git commit -a -m "feat(hello): this is comm"
-    """.splitlines()
+    """)
 
     for cmd in upgrade:
         baw.runtime.run_target(root, cmd)
