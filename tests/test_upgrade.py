@@ -225,12 +225,12 @@ def test_smart_replace_comment():
 def commit_and_release(simple, monkeypatch):
     root = simple[1]
 
-    upgrade = """\
+    upgrade = utilo.splitlines("""\
         git config advice.setUpstreamFailure false
         touch ABC
         git add .
         git commit -a -m "feat(hello): this is comm"
-    """.splitlines()
+    """)
 
     for cmd in upgrade:
         baw.runtime.run_target(root, cmd)
