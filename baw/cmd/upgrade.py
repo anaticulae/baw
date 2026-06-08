@@ -358,6 +358,9 @@ def collect_new_packages(  # pylint:disable=R0914
 def check_package(dependency: str, package: str, version: str, pre: bool):
     available = available_version(dependency, package=package)
     installed = installed_version(dependency)
+    utilo.debug(f'package: {package}')
+    utilo.debug(f'available: {available}')
+    utilo.debug(f'installed: {installed}')
     if installed:
         if baw.requirements.check.lower(
                 current=installed,
