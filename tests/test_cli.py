@@ -12,16 +12,12 @@ import tests
 
 
 @tests.longrun
-def test_baaws_with_ls(project_with_cmd):
+def test_cli_baaws_with_ls(project_with_cmd):
     """Running --run with ls."""
-    tmpdir = project_with_cmd
-    tests.assert_run('baw --run', cwd=tmpdir)
+    tests.assert_run('baw sh ls', cwd=project_with_cmd).__enter__()
 
 
 @tests.longrun
-def test_run_without_cmds_in_project(example):
+def test_cli_run_without_cmds_in_project(example):
     """Running --run without any registered cmd in project."""
-    tests.assert_run_fail(
-        'baw --run',
-        cwd=example,
-    )
+    tests.assert_run_fail('baw sh', cwd=example).__enter__()

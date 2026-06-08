@@ -40,7 +40,7 @@ def test_init_license(project_example):
 def test_escaping_single_collon(monkeypatch):
     """Generate project with ' in name and test install"""
     tests.baaw('init xcd "I\'ts magic"', monkeypatch)
-    tests.assert_run('.', 'pip install --editable .')
+    tests.assert_run('pip install --editable .', cwd='.').__enter__()
 
 
 @pytest.mark.parametrize('cmd', [
