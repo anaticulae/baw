@@ -154,18 +154,17 @@ def test_upgrade_requirements_toml(project_example):
     assert before != after
 
 
+def commit_all(path, msg='Upgrade requirements'):
+    completed = baw.runtime.run_target(
+        path,
+        f'git add . && git commit -m "{msg}"',
+    )
+    assert completed.returncode == utilo.SUCCESS, str(completed)
+
 # @tests.hasgit
 # @tests.nightly
 # def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
 #     path = project_example
-
-#     def commit_all():
-#         completed = baw.runtime.run_target(
-#             path,
-#             'git add . && git commit -m "Upgrade requirements"',
-#         )
-#         assert completed.returncode == baw.SUCCESS, str(completed)
-
 #     # yapf in a higher version is provided by dev environment
 #     baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
 #     failed_test = textwrap.dedent("""\
@@ -174,7 +173,7 @@ def test_upgrade_requirements_toml(project_example):
 #     """)
 #     failingtest_path = 'tests/test_failed.py'
 #     utilo.file_create(failingtest_path, failed_test)
-#     commit_all()
+#     commit_all(path)
 #     result = baw.cmd.upgrade.upgrade(
 #         path,
 #         verbose=True,
@@ -188,7 +187,7 @@ def test_upgrade_requirements_toml(project_example):
 #     # Reuse venv environment
 #     # remove failing test
 #     baw.utils.file_remove(failingtest_path)
-#     commit_all()
+#     commit_all(path)
 #     result = baw.cmd.upgrade.upgrade(
 #         path,
 #         verbose=False,
