@@ -237,6 +237,44 @@ def test_upgrade_minus_lowerminus(project_example):
     assert "sphinx-autorun==2.0.0" in content
 
 
+MORE_THAN_ONE_MAJOR = """\
+[project.optional-dependencies]
+dev = [
+    "cryptography>=38.0.0,<47.0.0"
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+def test_upgrade_more_than_one_major(project_example):
+    """\
+    Before this patch:
+
+    dependencies = [
+        "cryptography>=38.0.0,<47.0.0",
+    ]
+    Upgrades to:
+        "cryptography>=48.0.0,<47.0.0",
+    Instead of:
+        "cryptography>=48.0.0,<49.0.0",
+    Current max on pypi is 48.0.0
+    """
+    path = project_example
+    pyproject = utilo.join(path, 'pyproject.toml')
+    content = utilo.file_read(pyproject)
+    content = content.replace('[tool.semantic_release]', MORE_THAN_ONE_MAJOR)
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    assert "cryptography>=38.0.0,<47.0.0" in content
+    utilo.run('baw upgrade', cwd=path, live=True)
+    content = utilo.file_read(pyproject)
+    assert "<47.0.0" not in content
+    assert "cryptography>=48.0.0,<49.0.0" in content
+
+
 REQUIREMENTS = """\
 # =============================================================================
 # C O P Y R I G H T

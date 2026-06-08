@@ -10,6 +10,7 @@
 import contextlib
 import difflib
 
+import baw.project.version
 import baw.requirements
 import baw.requirements.check
 
@@ -35,8 +36,18 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
                 # skip lower version
                 continue
             # TODO: first approach of greater equal replacement
-            pattern = f'{package}>={old[0]},<{old[1]}'
-            replacement = f'{package}>={pypi},<{old[1]}'
+            # pypi > old[1]
+            if not baw.requirements.check.lower(old[1], pypi):
+                # old: ['38.0.0', '47.0.0']
+                # pypi: 48.0.0
+                # Expected = >=48.0.0,<49.0.0
+
+                pypi_plus = f'{baw.project.version.major(pypi) + 1}.0.0'
+                replacement = f'{package}>={pypi},<{pypi_plus}'
+            else:
+                # TODO INVESTIAGE LATER
+                replacement = f'{package}>={pypi},<{old[1]}'
+        pattern = f'{package}>={old[0]},<{old[1]}'
         if pattern == replacement:
             continue
         baw.log(f'replace requirement:\n{pattern}\n{replacement}')
