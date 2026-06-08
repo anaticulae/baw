@@ -344,14 +344,14 @@ def collect_new_packages(  # pylint:disable=R0914
             baw.error('could not reach package repository')
             sync_error = True
             continue
-        upgraded = check_package(dependency, package, version, pre)
-        if not upgraded:
+        pypi_max = check_package(dependency, package, version, pre)
+        if not pypi_max:
             sync_error = True
             continue
-        if upgraded is True:
+        if pypi_max is True:
             # no upgrade required
             continue
-        sink[package] = upgraded  #(old, new)
+        sink[package] = pypi_max  #(old, new)
     return sync_error
 
 
