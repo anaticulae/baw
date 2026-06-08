@@ -212,6 +212,31 @@ def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     assert result == baw.SUCCESS
 
 
+MINUS = """\
+[project.optional-dependencies]
+dev = [
+    "sphinx-autorun == 1.0.0",
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+def test_upgrade_minus_lowerminus(project_example):
+    path = project_example
+    pyproject = utilo.join(path, 'pyproject.toml')
+    content = utilo.file_read(pyproject)
+    content = content.replace('[tool.semantic_release]', MINUS)
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    assert "sphinx-autorun == 1.0.0" in content
+    tests.run('baw upgrade', cwd=path)
+    content = utilo.file_read(pyproject)
+    assert "sphinx-autorun==2.0.0" in content
+
+
 REQUIREMENTS = """\
 # =============================================================================
 # C O P Y R I G H T
