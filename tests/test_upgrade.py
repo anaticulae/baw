@@ -8,6 +8,7 @@
 #==============================================================================
 
 import os
+import textwrap
 
 import pytest
 import utilo
@@ -161,39 +162,55 @@ def commit_all(path, msg='Upgrade requirements'):
     )
     assert completed.returncode == utilo.SUCCESS, str(completed)
 
-# @tests.hasgit
-# @tests.nightly
-# def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
-#     path = project_example
-#     # yapf in a higher version is provided by dev environment
-#     baw.utils.file_append(baw.utils.REQUIREMENTS_TXT, 'yapf==0.10.0')
-#     failed_test = textwrap.dedent("""\
-#     def test_me():
-#         assert 0
-#     """)
-#     failingtest_path = 'tests/test_failed.py'
-#     utilo.file_create(failingtest_path, failed_test)
-#     commit_all(path)
-#     result = baw.cmd.upgrade.upgrade(
-#         path,
-#         verbose=True,
-#         generate=False,  # do not change - see test.py/generate_only
-#         notests=False,
-#     )
-#     assert result == baw.FAILURE
-#     stdout = tests.stdout(capsys)
-#     assert stdout
-#     assert 'Reset' in stdout, stdout
-#     # Reuse venv environment
-#     # remove failing test
-#     baw.utils.file_remove(failingtest_path)
-#     commit_all(path)
-#     result = baw.cmd.upgrade.upgrade(
-#         path,
-#         verbose=False,
-#         generate=False,  # see above
-#     )
-#     assert result == baw.SUCCESS
+
+# yapf in a higher version is provided by dev environment
+YAPF = """\
+[project.optional-dependencies]
+dev = [
+    "yapf == 0.10.0",
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+@tests.nightly
+def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
+    path = project_example
+    # yapf in a higher version is provided by dev environment
+    content = utilo.file_read(utilo.join(path, 'pyproject.toml'))
+    content = content.replace('[tool.semantic_release]', YAPF)
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    failed_test = textwrap.dedent("""\
+    def test_me():
+        assert 0
+    """)
+    failingtest_path = 'tests/test_failed.py'
+    utilo.file_create(failingtest_path, failed_test)
+    commit_all(path)
+    result = baw.cmd.upgrade.upgrade(
+        path,
+        verbose=True,
+        generate=False,  # do not change - see test.py/generate_only
+        notests=False,
+    )
+    assert result == baw.FAILURE
+    stdout = tests.stdout(capsys)
+    assert stdout
+    assert 'Reset' in stdout, stdout
+    # Reuse venv environment
+    # remove failing test
+    utilo.file_remove(failingtest_path)
+    commit_all(path)
+    result = baw.cmd.upgrade.upgrade(
+        path,
+        verbose=False,
+        generate=False,  # see above
+    )
+    assert result == baw.SUCCESS
+
 
 REQUIREMENTS = """\
 # =============================================================================
