@@ -60,15 +60,24 @@ def replace_in_line(line, old, new):
     """\
     >>> replace_in_line('semver>=2.13.0,<3.0.0;', old='semver>=2.13.0,<3.0.0;', new='semver>=3.0.4,<3.0.0;')
     'semver>=3.0.4,<3.0.0;'
+    >>> replace_in_line('auto-doc==1', 'auto_doc==1', 'auto_doc==2')
+    'auto-doc==2'
     """
     if '#' in line:
         # complex
         return line.split('#')[0] + ' ' + line.split('#')[1].strip()
-    # TODO: ENSURE THAT WHITESPACES PRESERVED
     # simple
-    line = line.replace(' ', '')
-    old = old.replace(' ', '')
+    line = ensure_pep503(line)
+    old = ensure_pep503(old)
+    new = ensure_pep503(new)
     return line.replace(old, new)
+
+
+def ensure_pep503(line: str) -> str:
+    line = line.replace(' ', '')  # TODO: SOMETHING WRONG HERE?
+    line = line.lower()
+    line = line.replace('_', '-')
+    return line
 
 
 def line_match(line, old) -> bool:
