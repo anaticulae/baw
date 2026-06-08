@@ -15,28 +15,28 @@ import baw.requirements.check
 
 
 def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
-    for package, [old, new] in update.equal.items():
+    for package, [old, pypi] in update.equal.items():
         # no version was given for old package
         pattern = f'{package}'
         if old:
             pattern += f'=={old}'
-        replacement = f'{package}=={new}'
+        replacement = f'{package}=={pypi}'
         baw.log(f'replace requirement(==):\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
-    for package, [old, new] in update.greater.items():
+    for package, [old, pypi] in update.greater.items():
         if isinstance(old, str):
-            if baw.requirements.check.lower(old, new):
+            if baw.requirements.check.lower(old, pypi):
                 # skip lower version
                 continue
             pattern = f'{package}>=,{old}'
-            replacement = f'{package}>=,{new}'
+            replacement = f'{package}>=,{pypi}'
         else:
-            if baw.requirements.check.lower(old[0], new):
+            if baw.requirements.check.lower(old[0], pypi):
                 # skip lower version
                 continue
             # TODO: first approach of greater equal replacement
             pattern = f'{package}>={old[0]},<{old[1]}'
-            replacement = f'{package}>={new},<{old[1]}'
+            replacement = f'{package}>={pypi},<{old[1]}'
         if pattern == replacement:
             continue
         baw.log(f'replace requirement:\n{pattern}\n{replacement}')
