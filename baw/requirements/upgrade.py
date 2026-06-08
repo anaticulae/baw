@@ -21,7 +21,7 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
         if old:
             pattern += f'=={old}'
         replacement = f'{package}=={new}'
-        baw.log(f'replace requirement:\n{pattern}\n{replacement}')
+        baw.log(f'replace requirement(==):\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
     for package, [old, new] in update.greater.items():
         if isinstance(old, str):
