@@ -1,6 +1,35 @@
 # CHANGELOG
 
 
+## v1.83.0 (2026-06-09)
+
+### Documentation
+
+- **baw**: Extend documentation
+  ([`ab3a279`](https://github.com/anaticulae/baw/commit/ab3a2795910c0f5d4bc1ae1bd426597517820015))
+
+### Features
+
+- **upgrade**: Verify version before upgrade
+  ([`a297e29`](https://github.com/anaticulae/baw/commit/a297e295936549706bfff51f60726350f8416a89))
+
+### Refactoring
+
+- **baw**: Rename const
+  ([`68687cf`](https://github.com/anaticulae/baw/commit/68687cf5a4f676ef8516dba3f45c482b574c68d5))
+
+- **baw**: Replace with constant
+  ([`da7a498`](https://github.com/anaticulae/baw/commit/da7a4982de02105eae52e9eb79a7b3572f36aea1))
+
+### Testing
+
+- **cli**: Enable unit test
+  ([`863f785`](https://github.com/anaticulae/baw/commit/863f785b83c61cc1290b8b66596ff506460cd067))
+
+- **test**: Enable unit test
+  ([`0ece675`](https://github.com/anaticulae/baw/commit/0ece67558546a6da1db17ad3dccc1ec56e33e248))
+
+
 ## v1.82.0 (2026-06-08)
 
 ### Bug Fixes
