@@ -75,7 +75,7 @@ def init(
     Returns:
         SUCCESS or return code of failed process
     """
-    baw_path = os.path.join(root, baw.utils.BAW_EXT)
+    baw_path = utilo.join(root, baw.utils.BAW_EXT)
     if os.path.exists(baw_path):
         baw.error(f'Project {baw_path} already exists.')
         raise ValueError(baw.FAILURE)
@@ -126,7 +126,7 @@ def create_project_files(root, shortcut, ptype, cmdline):
         create_python(root, shortcut, cmdline=cmdline)
     if ptype == 'data':
         baw.utils.file_create(
-            os.path.join(root, 'VERSION'),
+            utilo.join(root, 'VERSION'),
             content=DATA_PROJECT,
         )
         todo = baw.resources.NORMAL
@@ -164,7 +164,7 @@ def create_folder(root: str):
         root(str): project root of generated project
     """
     for item in baw.resources.FOLDERS:
-        create = os.path.join(root, item)
+        create = utilo.join(root, item)
         if os.path.exists(create):
             continue
         os.makedirs(create)
@@ -180,7 +180,7 @@ def create_files(root: str, todo: list = None):
     """
     todo = baw.resources.FILES if todo is None else todo
     for item, content in todo:
-        create = os.path.join(root, item)
+        create = utilo.join(root, item)
         replaced = baw.resources.template_replace(root, content)
         replaced = replaced.strip() + baw.NEWLINE
         operation_type = 'template' if content != replaced else 'copy'
@@ -208,17 +208,17 @@ def create_python(
         cmdline(bool): if True, create cmd line template
     """
     # TODO: DIRTY
-    python_project = os.path.join(root, shortcut)
+    python_project = utilo.join(root, shortcut)
     os.makedirs(python_project, exist_ok=True)
     utilo.file_create(
-        os.path.join(python_project, '__init__.py'),
+        utilo.join(python_project, '__init__.py'),
         baw.resources.INIT.replace('{{SHORT}}', shortcut),
     )
 
     entry_point = ''
     entry_point_package = ''
     if cmdline:
-        python_cmdline = os.path.join(python_project, 'cli')
+        python_cmdline = utilo.join(python_project, 'cli')
         os.makedirs(python_cmdline, exist_ok=True)
         main_replaced = baw.resources.template_replace(
             root,
@@ -229,11 +229,11 @@ def create_python(
             baw.resources.INIT_CMD,
         )
         utilo.file_create(
-            os.path.join(python_project, '__main__.py'),
+            utilo.join(python_project, '__main__.py'),
             main_replaced,
         )
         utilo.file_create(
-            os.path.join(python_cmdline, '__init__.py'),
+            utilo.join(python_cmdline, '__init__.py'),
             init_replaced,
         )
         entry_point = baw.resources.template_replace(
@@ -248,7 +248,7 @@ def create_python(
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
-    utilo.file_create(os.path.join(root, baw.PYPROJECT), replaced)
+    utilo.file_create(utilo.join(root, baw.PYPROJECT), replaced)
 
 
 def utilo_current() -> str:

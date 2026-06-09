@@ -67,5 +67,5 @@ testdir                                                     td
 success=True                                                expect=True
 success=False                                               expect=False
 
-os.path.join(td.tmpdir,                                     td.tmpdir.join(
-os.path.join(testdir.tmpdir,                                td.tmpdir.join(
+utilo.join(td.tmpdir,                                     td.tmpdir.join(
+utilo.join(testdir.tmpdir,                                td.tmpdir.join(

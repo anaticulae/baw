@@ -14,6 +14,8 @@ import shutil
 import stat
 import sys
 
+import utilo
+
 import baw
 import baw.cmd.utils
 import baw.config
@@ -108,7 +110,7 @@ def create_pattern(
 
 def generated(root) -> list:
     project = os.path.split(root)[1]
-    tmpdir = os.path.join(baw.config.bawtmp(), project)
+    tmpdir = utilo.join(baw.config.bawtmp(), project)
     selected = []
     if os.path.exists(tmpdir):
         selected.append(ResourceDir(tmpdir))

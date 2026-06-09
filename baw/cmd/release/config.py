@@ -16,9 +16,9 @@ import baw.config
 import baw.gix
 import baw.utils
 
-TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
-TEMPLATE = utilo.file_read(os.path.join(TEMPLATES, 'semantic.cfg'))
-SEMANTIC = os.path.join(TEMPLATES, 'semantic')
+TEMPLATES = utilo.join(baw.ROOT, 'baw/templates')
+TEMPLATE = utilo.file_read(utilo.join(TEMPLATES, 'semantic.cfg'))
+SEMANTIC = utilo.join(TEMPLATES, 'semantic')
 
 
 @contextlib.contextmanager
@@ -49,7 +49,7 @@ def firstversion(root: str) -> bool:
 
 def configpath(root: str):
     tmp = baw.utils.tmp(root)
-    config = os.path.join(
+    config = utilo.join(
         tmp,
         'release.cfg',
     )

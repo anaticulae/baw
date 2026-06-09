@@ -27,7 +27,7 @@ def generate(root: str, inject: bool = False, install: bool = False):
     name = name.replace(':', '_')
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
-    config = os.path.join(root, name)
+    config = utilo.join(root, name)
     content = header(root)
     content += baw.NEWLINE * 2
     content += environments(root)
@@ -82,7 +82,7 @@ def requirements(root: str) -> str:
         sys.exit(baw.FAILURE)
     result = ''
     for item in FILES:
-        path = os.path.join(root, item)
+        path = utilo.join(root, item)
         if not os.path.exists(path):
             continue
         result += f'COPY {item} /var/workdir/{item}{baw.NEWLINE}'
@@ -104,7 +104,7 @@ def resources(root: str) -> str:
     root = baw.cmd.utils.determine_root(root)
     if not root:
         sys.exit(baw.FAILURE)
-    conftest = os.path.join(root, 'tests/conftest.py')
+    conftest = utilo.join(root, 'tests/conftest.py')
     if not os.path.exists(conftest):
         return ''
     if 'RESOURCES' not in utilo.file_read(conftest):
@@ -112,7 +112,7 @@ def resources(root: str) -> str:
         return ''
     result = ''
     for item in baw.config.sources(root) + RESOURCES:
-        path = os.path.join(root, item)
+        path = utilo.join(root, item)
         if not os.path.exists(path):
             continue
         if os.path.isfile(path):

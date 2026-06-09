@@ -29,14 +29,14 @@ def test_clean_files_and_dirs(simple):
     root = simple[1]
     base = tests.file_count(root)
     for item in ('build', baw.utils.TMP):
-        os.makedirs(os.path.join(root, item))
+        os.makedirs(utilo.join(root, item))
     assert tests.file_count(root) == base + 2
 
     for item in ('.coverage', 'do_not_clean.txt'):
-        utilo.file_create(os.path.join(root, item))
+        utilo.file_create(utilo.join(root, item))
     assert tests.file_count(root) == base + 2 + 2
 
-    nested_file = os.path.join(root, 'build', '.coverage')
+    nested_file = utilo.join(root, 'build', '.coverage')
     utilo.file_create(nested_file)
     assert os.path.exists(nested_file)
     # run clean task

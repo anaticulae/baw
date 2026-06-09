@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import os
 import textwrap
 
 import pytest
@@ -121,7 +120,7 @@ iamraw
 
 
 def test_upgrading(tmpdir):
-    requirements_path = os.path.join(tmpdir, baw.utils.REQUIREMENTS_TXT)
+    requirements_path = utilo.join(tmpdir, baw.utils.REQUIREMENTS_TXT)
     utilo.file_create(
         requirements_path,
         TEST_UPGRADE,
@@ -339,7 +338,7 @@ def commit_and_release(simple, monkeypatch):
     for cmd in upgrade:
         baw.runtime.run_target(root, cmd)
 
-    content = utilo.file_read(os.path.join(root, baw.PYPROJECT))
+    content = utilo.file_read(utilo.join(root, baw.PYPROJECT))
     assert 'version = "0.0.0"' in content, content
 
     tests.baaw(
@@ -355,7 +354,7 @@ def test_upgrade_version_number(simple, monkeypatch):
     root = simple[1]
     commit_and_release(simple, monkeypatch)
 
-    content = utilo.file_read(os.path.join(root, baw.PYPROJECT))
+    content = utilo.file_read(utilo.join(root, baw.PYPROJECT))
     assert 'version = "0.1.0"' in content, content
 
 
@@ -366,5 +365,5 @@ def test_upgrade_changelog(simple, monkeypatch):
     root = simple[1]
     commit_and_release(simple, monkeypatch)
 
-    changelog = utilo.file_read(os.path.join(root, 'CHANGELOG'))
+    changelog = utilo.file_read(utilo.join(root, 'CHANGELOG'))
     assert 'v0.1.0' in changelog

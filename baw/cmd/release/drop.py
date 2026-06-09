@@ -10,6 +10,8 @@
 import os
 import re
 
+import utilo
+
 import baw.config
 import baw.gix
 import baw.runtime
@@ -72,12 +74,12 @@ def reset_resources(
     verbose: int = 0,
 ):
     short = baw.config.shortcut(root)
-    initpath = os.path.join(short, '__init__.py')
+    initpath = utilo.join(short, '__init__.py')
     changelog = baw.config.changelog(root)
     to_reset = []
     returncode = 0
     for item in (initpath, changelog):
-        if not os.path.exists(os.path.join(root, item)):
+        if not os.path.exists(utilo.join(root, item)):
             msg = f'Item {item} does not exists'
             baw.error(msg)
             returncode += 1

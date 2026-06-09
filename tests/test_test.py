@@ -28,7 +28,7 @@ def test_creating_project(tmpdir):
     )
     error = f'{completed.stderr}\n{completed.stdout}'
     assert completed.returncode == baw.SUCCESS, error
-    assert os.path.exists(os.path.join(tmpdir, '.git'))
+    assert os.path.exists(utilo.join(tmpdir, '.git'))
 
 
 @tests.hasbaw
@@ -65,7 +65,7 @@ def test_test_with_import(example, tmp_install):  # pylint:disable=W0613,W0621
 
 
 def test_cmd_junit_xml(simple):  # pylint:disable=W0621
-    expected = os.path.join(simple[1], 'myreport.xml')
+    expected = utilo.join(simple[1], 'myreport.xml')
     # -n1: avoid xdist runtime error, TODO: VERIFY THIS
     simple[0](f'test --junit_xml={expected} -n1')
     assert os.path.exists(expected)
@@ -86,7 +86,7 @@ def test_all():
 def test_cmd_test_all(simple):
     root = simple[1]
     utilo.file_create(
-        os.path.join(root, 'tests/test_simple.py'),
+        utilo.join(root, 'tests/test_simple.py'),
         content=SIMPLE,
     )
     completed = utilo.run('baw test fast -n1', cwd=root)

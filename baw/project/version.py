@@ -53,7 +53,7 @@ def determine(root: str, verbose: int = 0) -> str:
         return version
 
     version_path = version_path.removesuffix(':__version__')
-    path = os.path.join(root, version_path)
+    path = utilo.join(root, version_path)
     content = utilo.file_read(path)
     for pattern in VERSION:
         parsed = re.search(pattern, content)

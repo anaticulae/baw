@@ -13,13 +13,14 @@ import subprocess
 import sys
 
 import pytest
+import utilo
 
 import baw.__main__
 import baw.runtime
 
 THIS = os.path.dirname(__file__)
-PROJECT = os.path.abspath(os.path.join(THIS, '..'))
-DATA = os.path.join(THIS, 'data')
+PROJECT = os.path.abspath(utilo.join(THIS, '..'))
+DATA = utilo.join(THIS, 'data')
 
 LONGRUN = 'LONGRUN' in os.environ
 NO_LONGRUN_REASON = 'Takes to mutch time'

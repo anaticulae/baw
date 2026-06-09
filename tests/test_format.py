@@ -38,7 +38,7 @@ def test_regression_format_keep_single_list(minimal, monkeypatch):  # pylint:dis
     We do not want this first line.
     """
     source = 'import baw.utils as bu\n'
-    path = os.path.join(minimal, 'abc/hello.py')
+    path = utilo.join(minimal, 'abc/hello.py')
     utilo.file_create(path, source)
     assert os.path.exists(path)
     tests.baaw('format', monkeypatch=monkeypatch)

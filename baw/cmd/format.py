@@ -62,7 +62,7 @@ def format_python(root: str, verbose: int = 0) -> int:
     template_skip = '-e *.tpy'
     todo = []
     for item in sources(root):
-        path = os.path.join(root, item)
+        path = utilo.join(root, item)
         if os.path.isfile(path):
             cmd = f'yapf -i {yapf} {path}'
         else:
@@ -154,14 +154,14 @@ def format_(
     baw.log(info)
     folder = baw.config.sources(root)
     # check that `tests` path exists
-    testpath = os.path.join(root, 'tests')
+    testpath = utilo.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
     # TODO: LIMIT MAX_WORKERS?
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         waitfor = []
         for item in folder:
-            source = os.path.join(root, item)
+            source = utilo.join(root, item)
             cmdx = f'{cmd} {source}'
             waitfor.append(
                 executor.submit(

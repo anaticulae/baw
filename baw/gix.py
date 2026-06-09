@@ -14,6 +14,7 @@ import subprocess
 import sys
 
 import git
+import utilo
 
 import baw
 import baw.config
@@ -29,7 +30,7 @@ def init(root: str):
     Args:
         root(str): generated project
     """
-    gitdir = os.path.join(root, GIT_EXT)
+    gitdir = utilo.join(root, GIT_EXT)
     if os.path.exists(gitdir):
         baw.skip('git init')
         return
@@ -372,7 +373,7 @@ def branchname(root: str) -> str:
 def update_gitignore(root: str, verbose: int = 0):
     if verbose:
         baw.log('sync gitexclude')
-    exclude = os.path.join(root, GIT_REPO_EXCLUDE)
+    exclude = utilo.join(root, GIT_REPO_EXCLUDE)
     if not os.path.exists(exclude):
         baw.log(f'no git dir: {exclude}, skip update')
         return baw.SUCCESS

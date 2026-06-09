@@ -17,7 +17,7 @@ import baw.utils
 
 def path_tested(root: str) -> str:
     tmpdir = baw.config.project_tmpdir(root)
-    return os.path.join(tmpdir, 'tested')
+    return utilo.join(tmpdir, 'tested')
 
 
 def is_tested(root: str, hashed: str) -> bool:

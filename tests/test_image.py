@@ -57,7 +57,7 @@ def test_cmd_image_upgrade_prerelease(simple, capsys):
 # def test_cmd_image_pipref_upgrade(simple, capsys, typ):
 #     simple[0]('pipe init --platform jenkins')
 #     root = simple[1]
-#     dockerfile = os.path.join(root, 'DOCKERFILE')
+#     dockerfile = utilo.join(root, 'DOCKERFILE')
 
 #     def create():
 #         # use image-name of current Jenkins-File

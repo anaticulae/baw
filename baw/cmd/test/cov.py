@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw.config
 import baw.utils
 
@@ -30,10 +32,10 @@ def cov_args(
     Returns:
         args for coverage cmd
     """
-    output = os.path.join(baw.utils.tmp(root), 'report')
+    output = utilo.join(baw.utils.tmp(root), 'report')
     if isinstance(outdir, str):
         output = baw.utils.fixup_windows(outdir)
-    cov_config = os.path.join(baw.ROOT, 'baw/templates', '.coveragerc')
+    cov_config = utilo.join(baw.ROOT, 'baw/templates', '.coveragerc')
     assert os.path.exists(cov_config), str(cov_config)
     no_cov = '--no-cov ' if pdb else ''
     if no_cov:
@@ -60,7 +62,7 @@ def collect_cov_sources(root: str) -> str:
     sources = baw.config.sources(root)
     cov_sources = ''
     for project in sources:
-        code_path = os.path.join(root, project)
+        code_path = utilo.join(root, project)
         cov_sources += f'--cov={code_path} '
     return cov_sources
 

@@ -15,7 +15,7 @@ import utilo
 import baw.config
 import tests
 
-PROJECT = os.path.join(tests.DATA, '.baw')
+PROJECT = utilo.join(tests.DATA, '.baw')
 assert os.path.exists(PROJECT), str(PROJECT)
 
 CONFIG = """\
@@ -34,7 +34,7 @@ fail_on_finding = True
 @pytest.fixture
 def configuration(testdir):
     root = str(testdir.tmpdir)
-    path = os.path.join(root, '.baw')
+    path = utilo.join(root, '.baw')
     utilo.file_create(path, CONFIG)
     return root
 

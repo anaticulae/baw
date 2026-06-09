@@ -95,10 +95,10 @@ def generate_conftest(root: str):
     """Generate conftest file if not exists, or update if file smaller
     than the new one"""
 
-    testpath = os.path.join(root, 'tests')
+    testpath = utilo.join(root, 'tests')
     if not os.path.exists(testpath):
         return
-    output = os.path.join(testpath, 'conftest.py')
+    output = utilo.join(testpath, 'conftest.py')
     if not os.path.exists(output):
         utilo.file_create(output, baw.resources.CONFTEST_TEMPLATE)
         return
@@ -131,14 +131,14 @@ def start(root):
 
 
 def sort_configuration(root: str) -> str:
-    config = os.path.join(baw.utils.tmp(root), '.isort.cfg')
+    config = utilo.join(baw.utils.tmp(root), '.isort.cfg')
     forward = baw.forward_slash(config)
     return forward
 
 
 def workspace_configuration(root: str):
     """Path to generated workspace configuration."""
-    config = os.path.join(baw.utils.tmp(root), '..code-workspace')
+    config = utilo.join(baw.utils.tmp(root), '..code-workspace')
     return baw.forward_slash(config)
 
 
