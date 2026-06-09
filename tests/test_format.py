@@ -82,3 +82,30 @@ def test_format_toml_invalid(testdir):
     with pytest.raises(SystemExit):
         returncode = baw.cmd.format.format_toml(testdir.tmpdir, filters=False)
         assert returncode
+
+
+INVALID_YML = """\
+server:
+  host: localhost
+  port: 8080
+  ssl: true
+    certificate: /etc/ssl/cert.pem
+
+database:
+  user: admin
+  password: secret
+  tables:
+    - users
+    - orders
+      - products
+"""
+
+
+@tests.hasbaw
+def test_format_invalid_yml(project_example, monkeypatch, capsys):  # pylint:disable=W0621
+    path = utilo.join(project_example, 'invalid.yml')
+    utilo.file_create(path, INVALID_YML)
+    tests.baaw('format', monkeypatch=monkeypatch, expect=False)
+    stderr = tests.stderr(capsys)
+    expected = 'ruyaml.scanner.ScannerError: mapping values are not allowed here'
+    assert expected in stderr
