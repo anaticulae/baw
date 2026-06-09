@@ -1,6 +1,33 @@
 # CHANGELOG
 
 
+## v1.84.0 (2026-06-09)
+
+### Features
+
+- **format**: Handle yaml formatter fix correctly
+  ([`b0daab2`](https://github.com/anaticulae/baw/commit/b0daab25aaf381b0c8c73043ecca2c53728b4e65))
+
+### Refactoring
+
+- **format**: Clarify method name
+  ([`4a5896a`](https://github.com/anaticulae/baw/commit/4a5896a0dd07971e4c93ad71df61244e2a3aec5d))
+
+- **utlio**: Replace with utilo code
+  ([`f8c0ae8`](https://github.com/anaticulae/baw/commit/f8c0ae83c9ad605336a2ce803a157d0c170b2d0f))
+
+### Testing
+
+- **cov**: Enable unit test
+  ([`d7e8c17`](https://github.com/anaticulae/baw/commit/d7e8c1706b4603b1c1e85c1184de8344bf61d0c2))
+
+- **format**: Fix var name
+  ([`942c3f4`](https://github.com/anaticulae/baw/commit/942c3f4ce39ea21dc33be009eb5ce893a0bd22e8))
+
+- **info**: Enable unit test
+  ([`104aeca`](https://github.com/anaticulae/baw/commit/104aeca0de2087a96d139f344df31b0d379f5335))
+
+
 ## v1.83.0 (2026-06-09)
 
 ### Documentation
