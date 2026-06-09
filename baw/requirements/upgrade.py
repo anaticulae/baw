@@ -10,6 +10,8 @@
 import contextlib
 import difflib
 
+import utilo
+
 import baw.project.version
 import baw.requirements
 import baw.requirements.check
@@ -33,7 +35,10 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
             replacement = f'{package}>=,{pypi}'
         else:
             if baw.requirements.check.lower(old[0], pypi):
+                # {'cryptography': (['138.0.0', '139.0.0'], '48.0.0')}
                 # skip lower version
+                utilo.error(f'package: {package}; lower border {old[0]} '
+                            f'is larger than available max {pypi} (pypi)')
                 continue
             # TODO: first approach of greater equal replacement
             # pypi > old[1]
@@ -41,7 +46,6 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
                 # old: ['38.0.0', '47.0.0']
                 # pypi: 48.0.0
                 # Expected = >=48.0.0,<49.0.0
-
                 pypi_plus = f'{baw.project.version.major(pypi) + 1}.0.0'
                 replacement = f'{package}>={pypi},<{pypi_plus}'
             else:

@@ -275,6 +275,30 @@ def test_upgrade_more_than_one_major(project_example):
     assert "cryptography>=48.0.0,<49.0.0" in content
 
 
+REQUIREMENT_DOES_NOT_EXISTS = """\
+[project.optional-dependencies]
+dev = [
+    "cryptography>=138.0.0,<139.0.0"
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+def test_upgrade_requirement_does_not_exists(project_example):
+    path = project_example
+    pyproject = utilo.join(path, 'pyproject.toml')
+    content = utilo.file_read(pyproject)
+    content = content.replace('[tool.semantic_release]', REQUIREMENT_DOES_NOT_EXISTS) # yapf:disable
+    utilo.file_replace('pyproject.toml', content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    assert "cryptography>=138.0.0,<139.0.0" in content
+    completed = utilo.run('baw upgrade', cwd=path)
+    assert '[ERROR] package: cryptography; lower border 138.0.0 is larger ' in completed.stderr
+
+
 REQUIREMENTS = """\
 # =============================================================================
 # C O P Y R I G H T
