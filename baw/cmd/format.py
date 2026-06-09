@@ -28,7 +28,7 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: int = 0):
-    for item in (format_source, format_toml, format_imports, format_yaml):
+    for item in (format_python, format_toml, format_imports, format_yaml):
         try:
             # TODO: MAKE VERBOSE LEVEL GOBAL
             failure = item(root, verbose=verbose)
@@ -53,7 +53,7 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: int = 0) -> int:
+def format_python(root: str, verbose: int = 0) -> int:
     baw.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
@@ -78,7 +78,7 @@ def format_source(root: str, verbose: int = 0) -> int:
     return completed
 
 
-def format_toml(root: str) -> int:
+def format_toml(root: str, filters: bool = True) -> int:
     files = utilo.file_list(
         root,
         include=[
@@ -88,11 +88,12 @@ def format_toml(root: str) -> int:
         absolute=True,
     )
     for item in files:
-        if '/tmp/' in item:  # nosec:B108
-            continue
-        if '/venv/' in item:
-            continue
-        config = baw.load_toml(item)
+        if filters:
+            if '/tmp/' in item:  # nosec:B108
+                continue
+            if '/venv/' in item:
+                continue
+        config = baw.utils.load_toml(item)
         baw.write_toml(item, config)
     return baw.SUCCESS
 
