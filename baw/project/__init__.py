@@ -29,6 +29,6 @@ def is_pyproject(root: str) -> bool:
     >>> is_pyproject(determine_root(__path__))
     True
     """
-    if any(utilo.exists(utilo.join(root, item)) for item in (baw.REQUIREMENTS,)): # yapf:disable
+    if any(utilo.exists(utilo.join(root, item)) for item in (baw.PYPROJECT,)):
         return True
     return False

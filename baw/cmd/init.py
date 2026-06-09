@@ -248,7 +248,7 @@ def create_python(
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
-    utilo.file_create(os.path.join(root, baw.REQUIREMENTS), replaced)
+    utilo.file_create(os.path.join(root, baw.PYPROJECT), replaced)
 
 
 def utilo_current() -> str:

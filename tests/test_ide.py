@@ -61,12 +61,12 @@ def no_code(tmpdir, monkeypatch):
 
 def test_ide_invalid_pyproject(workspace, monkeypatch, capsys):  # pylint:disable=W0621
     # make config invalid
-    previous = baw.utils.file_read(baw.REQUIREMENTS)
+    previous = baw.utils.file_read(baw.PYPROJECT)
     assert previous
     before = 'dependencies = ['
     assert before in previous
     after = previous.replace(before, before[0:-4])
-    baw.file_replace(baw.REQUIREMENTS, after)
+    baw.file_replace(baw.PYPROJECT, after)
     # run baw
     with monkeypatch.context() as patched:
         # do not open ide

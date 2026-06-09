@@ -475,7 +475,7 @@ def version(root: str) -> str:
     if os.path.exists(path):
         # data project
         return 'VERSION:__version__'
-    path = os.path.join(root, baw.REQUIREMENTS)
+    path = os.path.join(root, baw.PYPROJECT)
     if os.path.exists(path):
         return 'pyproject.toml:project.version'
     short = shortcut(root)

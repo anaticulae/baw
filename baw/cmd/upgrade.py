@@ -41,7 +41,7 @@ def upgrade(
     force: upgrade dev requirements also
     """
     with baw.git_stash(root, verbose=verbose):
-        if utilo.exists(utilo.join(root, baw.REQUIREMENTS)):
+        if utilo.exists(utilo.join(root, baw.PYPROJECT)):
             returnvalue = upgrade_requirements_toml(root)
             if returnvalue:
                 return returnvalue
@@ -60,7 +60,7 @@ def upgrade(
                 # reset requirement
                 completed = baw.gix.reset(
                     root,
-                    baw.REQUIREMENTS,
+                    baw.PYPROJECT,
                     verbose=verbose,
                 )
                 baw.error('Upgrading failed')
@@ -68,7 +68,7 @@ def upgrade(
                 return failure
             failure = baw.git_commit(
                 root,
-                source=baw.REQUIREMENTS,
+                source=baw.PYPROJECT,
                 message='chore(requirements): upgrade pyproject.toml',
                 verbose=verbose,
             )
@@ -146,7 +146,7 @@ def upgrade_requirements_toml(root: str) -> int:
     Returns:
         SUCCESS if file was upgraded
     """
-    req_path = utilo.join(root, baw.REQUIREMENTS)
+    req_path = utilo.join(root, baw.PYPROJECT)
     if not os.path.exists(req_path):
         msg = f'Could not locate any requirements: {req_path}'
         baw.error(msg)

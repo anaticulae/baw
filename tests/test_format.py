@@ -20,7 +20,7 @@ import tests
 @pytest.fixture
 def minimal(testdir):
     baw.config.create(testdir.tmpdir, 'abc', 'alphabet')
-    utilo.file_create(baw.REQUIREMENTS, '# setup')
+    utilo.file_create(baw.PYPROJECT, '# setup')
     os.makedirs(testdir.tmpdir.join('abc'))
     return testdir.tmpdir
 
