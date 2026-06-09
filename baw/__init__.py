@@ -11,7 +11,7 @@ from importlib.metadata import version
 
 __version__ = version('baw')
 
-ROOT = None
+ROOT: str | None = None
 
 # pylint:disable=wrong-import-position
 import baw.__root__
