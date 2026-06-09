@@ -24,14 +24,14 @@ FOLDERS = [
     'docs/releases',
 ]
 
-TEMPLATES = os.path.join(baw.ROOT, 'baw/templates')
+TEMPLATES = utilo.join(baw.ROOT, 'baw/templates')
 assert os.path.exists(TEMPLATES), f'No template-dir {TEMPLATES}'
 
 fread = utilo.file_read
 
 
 def joined(path: str, asserts: bool = True) -> str:
-    result = os.path.join(TEMPLATES, path)
+    result = utilo.join(TEMPLATES, path)
     if asserts:
         assert os.path.exists(result), f'Does not exists {result}'
     return result
@@ -137,9 +137,11 @@ INIT = COPYRIGHT + """
 import importlib.metadata
 import os
 
+import utilo
+
 __version__ = importlib.metadata.version('{{SHORT}}')
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+ROOT = os.path.abspath(utilo.join(os.path.dirname(__file__), '..'))
 """
 
 ENTRY_POINT = """\

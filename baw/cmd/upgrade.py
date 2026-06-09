@@ -81,7 +81,7 @@ def upgrade(
         if returnvalue in (baw.SUCCESS, baw.FAILURE):
             return returnvalue
         requirements_dev = returnvalue
-        requirements = os.path.join(root, baw.utils.REQUIREMENTS_TXT)
+        requirements = utilo.join(root, baw.utils.REQUIREMENTS_TXT)
         if requirements_dev:
             requirements: tuple = (requirements, requirements_dev)
         failure = baw.git_commit(
@@ -97,7 +97,7 @@ def upgrade(
 
 def check_upgrade(root, packages, pre: bool = False):
     failure = upgrade_requirements_txt(root, pre=pre)
-    requirements_dev = os.path.join(root, baw.utils.REQUIREMENTS_DEV)
+    requirements_dev = utilo.join(root, baw.utils.REQUIREMENTS_DEV)
     if not os.path.exists(requirements_dev) or packages == 'requirements':
         requirements_dev = None
     failure_dev = REQUIREMENTS_UPTODATE
@@ -107,7 +107,7 @@ def check_upgrade(root, packages, pre: bool = False):
             requirements=baw.utils.REQUIREMENTS_DEV,
             pre=pre,
         )
-    requirements_extra = os.path.join(root, baw.utils.REQUIREMENTS_EXTRA)
+    requirements_extra = utilo.join(root, baw.utils.REQUIREMENTS_EXTRA)
     check_extra = packages in 'extra all'
     if not os.path.exists(requirements_extra) or not check_extra:
         requirements_extra = None
@@ -220,7 +220,7 @@ def upgrade_requirements_txt(
     Returns:
         SUCCESS if file was upgraded
     """
-    req_path = os.path.join(root, requirements)
+    req_path = utilo.join(root, requirements)
     if not os.path.exists(req_path):
         msg = f'Could not locate any requirements: {req_path}'
         baw.error(msg)

@@ -21,14 +21,13 @@ def test_cmd_test_cov_simple(simple, capsys, tmp_install):  # pylint:disable=W06
     simple[0]('test --cov -n1')
     simple[0]('info covreport')
     lines = tests.stdout(capsys).strip().splitlines()
-    path = os.path.join(lines[-1], 'index.html')
+    path = utilo.join(lines[-1], 'index.html')
     content = utilo.file_read(path)
     assert '100%' in content
 
 
-@pytest.mark.xfail
 @pytest.mark.parametrize('report', (True, False))
-def test_cmd_test_cov_report(report, simple, capsys):
+def test_cmd_test_cov_report(report, simple, capsys, tmp_install):  # pylint:disable=W0613
     noreport = '' if report else '--no_report'
     # do not generate html-report
     simple[0](f'--verbose test --cov -n1 {noreport}')

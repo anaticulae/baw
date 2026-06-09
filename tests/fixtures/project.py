@@ -33,7 +33,7 @@ def example(testdir, monkeypatch):
         tmpdir = lambda: testdir.tmpdir.join('tmpdir')  # pylint:disable=C3001
         context.setattr(baw.config, 'bawtmp', tmpdir)
         with tests.assert_run(cmd, cwd=testdir.tmpdir):
-            assert os.path.exists(os.path.join(testdir.tmpdir, '.git'))
+            assert os.path.exists(utilo.join(testdir.tmpdir, '.git'))
             yield testdir.tmpdir
 
 
@@ -76,7 +76,7 @@ def project_example_done(project_example):  # pylint:disable=W0621
 
     * [x] this is a faked done todo
     """)
-    source = os.path.join(project_example, 'docs/releases/0.1.0.rst')
+    source = utilo.join(project_example, 'docs/releases/0.1.0.rst')
     loaded = utilo.file_read(source)
     replaced = loaded.replace(pattern, replacement)
     baw.utils.file_replace(source, replaced)

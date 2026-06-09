@@ -90,7 +90,7 @@ def prints(root, value: str, verbose: int = 0) -> int:  # pylint:disable=R1260,R
 def print_tmp(root: str):
     root = baw.project.determine_root(root)
     name = os.path.split(root)[1]
-    tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
+    tmpdir = utilo.join(baw.config.bawtmp(), 'tmp', name)
     baw.log(tmpdir)
     sys.exit(baw.SUCCESS)
 
@@ -111,7 +111,7 @@ def pip_version(root: str, verbose: int = 0):
 
 
 def print_covreport(root: str):
-    result = os.path.join(
+    result = utilo.join(
         baw.utils.tmp(root),
         'report',
     )
@@ -146,7 +146,7 @@ def requirement_hash(root: str, verbose: int = 0) -> str:
             'requirements.extra tests/conftest.py').split()
     content = ''
     for fname in todo:
-        path = os.path.join(root, fname)
+        path = utilo.join(root, fname)
         if not os.path.exists(path):
             continue
         content += utilo.file_read(path)
@@ -221,7 +221,7 @@ def join(*items, exist: bool = False, assert_exists: bool = False) -> str:
     >>> join('hello', 'tello/well', 'wello')
     'hello/tello/well/wello'
     """
-    path = os.path.join(*items)
+    path = utilo.join(*items)
     path = baw.forward_slash(path)
     exist |= assert_exists
     assert not exist or os.path.exists(path), path

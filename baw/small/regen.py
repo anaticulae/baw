@@ -11,6 +11,8 @@ import argparse
 import functools
 import os
 
+import utilo
+
 import baw.cmd.utils
 import baw.config
 import baw.runtime
@@ -27,12 +29,12 @@ def main():
 
 def run(root, cmd, worker: int = 1):
     # generated = resinf.generated(project=root)
-    generated = os.path.join(baw.config.bawtmp(), root)
+    generated = utilo.join(baw.config.bawtmp(), root)
     assert os.path.exists(generated), str(generated)
     todo = []
     files = [str(item) for item in os.listdir(generated) if '_' in str(item)]
     for index, file_path in enumerate(files):
-        path = os.path.join(generated, file_path)
+        path = utilo.join(generated, file_path)
         assert os.path.exists(path), str(path)
         progress = str(int(100.0 * (index / len(files)))).zfill(3)
         todo.append(functools.partial(
@@ -55,7 +57,7 @@ def single(cmd, cwd, progress: str):
 
 
 def append_log(completed, cwd: str):
-    logpath = os.path.join(cwd, 'generated.log')
+    logpath = utilo.join(cwd, 'generated.log')
     if not os.path.exists(logpath):
         baw.error(f'miss log path: {logpath}')
         return

@@ -13,6 +13,7 @@ import pytest
 import utilo
 
 import baw
+import baw.cmd.format
 import baw.config
 import tests
 
@@ -37,9 +38,74 @@ def test_regression_format_keep_single_list(minimal, monkeypatch):  # pylint:dis
     We do not want this first line.
     """
     source = 'import baw.utils as bu\n'
-    path = os.path.join(minimal, 'abc/hello.py')
+    path = utilo.join(minimal, 'abc/hello.py')
     utilo.file_create(path, source)
     assert os.path.exists(path)
     tests.baaw('format', monkeypatch=monkeypatch)
     read = utilo.file_read(path)
     assert read == source
+
+
+VALID = """\
+---
+version: 2
+
+updates:
+  # Python dependencies
+  - package-ecosystem: pip
+    directory: /  # only checks requirements.txt
+    schedule:
+      interval: weekly
+"""
+
+
+def test_format_yaml(testdir):
+    utilo.file_create('valid.yml', content=VALID)
+    returncode = baw.cmd.format.format_yaml(testdir.tmpdir)
+    assert not returncode
+
+
+INVALID_TOML = """\
+[build-system]
+requires = [
+    "setuptools>=82.0.1",
+    "wheel>=0.46.3",
+]
+build-backend = "setuptools.build_meta"
+{{SHORT}}
+"""
+
+
+def test_format_toml_invalid(testdir):
+    # format toml as yaml to invoke error
+    utilo.file_create('invalid.toml', content=INVALID_TOML)
+    with pytest.raises(SystemExit):
+        returncode = baw.cmd.format.format_toml(testdir.tmpdir, filters=False)
+        assert returncode
+
+
+INVALID_YML = """\
+server:
+  host: localhost
+  port: 8080
+  ssl: true
+    certificate: /etc/ssl/cert.pem
+
+database:
+  user: admin
+  password: secret
+  tables:
+    - users
+    - orders
+      - products
+"""
+
+
+@tests.hasbaw
+def test_format_invalid_yml(project_example, monkeypatch, capsys):  # pylint:disable=W0621
+    path = utilo.join(project_example, 'invalid.yml')
+    utilo.file_create(path, INVALID_YML)
+    tests.baaw('format', monkeypatch=monkeypatch, expect=False)
+    stderr = tests.stderr(capsys)
+    expected = 'ruyaml.scanner.ScannerError: mapping values are not allowed here'
+    assert expected in stderr

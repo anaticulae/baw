@@ -134,7 +134,7 @@ def receive_data(container, outdir: bool = True):
     outdir: str = outdir if isinstance(outdir, str) else '/var/outdir'
     baw.log('receive data...')
     with baw.utils.tmpdir() as tmp:
-        base = os.path.join(tmp, 'content.tar')
+        base = utilo.join(tmp, 'content.tar')
         with open(base, 'wb') as fp:
             try:
                 bits, stat = container.get_archive(outdir)
@@ -178,7 +178,7 @@ def tar_content(
         baw.exitx('tar is not installed, could not tar')
     # tar  cvf abc.tar --exclude-vcs --exclude-vcs-ignores --exclude=build/* .
     with baw.utils.tmpdir() as tmp:
-        base = os.path.join(tmp, 'content.tar')
+        base = utilo.join(tmp, 'content.tar')
         tar = fixup_path(base)
         content = baw.forward_slash(content, save_newline=False)
         do_not_tar = ignore(git_include)

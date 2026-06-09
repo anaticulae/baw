@@ -70,22 +70,22 @@ def generate_docs(root: str, verbose: int) -> int:
     )
     if completed.returncode:
         return completed.returncode
-    path = os.path.join(baw.config.docpath(root), 'conf.py')
+    path = utilo.join(baw.config.docpath(root), 'conf.py')
     replaced = baw.resources.template_replace(root, baw.resources.DOC_CONF)
     baw.utils.file_replace(path, replaced)
     doctmp = baw.config.docpath(root)
     # copy docs
     baw.log('sync docs')
-    source = os.path.join(root, 'docs')
+    source = utilo.join(root, 'docs')
     shutil.copytree(source, doctmp, dirs_exist_ok=True)
     for filename in 'CHANGELOG.md CHANGELOG'.split():
-        path = os.path.join(root, filename)
+        path = utilo.join(root, filename)
         if not os.path.exists(path):
             continue
         loaded = utilo.file_read(path)
-        baw.utils.file_replace(os.path.join(doctmp, filename), loaded)
+        baw.utils.file_replace(utilo.join(doctmp, filename), loaded)
     for filename in 'changelog.rst'.split():
-        path = os.path.join(doctmp, 'pages', filename)
+        path = utilo.join(doctmp, 'pages', filename)
         if not os.path.exists(path):
             continue
         loaded = utilo.file_read(path)
@@ -105,7 +105,7 @@ def build_html(root: str, verbose: int) -> int:
         '-j 8'
     ])
     doctmp = baw.config.docpath(root)
-    htmloutput = os.path.join(doctmp, 'html')
+    htmloutput = utilo.join(doctmp, 'html')
     cmd = f'sphinx-build {doctmp} {htmloutput} {build_options}'
     baw.log('make html')
     if verbose:
@@ -120,15 +120,15 @@ def build_html(root: str, verbose: int) -> int:
 
 
 def update_template(root: str):
-    path = os.path.join(baw.config.docpath(root), 'conf.py')
+    path = utilo.join(baw.config.docpath(root), 'conf.py')
     replaced = baw.resources.template_replace(root, baw.resources.DOC_CONF)
     baw.utils.file_replace(path, replaced)
 
 
 def open_docs(root: str):
     doctmp = baw.config.docpath(root)
-    htmloutput = os.path.join(doctmp, 'html')
-    url = os.path.join(htmloutput, 'index.html')
+    htmloutput = utilo.join(doctmp, 'html')
+    url = utilo.join(htmloutput, 'index.html')
     baw.utils.openbrowser(url)
 
 

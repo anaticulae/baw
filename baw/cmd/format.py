@@ -28,7 +28,7 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: int = 0):
-    for item in (format_source, format_toml, format_imports, format_yaml):
+    for item in (format_python, format_toml, format_imports, format_yaml):
         try:
             # TODO: MAKE VERBOSE LEVEL GOBAL
             failure = item(root, verbose=verbose)
@@ -53,7 +53,7 @@ def sources(root: str):
     return result
 
 
-def format_source(root: str, verbose: int = 0) -> int:
+def format_python(root: str, verbose: int = 0) -> int:
     baw.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
@@ -62,7 +62,7 @@ def format_source(root: str, verbose: int = 0) -> int:
     template_skip = '-e *.tpy'
     todo = []
     for item in sources(root):
-        path = os.path.join(root, item)
+        path = utilo.join(root, item)
         if os.path.isfile(path):
             cmd = f'yapf -i {yapf} {path}'
         else:
@@ -78,7 +78,7 @@ def format_source(root: str, verbose: int = 0) -> int:
     return completed
 
 
-def format_toml(root: str) -> int:
+def format_toml(root: str, filters: bool = True) -> int:
     files = utilo.file_list(
         root,
         include=[
@@ -88,11 +88,12 @@ def format_toml(root: str) -> int:
         absolute=True,
     )
     for item in files:
-        if '/tmp/' in item:  # nosec:B108
-            continue
-        if '/venv/' in item:
-            continue
-        config = baw.load_toml(item)
+        if filters:
+            if '/tmp/' in item:  # nosec:B108
+                continue
+            if '/venv/' in item:
+                continue
+        config = baw.utils.load_toml(item)
         baw.write_toml(item, config)
     return baw.SUCCESS
 
@@ -100,14 +101,16 @@ def format_toml(root: str) -> int:
 def format_yaml(root: str) -> int:
     utilo.log('format yaml')
     cmd = f'yamlfix {root} --exclude="**/build/**" --exclude="**/venv/**"'
-    completed = utilo.run(cmd, cwd=root)
-    utilo.debug(completed)
-    utilo.log('format yaml: completed')
+    completed = utilo.run(cmd, cwd=root, expect=None)
+    if completed.returncode:
+        utilo.error('format yaml: failed')
+    else:
+        utilo.log('format yaml: completed')
     if completed.stdout.strip():
         utilo.log(completed.stdout)
     if completed.returncode:
         if completed.stderr:
-            utilo.error(completed.stderr)
+            utilo.error(utilo.NEWLINE.join(completed.stderr.splitlines()[-4:]))
         return completed.returncode
     return baw.SUCCESS
 
@@ -153,14 +156,14 @@ def format_(
     baw.log(info)
     folder = baw.config.sources(root)
     # check that `tests` path exists
-    testpath = os.path.join(root, 'tests')
+    testpath = utilo.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
     # TODO: LIMIT MAX_WORKERS?
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         waitfor = []
         for item in folder:
-            source = os.path.join(root, item)
+            source = utilo.join(root, item)
             cmdx = f'{cmd} {source}'
             waitfor.append(
                 executor.submit(

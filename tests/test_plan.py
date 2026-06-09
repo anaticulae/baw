@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw.cmd.plan
 import baw.gix
 import tests
@@ -43,7 +45,7 @@ def test_plan_code_quality(project_example):
 @tests.nightly
 def test_plan_init_first_testplan(project_example):
     """Ensure that project init generates first release plan"""
-    plan = os.path.join(project_example, 'docs/releases/0.1.0.rst')
+    plan = utilo.join(project_example, 'docs/releases/0.1.0.rst')
     assert os.path.exists(plan), plan
     clean = baw.gix.is_clean(project_example)
     assert clean, clean

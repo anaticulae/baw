@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
+import utilo
 
 import baw
 import baw.gix
@@ -22,9 +22,9 @@ def test_write():
 
 def test_cmd_baseline_test(simple, monkeypatch, capsys):
     root = simple[1]
-    baw.file_create(os.path.join(root, 'tests/abc'), 'abc')
+    baw.file_create(utilo.join(root, 'tests/abc'), 'abc')
     baw.file_create(
-        os.path.join(root, 'tests/test_write.py'),
+        utilo.join(root, 'tests/test_write.py'),
         content=CREATE_FILE,
     )
     baw.git_add(root, pattern='*')

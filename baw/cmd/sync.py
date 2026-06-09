@@ -226,7 +226,7 @@ def pyproject_packages(root: str) -> dict:
     if not root:
         baw.error(f'pyproject_packages: root is {root}')
         return {'requirements': [], 'dev': [], 'doc': []}
-    base = os.path.join(root, baw.PYPROJECT)
+    base = utilo.join(root, baw.PYPROJECT)
     if not os.path.exists(base):
         return {}
     config = baw.utils.load_toml(base)

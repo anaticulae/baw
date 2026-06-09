@@ -20,6 +20,8 @@ import enum
 import functools
 import os
 
+import utilo
+
 import baw
 import baw.config
 import baw.resources
@@ -79,7 +81,7 @@ def lint(
     """
     scope = Scope.from_str(scope)
     code = ' '.join(baw.config.sources(root))
-    testpath = os.path.join(root, 'tests')
+    testpath = utilo.join(root, 'tests')
     linttest = testpath if os.path.exists(testpath) else ''
     run_in = f'{code} {linttest} '
     # TODO: ADD TO RETURNCODE LATER

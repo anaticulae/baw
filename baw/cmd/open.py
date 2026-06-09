@@ -11,10 +11,11 @@ import glob
 import os
 import sys
 
+import utilo
+
 import baw.config
 import baw.project
 import baw.runtime
-import baw.utils
 
 
 def openme(root: str, path: str = None, prints: bool = False):
@@ -37,7 +38,7 @@ def openme(root: str, path: str = None, prints: bool = False):
 
 def open_generated(root: str, console: bool = False):
     name = os.path.split(root)[1]
-    generated = os.path.join(baw.config.bawtmp(), name)
+    generated = utilo.join(baw.config.bawtmp(), name)
     # generated = resinf.generated(project=name)
     if console:
         baw.log(generated)
@@ -50,19 +51,19 @@ def open_generated(root: str, console: bool = False):
 
 def open_tmp(root: str, prints: bool = False):
     name = os.path.split(root)[1]
-    tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
+    tmpdir = utilo.join(baw.config.bawtmp(), 'tmp', name)
     open_this(tmpdir, prints=prints)
 
 
 def open_venv(root: str, prints: bool = False):
     name = os.path.split(root)[1]
-    tmpdir = os.path.join(baw.config.bawtmp(), 'venv', name)
+    tmpdir = utilo.join(baw.config.bawtmp(), 'venv', name)
     open_this(tmpdir, prints=prints)
 
 
 def open_lasttest(root: str, prints: bool = False):
     name = os.path.split(root)[1]
-    tmpdir = os.path.join(baw.config.bawtmp(), 'tmp', name)
+    tmpdir = utilo.join(baw.config.bawtmp(), 'tmp', name)
     directories = list(glob.glob(f'{tmpdir}/**/', recursive=True))
     directories = [item for item in directories if 'pytest_cache' not in item]
     directories.sort(key=lambda x: os.stat(x).st_mtime)
@@ -75,7 +76,7 @@ def open_lasttest(root: str, prints: bool = False):
 
 
 def open_tests(root: str, prints: bool = False):
-    tests = os.path.join(root, 'tests')
+    tests = utilo.join(root, 'tests')
     open_this(tests, prints=prints)
 
 

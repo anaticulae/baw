@@ -154,7 +154,7 @@ def all_tests(testconfig) -> bool:
 
 def open_report(root: str):
     """Open test coverage report after successful test-run"""
-    url = os.path.join(baw.utils.tmp(root), 'report/index.html')
+    url = utilo.join(baw.utils.tmp(root), 'report/index.html')
     baw.utils.openbrowser(url)
 
 
@@ -167,7 +167,7 @@ def setup_testenvironment(
     generate: bool,
     noinstall: bool = False,
 ):
-    testdir = os.path.join(root, 'tests')
+    testdir = utilo.join(root, 'tests')
     if not os.path.exists(testdir):
         baw.error(f'no testdir: {testdir} available')
         sys.exit(baw.FAILURE)
@@ -260,11 +260,11 @@ def create_test_cmd(  # pylint:disable=R0914
 
 
 def create_pytest_config(root: str) -> str:
-    pytest_ini = os.path.join(baw.ROOT, 'baw/templates/pytest.pini')
+    pytest_ini = utilo.join(baw.ROOT, 'baw/templates/pytest.pini')
     # using ROOT to get location from baw-tool
     assert os.path.exists(pytest_ini), f'no testconfig available {pytest_ini}'
     config = utilo.file_read(pytest_ini)
-    path = os.path.join(root, 'pytest.ini')
+    path = utilo.join(root, 'pytest.ini')
     baw.utils.file_replace(
         path,
         content=config,
@@ -276,13 +276,13 @@ def create_testdir(root):
     tmpdir = baw.utils.tmp(root)
     testtime = baw.datetime.current(seconds=True, separator='_')
     testfolder = f'test_{testtime}'
-    logfolder = os.path.join(tmpdir, 'log')
+    logfolder = utilo.join(tmpdir, 'log')
     os.makedirs(logfolder, exist_ok=True)
-    tmp_testpath = os.path.join(tmpdir, testfolder)
+    tmp_testpath = utilo.join(tmpdir, testfolder)
     if os.path.exists(tmp_testpath):
         # remove test folder if exists
         shutil.rmtree(tmp_testpath)
-    cachedir = os.path.join(tmpdir, 'pytest_cache')
+    cachedir = utilo.join(tmpdir, 'pytest_cache')
     return tmp_testpath, cachedir
 
 
@@ -294,7 +294,7 @@ def select_tests_sources(
     coverage: bool,
 ) -> str:
     # set to root to run doctests for all subproject's
-    testdir = os.path.join(root, 'tests')
+    testdir = utilo.join(root, 'tests')
     doctests = ' '.join(baw.config.sources(root))
     if 'pyargs' in str(parameter):
         # select tests by --pyargs
@@ -304,7 +304,7 @@ def select_tests_sources(
         # testdir = ''
         # do not skip normal tests when running coverage
         # Ensure to run conftest on doctest run
-        testdir = os.path.join(root, 'tests/conftest.py')
+        testdir = utilo.join(root, 'tests/conftest.py')
     result = f'{testdir} {doctests} '
     return result
 

@@ -61,7 +61,7 @@ def ensure_dockerfile_path(dockerfile):
     dockerfile = baw.forward_slash(dockerfile)
     if '/' not in dockerfile:
         # make absolute?
-        dockerfile = os.path.join(os.getcwd(), dockerfile)
+        dockerfile = utilo.join(os.getcwd(), dockerfile)
     return dockerfile
 
 
@@ -91,7 +91,7 @@ def dockerfile_resolve_gitdescribe(dockerfile: str):
         yield dockerfile
         return
     # tmp file must be in the same path as dockerfile to COPY correctly
-    newpath = os.path.join(os.path.split(dockerfile)[0], 'dockertmp')
+    newpath = utilo.join(os.path.split(dockerfile)[0], 'dockertmp')
     utilo.file_create(
         newpath,
         content=described,
@@ -120,7 +120,7 @@ def describe(dockerfile: str) -> str:
 
 def create_git_hash(root: str, name=None):  # pylint:disable=W0613
     root = baw.cmd.utils.determine_root(root)
-    path = os.path.join(root, 'Dockerfile')
+    path = utilo.join(root, 'Dockerfile')
     if not os.path.exists(path):
         baw.error(f'missing Dockerfile: {path}')
         sys.exit(baw.FAILURE)

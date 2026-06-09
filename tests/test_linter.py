@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-
 import utilo
 
 import baw.cmd.lint
@@ -23,7 +21,7 @@ def test_linter_run_with_scope(example, capsys):
     assert returncode == baw.SUCCESS, f'{returncode} {capsys.readouterr()}'
 
     # create error file
-    todofile = os.path.join(root, 'xkcd/todo.py')
+    todofile = utilo.join(root, 'xkcd/todo.py')
     utilo.file_create(todofile, '# TODO: Hello\n')
 
     returncode = baw.cmd.lint.lint(root)

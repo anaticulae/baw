@@ -67,11 +67,11 @@ def create(
         linter=linter,
         coverage=coverage,
     )
-    outpath = os.path.join(releases(root), f'{major}.{minor}.0.rst')
+    outpath = utilo.join(releases(root), f'{major}.{minor}.0.rst')
     utilo.file_create(outpath, replaced)
     baw.log(f'create new release plan: {outpath}')
 
-    overview = os.path.join(releases(root), 'releases.rst')
+    overview = utilo.join(releases(root), 'releases.rst')
     loaded = utilo.file_read(overview)
     # TODO: REFACTOR THIS HACK
     if major == 0 and minor == '1':  # pylint:disable=C2001
@@ -152,7 +152,7 @@ def current(root: str) -> str:
 
 def releases(root: str) -> str:
     assert os.path.exists(root), root
-    result = os.path.join(root, 'docs/releases')
+    result = utilo.join(root, 'docs/releases')
     assert os.path.exists(result)
     return result
 
@@ -162,7 +162,7 @@ def current_plan(root: str) -> str:
     if plan is None:
         return None
     source = releases(root)
-    return os.path.join(source, f'{plan}.rst')
+    return utilo.join(source, f'{plan}.rst')
 
 
 AFTER_SPLIT = """\

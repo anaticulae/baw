@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-
 import utilo
 
 import baw
@@ -32,7 +30,7 @@ MESSAGE = 'The next version is: 1.0.0'
 @tests.longrun
 def test_release_simple(simple, monkeypatch, capsys):
     root = simple[1]
-    path = os.path.join(root, 'abc.txt')
+    path = utilo.join(root, 'abc.txt')
     baw.file_create(path, 'CONTENT')
     baw.git_add(root, 'abc.txt')
     baw.git_commit(root, '.', 'feat(abc): feature is welcome')
@@ -61,7 +59,7 @@ def test_release_non_python(testdir, monkeypatch, capsys):
     tests.baaw(cmd, monkeypatch)
     tests.fixtures.project.no_remote()
     root = testdir.tmpdir
-    path = os.path.join(root, 'abc.txt')
+    path = utilo.join(root, 'abc.txt')
     baw.file_create(path, 'CONTENT')
     baw.git_add(root, 'abc.txt')
     baw.git_commit(root, '.', 'feat(abc): feature is welcome')

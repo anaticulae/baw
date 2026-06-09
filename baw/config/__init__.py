@@ -26,6 +26,8 @@ import io
 import os
 import sys
 
+import utilo
+
 import baw
 import baw.project
 import baw.resources
@@ -214,9 +216,9 @@ def create(
 
 
 def project_tmpdir(root: str, ensure: bool = True) -> str:
-    tmpdir = os.path.join(bawtmp(), 'tmp')
+    tmpdir = utilo.join(bawtmp(), 'tmp')
     shortname = shortcut(root)
-    path = os.path.join(tmpdir, shortname)
+    path = utilo.join(tmpdir, shortname)
     if ensure:
         os.makedirs(path, exist_ok=True)
     return path
@@ -336,7 +338,7 @@ def sources(root: str) -> list:
         sys.exit(baw.FAILURE)
     failure = 0
     for subproject in source:
-        if os.path.exists(os.path.join(root, subproject)):
+        if os.path.exists(utilo.join(root, subproject)):
             continue
         failure += 1
         baw.log(f'subproject does not exists: {subproject}')
@@ -354,12 +356,12 @@ def config_path(root: str) -> str:
     If no paths exists return prefered expected path.
     """
     for item in PROJECT_PATH:
-        expected = os.path.join(root, item)
+        expected = utilo.join(root, item)
         if os.path.exists(expected) and os.path.isfile(expected):
             # isfile: to skip .baw-folder
             return expected
     # if no path exists, return default one
-    return os.path.join(root, PROJECT_PATH[0])
+    return utilo.join(root, PROJECT_PATH[0])
 
 
 @functools.lru_cache
@@ -459,7 +461,7 @@ def changelog(root: str) -> str:
     'CHANGELOG'
     """
     for fname in 'CHANGELOG CHANGELOG.md'.split():
-        path = os.path.join(root, fname)
+        path = utilo.join(root, fname)
         if os.path.exists(path):
             return fname
     raise ValueError(f'could not locate changelog: {root}')
@@ -471,11 +473,11 @@ def version(root: str) -> str:
     >>> version(baw.project.determine_root(__file__))
     'pyproject.toml:project.version'
     """
-    path = os.path.join(root, 'VERSION')
+    path = utilo.join(root, 'VERSION')
     if os.path.exists(path):
         # data project
         return 'VERSION:__version__'
-    path = os.path.join(root, baw.PYPROJECT)
+    path = utilo.join(root, baw.PYPROJECT)
     if os.path.exists(path):
         return 'pyproject.toml:project.version'
     short = shortcut(root)
@@ -515,7 +517,7 @@ def bawtmp():
 
 def docpath(root: str, mkdir: bool = True) -> str:
     shortname = shortcut(root)
-    tmpdoc = os.path.join(bawtmp(), 'docs', shortname)
+    tmpdoc = utilo.join(bawtmp(), 'docs', shortname)
     if mkdir:
         os.makedirs(tmpdoc, exist_ok=True)
     return tmpdoc

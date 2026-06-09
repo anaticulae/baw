@@ -17,7 +17,7 @@ import baw.utils
 
 def determine_root(path) -> str | None:
     current = str(path)
-    while not os.path.exists(os.path.join(current, baw.utils.BAW_EXT)):  # pylint:disable=W0149
+    while not os.path.exists(utilo.join(current, baw.utils.BAW_EXT)):  # pylint:disable=W0149
         current, base = os.path.split(current)
         if not str(base).strip():
             return None

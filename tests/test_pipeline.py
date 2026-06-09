@@ -24,7 +24,7 @@ def test_cmd_pipeline_init_github(simple):
     root = simple[1]
     simple[0]('pipe init --platform github')
     assert os.path.exists(root.join('.github'))
-    makefile = os.path.join(root, 'Makefile')
+    makefile = utilo.join(root, 'Makefile')
     content = utilo.file_read(makefile)
     assert '{{PACKAGE}}' not in content
 

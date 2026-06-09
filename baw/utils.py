@@ -187,7 +187,7 @@ def tmp(root: str) -> str:
     # queuemo-1.17.2-py3.8.egg
     projectname = os.path.split(root)[1].split('-')[0]
     import baw.config  # pylint:disable=W0621
-    path = os.path.join(baw.config.bawtmp(), 'tmp', projectname)
+    path = utilo.join(baw.config.bawtmp(), 'tmp', projectname)
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -211,7 +211,7 @@ def tmpfile() -> str:
     """
     name = tmpname()
     tmps = tmp(baw.ROOT)
-    result = os.path.join(tmps, name)
+    result = utilo.join(tmps, name)
     if os.path.exists(result):
         # try again
         return tmpfile()
@@ -467,7 +467,7 @@ def static(root):
     short = baw.cmd.info.baw_name(root)
     if not short:
         exitx(msg=f"missing short `{short}` def in .baw: {root}")
-    path = os.path.join(root, short, "__init__.py")
+    path = utilo.join(root, short, "__init__.py")
     content = utilo.file_read(path)
     searched = re.search(r"__version__ = \'(.*?)\'", content)
     if not searched:
@@ -576,7 +576,7 @@ def file_list(  # pylint:disable=R1260
             if ext in exclude:
                 continue
         if absolute:
-            filepath = os.path.join(path, item)
+            filepath = utilo.join(path, item)
         result.append(filepath)
     if sort:
         result = files_sort(result)
