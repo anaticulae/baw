@@ -25,7 +25,6 @@ import functools
 import io
 import os
 import sys
-import tomllib
 
 import baw
 import baw.project
@@ -476,7 +475,7 @@ def version(root: str) -> str:
     if os.path.exists(path):
         # data project
         return 'VERSION:__version__'
-    path = os.path.join(root, 'pyproject.toml')
+    path = os.path.join(root, baw.PYPROJECT)
     if os.path.exists(path):
         return 'pyproject.toml:project.version'
     short = shortcut(root)

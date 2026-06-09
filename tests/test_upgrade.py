@@ -13,6 +13,7 @@ import textwrap
 import pytest
 import utilo
 
+import baw
 import baw.cmd.upgrade
 import baw.requirements.upgrade
 import baw.runtime
@@ -148,10 +149,10 @@ def test_cmd_upgrade_pre(simple, capsys):  # pylint:disable=W0621,W0613
 
 
 def test_upgrade_requirements_toml(project_example):
-    before = utilo.file_read(utilo.join(project_example, 'pyproject.toml'))
+    before = utilo.file_read(utilo.join(project_example, baw.PYPROJECT))
     replaced = baw.cmd.upgrade.upgrade_requirements_toml(project_example)
     assert replaced == utilo.SUCCESS
-    after = utilo.file_read(utilo.join(project_example, 'pyproject.toml'))
+    after = utilo.file_read(utilo.join(project_example, baw.PYPROJECT))
     assert before != after
 
 
@@ -179,9 +180,9 @@ dev = [
 def test_upgrade_requirements(project_example, capsys):  # pylint: disable=W0613
     path = project_example
     # yapf in a higher version is provided by dev environment
-    content = utilo.file_read(utilo.join(path, 'pyproject.toml'))
+    content = utilo.file_read(utilo.join(path, baw.PYPROJECT))
     content = content.replace('[tool.semantic_release]', YAPF)
-    utilo.file_replace('pyproject.toml', content)
+    utilo.file_replace(baw.PYPROJECT, content)
     commit_all(path, msg='prepare env for test')
     failed_test = textwrap.dedent("""\
     def test_me():
@@ -225,10 +226,10 @@ dev = [
 @tests.hasgit
 def test_upgrade_minus_lowerminus(project_example):
     path = project_example
-    pyproject = utilo.join(path, 'pyproject.toml')
+    pyproject = utilo.join(path, baw.PYPROJECT)
     content = utilo.file_read(pyproject)
     content = content.replace('[tool.semantic_release]', MINUS)
-    utilo.file_replace('pyproject.toml', content)
+    utilo.file_replace(baw.PYPROJECT, content)
     commit_all(path, msg='prepare env for test')
     content = utilo.file_read(pyproject)
     assert "sphinx-autorun == 1.0.0" in content
@@ -262,10 +263,10 @@ def test_upgrade_more_than_one_major(project_example):
     Current max on pypi is 48.0.0
     """
     path = project_example
-    pyproject = utilo.join(path, 'pyproject.toml')
+    pyproject = utilo.join(path, baw.PYPROJECT)
     content = utilo.file_read(pyproject)
     content = content.replace('[tool.semantic_release]', MORE_THAN_ONE_MAJOR)
-    utilo.file_replace('pyproject.toml', content)
+    utilo.file_replace(baw.PYPROJECT, content)
     commit_all(path, msg='prepare env for test')
     content = utilo.file_read(pyproject)
     assert "cryptography>=38.0.0,<47.0.0" in content
@@ -273,6 +274,30 @@ def test_upgrade_more_than_one_major(project_example):
     content = utilo.file_read(pyproject)
     assert "<47.0.0" not in content
     assert "cryptography>=48.0.0,<49.0.0" in content
+
+
+REQUIREMENT_DOES_NOT_EXISTS = """\
+[project.optional-dependencies]
+dev = [
+    "cryptography>=138.0.0,<139.0.0"
+]
+
+[tool.semantic_release]
+"""
+
+
+@tests.hasgit
+def test_upgrade_requirement_does_not_exists(project_example):
+    path = project_example
+    pyproject = utilo.join(path, baw.PYPROJECT)
+    content = utilo.file_read(pyproject)
+    content = content.replace('[tool.semantic_release]', REQUIREMENT_DOES_NOT_EXISTS) # yapf:disable
+    utilo.file_replace(baw.PYPROJECT, content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    assert "cryptography>=138.0.0,<139.0.0" in content
+    completed = utilo.run('baw upgrade', cwd=path)
+    assert '[ERROR] package: cryptography; lower border 138.0.0 is larger ' in completed.stderr
 
 
 REQUIREMENTS = """\
@@ -314,7 +339,7 @@ def commit_and_release(simple, monkeypatch):
     for cmd in upgrade:
         baw.runtime.run_target(root, cmd)
 
-    content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
+    content = utilo.file_read(os.path.join(root, baw.PYPROJECT))
     assert 'version = "0.0.0"' in content, content
 
     tests.baaw(
@@ -330,7 +355,7 @@ def test_upgrade_version_number(simple, monkeypatch):
     root = simple[1]
     commit_and_release(simple, monkeypatch)
 
-    content = utilo.file_read(os.path.join(root, 'pyproject.toml'))
+    content = utilo.file_read(os.path.join(root, baw.PYPROJECT))
     assert 'version = "0.1.0"' in content, content
 
 

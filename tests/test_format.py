@@ -12,15 +12,15 @@ import os
 import pytest
 import utilo
 
+import baw
 import baw.config
-import baw.utils
 import tests
 
 
 @pytest.fixture
 def minimal(testdir):
     baw.config.create(testdir.tmpdir, 'abc', 'alphabet')
-    utilo.file_create('pyproject.toml', '# setup')
+    utilo.file_create(baw.PYPROJECT, '# setup')
     os.makedirs(testdir.tmpdir.join('abc'))
     return testdir.tmpdir
 

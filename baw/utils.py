@@ -30,7 +30,7 @@ import baw.runtime
 BAW_EXT = '.baw'
 TMP = '.tmp'
 
-REQUIREMENTS = 'pyproject.toml'
+PYPROJECT = 'pyproject.toml'
 REQUIREMENTS_TXT = 'requirements.txt'
 REQUIREMENTS_DEV = 'requirements.dev'
 REQUIREMENTS_EXTRA = 'requirements.ext'
@@ -585,7 +585,7 @@ def file_list(  # pylint:disable=R1260
 
 def load_toml(path: str) -> dict:
     """\
-    >>> load_toml('pyproject.toml')
+    >>> load_toml(PYPROJECT)
     {'build-system': {'requires':... 'section_whitelines': 1}}}
     """
     config = {}

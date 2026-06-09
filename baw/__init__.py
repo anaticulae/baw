@@ -11,7 +11,7 @@ from importlib.metadata import version
 
 __version__ = version('baw')
 
-ROOT = None
+ROOT: str | None = None
 
 # pylint:disable=wrong-import-position
 import baw.__root__
@@ -23,6 +23,7 @@ from baw.project import determine_root
 from baw.runtime import hasprog
 from baw.utils import FAILURE
 from baw.utils import NEWLINE
+from baw.utils import PYPROJECT
 from baw.utils import SUCCESS
 from baw.utils import check_root
 from baw.utils import completed
