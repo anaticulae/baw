@@ -18,6 +18,7 @@ import packaging.requirements
 import utilo
 from pip import __version__ as pip_version
 
+import baw
 import baw.cmd.utils
 import baw.config
 import baw.gix
@@ -225,7 +226,7 @@ def pyproject_packages(root: str) -> dict:
     if not root:
         baw.error(f'pyproject_packages: root is {root}')
         return {'requirements': [], 'dev': [], 'doc': []}
-    base = os.path.join(root, 'pyproject.toml')
+    base = os.path.join(root, baw.REQUIREMENTS)
     if not os.path.exists(base):
         return {}
     config = baw.utils.load_toml(base)

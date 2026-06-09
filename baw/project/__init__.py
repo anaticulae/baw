@@ -9,6 +9,9 @@
 
 import os
 
+import utilo
+
+import baw
 import baw.utils
 
 
@@ -21,12 +24,11 @@ def determine_root(path) -> str | None:
     return current
 
 
-PROJECTS = 'pyproject.toml'.split()
-
-
 def is_pyproject(root: str) -> bool:
     """\
     >>> is_pyproject(determine_root(__path__))
     True
     """
-    return any(os.path.exists(os.path.join(root, item)) for item in PROJECTS)
+    if any(utilo.exists(utilo.join(root, item)) for item in (baw.REQUIREMENTS,)): # yapf:disable
+        return True
+    return False

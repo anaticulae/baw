@@ -13,6 +13,7 @@ import pathlib
 import pytest
 import utilo
 
+import baw
 import baw.cmd.ide
 import baw.utils
 import tests
@@ -58,17 +59,14 @@ def no_code(tmpdir, monkeypatch):
     monkeypatch.setenv("PATH", f"{fake_bin}:{os.environ['PATH']}")
 
 
-CONFIG = 'pyproject.toml'
-
-
 def test_ide_invalid_pyproject(workspace, monkeypatch, capsys):  # pylint:disable=W0621
     # make config invalid
-    previous = baw.utils.file_read(CONFIG)
+    previous = baw.utils.file_read(baw.REQUIREMENTS)
     assert previous
     before = 'dependencies = ['
     assert before in previous
     after = previous.replace(before, before[0:-4])
-    baw.file_replace(CONFIG, after)
+    baw.file_replace(baw.REQUIREMENTS, after)
     # run baw
     with monkeypatch.context() as patched:
         # do not open ide

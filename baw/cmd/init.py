@@ -15,6 +15,7 @@ import os
 
 import utilo
 
+import baw
 import baw.cmd
 import baw.cmd.format
 import baw.cmd.release
@@ -247,7 +248,7 @@ def create_python(
     replaced = replaced.replace("{{ENTRY_POINT}}", entry_point)
     replaced = replaced.replace("{{ENTRY_POINT_PACKAGE}}", entry_point_package)
 
-    utilo.file_create(os.path.join(root, 'pyproject.toml'), replaced)
+    utilo.file_create(os.path.join(root, baw.REQUIREMENTS), replaced)
 
 
 def utilo_current() -> str:
