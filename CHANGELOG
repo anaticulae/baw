@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v1.85.0 (2026-06-12)
+
+### Bug Fixes
+
+- **sync**: Ensure that requirement is defined correctly
+  ([`8122ed0`](https://github.com/anaticulae/baw/commit/8122ed0daa8c53ff9c07a20ba5881bd550dd1a7e))
+
+### Features
+
+- **parser**: Ease debugging
+  ([`3d53675`](https://github.com/anaticulae/baw/commit/3d536758c42d34d8f72333e8f9c1926b96c17a5f))
+
+- **requirements**: Prefers project packages over baw packages
+  ([`767496e`](https://github.com/anaticulae/baw/commit/767496e7da2fb7bc6a48751e2eabede15d79a8e5))
+
+### Testing
+
+- **upgrade**: Make test more robust
+  ([`0a3cc20`](https://github.com/anaticulae/baw/commit/0a3cc203bf9b39b10f328f67c0b54523fe37a6bb))
+
+
 ## v1.84.0 (2026-06-09)
 
 ### Features
