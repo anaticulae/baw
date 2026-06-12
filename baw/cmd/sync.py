@@ -254,6 +254,7 @@ def pyproject_packages_meta() -> dict:
             marker = marker.replace('"', '')
         else:
             marker = 'requirements'
+        line = baw.requirements.upgrade.ensure_pep503(line)
         result[marker].append(line)
     return result
 
