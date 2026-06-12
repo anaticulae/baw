@@ -246,7 +246,6 @@ def pyproject_packages_meta() -> dict:
     parsed = [
         packaging.requirements.Requirement(r) for r in dist.requires or []
     ]
-
     for item in parsed:
         line = f'{item.name} {item.specifier}'
         if item.marker:
@@ -279,13 +278,8 @@ def determine_resources(root: str, packages: str) -> str:
     if not baw_packages:
         baw.error(f'no baw_packages {baw_packages}')
     collected = []
-    if packages == 'dev':
-        collected.extend(baw_packages.get('dev', []))
-    if packages == 'doc':
-        collected.extend(baw_packages.get('doc', []))
-    if packages == 'all':
-        collected.extend(baw_packages.get('doc', []))
-        collected.extend(baw_packages.get('dev', []))
+    # local project file
+    collected.extend(project_packages.get('requirements', []))
     # Requirements_dev is a `global` file from baw project. This file is not
     # given in child project, it is referenced from global baw. Pay attention
     # to the difference of ROOT (baw) and root(project).
@@ -294,8 +288,18 @@ def determine_resources(root: str, packages: str) -> str:
         collected.extend(project_packages.get('dev', []))
     if packages in {'extra', 'all'}:
         collected.extend(project_packages.get('extra', []))
-    # local project file
-    collected.extend(project_packages.get('requirements', []))
+    # BAW-PACKAGES
+    if packages == 'dev':
+        collected.extend(baw_packages.get('dev', []))
+    if packages == 'doc':
+        collected.extend(baw_packages.get('doc', []))
+    if packages == 'all':
+        collected.extend(baw_packages.get('doc', []))
+        collected.extend(baw_packages.get('dev', []))
+    collected = utilo.unique(
+        collected,
+        converter=baw.requirements.parser.package_name,
+    )
     result = baw.NEWLINE.join(collected)
     return result
 

@@ -115,6 +115,25 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
     return equal, greater
 
 
+def package_name(line) -> str | None:
+    """\
+    >>> package_name('docker >=7.1.0, <7.1.0')
+    'docker'
+    >>> package_name(' # be prosecuted under') is None
+    True
+    """
+    parsed = line_parse(line)
+    if not parsed:
+        return None
+    if parsed[0]:
+        for item in parsed[0].keys():
+            return item
+    if parsed[1]:
+        for item in parsed[1].keys():
+            return item
+    return None
+
+
 def fix_version(item: str, semver: bool = False) -> str:
     """\
     >>> fix_version('3.5')

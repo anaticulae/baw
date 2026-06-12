@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import utilo
+
 import baw
 import baw.cmd.sync
 import tests
@@ -30,3 +32,33 @@ def test_sync_novenv():
 def test_pip_list():
     parsed = baw.cmd.sync.pip_list(baw.ROOT)
     assert len(parsed.equal) >= 10, parsed.equal
+
+
+PYPROJECT = """\
+[project]
+name = "writers"
+version = "0.11.3"
+description = ""
+requires-python = ">=3.12"
+authors = [
+{ name = "Helmut Konrad Schewe", email = "helmutus@outlook.com" },
+]
+dependencies = [
+]
+
+[project.optional-dependencies]
+dev = [
+# already definded in baw-project, overwrite it!
+"pytest-localserver>=0.10.0,<1.0.0",
+]
+
+"""
+
+
+@tests.longrun
+def test_sync_duplicated_package_definition(project_example):
+    """Prefere local requirements over baw-requirements. Avoid duplicated
+    requirements which are in baw and project definition."""
+    path = utilo.join(project_example, baw.PYPROJECT)
+    utilo.file_replace(path, PYPROJECT)
+    tests.assert_run('baw sync all', cwd=project_example).__enter__()
