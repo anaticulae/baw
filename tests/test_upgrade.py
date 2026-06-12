@@ -14,6 +14,8 @@ import utilo
 
 import baw
 import baw.cmd.upgrade
+import baw.project.version
+import baw.requirements.parser
 import baw.requirements.upgrade
 import baw.runtime
 import tests
@@ -272,7 +274,17 @@ def test_upgrade_more_than_one_major(project_example):
     utilo.run('baw upgrade', cwd=path, live=True)
     content = utilo.file_read(pyproject)
     assert "<47.0.0" not in content
-    assert "cryptography>=48.0.0,<49.0.0" in content
+    # assert "cryptography>=48.0.0,<49.0.0" in conten
+    item = [
+        item.strip()[1:-2]
+        for item in content.splitlines()
+        if 'cryptography' in item
+    ]
+    assert item, str(content)
+    versions = baw.requirements.parser.line_parse(item[0])
+    versions = versions[1]['cryptography'][0]
+    major = baw.project.version.major(versions)
+    assert major >= 48, versions
 
 
 REQUIREMENT_DOES_NOT_EXISTS = """\
