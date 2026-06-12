@@ -11,6 +11,8 @@ import contextlib
 import re
 import sys
 
+import utilo
+
 import baw.requirements
 
 
@@ -35,7 +37,7 @@ def parse_txt(
     equal = {}
     greater = {}
     error = False
-    for line in content.splitlines():
+    for line in utilo.sort(*content.splitlines()):
         try:
             if not (parsed := line_parse(line, upgrade=upgrade)):
                 continue
