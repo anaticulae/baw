@@ -11,6 +11,8 @@ import contextlib
 import re
 import sys
 
+import utilo
+
 import baw.requirements
 
 
@@ -35,7 +37,7 @@ def parse_txt(
     equal = {}
     greater = {}
     error = False
-    for line in content.splitlines():
+    for line in utilo.sort(*content.splitlines()):
         try:
             if not (parsed := line_parse(line, upgrade=upgrade)):
                 continue
@@ -111,6 +113,25 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
         # package without version
         equal[line] = ''
     return equal, greater
+
+
+def package_name(line) -> str | None:
+    """\
+    >>> package_name('docker >=7.1.0, <7.1.0')
+    'docker'
+    >>> package_name(' # be prosecuted under') is None
+    True
+    """
+    parsed = line_parse(line)
+    if not parsed:
+        return None
+    if parsed[0]:
+        for item in parsed[0].keys():
+            return item
+    if parsed[1]:
+        for item in parsed[1].keys():
+            return item
+    return None
 
 
 def fix_version(item: str, semver: bool = False) -> str:
