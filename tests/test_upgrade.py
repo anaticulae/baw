@@ -112,7 +112,7 @@ def test_new_requirements():
     )
     # utilo should allways be new than 0.5.0
     # assert 'utilo' in result[0]
-    assert 'PyYAML' in result[0]
+    assert 'pyyaml' in result[0]
 
 
 TEST_UPGRADE = """\
