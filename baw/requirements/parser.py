@@ -14,6 +14,7 @@ import sys
 import utilo
 
 import baw.requirements
+import baw.requirements.upgrade
 
 
 def parse_txt(
@@ -22,18 +23,18 @@ def parse_txt(
 ) -> baw.requirements.Requirements:
     r"""\
     >>> parse_txt('Flask_Login==0.1.1')
-    Requirements(equal={'Flask_Login': '0.1.1'}, greater={})
+    Requirements(equal={'flask-login': '0.1.1'}, greater={})
     >>> parse_txt('nltk==3.5')
     Requirements(equal={'nltk': '3.5.0'}, greater={})
     >>> parse_txt('camelot_py[cv]>=0.8.2<0.9.0').greater
-    {'camelot_py': ['0.8.2', '0.9.0']}
+    {'camelot-py': ['0.8.2', '0.9.0']}
     >>> parse_txt('Flask_Login>=1.1.1\nFlask_Login==0.2.1')  # duplicated definition
     Traceback (most recent call last):
     ...
     SystemExit: 1
     """
     assert isinstance(content, str), content
-    content = content.replace('-', '_')
+    content = baw.requirements.upgrade.ensure_pep503(content)
     equal = {}
     greater = {}
     error = False
@@ -80,7 +81,8 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
     >>> line_parse('docker >=7.1.0, <7.1.0')
     ({}, {'docker': ['7.1.0', '7.1.0']})
     """
-    line = line.strip()
+    line = line.lower().strip()
+    line = line.replace('_', '-')
     if not line or line.lstrip()[0] == '#':
         return None
     if noauto := '#' in line and 'noauto' in line:  # pylint:disable=W0612

@@ -63,6 +63,7 @@ def test_cmd_info_clean(simple, capsys):  # pylint:disable=W0621,W0613
     assert 'clean' in stdout
 
 
+@tests.longrun
 def test_cmd_info_cov(simple, capsys, tmp_install):  # pylint:disable=W0613
     simple[0]('info cov')
     stdout = tests.stdout(capsys)

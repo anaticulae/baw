@@ -16,6 +16,7 @@ import baw.config.change
 import tests
 
 
+@tests.longrun
 def test_cmd_test_cov_simple(simple, capsys, tmp_install):  # pylint:disable=W0613
     # capsys does not capture simple run, therefore I build this workaround.
     simple[0]('test --cov -n1')
@@ -26,6 +27,7 @@ def test_cmd_test_cov_simple(simple, capsys, tmp_install):  # pylint:disable=W06
     assert '100%' in content
 
 
+@tests.longrun
 @pytest.mark.parametrize('report', (True, False))
 def test_cmd_test_cov_report(report, simple, capsys, tmp_install):  # pylint:disable=W0613
     noreport = '' if report else '--no_report'
