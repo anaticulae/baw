@@ -1,12 +1,20 @@
 # CHANGELOG
 
 
-## v1.85.0 (2026-06-12)
+## v1.86.0 (2026-06-19)
 
 ### Bug Fixes
 
+- **parser**: Ensure that upper cased requirements compared correctly
+  ([`35f9423`](https://github.com/anaticulae/baw/commit/35f94236fa19b3e4bd3c5a677c16b1e4c3b02ea4))
+
 - **sync**: Ensure that requirement is defined correctly
   ([`8122ed0`](https://github.com/anaticulae/baw/commit/8122ed0daa8c53ff9c07a20ba5881bd550dd1a7e))
+
+### Chores
+
+- **requirements**: Upgrade pyproject.toml
+  ([`a3edd51`](https://github.com/anaticulae/baw/commit/a3edd51a0c60b82b208fa9c079c78e3441f975e7))
 
 ### Features
 
