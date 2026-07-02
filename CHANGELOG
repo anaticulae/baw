@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## v1.87.0 (2026-07-02)
+
+### Bug Fixes
+
+- **requirements**: Do not detected white space inside requirement
+  ([`147b27b`](https://github.com/anaticulae/baw/commit/147b27bf6a61086a02290337337224b0bf7c9ead))
+
+### Code Style
+
+- **clean**: Remove unused code
+  ([`c65972b`](https://github.com/anaticulae/baw/commit/c65972b9a4532d055f1b4dd950abce52642c142c))
+
+### Features
+
+- **test**: Log to capsys if required
+  ([`8b83470`](https://github.com/anaticulae/baw/commit/8b834708fc2033fda9fd87a4fc2bf0ab9b6a1147))
+
+### Testing
+
+- **upgrade**: Add test to verify upgrade failure
+  ([`282bee9`](https://github.com/anaticulae/baw/commit/282bee93d8890a2f6876052703e290467a98282a))
+
+
 ## v1.86.0 (2026-06-19)
 
 ### Bug Fixes
