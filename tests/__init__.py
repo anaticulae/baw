@@ -63,15 +63,15 @@ hasbaw = hasprog('baw')
 hasdocker = hasprog('docker')
 
 
-def run(cmd: str, cwd: str = None):
+def run(cmd: str, cwd: str = None, live=False):
     """Run external process."""
     cwd = cwd if cwd else os.getcwd()
     completed = subprocess.run(  # nosec
         cmd,
         cwd=cwd,
         shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stdout=None if live else subprocess.PIPE,
+        stderr=None if live else subprocess.PIPE,
         universal_newlines=True,
         check=False,
     )
