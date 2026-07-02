@@ -80,6 +80,8 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
     ({}, {'iamraw': '3.5.0'})
     >>> line_parse('docker >=7.1.0, <7.1.0')
     ({}, {'docker': ['7.1.0', '7.1.0']})
+    >>> line_parse('pdfminer.six>=20260107,<20270000')
+    ({}, {'pdfminer.six': ['20260107', '20270000']})
     """
     line = line.lower().strip()
     line = line.replace('_', '-')
@@ -149,6 +151,7 @@ def fix_version(item: str, semver: bool = False) -> str:
     >>> fix_version('2.97.0.post5+7356925', semver=True)
     '2.97.0+build5'
     """
+    item = item.strip()
     if '.' not in item:
         return item
     if semver and '.post' in item:
