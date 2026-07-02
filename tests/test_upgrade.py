@@ -239,6 +239,26 @@ def test_upgrade_minus_lowerminus(project_example):
     assert "sphinx-autorun==2.0.0" in content
 
 
+PDFMINER = """\
+    "pdfminer.six>=20260107,<20270000",
+    "pillow>=12.2.0,<13.0.0",
+"""
+
+
+@tests.hasgit
+def test_upgrade_pdfminer(project_example, capsys):
+    path = project_example
+    pyproject = utilo.join(path, baw.PYPROJECT)
+    content = utilo.file_read(pyproject)
+    content = content.replace('"utilo>=2.103.0,<3.0.0",', PDFMINER)
+    utilo.file_replace(baw.PYPROJECT, content)
+    commit_all(path, msg='prepare env for test')
+    content = utilo.file_read(pyproject)
+    tests.run('baw -vvv upgrade', cwd=path, live=True)
+    assert 'replacement does not work:' not in tests.stderr(capsys)
+
+
+
 MORE_THAN_ONE_MAJOR = """\
 [project.optional-dependencies]
 dev = [
