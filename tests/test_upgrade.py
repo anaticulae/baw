@@ -258,7 +258,6 @@ def test_upgrade_pdfminer(project_example, capsys):
     assert 'replacement does not work:' not in tests.stderr(capsys)
 
 
-
 MORE_THAN_ONE_MAJOR = """\
 [project.optional-dependencies]
 dev = [
