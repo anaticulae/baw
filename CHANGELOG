@@ -1,6 +1,28 @@
 # CHANGELOG
 
 
+## v1.87.1 (2026-07-03)
+
+### Chores
+
+- **make**: Make file more robust
+  ([`7426b7d`](https://github.com/anaticulae/baw/commit/7426b7d73001912b9114a88fd88bd014d2914a29))
+
+- **pyproject**: Adjust release tags
+  ([`f1cd5ba`](https://github.com/anaticulae/baw/commit/f1cd5ba7a2961587c6bc031080e24b216fee4903))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`2902d7d`](https://github.com/anaticulae/baw/commit/2902d7d7acea0d08280728992b674ffb80184c50))
+
+### Code Style
+
+- **make**: Format template
+  ([`fe402a6`](https://github.com/anaticulae/baw/commit/fe402a61698aabb41a5da02260dab9eea6ec7fdd))
+
+- **test**: Format code
+  ([`f109776`](https://github.com/anaticulae/baw/commit/f10977641bd73f5798783845848d1692241bea74))
+
+
 ## v1.87.0 (2026-07-02)
 
 ### Bug Fixes
