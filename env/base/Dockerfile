@@ -11,6 +11,9 @@ FROM alpine:3.23.3
 
 LABEL maintainer="Helmut Konrad Schewe <helmutus@outlook.com>"
 
+ENV SHARED_TMP=/tmp/shared/
+ENV BAW=/tmp/baw/
+
 # ALPINE
 RUN apk add --no-cache \
     git \
