@@ -11,6 +11,9 @@ FROM python:3.12-slim
 
 LABEL maintainer="Helmut Konrad Schewe <helmutus@outlook.com>"
 
+ENV SHARED_TMP=/tmp/shared/
+ENV BAW=/tmp/baw/
+
 RUN apt-get update \
  && apt-get install -y \
     git \
