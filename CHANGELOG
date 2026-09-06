@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v1.88.0 (2026-09-06)
+
+### Chores
+
+- **requirements**: Upgrade pyproject.toml
+  ([`ade7bfa`](https://github.com/anaticulae/baw/commit/ade7bfa996abd8f130dd3c8fc425bcce4a0394af))
+
+### Features
+
+- **docker**: Reduce complexity
+  ([`4ab55b6`](https://github.com/anaticulae/baw/commit/4ab55b63522769e9a3b4160058809715120cf9d9))
+
+
 ## v1.87.1 (2026-07-03)
 
 ### Chores
