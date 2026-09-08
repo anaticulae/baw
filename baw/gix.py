@@ -354,7 +354,7 @@ def describe(root: str) -> str:
 def branchname(root: str) -> str:
     """\
     >>> import baw.project;
-    >>> branchname(baw.project.determine_root(__file__))
+    >>> branchname(utilo.baw_root(__file__))
     '...'
     """
     if not installed():
@@ -386,7 +386,7 @@ def update_gitignore(root: str, verbose: int = 0):
 
 def tokenizes(root: str, token: str = None) -> str:
     """\
-    >>> tokenizes(baw.project.determine_root(__file__), 'UNSET')
+    >>> tokenizes(utilo.baw_root(__file__), 'UNSET')
     'http://.../baw.git'
     """
     token = token if token else baw.config.gitea_token()

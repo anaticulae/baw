@@ -32,7 +32,7 @@ def openme(root: str, path: str = None, prints: bool = False):
     elif path == 'generated':
         open_generated(root, prints)
     elif path == 'project':
-        root = baw.project.determine_root(os.getcwd())
+        root = utilo.baw_root(os.getcwd())
         open_this(root, prints=prints)
 
 

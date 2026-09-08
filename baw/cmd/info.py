@@ -88,7 +88,7 @@ def prints(root, value: str, verbose: int = 0) -> int:  # pylint:disable=R1260,R
 
 
 def print_tmp(root: str):
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     name = os.path.split(root)[1]
     tmpdir = utilo.join(baw.config.bawtmp(), 'tmp', name)
     baw.log(tmpdir)

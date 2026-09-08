@@ -20,7 +20,7 @@ import baw.utils
 
 
 def main():
-    root = baw.cmd.utils.determine_root(os.getcwd())
+    root = utilo.baw_root(os.getcwd())
     parser = create_parser()
     cmd, worker = parse_args(parser)
     run(root, cmd, worker)

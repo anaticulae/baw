@@ -10,8 +10,8 @@
 import os
 import sys
 
-import baw.config
-import baw.project
+import utilo
+
 import baw.utils
 
 
@@ -37,7 +37,7 @@ def setup_environment(raw):  # pylint: disable=W0621
 
 
 def determine_root(directory) -> str | None:
-    root = baw.project.determine_root(directory)
+    root = utilo.baw_root(directory)
     if not root:
         baw.error(f'require .baw file: {directory}')
         return None

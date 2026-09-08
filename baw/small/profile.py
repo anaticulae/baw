@@ -12,7 +12,8 @@ import os
 import sys
 import time
 
-import baw.cmd.utils
+import utilo
+
 import baw.gix
 import baw.runtime
 
@@ -20,7 +21,7 @@ import baw.runtime
 
 
 def main():
-    root = baw.cmd.utils.determine_root(os.getcwd())
+    root = utilo.baw_root(os.getcwd())
     if not baw.gix.is_clean(root, verbose=False):
         baw.error(f'not clean, abort: {root}')
         sys.exit(baw.FAILURE)

@@ -16,7 +16,6 @@ import utilo
 import baw
 import baw.config
 import baw.project.version
-import baw.utils
 
 FOLDERS = [
     'tests',

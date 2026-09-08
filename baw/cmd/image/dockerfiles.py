@@ -14,7 +14,6 @@ import sys
 import utilo
 
 import baw.cmd.info
-import baw.cmd.utils
 import baw.config
 import baw.pipefile
 import baw.project.version
@@ -57,7 +56,7 @@ def header(root: str) -> str:
     >>> header(__file__)
     'FROM .../...'
     """
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
     image = baw.pipefile.docker_image(root)
@@ -77,7 +76,7 @@ def requirements(root: str) -> str:
     ''
     """
     # TODO: REMOVE LATER
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
     result = ''
@@ -101,7 +100,7 @@ def resources(root: str) -> str:
     >>> resources(__file__)
     ''
     """
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
     conftest = utilo.join(root, 'tests/conftest.py')
@@ -129,7 +128,7 @@ def environments(root: str) -> str:
     >>> environments(__file__) # '...ENV GITEA_SERVER_URL=...\n'
     ''
     """
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
     env = baw.pipefile.docker_env(root)

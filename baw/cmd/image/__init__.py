@@ -34,7 +34,7 @@ def create(  # pylint:disable=W0613
     install: bool = False,
     verbose: int = 0,
 ):
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     if dockerfile:
         dockerfile = ensure_dockerfile_path(dockerfile)
         with dockerfile_resolve_gitdescribe(dockerfile) as dock:
@@ -119,7 +119,7 @@ def describe(dockerfile: str) -> str:
 
 
 def create_git_hash(root: str, name=None):  # pylint:disable=W0613
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     path = utilo.join(root, 'Dockerfile')
     if not os.path.exists(path):
         baw.error(f'missing Dockerfile: {path}')
@@ -142,7 +142,7 @@ def tag(root: str, generate: bool = False) -> str:
     >>> tag(__file__, generate=True)
     '.../try_gen_baw:...'
     """
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     testing = baw.config.docker_testing()
     name = baw.cmd.info.requirement_hash(root, verbose=True)
     # use different hash if data generation is enabled

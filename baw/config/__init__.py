@@ -103,7 +103,7 @@ def docker_runtime() -> str:
 def docker_setup(root: str) -> str:
     """\
     >>> import baw.project
-    >>> docker_setup(baw.project.determine_root(__file__)) is None
+    >>> docker_setup(utilo.baw_root(__file__)) is None
     True
     """
     result = default_config(
@@ -117,7 +117,7 @@ def docker_setup(root: str) -> str:
 def hvcs(root: str) -> str:
     """\
     >>> import baw.project
-    >>> hvcs(baw.project.determine_root(__file__))
+    >>> hvcs(utilo.baw_root(__file__))
     'github'
     """
     result = default_config(
@@ -134,7 +134,7 @@ def git_group(root: str) -> str:
     For example: caelum, cobdh.
 
     >>> import baw.project
-    >>> git_group(baw.project.determine_root(__file__)) is None
+    >>> git_group(utilo.baw_root(__file__)) is None
     True
     """
     result = default_config(
@@ -151,7 +151,7 @@ def git_project(root: str) -> str:
     For example hvcs=None, group=cobdh, project=live => github.com/cobdh/live.git
 
     >>> import baw.project
-    >>> git_project(baw.project.determine_root(__file__))
+    >>> git_project(utilo.baw_root(__file__))
     'baw'
     """
     result = default_config(
@@ -232,7 +232,7 @@ def cmds(root: str) -> dict:
     Returns:
         dict{name, cmd}: dict with cmds to execute
 
-    >>> import baw.project;cmds(baw.project.determine_root(__file__))
+    >>> import baw.project;cmds(utilo.baw_root(__file__))
     {}
     """
     assert os.path.exists(root), root
@@ -258,7 +258,7 @@ def coverage_min(root: str) -> int:
     >>> coverage_min(__file__)
     40
     """
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     result = default_config(
         root,
         lambda x: x['release']['coverage_min'],
@@ -323,7 +323,7 @@ def sources(root: str) -> list:
     """
     # support accessing the config directly or due the project path
     assert os.path.exists(root), root
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     path = config_path(root)
     assert os.path.exists(path), path
     cfg = load(path)
@@ -457,7 +457,7 @@ def package_testing():
 def changelog(root: str) -> str:
     """\
     >>> import baw.project
-    >>> changelog(baw.project.determine_root(__file__))
+    >>> changelog(utilo.baw_root(__file__))
     'CHANGELOG'
     """
     for fname in 'CHANGELOG CHANGELOG.md'.split():
@@ -470,7 +470,7 @@ def changelog(root: str) -> str:
 def version(root: str) -> str:
     """\
     >>> import baw.project
-    >>> version(baw.project.determine_root(__file__))
+    >>> version(utilo.baw_root(__file__))
     'pyproject.toml:project.version'
     """
     path = utilo.join(root, 'VERSION')
@@ -490,7 +490,7 @@ def basic(root: str) -> bool:
     languages are possible.
 
     >>> import baw.project
-    >>> basic(baw.project.determine_root(__file__))
+    >>> basic(utilo.baw_root(__file__))
     True
     """
     if 'VERSION' in version(root):

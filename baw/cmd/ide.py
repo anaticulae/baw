@@ -22,7 +22,7 @@ import baw.utils
 
 def ide_open(root: str, packages: tuple = None) -> int:
     """Generate vscode workspace and run afterwards."""
-    detected = baw.project.determine_root(root)
+    detected = utilo.baw_root(root)
     if detected is None:
         baw.error(f'could not locate .baw project in: {root}')
         return baw.FAILURE

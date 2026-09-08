@@ -210,7 +210,7 @@ def create_test_cmd(  # pylint:disable=R0914
     verbose: int = 0,
 ):
     """\
-    >>> create_test_cmd(baw.project.determine_root(__file__), instafail=True, pdb=True, coverage=True, quiet=True, parameter=[],
+    >>> create_test_cmd(utilo.baw_root(__file__), instafail=True, pdb=True, coverage=True, quiet=True, parameter=[],
     ... generate_only=False, markers='', cov_report=True, doctest=True, verbose=False)
     Disable coverage report...'
     """
