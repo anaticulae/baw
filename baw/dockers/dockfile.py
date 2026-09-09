@@ -120,3 +120,18 @@ def docker_image_upgrade(
         # nothing changed
         return None
     return result
+
+
+def files(path: str):
+    """\
+    >>> files(__file__)
+    ['Dockerfile', 'baw/templates/Dockerfile',...erfile', 'env/test/Dockerfile']
+    """
+    root = utilo.baw_root(path)
+    files = [
+        item for item in utilo.file_list(
+            root,
+            absolute=False,
+        ) if utilo.file_name(item).lower() == 'dockerfile'
+    ]
+    return files
