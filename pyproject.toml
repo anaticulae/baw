@@ -14,7 +14,7 @@ authors = [
     { name = "Helmut Konrad Schewe", email = "helmutus@outlook.com" },
 ]
 dependencies = [
-    "utilo>=2.110.2,<3.0.0",
+    "utilo>=2.111.0,<3.0.0",
     "utilosafe>=1.0.0,<2.0.0",
     "semver>=3.0.4,<4.0.0",
     "python-semantic-release>=10.6.2,<11.0.0",
