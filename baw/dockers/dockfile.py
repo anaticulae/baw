@@ -90,6 +90,9 @@ def docker_image_upgrade(
 ) -> str:
     # TODO: ENABLE LATER
     r"""\
+    >>> IMAGE.findall('\nFROM ghcr.io/anaticulae/baw:447bf27')
+    [('', 'ghcr.io/anaticulae/baw:447bf27', 'ghcr.io', 'anaticulae/baw', '447bf27')]
+
     # >>> import baw.pipefile;
     # >>> docker_image_upgrade(baw.pipefile.jenkinsfile(__file__), always=True)
     # '@Library(...pipeline{...}\n'
