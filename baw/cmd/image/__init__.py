@@ -203,11 +203,17 @@ def run(args: dict):  # pylint:disable=R0911
             verbose=args.get('verbose'),
         )
     if action == 'upgrade':
-        return upgrade(
-            dockerfile=args['dockerfile'],
-            root=root,
-            prerelease=args['prerelease'],
-        )
+        dockerfile = args['dockerfile']
+        if dockerfile is None:
+            dockerfile = baw.dockers.dockfile.files(root)
+        else:
+            dockerfile = [str(dockerfile)]
+        return sum(
+            upgrade(
+                dockerfile=utilo.join(root, item),
+                root=root,
+                prerelease=args['prerelease'],
+            ) for item in dockerfile)
     if action == 'delete':
         baw.error('not implemented')
     if action == 'clean':
