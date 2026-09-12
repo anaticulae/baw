@@ -32,6 +32,10 @@ def tags(matched: str) -> list:
 
 
 def get_tags(image, base=None, org=None, limit=10, timeout=5):
+    """\
+    >>> len(get_tags('alpine')) > 5
+    True
+    """
     if base is None:
         if "/" not in image:
             image = f"library/{image}"
@@ -57,9 +61,28 @@ def get_tags(image, base=None, org=None, limit=10, timeout=5):
         result = [tag["name"] for tag in tags_json['results']]
     else:
         result = [tag["name"] for tag in tags_json]
-    # no latest
-    result = [item for item in result if item not in 'latest']
+    result = [item for item in result if is_tag_valid(item)]
     return result
+
+
+def is_tag_valid(item) -> bool:
+    """\
+    >>> is_tag_valid('1.2.')
+    True
+    >>> is_tag_valid('1')
+    True
+    >>> is_tag_valid('20230612')
+    True
+    >>> is_tag_valid('latest')
+    False
+    >>> is_tag_valid('edge')
+    False
+    """
+    if utilo.isnumber(item):
+        return True
+    if item.count('.') in {1, 2}:
+        return True
+    return False
 
 
 def exists(name: str) -> int:
