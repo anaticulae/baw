@@ -18,6 +18,7 @@ import utilo
 
 import baw
 import baw.config
+import baw.resources
 import baw.runtime
 
 GIT_EXT = '.git'
