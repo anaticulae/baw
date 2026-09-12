@@ -32,19 +32,34 @@ docker-upload-python:
 	docker push $(IMAGE_PYTH_NAME)
 
 docker-doctest: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test docs"
+	docker run \
+		-v $(CURDIR):/var/workdir \
+		$(IMAGE) \
+		"baw test docs"
 
 docker-fasttest: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test fast"
+	docker run \
+		-v $(CURDIR):/var/workdir \
+		$(IMAGE) \
+		"baw test fast"
 
 docker-longtest: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test long"
+	docker run \
+		-v $(CURDIR):/var/workdir \
+		$(IMAGE) \
+		"baw test long"
 
 docker-alltest: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw test all"
+	docker run \
+		-v $(CURDIR):/var/workdir \
+		$(IMAGE) \
+		"baw test all"
 
 docker-lint: docker-build
-	docker run -v $(CURDIR):/var/workdir $(IMAGE) "baw lint all"
+	docker run \
+		-v $(CURDIR):/var/workdir \
+		$(IMAGE) \
+		"baw lint all"
 
 docker-release: docker-build
 	@if git describe --exact-match --tags HEAD >/dev/null 2>&1; then \
