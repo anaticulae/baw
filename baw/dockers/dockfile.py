@@ -137,10 +137,14 @@ def project_org():
 def base_name_version(line) -> tuple:
     """\
     >>> base_name_version('ghcr.io/anaticulae/baw:447bf27')
-    ('ghcr.io/anaticulae', 'baw', '447bf27')
+    ('ghcr.io', 'baw', '447bf27')
+    >>> base_name_version('ghcr.io/baw:447bf27')
+    ('ghcr.io', 'baw', '447bf27')
     """
+    # TODO: SUPPORT ORG/USER LATER?
     try:
         base, image = line.rsplit('/', maxsplit=1)
+        base = base.split('/')[0]
     except ValueError:
         base, image = None, line
     try:
