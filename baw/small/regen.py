@@ -48,7 +48,7 @@ def run(root, cmd, worker: int = 1):
 
 def single(cmd, cwd, progress: str):
     logmsg = f'"{progress} {cmd}" in {cwd}'
-    baw.log(logmsg)
+    utilo.log(logmsg)
     completed = baw.runtime.run(cmd=cmd, cwd=cwd)
     append_log(completed=completed, cwd=cwd)
     if not completed.returncode:

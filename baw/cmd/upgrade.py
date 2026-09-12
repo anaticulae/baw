@@ -151,7 +151,7 @@ def upgrade_requirements_toml(root: str) -> int:
         msg = f'Could not locate any requirements: {req_path}'
         baw.error(msg)
         return baw.FAILURE
-    baw.log(f'\nStart upgrading: {req_path}')
+    utilo.log(f'\nStart upgrading: {req_path}')
     changed = False
     toml = baw.load_toml(req_path)
     for path in (
@@ -174,14 +174,14 @@ def upgrade_requirements_toml(root: str) -> int:
             return baw.FAILURE
         replaced = baw.requirements.upgrade.replace(content, upgraded)
         if replaced == content:
-            baw.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
+            utilo.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
             continue
         changed |= update_path(replaced.splitlines(), path, toml)
     if not changed:
-        baw.log('Nothing todo!')
+        utilo.log('Nothing todo!')
         return baw.FAILURE
     baw.write_toml(req_path, toml)
-    baw.log('Upgrading finished')
+    utilo.log('Upgrading finished')
     return baw.SUCCESS
 
 
@@ -225,10 +225,10 @@ def upgrade_requirements_txt(
         msg = f'Could not locate any requirements: {req_path}'
         baw.error(msg)
         return baw.FAILURE
-    baw.log(f'\nStart upgrading requirements: {req_path}')
+    utilo.log(f'\nStart upgrading requirements: {req_path}')
     content = utilo.file_read(req_path)
     if not content.strip():
-        baw.log(f'Empty: {req_path}. Skipping replacement.')
+        utilo.log(f'Empty: {req_path}. Skipping replacement.')
         # stop further synchronizing process and quit with SUCCESS
         return REQUIREMENTS_UPTODATE
     upgraded = determine_new_requirements(root, content, pre=pre)
@@ -236,11 +236,11 @@ def upgrade_requirements_txt(
         return baw.FAILURE
     replaced = baw.requirements.upgrade.replace(content, upgraded)
     if replaced == content:
-        baw.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
+        utilo.log('Requirements are up to date.', end=utilo.NEWLINE * 2)
         return REQUIREMENTS_UPTODATE
     # write new requirements
     baw.utils.file_replace(req_path, replaced)
-    baw.log('Upgrading finished')
+    utilo.log('Upgrading finished')
     return baw.SUCCESS
 
 
@@ -383,7 +383,7 @@ def check_package(dependency: str, package: str, version: str, pre: bool):
             # command. Do not upgrade with pre-release without
             # --pre flag.
             msg = f'do not upgrade: {package}; {available} without --pre'
-            baw.log(msg)
+            utilo.log(msg)
             return True
     return (version, available)  #(old, new)
 

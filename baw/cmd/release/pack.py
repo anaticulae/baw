@@ -14,7 +14,7 @@ import baw.runtime
 
 
 def run(root, verbose, release_type, no_push: bool = False):
-    baw.log('update version tag')
+    utilo.log('update version tag')
     with baw.cmd.release.config.release_config_tmp(
             root,
             verbose,
@@ -62,7 +62,7 @@ def run_release(
         return baw.FAILURE
     if completed.stderr:
         baw.error(completed.stderr)
-    baw.log(completed.stdout)
+    utilo.log(completed.stdout)
 
     return completed.returncode
 

@@ -54,7 +54,7 @@ def sync(
     """
     baw.utils.check_root(root)
     ret = 0
-    baw.log()
+    utilo.log()
     ret += baw.gix.update_gitignore(root, verbose=verbose)
     # NOTE: Should we use Enum?
     ret += sync_dependencies(
@@ -128,7 +128,7 @@ def sync_dependencies(  # pylint:disable=R1260
     verbose: int = 0,
 ) -> int:
     baw.utils.check_root(root)
-    baw.log('sync')
+    utilo.log('sync')
     resources = determine_resources(root, packages)
     pip_index, extra_url = baw.config.package_address()
     if not connected(pip_index, extra_url):
@@ -142,7 +142,7 @@ def sync_dependencies(  # pylint:disable=R1260
     )
     if not required.equal and not required.greater:
         return baw.SUCCESS
-    baw.log(f'\nrequire update:\n{required}')
+    utilo.log(f'\nrequire update:\n{required}')
     # create temporary requirements file
     requirements = baw.utils.tmpfile()
     baw.utils.file_replace(requirements, str(required))
@@ -152,7 +152,7 @@ def sync_dependencies(  # pylint:disable=R1260
         verbose=verbose,
     )
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -173,10 +173,10 @@ def eval_sync(pip, completed, *, verbose: int) -> int:
             if should_skip(message, verbose=verbose):
                 continue
             if verbose:
-                baw.log(message)
+                utilo.log(message)
     if completed.returncode and completed.stderr:
         baw.error(completed.stderr)
-    baw.log()
+    utilo.log()
     return completed.returncode
 
 
@@ -206,7 +206,7 @@ def required_installation(
             # remove duplicated requirement out of `equal requirement`
             result.equal.pop(key)
             continue
-        baw.log(f'duplicated requirement: {key}')
+        utilo.log(f'duplicated requirement: {key}')
     return result
 
 
@@ -371,7 +371,7 @@ def pip_list(
     python = baw.config.python(root)
     cmd = f'{python} -mpip list --format=freeze'
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -415,7 +415,7 @@ def connected(internal: str, external: str) -> bool:
 
 def should_skip(msg: str, verbose: int = 0):
     if not verbose and 'Requirement already' in msg:
-        baw.log('.', end='')
+        utilo.log('.', end='')
         return True
     return False
 

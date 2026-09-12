@@ -341,7 +341,7 @@ def sources(root: str) -> list:
         if os.path.exists(utilo.join(root, subproject)):
             continue
         failure += 1
-        baw.log(f'subproject does not exists: {subproject}')
+        utilo.log(f'subproject does not exists: {subproject}')
     if failure:
         sys.exit(baw.FAILURE)
     # put project name to the front

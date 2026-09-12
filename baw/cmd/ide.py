@@ -28,13 +28,13 @@ def ide_open(root: str, packages: tuple = None) -> int:
         return baw.FAILURE
     root = detected
 
-    baw.log('generate')
+    utilo.log('generate')
     generate_workspace(root, packages=packages)
     if baw.project.is_pyproject(root):
         generate_sort_config(root)
         generate_conftest(root)
 
-    baw.log('open')
+    utilo.log('open')
     returncode = start(root)
     return returncode
 

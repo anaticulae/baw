@@ -110,7 +110,7 @@ def lint(
 
 
 def pylint(root, scope, run_in, log_always: bool, verbose: int) -> int:
-    baw.log('pylint...')
+    utilo.log('pylint...')
     spelling = baw.config.spelling(root)
     pyconfig = baw.config.pylint(root)
     cmd = f'pylint {run_in}'
@@ -141,12 +141,12 @@ def pylint(root, scope, run_in, log_always: bool, verbose: int) -> int:
     if completed.returncode:
         baw.completed(completed)
     elif log_always:
-        baw.log('pylint complete')
+        utilo.log('pylint complete')
     return completed.returncode
 
 
 def bandit(root, run_in, log_always: bool, verbose: int) -> int:
-    baw.log('bandit...')
+    utilo.log('bandit...')
     cmd = f'bandit {run_in} -r '
     cmd += '--skip B101'  # skip assert is used
     cmd += ',B404'  # import subprocess
@@ -159,7 +159,7 @@ def bandit(root, run_in, log_always: bool, verbose: int) -> int:
     if completed.returncode:
         baw.completed(completed)
     elif log_always:
-        baw.log('bandit complete')
+        utilo.log('bandit complete')
     return completed.returncode
 
 

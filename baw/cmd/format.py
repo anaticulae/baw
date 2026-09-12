@@ -54,7 +54,7 @@ def sources(root: str):
 
 
 def format_python(root: str, verbose: int = 0) -> int:
-    baw.log('format source')
+    utilo.log('format source')
     if not baw.runtime.installed('yapf', root=root):
         return baw.FAILURE
     yapf = '-i --style=google --no-local-style'
@@ -74,7 +74,7 @@ def format_python(root: str, verbose: int = 0) -> int:
         workers=len(todo),
         verbose=verbose,
     )
-    baw.log('format source: completed')
+    utilo.log('format source: completed')
     return completed
 
 
@@ -153,7 +153,7 @@ def format_(
     *,
     verbose: int = 0,
 ):
-    baw.log(info)
+    utilo.log(info)
     folder = baw.config.sources(root)
     # check that `tests` path exists
     testpath = utilo.join(root, 'tests')
@@ -178,7 +178,7 @@ def format_(
             if completed.returncode:
                 baw.error(f'error while formatting {completed.stderr}')
                 return baw.FAILURE
-    baw.log(f'{info}: completed\n')
+    utilo.log(f'{info}: completed\n')
     return baw.SUCCESS
 
 

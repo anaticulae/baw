@@ -30,14 +30,14 @@ def run(
     3. Checkout CHANGELOG and __init__.py
     4. Remove tag
     """
-    baw.log('Start dropping release')
+    utilo.log('Start dropping release')
     if not can_drop(root, verbose):
         return baw.FAILURE
     current_release = baw.gix.headtag(root, verbose)
-    baw.log(current_release)
+    utilo.log(current_release)
     # remove the last release commit
     # git reset HEAD~1
-    baw.log('Remove last commit')
+    utilo.log('Remove last commit')
     completed = baw.runtime.run_target(root, 'git reset HEAD~1')
     if completed.returncode:
         baw.error(f'while removing the last commit: {completed}')
@@ -54,7 +54,7 @@ def run(
 
 
 def can_drop(root: str, verbose: int) -> bool:
-    baw.log('Detect current release:')
+    utilo.log('Detect current release:')
     if not (headtag := baw.gix.headtag(root, verbose)):
         baw.error('No tag detected')
         return False

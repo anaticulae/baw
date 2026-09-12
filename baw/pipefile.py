@@ -135,10 +135,10 @@ def library(root: str, verbose: int = 0):
     init_lib = LIBRARY[0:16] not in current
     header = f'{LIBRARY}{newest}{LIBRARY_END}\n\n'
     if init_lib:
-        baw.log(f'caelum library: init {newest}')
+        utilo.log(f'caelum library: init {newest}')
         current = header + current
     else:
-        baw.log(f'caelum library: upgrade {newest}')
+        utilo.log(f'caelum library: upgrade {newest}')
         # remove old library
         _, current = current.split(LIBRARY_END, 1)
         # append new library
@@ -190,7 +190,7 @@ def library_newest(  # pylint:disable=W0613
     url = f'{base}/api/v1/repos/{user}/{repo}/tags'
     cmd = f'curl {url}'
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     completed = baw.runtime.run(cmd=cmd, cwd=os.getcwd())
     if completed.returncode:
         baw.error(completed)

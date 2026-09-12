@@ -74,10 +74,10 @@ def run_test(  # pylint:disable=R0914,R1260
         baw.cmd.baseline.pre(root)
         alls = True
     if not any((generate, nightly, longrun, fast, docs, alls)):
-        baw.log('skip tests...')
+        utilo.log('skip tests...')
         return baw.SUCCESS
     baw.utils.check_root(root)
-    baw.log('tests')
+    utilo.log('tests')
     testenv, markers = setup_testenvironment(
         root,
         fast=fast,
@@ -117,7 +117,7 @@ def run_test(  # pylint:disable=R0914,R1260
     if completed.returncode == baw.SUCCESS:
         if generate_only:
             # do not write log of collect tests
-            baw.log('test data generated')
+            utilo.log('test data generated')
         if coverage and cov_report:
             open_report(root)
         # do not log partial long running tests as completed

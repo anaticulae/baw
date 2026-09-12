@@ -24,7 +24,7 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
         if old:
             pattern += f'=={old}'
         replacement = f'{package}=={pypi}'
-        baw.log(f'replace requirement(==):\n{pattern}\n{replacement}')
+        utilo.log(f'replace requirement(==):\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
     for package, [old, pypi] in update.greater.items():
         if isinstance(old, str):
@@ -54,7 +54,7 @@ def replace(requirements: str, update: baw.requirements.NewRequirements) -> str:
         pattern = f'{package}>={old[0]},<{old[1]}'
         if pattern == replacement:
             continue
-        baw.log(f'replace requirement:\n{pattern}\n{replacement}')
+        utilo.log(f'replace requirement:\n{pattern}\n{replacement}')
         requirements = smart_replace(requirements, pattern, replacement)
     return requirements
 

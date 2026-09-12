@@ -7,9 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utilo
+
+import baw.cmd
 import baw.config
 import baw.runtime
-import baw.utils
 
 
 def evaluate(args: dict):
@@ -44,10 +46,10 @@ def install(
         verbose=verbose,
     )
     if completed.returncode:
-        baw.log(completed.stdout)
+        utilo.log(completed.stdout)
         baw.error(completed.stderr)
     if not verbose:
-        baw.log('done')
+        utilo.log('done')
     return completed.returncode
 
 

@@ -9,6 +9,8 @@
 
 import os
 
+import utilo
+
 import baw
 import baw.config
 
@@ -35,7 +37,7 @@ def cov_max(root) -> bool:
 def print_cov(root):
     root = baw.determine_root(os.getcwd())
     current = baw.config.coverage_min(root)
-    baw.log(current)
+    utilo.log(current)
     return baw.SUCCESS
 
 

@@ -69,7 +69,7 @@ def create(
     )
     outpath = utilo.join(releases(root), f'{major}.{minor}.0.rst')
     utilo.file_create(outpath, replaced)
-    baw.log(f'create new release plan: {outpath}')
+    utilo.log(f'create new release plan: {outpath}')
 
     overview = utilo.join(releases(root), 'releases.rst')
     loaded = utilo.file_read(overview)
@@ -87,7 +87,7 @@ def create(
 
 
 def close(root: str, verbose: int = 0):
-    baw.log('close current release plan')
+    utilo.log('close current release plan')
     current_status = status(root)
     assert current_status == Status.DONE, current_status
     quality = code_quality(root, verbose=verbose)

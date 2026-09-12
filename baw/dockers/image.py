@@ -59,11 +59,11 @@ def get_tags(image, base=None, org=None, limit=10, timeout=5):
 
 
 def exists(name: str) -> int:
-    baw.log(f'check: {name}')
+    utilo.log(f'check: {name}')
     if check_baseimage(name):
         baw.error(f'could not find image: {name}')
         sys.exit(baw.FAILURE)
-    baw.log('OK')
+    utilo.log('OK')
     return baw.SUCCESS
 
 

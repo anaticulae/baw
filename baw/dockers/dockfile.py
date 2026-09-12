@@ -57,7 +57,7 @@ def log_service(done):
     done = done[1]
     for line in done:
         try:
-            baw.log(line['stream'], end='')
+            utilo.log(line['stream'], end='')
         except KeyError:
             pass
 

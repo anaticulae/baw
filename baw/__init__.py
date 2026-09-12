@@ -34,7 +34,6 @@ from baw.utils import file_create
 from baw.utils import file_replace
 from baw.utils import forward_slash
 from baw.utils import load_toml
-from baw.utils import log
 from baw.utils import skip
 from baw.utils import tmpname
 from baw.utils import write_toml

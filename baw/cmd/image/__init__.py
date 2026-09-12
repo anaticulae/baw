@@ -106,15 +106,15 @@ def describe(dockerfile: str) -> str:
     root = baw.determine_root(dockerfile)
     if REFRENCE in content:
         current = baw.gix.describe(root)
-        baw.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
+        utilo.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
         content = content.replace(REFRENCE, current)
     if PIPREF in content:
         pipref = baw.cmd.info.pip_version(root, verbose=True)
-        baw.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
+        utilo.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
         content = content.replace(PIPREF, pipref)
     if PIPSTABLE in content:
         stable = baw.project.version.determine(root, verbose=True)
-        baw.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
+        utilo.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
         content = content.replace(PIPSTABLE, stable)
     return content
 
@@ -159,7 +159,7 @@ def newest(name: str) -> int:
     tags = baw.dockers.image.tags(name)
     maxtag = baw.dockers.image.version_max(tags)
     result = f'{name}:{maxtag[0]}'
-    baw.log(result)
+    utilo.log(result)
     return baw.SUCCESS
 
 
@@ -172,13 +172,13 @@ def upgrade(
     if not os.path.exists(path):
         baw.error(f'could not upgrade, path does not exists: {path}')
         return baw.FAILURE
-    baw.log(f'start upgrading: {path}')
+    utilo.log(f'start upgrading: {path}')
     replaced = baw.dockers.dockfile.docker_image_upgrade(
         path,
         prerelease=prerelease,
     )
     if not replaced:
-        baw.log(f'already up-to-date: {path}')
+        utilo.log(f'already up-to-date: {path}')
         return baw.SUCCESS
     with baw.git_stash(root):
         baw.utils.file_replace(path, replaced)
@@ -187,7 +187,7 @@ def upgrade(
             path,
             message='chore(upgrade): upgrade images',
         )
-        baw.log(f'upgraded: {path}')
+        utilo.log(f'upgraded: {path}')
     return baw.SUCCESS
 
 
@@ -211,7 +211,7 @@ def run(args: dict):  # pylint:disable=R0911
         return baw.cmd.image.clean.images()
     if action == 'githash':
         name = args['name']
-        baw.log(f'image name: {name}')
+        utilo.log(f'image name: {name}')
         return baw.cmd.image.create_git_hash(
             root,
             name=name,
@@ -222,7 +222,7 @@ def run(args: dict):  # pylint:disable=R0911
         env = args['env']
         if env:
             env = env.split(';')
-        baw.log(f'run name: {name}; cmd: {cmd}; env: {env};')
+        utilo.log(f'run name: {name}; cmd: {cmd}; env: {env};')
         return baw.dockers.container.run(
             cmd=cmd,
             image=name,

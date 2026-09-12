@@ -71,27 +71,13 @@ def handle_error(*exceptions: list, code: int = 1):
         sys.exit(code)
 
 
-def log(msg: str = '', end: str = NEWLINE):
-    """Write message to logger
-
-    Args:
-        msg(str): message to log
-        end(str): lineending
-    Hint:
-        Logging with default arguments will log a newline
-    """
-    msg = forward_slash(msg)
-    msg = fix_encoding(msg)
-    print(msg, end=end, file=sys.stdout, flush=True)
-
-
 def debug(msg: str = '', end: str = NEWLINE):
     # TODO: ENABLE LATER
     logit = False
     if not logit:
         return
     msg = '[DEBUG]:' + msg
-    log(msg, end=end)
+    utilo.log(msg, end=end)
 
 
 def completed(completed, force: bool = False):  # pylint:disable=W0621
@@ -99,16 +85,16 @@ def completed(completed, force: bool = False):  # pylint:disable=W0621
         return
     if completed.stdout and completed.stdout.strip():
         # stdout can be None
-        log(completed.stdout)
+        utilo.log(completed.stdout)
     if completed.stderr and completed.stderr.strip():
         # stderr can be None
-        log(completed.stderr)
+        utilo.log(completed.stderr)
 
 
 def verbose(msg: str = '', end: str = NEWLINE, verbose: int = 0):  # pylint:disable=W0621
     if not verbose:
         return
-    log(msg=msg, end=end)
+    utilo.log(msg, end=end)
 
 
 def error(msg: str, end: str = NEWLINE):
@@ -297,7 +283,7 @@ def print_runtime(before: int):
         before(int): time recorded some time before - use time.time()
     """
     time_diff = time.time() - before
-    log('Runtime: %.2f secs\n' % time_diff)  # pylint:disable=C0209
+    utilo.log('Runtime: %.2f secs\n' % time_diff)  # pylint:disable=C0209
 
 
 @contextlib.contextmanager
@@ -318,7 +304,7 @@ def skip(msg: str):
     Args:
         msg(str): message to skip
     """
-    log(f'skip: {msg}')
+    utilo.log(f'skip: {msg}')
 
 
 @contextlib.contextmanager
@@ -441,7 +427,7 @@ def exitx(msg='', returncode=FAILURE):
         if returncode:
             baw.error(msg)
         else:
-            baw.log(msg)
+            utilo.log(msg)
     sys.exit(returncode)
 
 

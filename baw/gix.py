@@ -35,7 +35,7 @@ def init(root: str):
     if os.path.exists(gitdir):
         baw.skip('git init')
         return
-    baw.log('git init')
+    utilo.log('git init')
     cmd = subprocess.run(  # nosec
         'git init -b main'.split(),
         check=False,
@@ -62,7 +62,7 @@ def git_add(
     update: str = '-u ' if update else ''
     raw = f'git add {update}{pattern}'
     if verbose:
-        baw.log(raw)
+        utilo.log(raw)
     cmd = baw.runtime.run_target(
         root,
         cmd=raw,
@@ -81,7 +81,7 @@ def git_commit(
     assert os.path.exists(root)
     message = f'"{message}"'
     if verbose:
-        baw.log('git commit')
+        utilo.log('git commit')
     # support multiple files
     if not isinstance(source, str):
         source = ' '.join(source)
@@ -162,7 +162,7 @@ def reset(
         0 if baw.SUCCESS else FAILURE
     """
     to_reset = ' '.join(files) if not isinstance(files, str) else files
-    baw.log(f'Reset {to_reset}')
+    utilo.log(f'Reset {to_reset}')
     completed = baw.runtime.run_target(
         root,
         cmd=f'git checkout -q {to_reset}',
@@ -215,7 +215,7 @@ def tag_drop(
     root: str,
     verbose: int = 0,
 ) -> bool:
-    baw.log(f'Remove tag: {tag}')
+    utilo.log(f'Remove tag: {tag}')
     completed = baw.runtime.run_target(
         root=root,
         cmd=f'git tag -d {tag}',
@@ -248,7 +248,7 @@ def git_stash(
     if is_clean(root, verbose=verbose):
         yield
         return baw.SUCCESS
-    baw.log('Stash environment')
+    utilo.log('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = baw.runtime.run_target(
         root,
@@ -262,7 +262,7 @@ def git_stash(
     nostash = (not completed.returncode and
                'No local changes to save' in completed.stdout)
     if nostash:
-        baw.log('No stash is required. Environment is already clean.')
+        utilo.log('No stash is required. Environment is already clean.')
     err = None
     try:
         yield  # let user do there job
@@ -373,10 +373,10 @@ def branchname(root: str) -> str:
 
 def update_gitignore(root: str, verbose: int = 0):
     if verbose:
-        baw.log('sync gitexclude')
+        utilo.log('sync gitexclude')
     exclude = utilo.join(root, GIT_REPO_EXCLUDE)
     if not os.path.exists(exclude):
-        baw.log(f'no git dir: {exclude}, skip update')
+        utilo.log(f'no git dir: {exclude}, skip update')
         return baw.SUCCESS
     baw.file_replace(
         exclude,

@@ -88,7 +88,7 @@ def init(
     baw.config.create(root, shortcut, name)
     create_project_files(root, shortcut, ptype, cmdline)
     baw.gix.update_gitignore(root)
-    baw.log()  # write newline
+    utilo.log()  # write newline
     if formatter:
         # TODO: EXPOSE FORMATTER BY CLI FLAG
         completed = baw.cmd.format.format_repository(
@@ -168,7 +168,7 @@ def create_folder(root: str):
         if os.path.exists(create):
             continue
         os.makedirs(create)
-        baw.log(f'create folder {item}')
+        utilo.log(f'create folder {item}')
 
 
 def create_files(root: str, todo: list = None):
@@ -187,7 +187,7 @@ def create_files(root: str, todo: list = None):
         if os.path.exists(create):
             baw.utils.skip(f'{operation_type} {item}')
             continue
-        baw.log(f'{operation_type} {item}')
+        utilo.log(f'{operation_type} {item}')
         parent = os.path.dirname(create)
         os.makedirs(parent, exist_ok=True)
         utilo.file_create(create, content=replaced)
