@@ -36,12 +36,7 @@ def get_tags(image, base=None, org=None, limit=10, timeout=5):
     >>> len(get_tags('alpine')) > 5
     True
     """
-    if base is None:
-        if "/" not in image:
-            image = f"library/{image}"
-        url = f"https://hub.docker.com/v2/repositories/{image}/tags"
-    else:
-        url = f"https://api.github.com/repos/{org}/{image}/tags"
+    url = tag_provider(image, base, org)
     utilo.debug(url)
     try:
         response = requests.get(
@@ -57,12 +52,39 @@ def get_tags(image, base=None, org=None, limit=10, timeout=5):
     except requests.RequestException as error:
         utilo.exitx(error)
     tags_json = response.json()
+    result = prepare_tags(tags_json, base=base)
+    return result
+
+
+def prepare_tags(tags_json, base) -> list:
     if base is None:
         result = [tag["name"] for tag in tags_json['results']]
     else:
         result = [tag["name"] for tag in tags_json]
     result = [item for item in result if is_tag_valid(item)]
     return result
+
+
+def tag_provider(image, base=None, org=None) -> str:
+    """\
+    >>> tag_provider('alpine')
+    'https://hub.docker.com/v2/repositories/library/alpine/tags'
+    >>> tag_provider('baw', org='anaticulae', base='ghcr.io')
+    'https://api.github.com/repos/anaticulae/baw/tags'
+    >>> tag_provider('baw', base='mydockerhub.io')
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid base: mydockerhub.io
+    """
+    if base:
+        if base != 'ghcr.io':
+            raise ValueError(f'invalid base: {base}')
+        url = f"https://api.github.com/repos/{org}/{image}/tags"
+        return url
+    if "/" not in image:
+        image = f"library/{image}"
+    url = f"https://hub.docker.com/v2/repositories/{image}/tags"
+    return url
 
 
 def is_tag_valid(item) -> bool:
