@@ -39,11 +39,15 @@ def get_tags(image, base=None, org=None, limit=10, timeout=5):
     else:
         url = f"https://api.github.com/repos/{org}/{image}/tags"
     utilo.debug(url)
-    response = requests.get(
-        url,
-        params={"per_page": limit},
-        timeout=timeout,
-    )
+    try:
+        response = requests.get(
+            url,
+            params={"per_page": limit},
+            timeout=timeout,
+        )
+    except requests.RequestException as error:
+        utilo.error('could not connect to docker repository')
+        utilo.exitx(error)
     try:
         response.raise_for_status()
     except requests.RequestException as error:
