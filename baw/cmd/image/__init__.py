@@ -180,14 +180,9 @@ def upgrade(
     if not replaced:
         utilo.log(f'already up-to-date: {path}')
         return baw.SUCCESS
-    with baw.git_stash(root):
-        baw.utils.file_replace(path, replaced)
-        baw.git_commit(
-            root,
-            path,
-            message='chore(upgrade): upgrade images',
-        )
-        utilo.log(f'upgraded: {path}')
+    baw.utils.file_replace(path, replaced)
+    baw.git_add(root=root, pattern=path)
+    utilo.log(f'upgraded: {path}')
     return baw.SUCCESS
 
 
@@ -245,12 +240,24 @@ def run_action_upgrade(dockerfile, root, prerelease) -> int:
         dockerfile = baw.dockers.dockfile.files(root)
     else:
         dockerfile = [str(dockerfile)]
-    result = sum(
-        upgrade(
-            dockerfile=utilo.join(root, item),
-            root=root,
-            prerelease=prerelease,
-        ) for item in dockerfile)
+    with baw.git_stash(root):
+        result = sum(
+            upgrade(
+                dockerfile=utilo.join(root, item),
+                root=root,
+                prerelease=prerelease,
+            ) for item in dockerfile)
+        require_commit = not result and baw.is_clean(root, verbose=0) is False
+        if require_commit:
+            # commit
+            if baw.git_commit(
+                    root,
+                    source='.',
+                    message='chore(docker): upgrade docker base images',
+            ):
+                utilo.exitx('could not commit docker files')
+    if require_commit:
+        utilo.log('docker base image upgrade successfull')
     return result
 
 
