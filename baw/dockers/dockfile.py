@@ -77,7 +77,7 @@ IMAGE = re.compile(r"""
     (?:FROM|image)
     [\:]?[\ ]{1,3}
     (?P<quote_opt>'{0,1})
-        ((?P<repo>\S{5,})/(?P<image>\S{5,})\:(?P<version>\S{3,}))
+        (((?P<repo>\S{5,})){0,1}(?P<image>\S{5,})\:(?P<version>\S{3,}))
     (?P=quote_opt)
 """, flags=re.VERBOSE)
 # yapf:enable
@@ -91,38 +91,63 @@ def docker_image_upgrade(
     # TODO: ENABLE LATER
     r"""\
     >>> IMAGE.findall('\nFROM ghcr.io/anaticulae/baw:447bf27')
-    [('', 'ghcr.io/anaticulae/baw:447bf27', 'ghcr.io', 'anaticulae/baw', '447bf27')]
+    [('', 'ghcr.io/anaticulae/baw:...', 'ghcr.io/anaticula', 'ghcr.io/anaticula', 'e/baw', '...')]
 
     # >>> import baw.pipefile;
     # >>> docker_image_upgrade(baw.pipefile.jenkinsfile(__file__), always=True)
     # '@Library(...pipeline{...}\n'
     """
-    content = utilo.file_read(path)
-    parsed = IMAGE.findall(content)
+    parsed = base_image(path)
     if not parsed:
         baw.error(f'could not parse: {path}')
         return None
+    base, name, version = base_name_version(parsed)
+    org = project_org()
+    content = utilo.file_read(path)
     result = content
-    for find in parsed:
-        # ("'", '169.254.149.20:6001/arch_python_git_baw:v1.20.0',
-        # '169.254.149.20:6001', 'arch_python_git_baw', 'v1.20.0')
-        repo, image = find[2], find[3]
-        matched = f'{repo}/{image}'
-        baw.utils.verbose(f'>>> search: {matched}')
-        tagx = baw.dockers.image.tags(matched)
-        maxed = baw.dockers.image.version_max(
-            tagx,
-            prerelease=prerelease,
-        )
-        if not maxed:
-            baw.error(f'could not upgrade docker image: {matched}')
-            sys.exit(baw.FAILURE)
-        version_new = f'{matched}:{maxed[0]}'
-        result = result.replace(find[1], version_new, 1)
+    baw.utils.verbose(f'>>> search: {parsed}')
+    tagx = baw.dockers.image.get_tags(image=name, base=base, org=org)
+    maxed = baw.dockers.image.version_max(
+        tagx,
+        prerelease=prerelease,
+    )
+    if not maxed:
+        baw.error(f'could not upgrade docker image: {parsed}')
+        sys.exit(baw.FAILURE)
+    version_new = parsed.replace(version, maxed[0])
+    result = result.replace(parsed, version_new, 1)
     if result == content and not always:
         # nothing changed
         return None
     return result
+
+
+def project_org():
+    """\
+    >>> project_org()
+    'anaticulae'
+    """
+    completed = utilo.run('git remote get-url origin')
+    stdout: str = completed.stdout.strip()
+    # git@github.com:anaticulae/baw.git
+    result = stdout.split(':')[1].split('/')[0]
+    return result
+
+
+def base_name_version(line) -> tuple:
+    """\
+    >>> base_name_version('ghcr.io/anaticulae/baw:447bf27')
+    ('ghcr.io/anaticulae', 'baw', '447bf27')
+    """
+    try:
+        base, image = line.rsplit('/', maxsplit=1)
+    except ValueError:
+        base, image = None, line
+    try:
+        name, version = image.split(':')
+    except ValueError:
+        name, version = image, 'latest'
+    return base, name, version
 
 
 def files(path: str):
@@ -131,10 +156,22 @@ def files(path: str):
     ['Dockerfile', 'baw/templates/Dockerfile',...erfile', 'env/test/Dockerfile']
     """
     root = utilo.baw_root(path)
-    files = [
+    result = [
         item for item in utilo.file_list(
             root,
             absolute=False,
         ) if utilo.file_name(item).lower() == 'dockerfile'
     ]
-    return files
+    return result
+
+
+def base_image(path):
+    for line in utilo.file_read(path).splitlines():
+        line = line.strip()
+        # Ignore comments
+        if not line or line.startswith("#"):
+            continue
+        match = re.match(r"^FROM\s+(\S+)", line, re.I)
+        if match:
+            return match.group(1)
+    return None

@@ -23,6 +23,7 @@ import baw.dockers.container
 import baw.dockers.dockfile
 import baw.dockers.image
 import baw.gix
+import baw.project.version
 import baw.utils
 
 
@@ -196,24 +197,14 @@ def run(args: dict):  # pylint:disable=R0911
     if action == 'create':
         return create(
             root,
-            dockerfile=args['dockerfile'],
-            name=args['name'],
+            dockerfile=args.get('dockerfile'),
+            name=args.get('name'),
             generate=args.get('generate'),
             install=args.get('install'),
             verbose=args.get('verbose'),
         )
     if action == 'upgrade':
-        dockerfile = args['dockerfile']
-        if dockerfile is None:
-            dockerfile = baw.dockers.dockfile.files(root)
-        else:
-            dockerfile = [str(dockerfile)]
-        return sum(
-            upgrade(
-                dockerfile=utilo.join(root, item),
-                root=root,
-                prerelease=args['prerelease'],
-            ) for item in dockerfile)
+        return run_action_upgrade(args['dockerfile'], root, args['prerelease'])
     if action == 'delete':
         baw.error('not implemented')
     if action == 'clean':
@@ -247,6 +238,20 @@ def run(args: dict):  # pylint:disable=R0911
         return newest(args['name'])
     baw.error(f'nothing selected: {args}')
     return baw.FAILURE
+
+
+def run_action_upgrade(dockerfile, root, prerelease) -> int:
+    if dockerfile is None:
+        dockerfile = baw.dockers.dockfile.files(root)
+    else:
+        dockerfile = [str(dockerfile)]
+    result = sum(
+        upgrade(
+            dockerfile=utilo.join(root, item),
+            root=root,
+            prerelease=prerelease,
+        ) for item in dockerfile)
+    return result
 
 
 CHOICES = 'create upgrade delete clean githash run check newest'.split()

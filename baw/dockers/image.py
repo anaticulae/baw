@@ -10,7 +10,9 @@
 import sys
 
 import docker.errors
+import requests
 import semver
+import utilo
 
 import baw.dockers
 
@@ -27,6 +29,33 @@ def tags(matched: str) -> list:
                 continue
             collected.extend(item.tags)
     return collected
+
+
+def get_tags(image, base=None, org=None, limit=10, timeout=5):
+    if base is None:
+        if "/" not in image:
+            image = f"library/{image}"
+        url = f"https://hub.docker.com/v2/repositories/{image}/tags"
+    else:
+        url = f"https://api.github.com/repos/{org}/{image}/tags"
+    utilo.debug(url)
+    response = requests.get(
+        url,
+        params={"per_page": limit},
+        timeout=timeout,
+    )
+    try:
+        response.raise_for_status()
+    except requests.RequestException as error:
+        utilo.exitx(error)
+    tags_json = response.json()
+    if base is None:
+        result = [tag["name"] for tag in tags_json['results']]
+    else:
+        result = [tag["name"] for tag in tags_json]
+    # no latest
+    result = [item for item in result if item not in 'latest']
+    return result
 
 
 def exists(name: str) -> int:
@@ -55,7 +84,9 @@ def version_max(taglist, prerelease: bool = False):
     ... ], prerelease=True)
     ['v1.25.0', 'v1.25.0-2-gafbfdd0', 'v1.25.0-1-g7d87b32', '1.24.1', 'v1.24.1-2-g2d835b6']
     """
-    taglist = [item.rsplit(':', 1)[1] for item in taglist]
+    taglist = [
+        item.rsplit(':', 1)[1] if ':' in item else item for item in taglist
+    ]
     if not prerelease:
         # remove pre releases
         taglist = [item for item in taglist if '-' not in item]
@@ -70,10 +101,16 @@ def parse(item: str):
     """\
     >>> parse('v1.2.3')
     Version(major=1, minor=2, patch=3, prerelease=None, build=None)
+    >>> parse('latest')
+    Version(major=0, minor=0, patch=0, prerelease=None, build=None)
     """
     if item[0] == 'v':
         item = item[1:]
-    parsed = semver.Version.parse(item)
+    try:
+        parsed = semver.Version.parse(item)
+    except ValueError:
+        # TODO: CHANGE LATER
+        parsed = semver.Version.parse('0.0.0')
     return parsed
 
 
