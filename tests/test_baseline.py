@@ -28,7 +28,7 @@ def test_cmd_baseline_test(simple, monkeypatch, capsys):
         content=CREATE_FILE,
     )
     baw.git_add(root, pattern='*')
-    baw.git_commit(root, source='.', message='baseline')
+    baw.git_commit(root, source='.', msg='baseline')
     assert baw.is_clean(root)
     with monkeypatch.context() as context:
         push = lambda _: baw.SUCCESS

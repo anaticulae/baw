@@ -74,12 +74,12 @@ def git_add(
 def git_commit(
     root,
     source,
-    message,
+    msg,
     tag: str | None = None,
     verbose: int | bool | None = 0,
 ):
     assert os.path.exists(root)
-    message = f'"{message}"'
+    msg = f'"{msg}"'
     if verbose:
         utilo.log('git commit')
     # support multiple files
@@ -87,7 +87,7 @@ def git_commit(
         source = ' '.join(source)
     process = baw.runtime.run_target(
         root,
-        f'git commit {source} -m {message}',
+        f'git commit {source} -m {msg}',
         verbose=verbose,
     )
     if process.returncode:
@@ -97,7 +97,7 @@ def git_commit(
         # -a: ensure to make annotated tag to use with `git describe`
         process = baw.runtime.run_target(
             root,
-            f'git tag -a {tag} -m {message}',
+            f'git tag -a {tag} -m {msg}',
             verbose=verbose,
         )
         if process.returncode:

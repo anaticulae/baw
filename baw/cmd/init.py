@@ -144,7 +144,7 @@ def first_commit(root, verbose: int) -> int:
     returncode = baw.git_commit(
         root,
         source=' ',
-        message=INIT,
+        msg=INIT,
         tag=baw.cmd.release.FIRST_RELEASE,
     )
     return returncode

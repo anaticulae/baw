@@ -43,7 +43,7 @@ def commit(root: str, push: bool = True) -> int:
     returnvalue = baw.git_commit(
         root,
         source='',
-        message=MESSAGE,
+        msg=MESSAGE,
     )
     if returnvalue:
         return returnvalue

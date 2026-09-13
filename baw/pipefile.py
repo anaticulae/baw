@@ -150,7 +150,7 @@ def library(root: str, verbose: int = 0):
     msg = 'chore(Jenkins): upgrade pipe library'
     if init_lib:
         msg = 'chore(Jenkins): add pipe library'
-    baw.git_commit(root, source=path, message=msg)
+    baw.git_commit(root, source=path, msg=msg)
     return baw.SUCCESS
 
 

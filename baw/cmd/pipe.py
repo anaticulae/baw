@@ -50,7 +50,7 @@ def init_github(
         failure = baw.git_commit(
             root,
             source=(source, utilo.join('Makefile')),
-            message='chore(github): add .github',
+            msg='chore(github): add .github',
             verbose=verbose,
         )
         if failure:
@@ -77,7 +77,7 @@ def init_jenkins(
         failure = baw.git_commit(
             root,
             source=source,
-            message='chore(Jenkins): add Jenkinsfile',
+            msg='chore(Jenkins): add Jenkinsfile',
             verbose=verbose,
         )
         if failure:
@@ -107,7 +107,7 @@ def upgrade(
         failure = baw.git_commit(
             root,
             source=source,
-            message='chore(Jenkins): upgrade Jenkinsfile',
+            msg='chore(Jenkins): upgrade Jenkinsfile',
             verbose=verbose,
         )
         if failure:

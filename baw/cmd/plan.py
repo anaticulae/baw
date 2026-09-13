@@ -111,7 +111,7 @@ def commit(root: str, message: str, verbose: int = 0):
     returncode = baw.gix.git_commit(
         root,
         '',
-        message=message,
+        msg=message,
         verbose=verbose,
     )
     assert returncode == baw.SUCCESS

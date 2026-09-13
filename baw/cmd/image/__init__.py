@@ -253,7 +253,7 @@ def run_action_upgrade(dockerfile, root, prerelease) -> int:
             if baw.git_commit(
                     root,
                     source='.',
-                    message='chore(docker): upgrade docker base images',
+                    msg='chore(docker): upgrade docker base images',
             ):
                 utilo.exitx('could not commit docker files')
     if require_commit:

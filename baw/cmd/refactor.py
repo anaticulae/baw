@@ -33,7 +33,7 @@ def run(
         baw.git_commit(
             root,
             source='.',
-            message='refactor(replace): automated replacement',
+            msg='refactor(replace): automated replacement',
             verbose=False,
         )
     else:

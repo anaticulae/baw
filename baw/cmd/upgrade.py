@@ -69,7 +69,7 @@ def upgrade(
             failure = baw.git_commit(
                 root,
                 source=baw.PYPROJECT,
-                message='chore(requirements): upgrade pyproject.toml',
+                msg='chore(requirements): upgrade pyproject.toml',
                 verbose=verbose,
             )
             if failure:
@@ -87,7 +87,7 @@ def upgrade(
         failure = baw.git_commit(
             root,
             source=requirements,
-            message=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',
+            msg=f'chore(requirements): upgrade {baw.utils.REQUIREMENTS_TXT}',
             verbose=verbose,
         )
         if failure:
