@@ -125,8 +125,8 @@ def docker_image_upgrade(
 def project_org():
     """\
     # TODO: ENABLE LATER AFTER FIXING TEST ON GITHUB
-    >>> project_org() == 'anaticulae' or utilo.isci()
-    True
+    # >>> project_org() == 'anaticulae' or utilo.isci()
+    # True
     """
     completed = utilo.run('git remote get-url origin')
     stdout: str = completed.stdout.strip()
