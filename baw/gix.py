@@ -473,3 +473,9 @@ def git_clean(root: str):
         verbose=False,
     )
     baw.completed(completed)
+
+
+def git_status_stdout(root) -> str:
+    completed = baw.runtime.run('git status', root)
+    stdout = completed.stdout
+    return stdout

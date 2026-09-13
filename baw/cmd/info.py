@@ -83,7 +83,7 @@ def prints(root, value: str, verbose: int = 0) -> int:  # pylint:disable=R1260,R
             return baw.SUCCESS
         utilo.log('not clean\n')
         # log data
-        utilo.log(baw.runtime.run('git status', root).stdout)
+        utilo.log(baw.gix.git_status_stdout(root))
         return baw.FAILURE
     return baw.FAILURE
 
