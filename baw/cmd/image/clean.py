@@ -8,6 +8,7 @@
 # =============================================================================
 
 import docker.errors
+import utilo
 
 import baw
 import baw.cmd.image
@@ -23,7 +24,7 @@ def images() -> int:
             delete |= imagename.startswith('tmp_')
             if not delete:
                 continue
-            baw.log(f'try to remove: {image.id}')
+            utilo.log(f'try to remove: {image.id}')
             try:
                 image.remove(force=True)
             except docker.errors.APIError:

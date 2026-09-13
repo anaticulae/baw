@@ -59,9 +59,9 @@ def generate_docs(root: str, verbose: int) -> int:
     configuration = '-d 10 -M -f -e'
     cmd = 'sphinx-apidoc %s -o %s %s %s'
     cmd = cmd % (configuration, doctmp, sources, ignore)
-    baw.log('generate docs')
+    utilo.log('generate docs')
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     completed = baw.runtime.run_target(
         root,
         cmd=cmd,
@@ -75,7 +75,7 @@ def generate_docs(root: str, verbose: int) -> int:
     baw.utils.file_replace(path, replaced)
     doctmp = baw.config.docpath(root)
     # copy docs
-    baw.log('sync docs')
+    utilo.log('sync docs')
     source = utilo.join(root, 'docs')
     shutil.copytree(source, doctmp, dirs_exist_ok=True)
     for filename in 'CHANGELOG.md CHANGELOG'.split():
@@ -107,9 +107,9 @@ def build_html(root: str, verbose: int) -> int:
     doctmp = baw.config.docpath(root)
     htmloutput = utilo.join(doctmp, 'html')
     cmd = f'sphinx-build {doctmp} {htmloutput} {build_options}'
-    baw.log('make html')
+    utilo.log('make html')
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     result = baw.runtime.run_target(
         root,
         cmd=cmd,

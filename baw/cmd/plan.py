@@ -15,6 +15,7 @@ import re
 import utilo
 
 import baw
+import baw.gix
 import baw.project.version
 import baw.resources
 import baw.runtime
@@ -69,7 +70,7 @@ def create(
     )
     outpath = utilo.join(releases(root), f'{major}.{minor}.0.rst')
     utilo.file_create(outpath, replaced)
-    baw.log(f'create new release plan: {outpath}')
+    utilo.log(f'create new release plan: {outpath}')
 
     overview = utilo.join(releases(root), 'releases.rst')
     loaded = utilo.file_read(overview)
@@ -87,7 +88,7 @@ def create(
 
 
 def close(root: str, verbose: int = 0):
-    baw.log('close current release plan')
+    utilo.log('close current release plan')
     current_status = status(root)
     assert current_status == Status.DONE, current_status
     quality = code_quality(root, verbose=verbose)
@@ -107,12 +108,13 @@ def commit(root: str, message: str, verbose: int = 0):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
     baw.git_add(root, pattern=plan)
-    process = baw.runtime.run_target(
+    returncode = baw.gix.git_commit(
         root,
-        f'git commit -m "{message}"',
+        '',
+        msg=message,
         verbose=verbose,
     )
-    assert process.returncode == baw.SUCCESS, process
+    assert returncode == baw.SUCCESS
 
 
 def next_version(

@@ -33,11 +33,11 @@ def run(
         baw.git_commit(
             root,
             source='.',
-            message='refactor(replace): automated replacement',
+            msg='refactor(replace): automated replacement',
             verbose=False,
         )
     else:
-        baw.log('nothing todo')
+        utilo.log('nothing todo')
     sys.exit(baw.SUCCESS)
 
 
@@ -51,7 +51,7 @@ def pattern_run(root: str, verbose: int) -> bool:
             content = content.replace(key, value)
         if hash(content) != before:
             if verbose:
-                baw.log(f'refactor: {path}')
+                utilo.log(f'refactor: {path}')
             changed = True
         baw.utils.file_replace(path, content)
     return changed
@@ -93,7 +93,7 @@ def files(root: str) -> list:
 
 def evals(args: dict):
     root = baw.cmd.utils.get_root(args)
-    baw.log(f'refactor: {root}')
+    utilo.log(f'refactor: {root}')
     run(root=root,)
 
 

@@ -50,12 +50,12 @@ def init_github(
         failure = baw.git_commit(
             root,
             source=(source, utilo.join('Makefile')),
-            message='chore(github): add .github',
+            msg='chore(github): add .github',
             verbose=verbose,
         )
         if failure:
             return failure
-    baw.log('.github added')
+    utilo.log('.github added')
     return baw.SUCCESS
 
 
@@ -77,12 +77,12 @@ def init_jenkins(
         failure = baw.git_commit(
             root,
             source=source,
-            message='chore(Jenkins): add Jenkinsfile',
+            msg='chore(Jenkins): add Jenkinsfile',
             verbose=verbose,
         )
         if failure:
             return failure
-    baw.log('Jenkinsfile added')
+    utilo.log('Jenkinsfile added')
     return baw.SUCCESS
 
 
@@ -97,7 +97,7 @@ def upgrade(
     replaced = baw.pipefile.upgrade(root, always=True)
     before = utilo.file_read(source)
     if replaced.strip() == before.strip():
-        baw.log('Jenkinsfile unchanged, skip upgrade')
+        utilo.log('Jenkinsfile unchanged, skip upgrade')
         return baw.SUCCESS
     with baw.git_stash(root, verbose=verbose):
         baw.utils.file_replace(
@@ -107,12 +107,12 @@ def upgrade(
         failure = baw.git_commit(
             root,
             source=source,
-            message='chore(Jenkins): upgrade Jenkinsfile',
+            msg='chore(Jenkins): upgrade Jenkinsfile',
             verbose=verbose,
         )
         if failure:
             return failure
-    baw.log('Jenkinsfile upgraded')
+    utilo.log('Jenkinsfile upgraded')
     return baw.SUCCESS
 
 

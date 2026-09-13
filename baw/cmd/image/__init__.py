@@ -23,6 +23,7 @@ import baw.dockers.container
 import baw.dockers.dockfile
 import baw.dockers.image
 import baw.gix
+import baw.project.version
 import baw.utils
 
 
@@ -34,7 +35,7 @@ def create(  # pylint:disable=W0613
     install: bool = False,
     verbose: int = 0,
 ):
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     if dockerfile:
         dockerfile = ensure_dockerfile_path(dockerfile)
         with dockerfile_resolve_gitdescribe(dockerfile) as dock:
@@ -105,21 +106,21 @@ def describe(dockerfile: str) -> str:
     root = baw.determine_root(dockerfile)
     if REFRENCE in content:
         current = baw.gix.describe(root)
-        baw.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
+        utilo.log(f'REPLACE {REFRENCE} {current} in {dockerfile}')
         content = content.replace(REFRENCE, current)
     if PIPREF in content:
         pipref = baw.cmd.info.pip_version(root, verbose=True)
-        baw.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
+        utilo.log(f'REPLACE {PIPREF} {pipref} in {dockerfile}')
         content = content.replace(PIPREF, pipref)
     if PIPSTABLE in content:
         stable = baw.project.version.determine(root, verbose=True)
-        baw.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
+        utilo.log(f'REPLACE {PIPSTABLE} {stable} in {dockerfile}')
         content = content.replace(PIPSTABLE, stable)
     return content
 
 
 def create_git_hash(root: str, name=None):  # pylint:disable=W0613
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     path = utilo.join(root, 'Dockerfile')
     if not os.path.exists(path):
         baw.error(f'missing Dockerfile: {path}')
@@ -142,7 +143,7 @@ def tag(root: str, generate: bool = False) -> str:
     >>> tag(__file__, generate=True)
     '.../try_gen_baw:...'
     """
-    root = baw.cmd.utils.determine_root(root)
+    root = utilo.baw_root(root)
     testing = baw.config.docker_testing()
     name = baw.cmd.info.requirement_hash(root, verbose=True)
     # use different hash if data generation is enabled
@@ -158,7 +159,7 @@ def newest(name: str) -> int:
     tags = baw.dockers.image.tags(name)
     maxtag = baw.dockers.image.version_max(tags)
     result = f'{name}:{maxtag[0]}'
-    baw.log(result)
+    utilo.log(result)
     return baw.SUCCESS
 
 
@@ -171,22 +172,17 @@ def upgrade(
     if not os.path.exists(path):
         baw.error(f'could not upgrade, path does not exists: {path}')
         return baw.FAILURE
-    baw.log(f'start upgrading: {path}')
+    utilo.log(f'start upgrading: {path}')
     replaced = baw.dockers.dockfile.docker_image_upgrade(
         path,
         prerelease=prerelease,
     )
     if not replaced:
-        baw.log(f'already up-to-date: {path}')
+        utilo.log(f'already up-to-date: {path}')
         return baw.SUCCESS
-    with baw.git_stash(root):
-        baw.utils.file_replace(path, replaced)
-        baw.git_commit(
-            root,
-            path,
-            message='chore(upgrade): upgrade images',
-        )
-        baw.log(f'upgraded: {path}')
+    baw.utils.file_replace(path, replaced)
+    baw.git_add(root=root, pattern=path)
+    utilo.log(f'upgraded: {path}')
     return baw.SUCCESS
 
 
@@ -196,25 +192,21 @@ def run(args: dict):  # pylint:disable=R0911
     if action == 'create':
         return create(
             root,
-            dockerfile=args['dockerfile'],
-            name=args['name'],
+            dockerfile=args.get('dockerfile'),
+            name=args.get('name'),
             generate=args.get('generate'),
             install=args.get('install'),
             verbose=args.get('verbose'),
         )
     if action == 'upgrade':
-        return upgrade(
-            dockerfile=args['dockerfile'],
-            root=root,
-            prerelease=args['prerelease'],
-        )
+        return run_action_upgrade(args['dockerfile'], root, args['prerelease'])
     if action == 'delete':
         baw.error('not implemented')
     if action == 'clean':
         return baw.cmd.image.clean.images()
     if action == 'githash':
         name = args['name']
-        baw.log(f'image name: {name}')
+        utilo.log(f'image name: {name}')
         return baw.cmd.image.create_git_hash(
             root,
             name=name,
@@ -225,7 +217,7 @@ def run(args: dict):  # pylint:disable=R0911
         env = args['env']
         if env:
             env = env.split(';')
-        baw.log(f'run name: {name}; cmd: {cmd}; env: {env};')
+        utilo.log(f'run name: {name}; cmd: {cmd}; env: {env};')
         return baw.dockers.container.run(
             cmd=cmd,
             image=name,
@@ -241,6 +233,32 @@ def run(args: dict):  # pylint:disable=R0911
         return newest(args['name'])
     baw.error(f'nothing selected: {args}')
     return baw.FAILURE
+
+
+def run_action_upgrade(dockerfile, root, prerelease) -> int:
+    if dockerfile is None:
+        dockerfile = baw.dockers.dockfile.files(root)
+    else:
+        dockerfile = [str(dockerfile)]
+    with baw.git_stash(root):
+        result = sum(
+            upgrade(
+                dockerfile=utilo.join(root, item),
+                root=root,
+                prerelease=prerelease,
+            ) for item in dockerfile)
+        require_commit = not result and baw.is_clean(root, verbose=0) is False
+        if require_commit:
+            # commit
+            if baw.git_commit(
+                    root,
+                    source='.',
+                    msg='chore(docker): upgrade docker base images',
+            ):
+                utilo.exitx('could not commit docker files')
+    if require_commit:
+        utilo.log('docker base image upgrade successfull')
+    return result
 
 
 CHOICES = 'create upgrade delete clean githash run check newest'.split()

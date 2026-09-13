@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import utilo
+
 import baw.archive.test
 import baw.cmd.complex
 import baw.cmd.lint
@@ -89,7 +91,7 @@ def require_release(root):
     if current_head.isnumeric():
         # may a year: 2022
         return baw.SUCCESS
-    baw.log(f'No release is required, head is already: {current_head}')
+    utilo.log(f'No release is required, head is already: {current_head}')
     return baw.FAILURE
 
 
@@ -129,7 +131,7 @@ def run_test(
             verbose=verbose,
         )
         return returncode
-    baw.log('release was already tested successfully')
+    utilo.log('release was already tested successfully')
     return baw.SUCCESS
 
 

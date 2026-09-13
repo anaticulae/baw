@@ -22,7 +22,7 @@ def cache_clear():
 
 def coverage_min(root, value: float, can_decrease: bool = False):  # pylint:disable=W0613
     value = int(float(value))
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     path = baw.config.config_path(root)
     content = utilo.file_read(path)
     exists = 'coverage_min' in content

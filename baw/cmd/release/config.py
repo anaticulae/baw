@@ -31,7 +31,7 @@ def release_config_tmp(root: str, verbose: int):
     generated = generated.replace('{{TEMPLATE_DIR}}', SEMANTIC)
     generated = generated.replace('{{UPLOAD_TO_VCS_RELEASE}}', upload)
     if verbose:
-        baw.utils.log(generated)
+        utilo.log(generated)
     # use own tmpfile cause TemporaryFile(delete=True) seems no supported
     # at linux, parameter delete is missing.
     config = configpath(root)

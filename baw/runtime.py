@@ -14,8 +14,9 @@ import subprocess
 import sys
 import time
 
+import utilo
+
 import baw
-import baw.config
 import baw.utils
 
 NO_EXECUTABLE = 127
@@ -24,9 +25,9 @@ NO_EXECUTABLE = 127
 def destroy(path: str):
     """Remove venv path recursive if path exists, do nothing."""
     if not os.path.exists(path):
-        baw.log(f'Nothing to clean, path does not exists {path}')
+        utilo.log(f'Nothing to clean, path does not exists {path}')
         return True
-    baw.log(f'Removing venv environment {path}')
+    utilo.log(f'Removing venv environment {path}')
     try:
         shutil.rmtree(path)
     except PermissionError as fail:
@@ -83,7 +84,7 @@ def run_target(
         baw.error(fail)
         return baw.FAILURE
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     # run local
     completed = run(
         cmd=cmd,
@@ -151,13 +152,13 @@ def log_result(  # pylint:disable=R1260,R0912
         msg = f'Completed: `{cmd}` in `{cwd}` returncode: {returncode}\n'
         baw.error(msg)
     if completed.stdout and verbose:
-        baw.log(completed.stdout)
+        utilo.log(completed.stdout)
     if verbose:
         if not reporting:
             # Inform, not writing to stderr
-            baw.log(f'Completed: `{cmd}` in `{cwd}`\n')
+            utilo.log(f'Completed: `{cmd}` in `{cwd}`\n')
         if verbose == 2:  # TODO: Introduce VERBOSE level
-            baw.log(f'Env: {os.environ}')
+            utilo.log(f'Env: {os.environ}')
     error_message = completed.stderr
     # catch stderr is None when running baw --test=pdb because the std-out/err
     # is None
@@ -229,7 +230,7 @@ def runs(
                 baw.error(f'error: {completed.stderr}')
                 return baw.FAILURE
     if verbose:
-        baw.log(f'{cmds}: complete\n')
+        utilo.log(f'{cmds}: complete\n')
     return baw.SUCCESS
 
 

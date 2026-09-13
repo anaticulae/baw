@@ -12,7 +12,8 @@ import os
 import sys
 import time
 
-import baw.cmd.utils
+import utilo
+
 import baw.gix
 import baw.runtime
 
@@ -20,7 +21,7 @@ import baw.runtime
 
 
 def main():
-    root = baw.cmd.utils.determine_root(os.getcwd())
+    root = utilo.baw_root(os.getcwd())
     if not baw.gix.is_clean(root, verbose=False):
         baw.error(f'not clean, abort: {root}')
         sys.exit(baw.FAILURE)
@@ -35,13 +36,13 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
     timed = []
     states = []
     for index, (commit, headline) in enumerate(todo, start=1):
-        baw.log(f'\n{index}|{len(todo)}')
-        baw.log(f'>>> {headline}')
-        baw.log(f'git checkout {commit} in {root}')
+        utilo.log(f'\n{index}|{len(todo)}')
+        utilo.log(f'>>> {headline}')
+        utilo.log(f'git checkout {commit} in {root}')
         if baw.gix.checkout(root, commit):
             sys.exit(baw.FAILURE)
         current = time.time()
-        baw.log(f'run: {cmd}')
+        utilo.log(f'run: {cmd}')
         processed = baw.runtime.run(cmd, cwd=root)
         if processed.returncode == 127:
             baw.error(f'invalid cmd: {cmd}')
@@ -53,13 +54,13 @@ def profile(root, cmd, ranges, lookback: int = 20000) -> list:
         #     sys.exit(baw.FAILURE)
         states.append(processed.returncode)
         diff = round(time.time() - current, 4)
-        baw.log(f'done: {diff}')
+        utilo.log(f'done: {diff}')
         timed.append(diff)
-    baw.log('\n\nDONE:\n========================')
+    utilo.log('\n\nDONE:\n========================')
     for index, (state, commit, timed) in enumerate(zip(states, todo, timed)):
         raw = 'X' if state else ' '
-        baw.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
-                f'{commit[1][0:30]}')
+        utilo.log(f'{commit[0][0:15]}:{raw}:   {int(timed)}      '
+                  f'{commit[1][0:30]}')
     # checkout(root, commit=todo[0])
     baw.gix.checkout(root, branch='master')
     return timed

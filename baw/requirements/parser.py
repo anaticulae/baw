@@ -54,11 +54,11 @@ def parse_txt(
     if len(common_keys) != (len(equal.keys()) + len(greater.keys())):
         baw.error('duplicated package definition')
         baw.error(content)
-        baw.log()
+        utilo.log()
         baw.error(common_keys)
-        baw.log()
+        utilo.log()
         baw.error(equal)
-        baw.log()
+        utilo.log()
         baw.error(greater)
         sys.exit(baw.FAILURE)
     result = baw.requirements.Requirements(equal=equal, greater=greater)
@@ -89,7 +89,7 @@ def line_parse(line: str, upgrade: bool = False) -> tuple:
         return None
     if noauto := '#' in line and 'noauto' in line:  # pylint:disable=W0612
         if upgrade:
-            baw.log(f'skip: {line}')
+            utilo.log(f'skip: {line}')
             return None
     with contextlib.suppress(ValueError):
         # remove right side comment: 'rawmaker==1.0.0 # this is rawmaker'

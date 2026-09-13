@@ -10,6 +10,8 @@
 import re
 import sys
 
+import utilo
+
 import baw.runtime
 import baw.utils
 
@@ -20,7 +22,7 @@ def cli(
     args: list,
     verbose: int = 0,
 ):
-    baw.log(commits)
+    utilo.log(commits)
     commits = commits.split('^')
     if len(commits) == 1:
         bad, good = 'HEAD', commits[0]
@@ -58,7 +60,7 @@ def bisect(
     )
 
     important = collect_findings(completed.stdout)
-    baw.log(baw.NEWLINE.join(important))
+    utilo.log(baw.NEWLINE.join(important))
 
     # finish bisect
     baw.runtime.run_target(

@@ -8,6 +8,8 @@
 #==============================================================================
 """Run every function which is used by `baw`."""
 
+import utilo
+
 import baw.cmd.utils
 import baw.config
 import baw.gix
@@ -27,7 +29,7 @@ def publish(
     verbose: int = 0,
 ):
     """Push release to defined repository."""
-    baw.log('publish start')
+    utilo.log('publish start')
     if failure := can_publish(root, pre=pre, verbose=verbose):
         return failure
     url = baw.config.package_testing() if pre else baw.config.package_address()[0]  # yapf:disable
@@ -35,7 +37,7 @@ def publish(
     python = baw.config.python(root)
     cmd = f'{python} setup.py {distribution} upload -r {url}'
     if verbose:
-        baw.log(f'build dist: {cmd}')
+        utilo.log(f'build dist: {cmd}')
     completed = baw.runtime.run_target(
         root,
         cmd,
@@ -46,7 +48,7 @@ def publish(
     if completed.returncode == baw.SUCCESS:
         if pre:
             log_prerelease(root)
-        baw.log('publish completed')
+        utilo.log('publish completed')
     else:
         baw.error(completed.stderr)
         baw.error('publish failed')
@@ -69,8 +71,8 @@ def can_publish(
 
 
 def log_prerelease(root):
-    baw.log(baw.config.shortcut(root) + '-', end='')
-    baw.log(baw.utils.git_hash(root))
+    utilo.log(baw.config.shortcut(root) + '-', end='')
+    utilo.log(baw.utils.git_hash(root))
 
 
 def distribution_format() -> str:

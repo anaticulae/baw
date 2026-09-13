@@ -34,7 +34,7 @@ def determine(root: str, verbose: int = 0) -> str:
     Raises:
         ValueError: if no __version__ can be located
 
-    >>> import baw.project; ROOT = baw.project.determine_root(__file__)
+    >>> import baw.project; ROOT = utilo.baw_root(__file__)
     >>> determine(ROOT)
     '...'
     >>> determine(ROOT, True)

@@ -20,7 +20,6 @@ import baw
 import baw.cmd.utils
 import baw.config
 import baw.gix
-import baw.runtime
 
 
 def clean(  # pylint:disable=R1260,too-many-branches
@@ -32,13 +31,13 @@ def clean(  # pylint:disable=R1260,too-many-branches
     all_: bool = False,
 ):
     baw.check_root(root)
-    baw.log('start cleaning')
+    utilo.log('start cleaning')
     if all_:
         docs, resources, tests, tmp = True, True, True, True
     if docs:
         clean_docs(root)
     if tmp:
-        clean_git(root)
+        baw.gix.git_clean(root)
     patterns = create_pattern(root, resources, tmp, tests)
     # problems while deleting recursive
     ret = 0
@@ -52,7 +51,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
                 todo = glob.glob(root + '**' + pattern, recursive=True)
             todo = sorted(todo, reverse=True)  # longtest path first, to avoid
         for item in todo:
-            baw.log(f'remove {item}')
+            utilo.log(f'remove {item}')
             try:
                 if os.path.isfile(item):
                     os.remove(item)
@@ -63,33 +62,22 @@ def clean(  # pylint:disable=R1260,too-many-branches
                 baw.error(fail)
     if ret:
         sys.exit(ret)
-    baw.log()  # Newline
+    utilo.log()  # Newline
     return baw.SUCCESS
-
-
-def clean_git(root: str):
-    baw.gix.ensure_git('could not clean')
-    completed = baw.runtime.run_target(
-        root=root,
-        cmd='git clean -xf',
-        cwd=root,
-        verbose=False,
-    )
-    baw.completed(completed)
 
 
 def clean_docs(root: str):
     doctmp = baw.config.docpath(root, mkdir=False)
     if not os.path.exists(doctmp):
-        baw.log(f'no docs generated: {doctmp}')
+        utilo.log(f'no docs generated: {doctmp}')
         return
-    baw.log(f'clean docs {doctmp}')
+    utilo.log(f'clean docs {doctmp}')
     try:
         shutil.rmtree(doctmp)
     except OSError as fail:
         baw.error(fail)
         sys.exit(baw.FAILURE)
-    baw.log('finished')
+    utilo.log('finished')
 
 
 def create_pattern(

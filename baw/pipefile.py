@@ -18,7 +18,6 @@ import baw
 import baw.config
 import baw.dockers
 import baw.dockers.dockfile
-import baw.project
 import baw.runtime
 import baw.utils
 
@@ -52,7 +51,7 @@ def docker_image(root: str) -> str | None:
     image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
 
     >>> import baw.project
-    >>> docker_image(baw.project.determine_root(__file__))
+    >>> docker_image(utilo.baw_root(__file__))
     '...'
     """
     path = jenkinsfile(root)
@@ -72,7 +71,7 @@ ENVIRONMENT = re.compile(r'environment\{(.{5,}?)\}', flags=re.DOTALL)
 
 def docker_env(root: str) -> dict | None:
     """\
-    >>> import baw.project; docker_env(baw.project.determine_root(__file__)) is None
+    >>> import baw.project; docker_env(utilo.baw_root(__file__)) is None
     True
     """
     path = jenkinsfile(root)
@@ -105,7 +104,7 @@ def jenkinsfile(root: str):
     >>> jenkinsfile(__file__)
     '...Jenkinsfile'
     """
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     return utilo.join(root, 'Jenkinsfile')
 
 
@@ -114,7 +113,7 @@ def dotgithub(root: str):
     >>> dotgithub(__file__)
     '....github'
     """
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     return utilo.join(root, '.github')
 
 
@@ -136,10 +135,10 @@ def library(root: str, verbose: int = 0):
     init_lib = LIBRARY[0:16] not in current
     header = f'{LIBRARY}{newest}{LIBRARY_END}\n\n'
     if init_lib:
-        baw.log(f'caelum library: init {newest}')
+        utilo.log(f'caelum library: init {newest}')
         current = header + current
     else:
-        baw.log(f'caelum library: upgrade {newest}')
+        utilo.log(f'caelum library: upgrade {newest}')
         # remove old library
         _, current = current.split(LIBRARY_END, 1)
         # append new library
@@ -151,7 +150,7 @@ def library(root: str, verbose: int = 0):
     msg = 'chore(Jenkins): upgrade pipe library'
     if init_lib:
         msg = 'chore(Jenkins): add pipe library'
-    baw.git_commit(root, source=path, message=msg)
+    baw.git_commit(root, source=path, msg=msg)
     return baw.SUCCESS
 
 
@@ -191,7 +190,7 @@ def library_newest(  # pylint:disable=W0613
     url = f'{base}/api/v1/repos/{user}/{repo}/tags'
     cmd = f'curl {url}'
     if verbose:
-        baw.log(cmd)
+        utilo.log(cmd)
     completed = baw.runtime.run(cmd=cmd, cwd=os.getcwd())
     if completed.returncode:
         baw.error(completed)

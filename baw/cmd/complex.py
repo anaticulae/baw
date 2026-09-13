@@ -9,7 +9,6 @@
 
 import baw.cmd.sync
 import baw.cmd.test
-import baw.utils
 
 
 def sync_and_test(

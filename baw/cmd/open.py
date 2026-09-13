@@ -32,7 +32,7 @@ def openme(root: str, path: str = None, prints: bool = False):
     elif path == 'generated':
         open_generated(root, prints)
     elif path == 'project':
-        root = baw.project.determine_root(os.getcwd())
+        root = utilo.baw_root(os.getcwd())
         open_this(root, prints=prints)
 
 
@@ -41,7 +41,7 @@ def open_generated(root: str, console: bool = False):
     generated = utilo.join(baw.config.bawtmp(), name)
     # generated = resinf.generated(project=name)
     if console:
-        baw.log(generated)
+        utilo.log(generated)
         return
     if not os.path.exists(generated):
         baw.error(f'resource: {generated} not generated')
@@ -88,7 +88,7 @@ def open_this(path=None, prints: bool = False):
         baw.error(f'path does not exists: {path}')
         sys.exit(baw.FAILURE)
     if prints:
-        baw.log(path)
+        utilo.log(path)
         return
     if baw.runtime.iswin():
         # convert for windows

@@ -21,6 +21,7 @@ import baw.cmd.utils
 import baw.config
 import baw.gix
 import baw.project
+import baw.project.version
 import baw.runtime
 import baw.utils
 
@@ -44,54 +45,54 @@ def prints(root, value: str, verbose: int = 0) -> int:  # pylint:disable=R1260,R
         print_covreport(root)
         return baw.SUCCESS
     if value == 'requirement':
-        baw.log(requirement_hash(
+        utilo.log(requirement_hash(
             root,
             verbose=verbose,
         ))
         return baw.SUCCESS
     if value == 'name':
-        baw.log(baw.config.name(root))
+        utilo.log(baw.config.name(root))
         return baw.SUCCESS
     if value == 'shortcut':
-        baw.log(baw.config.shortcut(root))
+        utilo.log(baw.config.shortcut(root))
         return baw.SUCCESS
     if value == 'sources':
-        baw.log(' '.join(baw.config.sources(root) + ['tests']))
+        utilo.log(' '.join(baw.config.sources(root) + ['tests']))
         return baw.SUCCESS
     if value == 'pip':
-        baw.log(pip_version(root, verbose=verbose))
+        utilo.log(pip_version(root, verbose=verbose))
         return baw.SUCCESS
     if value == 'image':
-        baw.log(baw.cmd.image.tag(root))
+        utilo.log(baw.cmd.image.tag(root))
         return baw.SUCCESS
     if value == 'describe':
-        baw.log(baw.gix.describe(root))
+        utilo.log(baw.gix.describe(root))
         return baw.SUCCESS
     if value == 'stable':
-        baw.log(baw.project.version.determine(root, verbose=verbose))
+        utilo.log(baw.project.version.determine(root, verbose=verbose))
         return baw.SUCCESS
     if value == 'branch':
-        baw.log(baw.gix.branchname(root))
+        utilo.log(baw.gix.branchname(root))
         return baw.SUCCESS
     if value == 'cov':
         print_cov()
         return baw.SUCCESS
     if value == 'clean':
         if baw.gix.is_clean(root, verbose=False):
-            baw.log('very clean')
+            utilo.log('very clean')
             return baw.SUCCESS
-        baw.log('not clean\n')
+        utilo.log('not clean\n')
         # log data
-        baw.log(baw.runtime.run('git status', root).stdout)
+        utilo.log(baw.gix.git_status_stdout(root))
         return baw.FAILURE
     return baw.FAILURE
 
 
 def print_tmp(root: str):
-    root = baw.project.determine_root(root)
+    root = utilo.baw_root(root)
     name = os.path.split(root)[1]
     tmpdir = utilo.join(baw.config.bawtmp(), 'tmp', name)
-    baw.log(tmpdir)
+    utilo.log(tmpdir)
     sys.exit(baw.SUCCESS)
 
 
@@ -115,7 +116,7 @@ def print_covreport(root: str):
         baw.utils.tmp(root),
         'report',
     )
-    baw.log(result)
+    utilo.log(result)
     sys.exit(baw.SUCCESS)
 
 
@@ -130,7 +131,7 @@ def print_cov() -> int:
     if not coverage:
         sys.exit(baw.FAILURE)
     result = float(coverage['coverage'])
-    baw.log(result)
+    utilo.log(result)
     sys.exit(baw.SUCCESS)
 
 

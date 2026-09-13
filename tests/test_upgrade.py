@@ -14,6 +14,7 @@ import utilo
 
 import baw
 import baw.cmd.upgrade
+import baw.gix
 import baw.project.version
 import baw.requirements.parser
 import baw.requirements.upgrade
@@ -158,11 +159,13 @@ def test_upgrade_requirements_toml(project_example):
 
 
 def commit_all(path, msg='Upgrade requirements'):
-    completed = baw.runtime.run_target(
+    baw.gix.git_add(path, '.')
+    returncode = baw.gix.git_commit(
         path,
-        f'git add . && git commit -m "{msg}"',
+        '',
+        msg=f'git commit -m "{msg}"',
     )
-    assert completed.returncode == utilo.SUCCESS, str(completed)
+    assert returncode == utilo.SUCCESS
 
 
 # yapf in a higher version is provided by dev environment

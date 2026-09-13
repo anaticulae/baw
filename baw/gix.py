@@ -18,6 +18,7 @@ import utilo
 
 import baw
 import baw.config
+import baw.resources
 import baw.runtime
 
 GIT_EXT = '.git'
@@ -34,7 +35,7 @@ def init(root: str):
     if os.path.exists(gitdir):
         baw.skip('git init')
         return
-    baw.log('git init')
+    utilo.log('git init')
     cmd = subprocess.run(  # nosec
         'git init -b main'.split(),
         check=False,
@@ -61,7 +62,7 @@ def git_add(
     update: str = '-u ' if update else ''
     raw = f'git add {update}{pattern}'
     if verbose:
-        baw.log(raw)
+        utilo.log(raw)
     cmd = baw.runtime.run_target(
         root,
         cmd=raw,
@@ -73,20 +74,22 @@ def git_add(
 def git_commit(
     root,
     source,
-    message,
+    msg,
     tag: str | None = None,
     verbose: int | bool | None = 0,
 ):
     assert os.path.exists(root)
-    message = f'"{message}"'
+    # ensure that " is handled correctly in commit message
+    msg = msg.replace('"', '\'')
+    msg = f'"{msg}"'
     if verbose:
-        baw.log('git commit')
+        utilo.log('git commit')
     # support multiple files
     if not isinstance(source, str):
         source = ' '.join(source)
     process = baw.runtime.run_target(
         root,
-        f'git commit {source} -m {message}',
+        f'git commit {source} -m {msg}',
         verbose=verbose,
     )
     if process.returncode:
@@ -96,7 +99,7 @@ def git_commit(
         # -a: ensure to make annotated tag to use with `git describe`
         process = baw.runtime.run_target(
             root,
-            f'git tag -a {tag} -m {message}',
+            f'git tag -a {tag} -m {msg}',
             verbose=verbose,
         )
         if process.returncode:
@@ -161,7 +164,7 @@ def reset(
         0 if baw.SUCCESS else FAILURE
     """
     to_reset = ' '.join(files) if not isinstance(files, str) else files
-    baw.log(f'Reset {to_reset}')
+    utilo.log(f'Reset {to_reset}')
     completed = baw.runtime.run_target(
         root,
         cmd=f'git checkout -q {to_reset}',
@@ -214,7 +217,7 @@ def tag_drop(
     root: str,
     verbose: int = 0,
 ) -> bool:
-    baw.log(f'Remove tag: {tag}')
+    utilo.log(f'Remove tag: {tag}')
     completed = baw.runtime.run_target(
         root=root,
         cmd=f'git tag -d {tag}',
@@ -247,7 +250,7 @@ def git_stash(
     if is_clean(root, verbose=verbose):
         yield
         return baw.SUCCESS
-    baw.log('Stash environment')
+    utilo.log('Stash environment')
     cmd = 'git stash --include-untracked'
     completed = baw.runtime.run_target(
         root,
@@ -261,7 +264,7 @@ def git_stash(
     nostash = (not completed.returncode and
                'No local changes to save' in completed.stdout)
     if nostash:
-        baw.log('No stash is required. Environment is already clean.')
+        utilo.log('No stash is required. Environment is already clean.')
     err = None
     try:
         yield  # let user do there job
@@ -354,7 +357,7 @@ def describe(root: str) -> str:
 def branchname(root: str) -> str:
     """\
     >>> import baw.project;
-    >>> branchname(baw.project.determine_root(__file__))
+    >>> branchname(utilo.baw_root(__file__))
     '...'
     """
     if not installed():
@@ -372,10 +375,10 @@ def branchname(root: str) -> str:
 
 def update_gitignore(root: str, verbose: int = 0):
     if verbose:
-        baw.log('sync gitexclude')
+        utilo.log('sync gitexclude')
     exclude = utilo.join(root, GIT_REPO_EXCLUDE)
     if not os.path.exists(exclude):
-        baw.log(f'no git dir: {exclude}, skip update')
+        utilo.log(f'no git dir: {exclude}, skip update')
         return baw.SUCCESS
     baw.file_replace(
         exclude,
@@ -386,7 +389,7 @@ def update_gitignore(root: str, verbose: int = 0):
 
 def tokenizes(root: str, token: str = None) -> str:
     """\
-    >>> tokenizes(baw.project.determine_root(__file__), 'UNSET')
+    >>> tokenizes(utilo.baw_root(__file__), 'UNSET')
     'http://.../baw.git'
     """
     token = token if token else baw.config.gitea_token()
@@ -448,3 +451,33 @@ def ensure_git(error: str = None):
     else:
         baw.error('git is not installed')
     sys.exit(baw.FAILURE)
+
+
+def project_origin():
+    """\
+    # TODO: ENABLE LATER AFTER FIXING TEST ON GITHUB
+    # >>> project_org() == 'anaticulae' or utilo.isci()
+    # True
+    """
+    completed = utilo.run('git remote get-url origin')
+    stdout: str = completed.stdout.strip()
+    # git@github.com:anaticulae/baw.git
+    result = stdout.split(':')[1].split('/')[0]
+    return result
+
+
+def git_clean(root: str):
+    ensure_git('could not clean')
+    completed = baw.runtime.run_target(
+        root=root,
+        cmd='git clean -xf',
+        cwd=root,
+        verbose=False,
+    )
+    baw.completed(completed)
+
+
+def git_status_stdout(root) -> str:
+    completed = baw.runtime.run('git status', root)
+    stdout = completed.stdout
+    return stdout

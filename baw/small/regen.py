@@ -20,7 +20,7 @@ import baw.utils
 
 
 def main():
-    root = baw.cmd.utils.determine_root(os.getcwd())
+    root = utilo.baw_root(os.getcwd())
     parser = create_parser()
     cmd, worker = parse_args(parser)
     run(root, cmd, worker)
@@ -48,7 +48,7 @@ def run(root, cmd, worker: int = 1):
 
 def single(cmd, cwd, progress: str):
     logmsg = f'"{progress} {cmd}" in {cwd}'
-    baw.log(logmsg)
+    utilo.log(logmsg)
     completed = baw.runtime.run(cmd=cmd, cwd=cwd)
     append_log(completed=completed, cwd=cwd)
     if not completed.returncode:

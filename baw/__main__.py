@@ -11,6 +11,8 @@
 import sys
 import traceback
 
+import utilo
+
 
 def run():
     """Entry point of script"""
@@ -19,12 +21,12 @@ def run():
         sys.exit(baw.dockers.switch_docker())
     except KeyboardInterrupt:
         import baw.utils
-        baw.log('\nOperation cancelled by user')
+        utilo.log('\nOperation cancelled by user')
     except Exception as msg:  # pylint: disable=broad-except
         import baw.utils
         baw.error(msg)
         stack_trace = traceback.format_exc()
-        baw.log(baw.forward_slash(stack_trace))
+        utilo.log(baw.forward_slash(stack_trace))
     sys.exit(baw.FAILURE)
 
 

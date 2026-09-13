@@ -11,6 +11,8 @@ import importlib.metadata
 import sys
 import time
 
+import utilo
+
 import baw
 import baw.cli
 import baw.cmd
@@ -59,7 +61,7 @@ def run_version(args) -> bool:
         live = importlib.metadata.version('baw')
     except importlib.metadata.PackageNotFoundError as notfound:
         raise ValueError('baw not installed/no metadata') from notfound
-    baw.log(live)
+    utilo.log(live)
     return True
 
 

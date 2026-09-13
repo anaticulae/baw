@@ -2,9 +2,8 @@
 name: Tests
 
 on:
-  push:
-    branches: ['*']
   pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -19,6 +18,9 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v6
+        with:
+        # required by test which requires commits
+          fetch-depth: 5
       - name: run doctest
         run: make docker-doctest
   fasttest:

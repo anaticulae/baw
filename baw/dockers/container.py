@@ -39,17 +39,17 @@ def run(
         )
         try:
             volume_inject(container, volumes, gitdir)
-            baw.log('start container')
+            utilo.log('start container')
             container.start()
             failure = verify(container)
             if failure:
                 baw.error(cmd)
             if not failure and outdir:
                 receive_data(container, outdir)
-            baw.log('stop container')
+            utilo.log('stop container')
             # TODO: VERIFY THIS
             container.stop()
-            baw.log('remove container')
+            utilo.log('remove container')
             container.remove()
         except docker.errors.ContainerError as error:
             baw.error(error.stderr.decode('utf8'))
@@ -72,7 +72,7 @@ def volume_inject(container, volumes, gitdir):
         content=os.getcwd(),
         git_include=gitdir,
     )
-    baw.log(f'put into container: {volumes}')
+    utilo.log(f'put into container: {volumes}')
     container.put_archive(
         path=volumes,
         data=content,
@@ -114,7 +114,7 @@ def build_image(root: str, generate: bool = False):
     baw_image_create = 'baw image create'
     if generate:
         baw_image_create += ' --generate'
-    baw.log(baw_image_create)
+    utilo.log(baw_image_create)
     completed = baw.runtime.run(
         cmd=baw_image_create,
         cwd=root,
@@ -125,14 +125,14 @@ def build_image(root: str, generate: bool = False):
         baw.completed(completed)
         baw.exitx()
     else:
-        baw.log(completed.stdout)
+        utilo.log(completed.stdout)
         if completed.stderr.strip():
             baw.error(completed.stderr)
 
 
 def receive_data(container, outdir: bool = True):
     outdir: str = outdir if isinstance(outdir, str) else '/var/outdir'
-    baw.log('receive data...')
+    utilo.log('receive data...')
     with baw.utils.tmpdir() as tmp:
         base = utilo.join(tmp, 'content.tar')
         with open(base, 'wb') as fp:
@@ -150,7 +150,7 @@ def receive_data(container, outdir: bool = True):
         if completed.returncode:
             baw.error(f'untar failed: {cmd}')
             baw.completed(completed)
-    baw.log('done')
+    utilo.log('done')
 
 
 def verify(container) -> bool:
@@ -164,7 +164,7 @@ def verify(container) -> bool:
         decoded = line.decode('utf8')
         # TODO: IMPROVE THIS CHECK
         failure |= '[ERROR] Completed:' in decoded
-        baw.log(decoded, end='')
+        utilo.log(decoded, end='')
     return failure
 
 
@@ -183,7 +183,7 @@ def tar_content(
         content = baw.forward_slash(content, save_newline=False)
         do_not_tar = ignore(git_include)
         cmd = f'tar cvf {tar} {do_not_tar} .'
-        baw.log(cmd)
+        utilo.log(cmd)
         completed = baw.runtime.run(cmd, content)
         if completed.returncode:
             baw.error(f'tar failed: {cmd}')
