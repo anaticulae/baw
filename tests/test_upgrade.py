@@ -163,7 +163,7 @@ def commit_all(path, msg='Upgrade requirements'):
     returncode = baw.gix.git_commit(
         path,
         '',
-        msg=f'git add . && git commit -m "{msg}"',
+        msg=f'git commit -m "{msg}"',
     )
     assert returncode == utilo.SUCCESS
 

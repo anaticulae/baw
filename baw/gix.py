@@ -79,6 +79,8 @@ def git_commit(
     verbose: int | bool | None = 0,
 ):
     assert os.path.exists(root)
+    # ensure that " is handled correctly in commit message
+    msg = msg.replace('"', '\'')
     msg = f'"{msg}"'
     if verbose:
         utilo.log('git commit')
