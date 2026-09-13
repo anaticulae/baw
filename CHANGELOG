@@ -1,6 +1,102 @@
 # CHANGELOG
 
 
+## v1.89.0 (2026-09-13)
+
+### Bug Fixes
+
+- **dockerfile**: Adjust docker base/name/version parser
+  ([`4a585e2`](https://github.com/anaticulae/baw/commit/4a585e2af2ecae3f53833c41c913e328789e1499))
+
+- **git**: Ensure that commit message is escaped correctly
+  ([`c1a7db7`](https://github.com/anaticulae/baw/commit/c1a7db727c6029ebef890e3c968b0fd286f1fd63))
+
+### Chores
+
+- **make**: Publish under alternate image tag
+  ([`b906f78`](https://github.com/anaticulae/baw/commit/b906f787e369cdd094d9764a3556cd39cb49096b))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`abb9ea8`](https://github.com/anaticulae/baw/commit/abb9ea8d8510ef17b960ecc5a633990d1056a7fc))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`60eb49d`](https://github.com/anaticulae/baw/commit/60eb49d16c61dbe5d9c9e9ea555823b4e2b716d1))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`abb8640`](https://github.com/anaticulae/baw/commit/abb8640791e0646795dae3e517c19e82ee1691f2))
+
+- **test**: Do not run tests twice
+  ([`1340452`](https://github.com/anaticulae/baw/commit/13404522a6515745ec0ee086248a4ab9ca35f084))
+
+### Code Style
+
+- **gix**: Add missing import
+  ([`77c6598`](https://github.com/anaticulae/baw/commit/77c65981c64f22bb515bff86d6e4914f4b240134))
+
+- **make**: Format code
+  ([`53f9740`](https://github.com/anaticulae/baw/commit/53f9740aebf067019319936d8bae97d38cc5c1cc))
+
+### Features
+
+- **docker**: Add option to find docker files in project
+  ([`205c960`](https://github.com/anaticulae/baw/commit/205c960dde37059da0c51ee354c88967a1727a6e))
+
+- **docker**: Upgrade multiple docker files
+  ([`221fbca`](https://github.com/anaticulae/baw/commit/221fbcaac68b2a119d52f42b4cc485069aebd436))
+
+- **dockerfile**: Upgrade multiple docker files
+  ([`a8e961f`](https://github.com/anaticulae/baw/commit/a8e961f8a4ff28c86aff2e4cab4fd407d36f510f))
+
+- **image**: Adjust tag filter
+  ([`063bb1f`](https://github.com/anaticulae/baw/commit/063bb1fdea2510030863c103a2cb65be752fad56))
+
+- **image**: Catch docker repository connection error
+  ([`68918bb`](https://github.com/anaticulae/baw/commit/68918bbfc6c16667b9fd7e6ca8704fe541167f83))
+
+- **image**: Commit multiple docker files inside single commit
+  ([`24752a7`](https://github.com/anaticulae/baw/commit/24752a7ad81b33449a21cfec2763ad48e132959f))
+
+### Refactoring
+
+- **git**: Move git clean
+  ([`eb5472f`](https://github.com/anaticulae/baw/commit/eb5472f116d88e41e0cbc1fd5dbae0b3fece93cc))
+
+- **git**: Simplify interface
+  ([`1b72d63`](https://github.com/anaticulae/baw/commit/1b72d63497d5f0db27e12f6b15a8b3bf3a829305))
+
+- **gix**: Move git status stdout
+  ([`847103e`](https://github.com/anaticulae/baw/commit/847103e074c5fe5a9a28a1c14122794144837ddd))
+
+- **gix**: Move project origin
+  ([`b275c87`](https://github.com/anaticulae/baw/commit/b275c877df1bcdeb1a346d6f0648f5ff443e0084))
+
+- **image**: Reduce complexity
+  ([`015428d`](https://github.com/anaticulae/baw/commit/015428d423eb57d1dcd80ee33d9eb6a04b2987f9))
+
+- **log**: Replace with utilo code
+  ([`2b59d20`](https://github.com/anaticulae/baw/commit/2b59d2054d3cc7593f040d902b3a0560317d66ff))
+
+- **plan**: Use git code
+  ([`618c83f`](https://github.com/anaticulae/baw/commit/618c83f225ceec1d844bd0a20f451c500be8b599))
+
+- **utils**: Use utilo code
+  ([`abe67ea`](https://github.com/anaticulae/baw/commit/abe67ea8c47550bd4ec18e43159eada2f52d24ba))
+
+### Testing
+
+- **docker**: Disable unit test
+  ([`013bec4`](https://github.com/anaticulae/baw/commit/013bec48175b0ace9d547953e6348a361e2e5de3))
+
+- **docker**: Make tests more robust
+  ([`9b1026b`](https://github.com/anaticulae/baw/commit/9b1026bd9a7d788f0a423e7b35c1660e2f184403))
+
+- **dockerfile**: Verify image name parser
+  ([`a8f894b`](https://github.com/anaticulae/baw/commit/a8f894bee6e7db9c980156e6880182d8a5ab052a))
+
+- **upgrade**: Simplify code
+  ([`935af53`](https://github.com/anaticulae/baw/commit/935af53310f77b09853442c59e90f0aaf5be1a26))
+
+
 ## v1.88.0 (2026-09-06)
 
 ### Chores
