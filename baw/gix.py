@@ -449,3 +449,16 @@ def ensure_git(error: str = None):
     else:
         baw.error('git is not installed')
     sys.exit(baw.FAILURE)
+
+
+def project_origin():
+    """\
+    # TODO: ENABLE LATER AFTER FIXING TEST ON GITHUB
+    # >>> project_org() == 'anaticulae' or utilo.isci()
+    # True
+    """
+    completed = utilo.run('git remote get-url origin')
+    stdout: str = completed.stdout.strip()
+    # git@github.com:anaticulae/baw.git
+    result = stdout.split(':')[1].split('/')[0]
+    return result

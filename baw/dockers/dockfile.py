@@ -17,6 +17,7 @@ import utilo
 import baw
 import baw.dockers
 import baw.dockers.image
+import baw.gix
 import baw.utils
 
 
@@ -102,7 +103,7 @@ def docker_image_upgrade(
         baw.error(f'could not parse: {path}')
         return None
     base, name, version = base_name_version(parsed)
-    org = project_org()
+    org = baw.gix.project_origin()
     content = utilo.file_read(path)
     result = content
     baw.utils.verbose(f'>>> search: {parsed}')
@@ -119,19 +120,6 @@ def docker_image_upgrade(
     if result == content and not always:
         # nothing changed
         return None
-    return result
-
-
-def project_org():
-    """\
-    # TODO: ENABLE LATER AFTER FIXING TEST ON GITHUB
-    # >>> project_org() == 'anaticulae' or utilo.isci()
-    # True
-    """
-    completed = utilo.run('git remote get-url origin')
-    stdout: str = completed.stdout.strip()
-    # git@github.com:anaticulae/baw.git
-    result = stdout.split(':')[1].split('/')[0]
     return result
 
 
