@@ -15,6 +15,7 @@ import re
 import utilo
 
 import baw
+import baw.gix
 import baw.project.version
 import baw.resources
 import baw.runtime
@@ -107,12 +108,13 @@ def commit(root: str, message: str, verbose: int = 0):
     # TODO: DIRY, REFACTOR
     plan = current_plan(root)
     baw.git_add(root, pattern=plan)
-    process = baw.runtime.run_target(
+    returncode = baw.gix.git_commit(
         root,
-        f'git commit -m "{message}"',
+        '',
+        message=message,
         verbose=verbose,
     )
-    assert process.returncode == baw.SUCCESS, process
+    assert returncode == baw.SUCCESS
 
 
 def next_version(
