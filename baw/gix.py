@@ -462,3 +462,14 @@ def project_origin():
     # git@github.com:anaticulae/baw.git
     result = stdout.split(':')[1].split('/')[0]
     return result
+
+
+def git_clean(root: str):
+    ensure_git('could not clean')
+    completed = baw.runtime.run_target(
+        root=root,
+        cmd='git clean -xf',
+        cwd=root,
+        verbose=False,
+    )
+    baw.completed(completed)

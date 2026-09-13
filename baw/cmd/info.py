@@ -21,6 +21,7 @@ import baw.cmd.utils
 import baw.config
 import baw.gix
 import baw.project
+import baw.project.version
 import baw.runtime
 import baw.utils
 

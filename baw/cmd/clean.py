@@ -20,7 +20,6 @@ import baw
 import baw.cmd.utils
 import baw.config
 import baw.gix
-import baw.runtime
 
 
 def clean(  # pylint:disable=R1260,too-many-branches
@@ -38,7 +37,7 @@ def clean(  # pylint:disable=R1260,too-many-branches
     if docs:
         clean_docs(root)
     if tmp:
-        clean_git(root)
+        baw.gix.git_clean(root)
     patterns = create_pattern(root, resources, tmp, tests)
     # problems while deleting recursive
     ret = 0
@@ -65,17 +64,6 @@ def clean(  # pylint:disable=R1260,too-many-branches
         sys.exit(ret)
     utilo.log()  # Newline
     return baw.SUCCESS
-
-
-def clean_git(root: str):
-    baw.gix.ensure_git('could not clean')
-    completed = baw.runtime.run_target(
-        root=root,
-        cmd='git clean -xf',
-        cwd=root,
-        verbose=False,
-    )
-    baw.completed(completed)
 
 
 def clean_docs(root: str):
