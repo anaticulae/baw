@@ -10,14 +10,14 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: build docker container
         run: make docker-build
   doctest:
     runs-on: ubuntu-24.04
     needs: build
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
         # required by test which requires commits
           fetch-depth: 5
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
         # required by test which requires commits
           fetch-depth: 15
@@ -37,14 +37,14 @@ jobs:
     runs-on: ubuntu-24.04
     needs: fasttest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: run longtest
         run: make docker-longtest
   alltest:
     runs-on: ubuntu-24.04
     needs: longtest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
         # required by test which requires commits
           fetch-depth: 15
@@ -54,6 +54,6 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: run linter
         run: make docker-lint

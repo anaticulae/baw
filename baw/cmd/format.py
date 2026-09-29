@@ -9,6 +9,7 @@
 
 import concurrent.futures
 import os
+import pathlib
 
 import utilo
 
@@ -28,7 +29,13 @@ def evaluate(args):
 
 
 def format_repository(root: str, verbose: int = 0):
-    for item in (format_python, format_toml, format_imports, format_yaml):
+    for item in (
+            format_python,
+            format_toml,
+            format_imports,
+            format_yaml,
+            format_makefile,
+    ):
         try:
             # TODO: MAKE VERBOSE LEVEL GOBAL
             failure = item(root, verbose=verbose)
@@ -102,10 +109,15 @@ def format_yaml(root: str) -> int:
     utilo.log('format yaml')
     cmd = f'yamlfix {root} --exclude="**/build/**" --exclude="**/venv/**"'
     completed = utilo.run(cmd, cwd=root, expect=None)
+    returncode = debug(completed)
+    return returncode
+
+
+def debug(completed, info='format yaml') -> int:
     if completed.returncode:
-        utilo.error('format yaml: failed')
+        utilo.error(f'{info}: failed')
     else:
-        utilo.log('format yaml: completed')
+        utilo.log(f'{info}: completed')
     if completed.stdout.strip():
         utilo.log(completed.stdout)
     if completed.returncode:
@@ -113,6 +125,32 @@ def format_yaml(root: str) -> int:
             utilo.error(utilo.NEWLINE.join(completed.stderr.splitlines()[-4:]))
         return completed.returncode
     return baw.SUCCESS
+
+
+MBAKE_CONFIG = """\
+debug = false
+verbose = false
+
+[formatter]
+ensure_final_newline = true
+max_line_length = 79
+"""
+
+
+def format_makefile(root: str, verbose: int = 0) -> int:
+    if not baw.runtime.installed('mbake', root=root):
+        return baw.FAILURE
+    config = utilo.tmpfile(root)
+    utilo.file_create(config, MBAKE_CONFIG)
+    makefiles = [
+        p.resolve().as_posix() for p in pathlib.Path(".").rglob("Makefile")
+    ]
+    makefiles: str = ' '.join(makefiles)
+    # run format
+    cmd = f'mbake format --config {config} {makefiles}'
+    completed = utilo.run(cmd, cwd=root, expect=None)
+    returncode = debug(completed, info='format Makefile')
+    return returncode
 
 
 def format_imports(root: str, verbose: int = 0):

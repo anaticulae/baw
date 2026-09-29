@@ -72,8 +72,8 @@ docker-release: docker-build
 		echo "Current commit is already tagged, skipping release."; \
 	else \
 		docker run \
-			-v $(CURDIR):/var/workdir\
-			-e GH_TOKEN\
-			$(IMAGE_BASE)\
+			-v $(CURDIR):/var/workdir \
+			-e GH_TOKEN \
+			$(IMAGE_BASE) \
 			"baw release --no_test --no_linter"; \
 	fi
