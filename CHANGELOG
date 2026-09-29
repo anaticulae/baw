@@ -1,6 +1,33 @@
 # CHANGELOG
 
 
+## v1.90.0 (2026-09-29)
+
+### Chores
+
+- **github**: Upgrade actions
+  ([`9bbf85d`](https://github.com/anaticulae/baw/commit/9bbf85de08b9a7c478527c3e24f7cee19515d37e))
+
+- **pyproject**: Add mbake
+  ([`af712a3`](https://github.com/anaticulae/baw/commit/af712a327ee22d6c688e281d4a2956d3ab1d6102))
+
+- **pyproject**: Sort imports
+  ([`f77c705`](https://github.com/anaticulae/baw/commit/f77c70501d3a56f3a7b7a2036b38c828144c5c22))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`7e81b98`](https://github.com/anaticulae/baw/commit/7e81b9860cfdc443494f00e65ae22c978127559d))
+
+### Code Style
+
+- **makefile**: Use formatter
+  ([`6afd60d`](https://github.com/anaticulae/baw/commit/6afd60d69adbfd0ef802fdac09087ec74a5c9074))
+
+### Features
+
+- **format**: Ad makefile formatter
+  ([`c00ccd5`](https://github.com/anaticulae/baw/commit/c00ccd5e53b6ad2249ab1e931d9d6a7020f9c9dd))
+
+
 ## v1.89.0 (2026-09-13)
 
 ### Bug Fixes
