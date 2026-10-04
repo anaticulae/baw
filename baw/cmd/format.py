@@ -143,7 +143,7 @@ def format_makefile(root: str, verbose: int = 0) -> int:
     config = utilo.tmpfile(root)
     utilo.file_create(config, MBAKE_CONFIG)
     makefiles = [
-        p.resolve().as_posix() for p in pathlib.Path(".").rglob("Makefile")
+        p.resolve().as_posix() for p in pathlib.Path(root).rglob("Makefile")
     ]
     makefiles: str = ' '.join(makefiles)
     # run format
