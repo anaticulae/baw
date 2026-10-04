@@ -137,15 +137,17 @@ max_line_length = 79
 """
 
 
-def format_makefile(root: str, verbose: int = 0) -> int:
+def format_makefile(root: str, verbose: int = 0) -> int:  # pylint: disable=unused-argument
     if not baw.runtime.installed('mbake', root=root):
         return baw.FAILURE
-    config = utilo.tmpfile(root)
-    utilo.file_create(config, MBAKE_CONFIG)
-    makefiles = [
+    files = [
         p.resolve().as_posix() for p in pathlib.Path(root).rglob("Makefile")
     ]
-    makefiles: str = ' '.join(makefiles)
+    if not files:
+        return utilo.SUCCESS
+    config = utilo.tmpfile(root)
+    utilo.file_create(config, MBAKE_CONFIG)
+    makefiles: str = ' '.join(files)
     # run format
     cmd = f'mbake format --config {config} {makefiles}'
     completed = utilo.run(cmd, cwd=root, expect=None)
