@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v1.90.1 (2026-10-04)
+
+### Bug Fixes
+
+- **format**: Do not run format on missing Makefile
+  ([`2156046`](https://github.com/anaticulae/baw/commit/2156046e59307921742d8cc1e295f21a4844cb80))
+
+- **format**: Use project root instead of cwd
+  ([`427e835`](https://github.com/anaticulae/baw/commit/427e835985c8d1ecb7e967ac61a2c747cb2b1ba4))
+
+### Chores
+
+- **requirements**: Upgrade pyproject.toml
+  ([`4f665af`](https://github.com/anaticulae/baw/commit/4f665afd3077db0f22cfada0dafc5d99b82d2202))
+
+
 ## v1.90.0 (2026-09-29)
 
 ### Chores
