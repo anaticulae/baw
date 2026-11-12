@@ -28,6 +28,11 @@ console_output_style = count
 filterwarnings =
     ignore::DeprecationWarning
 
+markers =
+    fast: run tests
+    longrun: run tests
+    nightly: run tests
+
 # If set to True, tests marked with @pytest.mark.xfail that actually
 # succeed will by default fail the test suite.
 xfail_strict=true
