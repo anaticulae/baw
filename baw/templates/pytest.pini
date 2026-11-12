@@ -1,5 +1,5 @@
 [pytest]
-minversion = 7.0.0
+minversion = 9.2.0
 
 # run failed test first
 addopts = --continue-on-collection-errors
