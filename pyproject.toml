@@ -89,21 +89,20 @@ output_format = "md"
 changelog_file = "CHANGELOG"
 
 [tool.semantic_release.commit_parser_options]
-patch_tags = [
+allowed_tags = [
     "build",
     "chore",
     "ci",
     "deps",
     "docs",
+    "feat",
     "fix",
     "perf",
     "refactor",
     "style",
     "test",
 ]
-minor_tags = [
-    "feat",
-]
+default_bump_level = 2
 
 [tool.setuptools]
 include-package-data = true
