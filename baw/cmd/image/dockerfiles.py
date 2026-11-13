@@ -59,7 +59,7 @@ def header(root: str) -> str:
     root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
-    image = baw.pipefile.docker_image(root)
+    image = baw.pipefile.docker_image_from_jenkins(root)
     if not image:
         image = DEFAULT_IMAGE
         baw.error(f'Could not parse docker image: {image} in {root}')

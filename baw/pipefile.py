@@ -45,13 +45,13 @@ def upgrade(
 IMAGE = re.compile(r"image[ ]'((.{5,})/(.{5,})\:(.{3,}))'")
 
 
-def docker_image(root: str) -> str | None:
+def docker_image_from_jenkins(root: str) -> str | None:
     """Parse dockerimage from Jenkinsfile.
 
     image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
 
     >>> import baw.project
-    >>> docker_image(utilo.baw_root(__file__))
+    >>> docker_image_from_jenkins(utilo.baw_root(__file__))
     '...'
     """
     path = jenkinsfile(root)
