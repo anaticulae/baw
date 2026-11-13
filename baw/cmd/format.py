@@ -35,6 +35,7 @@ def format_repository(root: str, verbose: int = 0):
             format_imports,
             format_yaml,
             format_makefile,
+            format_js,
     ):
         try:
             # TODO: MAKE VERBOSE LEVEL GOBAL
@@ -110,6 +111,17 @@ def format_yaml(root: str) -> int:
     cmd = f'yamlfix {root} --exclude="**/build/**" --exclude="**/venv/**"'
     completed = utilo.run(cmd, cwd=root, expect=None)
     returncode = debug(completed)
+    return returncode
+
+
+def format_js(root: str) -> int:
+    if not baw.hasprog('prettier'):
+        utilo.log('could not find js prettier')
+        return baw.SUCCESS
+    utilo.log('format js')
+    cmd = 'npx prettier --write "**/*.js"'
+    completed = utilo.run(cmd, cwd=root, expect=None)
+    returncode = debug(completed, info='format js')
     return returncode
 
 
@@ -192,6 +204,7 @@ def format_(
     info: str = 'format source',
     *,
     verbose: int = 0,
+    max_worker=12,
 ):
     utilo.log(info)
     folder = baw.config.sources(root)
@@ -199,14 +212,13 @@ def format_(
     testpath = utilo.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
-    # TODO: LIMIT MAX_WORKERS?
-    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_worker) as execu:
         waitfor = []
         for item in folder:
             source = utilo.join(root, item)
             cmdx = f'{cmd} {source}'
             waitfor.append(
-                executor.submit(
+                execu.submit(
                     baw.runtime.run_target,
                     root=root,
                     cmd=cmdx,
