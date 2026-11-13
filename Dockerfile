@@ -34,7 +34,7 @@ RUN pip install --upgrade pip
 
 WORKDIR /var/install
 
-COPY pyproject.toml .
+COPY pyproject.toml README LICENSE .
 
 RUN pip install .[dev,doc]
 RUN pip install .
