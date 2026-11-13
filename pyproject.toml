@@ -68,7 +68,7 @@ doc = [
     "added-value == 0.24.0",
     "commonmark==0.9.2",
     "recommonmark == 0.7.1",
-    "sphinx==9.2.0",
+    "sphinx==9.1.1",
     "sphinx-autodoc-typehints==3.17.5",
 ]
 
