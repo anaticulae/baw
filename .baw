@@ -17,4 +17,4 @@ fail_on_finding = False
 hvsc = github
 
 [docker]
-image = alpine:3.23.3
+image = alpine:3.24.4

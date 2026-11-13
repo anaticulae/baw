@@ -29,7 +29,7 @@ def test_image_create(simple, capsys):  # pylint:disable=W0621,W0613
 
 
 # def test_cmd_image_newest(monkeypatch, capsys):
-#     name = baw.pipefile.docker_image(baw.ROOT)
+#     name = baw.pipefile.docker_image_from_jenkins(baw.ROOT)
 #     cmd = f'image newest --name {name}'
 #     tests.baaw(cmd, monkeypatch=monkeypatch)
 #     stdout = tests.stdout(capsys)

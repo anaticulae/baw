@@ -409,10 +409,10 @@ def plugins(root: str) -> bool:
     return result
 
 
-def docker_image(root: str) -> bool:
+def docker_image_from_jenkins(root: str) -> bool:
     """\
     >>> import baw
-    >>> docker_image(baw.ROOT)
+    >>> docker_image_from_jenkins(baw.ROOT)
     '...'
     """
     result = default_config(

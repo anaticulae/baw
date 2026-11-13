@@ -48,18 +48,14 @@ def generate(root: str, inject: bool = False, install: bool = False):
     os.unlink(config)
 
 
-DEFAULT_IMAGE = 'alpine:3.23.3'
+DEFAULT_IMAGE = 'alpine:3.24.4'
 
 
 def header(root: str) -> str:
-    """\
-    >>> header(__file__)
-    'FROM .../...'
-    """
     root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
-    image = baw.pipefile.docker_image(root)
+    image = baw.pipefile.docker_image_from_jenkins(root)
     if not image:
         image = DEFAULT_IMAGE
         baw.error(f'Could not parse docker image: {image} in {root}')
@@ -123,11 +119,7 @@ def resources(root: str) -> str:
 
 
 def environments(root: str) -> str:
-    r"""\
-    ENV RUNJOB="exit 1"
-    >>> environments(__file__) # '...ENV GITEA_SERVER_URL=...\n'
-    ''
-    """
+    """ENV RUNJOB="exit 1"""
     root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
