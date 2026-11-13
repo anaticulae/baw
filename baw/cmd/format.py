@@ -192,6 +192,7 @@ def format_(
     info: str = 'format source',
     *,
     verbose: int = 0,
+    max_worker=12,
 ):
     utilo.log(info)
     folder = baw.config.sources(root)
@@ -199,14 +200,13 @@ def format_(
     testpath = utilo.join(root, 'tests')
     if os.path.exists(testpath):
         folder.append('tests')
-    # TODO: LIMIT MAX_WORKERS?
-    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_worker) as execu:
         waitfor = []
         for item in folder:
             source = utilo.join(root, item)
             cmdx = f'{cmd} {source}'
             waitfor.append(
-                executor.submit(
+                execu.submit(
                     baw.runtime.run_target,
                     root=root,
                     cmd=cmdx,
