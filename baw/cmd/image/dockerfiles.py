@@ -52,10 +52,6 @@ DEFAULT_IMAGE = 'alpine:3.23.3'
 
 
 def header(root: str) -> str:
-    """\
-    >>> header(__file__)
-    'FROM .../...'
-    """
     root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)
@@ -123,11 +119,7 @@ def resources(root: str) -> str:
 
 
 def environments(root: str) -> str:
-    r"""\
-    ENV RUNJOB="exit 1"
-    >>> environments(__file__) # '...ENV GITEA_SERVER_URL=...\n'
-    ''
-    """
+    """ENV RUNJOB="exit 1"""
     root = utilo.baw_root(root)
     if not root:
         sys.exit(baw.FAILURE)

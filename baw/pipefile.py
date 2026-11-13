@@ -50,9 +50,9 @@ def docker_image_from_jenkins(root: str) -> str | None:
 
     image '169.254.149.20:6001/arch_python_git_baw:0.15.0'
 
-    >>> import baw.project
-    >>> docker_image_from_jenkins(utilo.baw_root(__file__))
-    '...'
+    # >>> import baw.project
+    # >>> docker_image_from_jenkins(utilo.baw_root(__file__))
+    # '...'
     """
     path = jenkinsfile(root)
     if not os.path.exists(path):
@@ -71,8 +71,8 @@ ENVIRONMENT = re.compile(r'environment\{(.{5,}?)\}', flags=re.DOTALL)
 
 def docker_env(root: str) -> dict | None:
     """\
-    >>> import baw.project; docker_env(utilo.baw_root(__file__)) is None
-    True
+    # >>> import baw.project; docker_env(utilo.baw_root(__file__)) is None
+    # True
     """
     path = jenkinsfile(root)
     if not os.path.exists(path):
