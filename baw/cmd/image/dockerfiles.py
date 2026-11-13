@@ -48,7 +48,7 @@ def generate(root: str, inject: bool = False, install: bool = False):
     os.unlink(config)
 
 
-DEFAULT_IMAGE = 'alpine:3.23.3'
+DEFAULT_IMAGE = 'alpine:3.24.4'
 
 
 def header(root: str) -> str:
