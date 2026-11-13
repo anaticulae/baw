@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v1.90.2 (2026-11-13)
+
+### Bug Fixes
+
+- **pytest**: Add test marker
+  ([`2841196`](https://github.com/anaticulae/baw/commit/28411960364de78c17b391c651f6a5cff30220d1))
+
+### Chores
+
+- **docker**: Add missing files
+  ([`9311665`](https://github.com/anaticulae/baw/commit/93116653461979af2d426f38ec700fd2a9a6deb8))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`08cafc3`](https://github.com/anaticulae/baw/commit/08cafc30dc836c98725d592e5710c9fa8ab3654b))
+
+
 ## v1.90.1 (2026-10-04)
 
 ### Bug Fixes
