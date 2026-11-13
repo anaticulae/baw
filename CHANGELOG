@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v1.90.4 (2026-11-13)
+
+### Chores
+
+- **pyproject**: Reduce version to allow older python
+  ([`24f0ce8`](https://github.com/anaticulae/baw/commit/24f0ce80a908d4f91368d8902f3e7bedb107454a))
+
+
 ## v1.90.3 (2026-11-13)
 
 ### Chores
