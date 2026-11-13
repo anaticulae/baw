@@ -1,6 +1,34 @@
 # CHANGELOG
 
 
+## v1.90.3 (2026-11-13)
+
+### Chores
+
+- **alpine**: Upgrade base image
+  ([`831ee62`](https://github.com/anaticulae/baw/commit/831ee62ca94beefd98ad11d5a40229b2123808cd))
+
+- **docker**: Remove unused test env
+  ([`16a79d4`](https://github.com/anaticulae/baw/commit/16a79d4bc744622f73266a6a40eb309e5a69e3cb))
+
+- **jenkins**: Remove outdated file
+  ([`758d22b`](https://github.com/anaticulae/baw/commit/758d22b4014be2a9a5ec3041d5a7e63f3161937b))
+
+- **jenkins**: Remove outdated tests
+  ([`d6d6611`](https://github.com/anaticulae/baw/commit/d6d66114c47fdb5ab5fdb081e214e4e0a6b5b078))
+
+- **pyproject**: Release on every commit
+  ([`5d837f3`](https://github.com/anaticulae/baw/commit/5d837f3c012707dfd1c9c06fc88768bd996920cd))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`cadd77a`](https://github.com/anaticulae/baw/commit/cadd77acb6d8312c61bae01ede24da16fe2ae77a))
+
+### Refactoring
+
+- **pipe**: Clarify method
+  ([`dd38409`](https://github.com/anaticulae/baw/commit/dd38409238b0d15a9c9a2086f94a4d60cc2524e8))
+
+
 ## v1.90.2 (2026-11-13)
 
 ### Bug Fixes
@@ -15,6 +43,11 @@
 
 - **requirements**: Upgrade pyproject.toml
   ([`08cafc3`](https://github.com/anaticulae/baw/commit/08cafc30dc836c98725d592e5710c9fa8ab3654b))
+
+### Deps
+
+- **dependabot**: Bump the all-dependencies group with 7 updates
+  ([`4f9d87e`](https://github.com/anaticulae/baw/commit/4f9d87e438b47db822ddc763c284819baed064aa))
 
 
 ## v1.90.1 (2026-10-04)
@@ -731,6 +764,11 @@
 - **release**: Run release on dependabot update
   ([`824bdd5`](https://github.com/anaticulae/baw/commit/824bdd552ba5abb436ef61782bb63b725a6939c4))
 
+### Deps
+
+- Bump the all-dependencies group with 6 updates
+  ([`c9d7541`](https://github.com/anaticulae/baw/commit/c9d754141eebad2cfef5e5ea7a253273205a904f))
+
 ### Documentation
 
 - **README**: Remove outdated docker information
@@ -977,6 +1015,11 @@
 - **pack**: Format code
   ([`86e19ad`](https://github.com/anaticulae/baw/commit/86e19ad4e14ecc88b9f14c261af1a9d8c63c68d8))
 
+### Deps
+
+- Bump build from 1.4.0 to 1.4.2
+  ([`2b458e1`](https://github.com/anaticulae/baw/commit/2b458e1257abdc68eb4f0fe9bc9f0ce78ecd8da4))
+
 ### Documentation
 
 - **git**: Extend interface documentation
@@ -1039,6 +1082,11 @@
 
 - **yapf**: Format code
   ([`e5d0ff9`](https://github.com/anaticulae/baw/commit/e5d0ff90ec8383d8bb819de5b69ffd793f32a725))
+
+### Deps
+
+- Bump pytest-cov from 7.0.0 to 7.1.0
+  ([`394e249`](https://github.com/anaticulae/baw/commit/394e24996234fd462374cf5c7beb69223f112dfa))
 
 ### Documentation
 
