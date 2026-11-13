@@ -35,6 +35,7 @@ def format_repository(root: str, verbose: int = 0):
             format_imports,
             format_yaml,
             format_makefile,
+            format_js,
     ):
         try:
             # TODO: MAKE VERBOSE LEVEL GOBAL
@@ -110,6 +111,17 @@ def format_yaml(root: str) -> int:
     cmd = f'yamlfix {root} --exclude="**/build/**" --exclude="**/venv/**"'
     completed = utilo.run(cmd, cwd=root, expect=None)
     returncode = debug(completed)
+    return returncode
+
+
+def format_js(root: str) -> int:
+    if not baw.hasprog('prettier'):
+        utilo.log('could not find js prettier')
+        return baw.SUCCESS
+    utilo.log('format js')
+    cmd = 'npx prettier --write "**/*.js"'
+    completed = utilo.run(cmd, cwd=root, expect=None)
+    returncode = debug(completed, info='format js')
     return returncode
 
 
